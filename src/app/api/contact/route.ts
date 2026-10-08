@@ -31,11 +31,12 @@ export async function POST(request: Request) {
 
     const db = (getRequestContext().env as { DB?: D1Database }).DB;
     if (!db) throw new Error('Teams D1 binding unavailable');
-    const existing = await db.prepare('SELECT id FROM inquiries WHERE id = ?').bind(id).first();
-    if (existing) return reply({ received: true, id, duplicate: true }, 200);
-
     const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email));
     const emailHash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+    const existing = await db.prepare('SELECT contact_info_hash FROM inquiries WHERE id = ? AND source = ?').bind(id, 'website').first<{ contact_info_hash: string }>();
+    if (existing) return existing.contact_info_hash === emailHash
+      ? reply({ received: true, id, duplicate: true }, 200)
+      : reply({ error: 'Receipt already used' }, 409);
     const recent = await db.prepare("SELECT COUNT(*) AS count FROM inquiries WHERE source = 'website' AND contact_info_hash = ? AND created_at >= datetime('now', '-1 hour')").bind(emailHash).first<{ count: number }>();
     if ((recent?.count || 0) >= 3) return reply({ error: 'Too many recent inquiries. Please try again later.' }, 429);
 
@@ -45,10 +46,17 @@ export async function POST(request: Request) {
       if (!building) return reply({ error: 'Please select a published property' }, 400);
       buildingId = building.id;
     }
-    await db.batch([
-      db.prepare('INSERT INTO inquiries (id, source, category, contact_info_hash, status, routing_destination) VALUES (?, ?, ?, ?, ?, ?)').bind(id, 'website', category, emailHash, 'submitted', 'admin_inbox'),
-      db.prepare('INSERT INTO inquiry_details (inquiry_id, name, email, phone, message, building_id) VALUES (?, ?, ?, ?, ?, ?)').bind(id, name, email, phone || null, message, buildingId),
-    ]);
+    try {
+      await db.batch([
+        db.prepare('INSERT INTO inquiries (id, source, category, contact_info_hash, status, routing_destination) VALUES (?, ?, ?, ?, ?, ?)').bind(id, 'website', category, emailHash, 'submitted', 'admin_inbox'),
+        db.prepare('INSERT INTO inquiry_details (inquiry_id, name, email, phone, message, building_id) VALUES (?, ?, ?, ?, ?, ?)').bind(id, name, email, phone || null, message, buildingId),
+      ]);
+    } catch (error) {
+      // A concurrent click may have committed the same receipt before this insert.
+      const saved = await db.prepare('SELECT id FROM inquiries WHERE id = ? AND source = ? AND contact_info_hash = ?').bind(id, 'website', emailHash).first();
+      if (saved) return reply({ received: true, id, duplicate: true }, 200);
+      throw error;
+    }
     return reply({ received: true, id }, 201);
   } catch (error) {
     console.error('Inquiry submission failed:', error);

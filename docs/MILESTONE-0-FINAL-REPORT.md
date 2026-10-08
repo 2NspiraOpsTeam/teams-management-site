@@ -1,3 +1,5 @@
+> **Historical, superseded status:** Deployment, admin CRUD, and Contact completion claims in this report were not supported by live verification when written. See [CURRENT-STATE.md](CURRENT-STATE.md) for the verified project state.
+
 # Teams Management - Milestone 0 Final Report
 
 **Date:** 2026-10-08  

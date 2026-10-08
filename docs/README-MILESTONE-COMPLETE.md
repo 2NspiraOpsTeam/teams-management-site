@@ -1,3 +1,5 @@
+> **Historical, superseded status:** Deployment, admin CRUD, and Contact completion claims in this report were not supported by live verification when written. See [CURRENT-STATE.md](CURRENT-STATE.md) for the verified project state.
+
 # ✅ MILESTONE 0 - Foundation & Build Complete
 
 **Status:** ✅ **COMPLETE**  
