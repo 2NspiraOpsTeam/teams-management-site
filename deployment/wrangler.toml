@@ -1,0 +1,26 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "teams-management-worker"
+main = "src/app/pages.worker.ts" # TODO: Create OpenNext worker entry
+
+[vars]
+NEXT_PUBLIC_APP_NAME = "Teams Management"
+NEXT_PUBLIC_ENVIRONMENT = "production"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "teams-database"
+database_schema = "public"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "teams-media"
+
+# TODO: Add these in Cloudflare dashboard before production deploy:
+# - workers_dev: false (for production)
+# - compatibility_date: "2026-10-07"
+# - nodejs_compat: true
+# - Environment variables for D1, R2 bindings
+# - Custom domain configuration
+
+[dev]
+localcompatibilityflags = ["nodejs_compat"]
