@@ -13,7 +13,7 @@ This document supersedes the earlier Milestone 0 completion/status reports in `d
 
 ## Verified and open
 
-- Public homepage, portfolio, Contact, and published-property API returned HTTP 200 on the preview. An unknown property and `/admin/buildings` returned 404. The API projects only published public building fields; gallery output remains empty until explicit public-media approval is enforced.
+- Public homepage, portfolio, Contact, and published-property API returned HTTP 200 on the preview. An unknown property and `/admin/buildings` returned 404. The API projects only published public building identity/location fields; unapproved seed descriptions, amenities, and media are suppressed pending explicit content approval.
 - D1 holds 15 client-supplied property records plus one separate QA record. Four client properties are published; eleven remain draft pending accurate content/approval. The QA record is draft. The reconciliation is additive and does not overwrite the original four client records.
 - `npm run typecheck`, `npm run test`, and `npm run build:pages` are the current validation gates. A passing build is not a complete browser, admin, or contact verification.
 - Admin UI pages are placeholders, not D1 CRUD. They are blocked at the server middleware until authenticated, scoped access is implemented.

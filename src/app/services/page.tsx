@@ -62,34 +62,13 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          {/* Additional context */}
           <div className="mt-12 p-6 bg-slate-50 rounded-lg">
             <h3 className="text-lg font-semibold text-slate-900 mb-4">
-              How It Works
+              Discuss Your Property
             </h3>
-            <p className="text-slate-600 mb-4">
-              When you choose Teams Management as your property steward, you're joining a team dedicated 
-              to exceptional service. We integrate seamlessly with existing building operations while 
-              bringing fresh perspectives and proven methodologies.
+            <p className="text-slate-600">
+              Service arrangements depend on each property&apos;s needs and management agreement. Contact Teams Management for details about the support available for your building.
             </p>
-            <ul className="space-y-2 text-slate-600">
-              <li className="flex items-start">
-                <span className="text-slate-400 mr-2 mt-1">•</span>
-                <span>Dedicated team member assigned to your property</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-slate-400 mr-2 mt-1">•</span>
-                <span>24/7 maintenance support and emergency response</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-slate-400 mr-2 mt-1">•</span>
-                <span>Monthly resident communications and community updates</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-slate-400 mr-2 mt-1">•</span>
-                <span>Digital portal for service requests and building news</span>
-              </li>
-            </ul>
           </div>
 
           {/* Contact CTA */}

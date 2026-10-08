@@ -9,7 +9,9 @@ function database() {
   return db;
 }
 
-const publicColumns = 'id, name, slug, description_public, address_json, amenities_public, gallery, publication_state, created_at, updated_at';
+// Existing seed descriptions/amenities have not been approved by Teams.
+// Keep portfolio identity/location visible, but suppress unreviewed copy.
+const publicColumns = "id, name, slug, NULL AS description_public, address_json, '[]' AS amenities_public, '[]' AS gallery, publication_state, created_at, updated_at";
 
 export async function listPublicBuildings(): Promise<BuildingPublic[]> {
   const result = await database().prepare(`SELECT ${publicColumns} FROM buildings WHERE publication_state = ? ORDER BY name`).bind('published').all<PublicBuildingRow>();

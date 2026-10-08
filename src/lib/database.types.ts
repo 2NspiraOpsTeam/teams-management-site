@@ -13,7 +13,7 @@ export interface BuildingPublic {
   id: string;
   name: string;
   slug: string;
-  description_public?: string;
+  description_public?: string | null;
   address: {
     street: string;
     city: string;

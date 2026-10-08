@@ -22,13 +22,13 @@ export function PropertyCard({ building }: PropertyCardProps) {
         </h3>
         
         <p className="text-sm text-slate-500 mb-3">
-          {building.address.neighborhood}, {building.address.city} {building.address.zip}
+          {building.address.neighborhood ? `${building.address.neighborhood}, ` : ''}{building.address.city} {building.address.zip}
         </p>
         
         {/* Description */}
-        <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+        {building.description_public && <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
           {building.description_public}
-        </p>
+        </p>}
 
         {/* Amenities preview */}
         {building.amenities_public.slice(0, 3).map((amenity) => (
