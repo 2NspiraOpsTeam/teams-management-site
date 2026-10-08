@@ -2,32 +2,17 @@
 
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
-import Image from 'next/image';
 
 interface PropertyCardProps {
   building: BuildingPublic;
 }
 
 export function PropertyCard({ building }: PropertyCardProps) {
-  const featuredImage = building.gallery[0]?.asset_id 
-    ? `/media/buildings/${building.slug}/gallery/cover.jpg` 
-    : `/images/property-placeholder.jpg`;
-
   return (
     <article className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
       {/* Image Container */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-slate-100">
-        <Image
-          src={featuredImage}
-          alt={`${building.name} exterior`}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-          priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-700 to-slate-900 flex items-end p-6">
+        <span className="text-white text-lg font-serif font-semibold">{building.name}</span>
       </div>
 
       {/* Content */}

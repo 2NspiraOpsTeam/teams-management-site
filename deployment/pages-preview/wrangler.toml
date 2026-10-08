@@ -1,0 +1,9 @@
+name = "teams-management-preview"
+pages_build_output_dir = "../../.vercel/output/static"
+compatibility_date = "2026-10-08"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "teams-database-dev"
+database_id = "2d04fbea-8af6-4d6d-b5bf-cf758666d55e"

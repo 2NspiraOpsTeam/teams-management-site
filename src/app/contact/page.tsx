@@ -15,19 +15,6 @@ export default function ContactPage() {
     message: ''
   });
 
-  // Import seed data for property dropdown (development)
-  // In production, query from D1
-  import('@/lib/seed-data').then(({ seedBuildings }) => {
-    console.log(seedBuildings);
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Submit to D1 and trigger notification
-    // For now, show success message
-    alert('Thank you for your inquiry. We will respond within 24-48 hours.');
-  };
-
   return (
     <>
       <Header />
@@ -103,7 +90,10 @@ export default function ContactPage() {
             </div>
 
             {/* Inquiry Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div role="status" className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-slate-700">
+              Online inquiries are temporarily unavailable. Please email the team using the contact address on this page.
+            </div>
+            <form hidden onSubmit={(event) => event.preventDefault()} className="space-y-6">
               <div className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
@@ -189,13 +179,14 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full px-6 py-3 rounded-lg font-medium bg-slate-900 text-white hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                  disabled
+                  className="w-full px-6 py-3 rounded-lg font-medium bg-slate-400 text-white cursor-not-allowed"
                 >
                   Submit Inquiry
                 </button>
 
                 <p className="text-xs text-slate-500 text-center">
-                  We&apos;ll respond within 24-48 hours. Your information is kept private and secure.
+                  Online submissions are temporarily unavailable. Please use the email contact listed above.
                 </p>
               </div>
             </form>

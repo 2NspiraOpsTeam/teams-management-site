@@ -2,10 +2,12 @@ import { PropertyCard } from '@/components/property-card';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
-// Import seed data for development (replace with D1 queries in production)
-import { seedBuildings } from '@/lib/seed-data';
+import { listPublicBuildings } from '@/lib/public-buildings';
 
-export default function Home() {
+export const runtime = 'edge';
+
+export default async function Home() {
+  const buildings = (await listPublicBuildings()).slice(0, 3);
   return (
     <>
       <Header />
@@ -65,7 +67,7 @@ export default function Home() {
 
           {/* Property Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {seedBuildings.map((building) => (
+            {buildings.map((building) => (
               <PropertyCard key={building.id} building={building} />
             ))}
           </div>

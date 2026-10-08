@@ -19,11 +19,6 @@ const nextConfig = {
     minimumCacheTTL: 31536000
   },
   
-  // Swc compiler configuration
-  experimental: {
-    swcLoader: true,
-    workerThreadPooling: true
-  }
 };
 
 module.exports = nextConfig;

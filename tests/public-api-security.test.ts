@@ -1,101 +1,20 @@
-/**
- * Teams Management - Security Tests (Milestone 0)
- * 
- * These tests verify that private/internal data never leaks through public APIs.
- */
+import { describe, expect, it } from 'vitest';
+import { parsePublicBuildingRow } from '../src/lib/public-building-projection';
 
-import { describe, it, expect, vi } from 'vitest';
-import type { BuildingPublic, UnitInternal } from '@/lib/database.types';
-
-describe('Public API Security Boundaries', () => {
-  
-  it('public building endpoint should NOT expose units array', async () => {
-    // Mock response
-    const mockResponse: any = {
-      id: 'test-id',
-      name: 'Test Building',
-      slug: 'test-building',
-      description_public: 'Public description',
-      address: { city: 'NY' },
-      publication_state: 'published'
-      // units array is intentionally missing (should be [] or absent)
+describe('public building projection', () => {
+  it('does not include internal building or unit data', () => {
+    const row = {
+      id: 'building-1', name: 'Test Property', slug: 'test-property',
+      description_public: 'Public overview', address_json: '{"street":"1 Main St","city":"New York","state":"NY","zip":"10001"}',
+      amenities_public: '[]', gallery: '[{"asset_id":"private-photo"}]', publication_state: 'published' as const,
+      created_at: '2026-10-08', updated_at: '2026-10-08',
+      management_context: '{"notes":"private"}', units: [{ status: 'occupied' }],
     };
-
-    expect(mockResponse.units).toBeUndefined();
+    const publicValue = parsePublicBuildingRow(row);
+    expect(publicValue.address.street).toBe('1 Main St');
+    expect(publicValue).not.toHaveProperty('management_context');
+    expect(publicValue).not.toHaveProperty('units');
+    expect(publicValue).not.toHaveProperty('status');
+    expect(publicValue.gallery).toEqual([]);
   });
-
-  it('public building endpoint should NOT expose internal unit status', async () => {
-    const mockUnitData = {
-      building_id: 'test-id',
-      unit_identifier: 'A1',
-      status: 'occupied' as UnitInternal['status'], // Should be stripped!
-      square_footage: 1000
-    };
-
-    const publicResponse = {
-      id: mockUnitData.building_id,
-      description_public: 'Public only',
-      gallery: []
-      // NO internal fields
-    } as BuildingPublic;
-
-    expect(publicResponse.status).toBeUndefined();
-  });
-
-  it('public building endpoint should NOT expose private media', async () => {
-    const mockMedia = [
-      { 
-        asset_id: 'private-asset',
-        visibility: 'private' as any, // Should be filtered out!
-        alt_text: 'Maintenance photo'
-      }
-    ];
-
-    // In production code, filter media_assignments by visibility in the query
-    expect(mockMedia.some(m => m.visibility === 'private')).toBe(true);
-  });
-
-  it('should enforce publication_state filter', async () => {
-    const unpublishedBuilding = {
-      slug: 'test-building',
-      publication_state: 'draft' as any
-    };
-
-    // Public API should NOT return draft buildings
-    expect(unpublishedBuilding.publication_state).toBe('draft');
-  });
-});
-
-describe('Authorization Enforcement Tests', () => {
-
-  it('admin endpoint requires proper auth header', async () => {
-    const mockRequest = { headers: {} };
-    
-    // Should reject unauthorized requests
-    expect(mockRequest.headers.authorization).toBeUndefined();
-  });
-
-  it('should validate role permissions server-side', async () => {
-    const mockUser = { 
-      email: 'admin@teams.com',
-      roles: ['administrator'] 
-    };
-
-    const permittedActions = ['buildings.read', 'buildings.write', 'users.manage'];
-    
-    expect(mockUser.roles).toContain('administrator');
-  });
-
-});
-
-describe('Development Data Boundaries', () => {
-
-  it('seed data should be clearly marked as development only', async () => {
-    // Seed data imports should be optional/conditional
-    import('@/lib/seed-data').then(({ seedBuildings }) => {
-      expect(seedBuildings).toBeDefined();
-      expect(seedBuildings.length).toBeGreaterThan(0);
-    });
-  });
-
 });
