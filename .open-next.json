@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@cloudflare/next-on-pages/schema.json",
+  "cfa": {
+    "serveStatic": true
+  },
+  "entrypoint": "serverlessEntrypoint",
+  "functions": [
+    {
+      "name": "pages-worker",
+      "entrypoint": "src/app/pages.worker.ts"
+    }
+  ],
+  "static": "./.next/static",
+  "amp": false,
+  "headers": {
+    "**/*.js": {"contentSecurityPolicy": ""},
+    "**/*.html": {"contentSecurityPolicy": ""}
+  }
+}
