@@ -71,7 +71,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Link
+            <a
               href="/properties"
               className="inline-flex items-center px-6 py-3 rounded-lg font-medium text-slate-700 bg-white border border-slate-200 hover:border-slate-300 transition-colors"
             >
@@ -79,7 +79,7 @@ export default function Home() {
               <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4L3 16" />
               </svg>
-            </Link>
+            </a>
           </div>
         </div>
       </section>

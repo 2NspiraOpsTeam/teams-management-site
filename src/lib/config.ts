@@ -4,7 +4,7 @@
  */
 
 // Import real building addresses from client specification
-import { realBuildings, buildingStates } from './seed-data-real-buildings';
+import { realBuildings } from './seed-data-real-buildings';
 
 export const config = {
   app: {
@@ -13,10 +13,10 @@ export const config = {
     description: 'Premium property management and portfolio services in New York City'
   },
   
-  // Development: use provided building addresses (15 properties)
+  // Development: use provided building addresses (15 properties from client)
   // Production: query from D1 database
   buildings: {
-    realAddresses,
+    realAddresses: realBuildings,
     developmentMode: true, // Set false when ready for production content
     seedEnabled: true      // Use seed data until admin replaces with real content
   },

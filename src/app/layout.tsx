@@ -4,7 +4,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Teams Management - Premium Property Portfolio",
   description: "The Property Steward | Premium NYC property management and portfolio services",
-  keywords: ["property management", "real estate", "New York", "premium"],
 };
 
 export default function RootLayout({
