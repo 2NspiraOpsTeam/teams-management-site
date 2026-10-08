@@ -1,6 +1,7 @@
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import type { D1Database } from '@cloudflare/workers-types';
 import { NextResponse } from 'next/server';
+import { attemptInquiryNotification, type NotificationEnv } from '@/lib/inquiry-notifications';
 
 export const runtime = 'edge';
 
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
       await db.batch([
         db.prepare('INSERT INTO inquiries (id, source, category, contact_info_hash, status, routing_destination) VALUES (?, ?, ?, ?, ?, ?)').bind(id, 'website', category, emailHash, 'submitted', 'admin_inbox'),
         db.prepare('INSERT INTO inquiry_details (inquiry_id, name, email, phone, message, building_id) VALUES (?, ?, ?, ?, ?, ?)').bind(id, name, email, phone || null, message, buildingId),
+        db.prepare("INSERT INTO inquiry_notifications (inquiry_id, state) VALUES (?, 'pending')").bind(id),
       ]);
     } catch (error) {
       // A concurrent click may have committed the same receipt before this insert.
@@ -57,6 +59,9 @@ export async function POST(request: Request) {
       if (saved) return reply({ received: true, id, duplicate: true }, 200);
       throw error;
     }
+    // D1 commit is authoritative; delivery is asynchronous and cannot turn success into failure.
+    const context = getRequestContext();
+    context.ctx.waitUntil(attemptInquiryNotification(db, context.env as NotificationEnv, id));
     return reply({ received: true, id }, 201);
   } catch (error) {
     console.error('Inquiry submission failed:', error);
