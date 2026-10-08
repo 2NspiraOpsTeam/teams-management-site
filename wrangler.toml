@@ -1,7 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "teams-management-worker"
-compatibility_date = "2026-10-08"
-nodejs_compat = true
 
 # Development environment - binds to live D1 created above
 [[d1_databases]]
@@ -10,5 +8,4 @@ database_name = "teams-database-dev"
 database_id = "2d04fbea-8af6-4d6d-b5bf-cf758666d55e"
 
 [vars]
-NEXT_PUBLIC_APP_NAME = "Teams Management"
 NEXT_PUBLIC_ENVIRONMENT = "development"
