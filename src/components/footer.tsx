@@ -50,29 +50,17 @@ export function Footer() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M3 16h18M3 16l7.89-5.26a2 2 0 002.22 0L21 16" />
                 </svg>
-                <span>info@teams-management.com</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.11l-4.493 1.498a1 1 0 01-.684-.948V10m10 0a2 2 0 012 2v3.28a1 1 0 01-.684.948l-4.493 1.498a1 1 0 01-1.11-.502l-1.498-4.493a1 1 0 01.684-.948H21z" />
-                </svg>
-                <span>(212) 555-0123</span>
+                <a href="mailto:info@teams-management.com" className="hover:text-white">info@teams-management.com</a>
               </li>
             </ul>
           </div>
 
         </div>
 
-        {/* Legal & Accessibility */}
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-xs text-slate-500 text-center md:text-left">
-            Designed with accessibility in mind | WCAG 2.1 AA compliant
+            Accessibility feedback is welcome via our contact page.
           </p>
-          <div className="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
-            <Link href="/privacy" className="hover:text-slate-300 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-slate-300 transition-colors">Terms</Link>
-            <Link href="/accessibility" className="hover:text-slate-300 transition-colors">Accessibility</Link>
-          </div>
         </div>
       </div>
     </footer>

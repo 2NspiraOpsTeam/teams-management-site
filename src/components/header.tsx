@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 export function Header() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
     { href: '/', label: 'Home' },
@@ -18,15 +20,7 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <img 
-              src="/logo-placeholder.png" 
-              alt="Teams Management"
-              className="h-8 w-auto object-contain"
-              width={40}
-              height={40}
-            />
+          <Link href="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
             <span className="text-xl font-serif font-semibold text-slate-800">
               Teams Management
             </span>
@@ -70,14 +64,22 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button 
+            type="button"
             className="md:hidden p-2 text-slate-600 hover:text-slate-900 focus:outline-none"
-            aria-label="Open menu"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMenuOpen(open => !open)}
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
+        {menuOpen && <div id="mobile-navigation" className="md:hidden border-t border-slate-100 py-3 flex flex-col gap-1">
+          {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href ? 'page' : undefined} className="rounded px-3 py-3 text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-900">{item.label}</Link>)}
+          <Link href="/tenant-services" onClick={() => setMenuOpen(false)} className="rounded px-3 py-3 text-slate-700 hover:bg-slate-50">Tenant Services</Link>
+        </div>}
       </nav>
     </header>
   );

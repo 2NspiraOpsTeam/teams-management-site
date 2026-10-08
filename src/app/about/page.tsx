@@ -73,21 +73,6 @@ export default function AboutPage() {
               </li>
             </ul>
 
-            <h2 className="text-2xl font-serif font-semibold text-slate-900 mt-12 mb-6">
-              Leadership
-            </h2>
-
-            <p className="text-slate-600 leading-relaxed">
-              Our founding team includes former building superintendents, licensed real estate professionals, 
-              and operational experts who understand what makes New York property management unique. 
-              We're dedicated to continuous improvement and emerging best practices.
-            </p>
-
-            <div className="mt-12 p-6 bg-slate-50 rounded-lg">
-              <p className="text-sm text-slate-500 italic">
-                [Leadership team bio placeholders - add individual profiles with professional photographs before launch]
-              </p>
-            </div>
           </div>
         </div>
       </section>

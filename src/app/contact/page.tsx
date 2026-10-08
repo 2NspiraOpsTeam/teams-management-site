@@ -48,18 +48,6 @@ export default function ContactPage() {
                   </a>
                 </div>
 
-                <div className="p-4 bg-slate-50 rounded-lg">
-                  <h3 className="font-medium text-slate-900 mb-1">Phone</h3>
-                  <a href="tel:+12125550123" className="text-slate-600 hover:text-slate-900 transition-colors">
-                    (212) 555-0123
-                  </a>
-                </div>
-
-                <div className="p-4 bg-slate-50 rounded-lg">
-                  <h3 className="font-medium text-slate-900 mb-1">Hours</h3>
-                  <p className="text-slate-600">Monday - Friday: 9am - 6pm EST</p>
-                  <p className="text-slate-500 text-sm mt-1">Saturday - Sunday: By appointment</p>
-                </div>
 
                 <div className="pt-4 border-t border-slate-200">
                   <h3 className="font-medium text-slate-900 mb-3">Contact Categories</h3>
