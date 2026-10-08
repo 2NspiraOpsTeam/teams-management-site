@@ -9,6 +9,12 @@ binding = "DB"
 database_name = "teams-database-dev"
 database_id = "2d04fbea-8af6-4d6d-b5bf-cf758666d55e"
 
+# Preview environment - same D1 for preview testing  
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "teams-database-dev"
+database_id = "2d04fbea-8af6-4d6d-b5bf-cf758666d55e"
+
 [vars]
 NEXT_PUBLIC_APP_NAME = "Teams Management"
-NEXT_PUBLIC_ENVIRONMENT = "development"
+NEXT_PUBLIC_ENVIRONMENT = "production"
