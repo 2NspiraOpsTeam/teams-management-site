@@ -1,0 +1,15 @@
+.next/
+node_modules/
+.env
+.env.local
+.env.*.local
+public/bu
+uildings/*.jpg
+public/buildings/*.webp
+public/layouts/*.pdf
+public/private/*
+dist/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

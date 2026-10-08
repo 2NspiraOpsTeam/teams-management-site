@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Teams Management Design System - Phase 1 */
+:root {
+  --teams-slate-50: #f8fafc;
+  --teams-slate-700: #334155;
+  --teams-offwhite-50: #fffffc;
+  --teams-accent-500: #d4a574;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--teams-accent-500);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--teams-slate-700);
+  color: white;
+}
