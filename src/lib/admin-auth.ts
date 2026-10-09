@@ -9,7 +9,7 @@ const unauthorized = () => NextResponse.json({ error: 'Unauthorized' }, { status
 export { unauthorized };
 
 export function adminEnv() {
-  return getRequestContext().env as { DB?: D1Database; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_LOGIN_FROM_EMAIL?: string; ADMIN_OTP_PEPPER?: string };
+  return getRequestContext().env as { DB?: D1Database; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; MAIL_PROVIDER?: string; ADMIN_OTP_PEPPER?: string };
 }
 export function adminDb(): D1Database {
   const db = adminEnv().DB;
