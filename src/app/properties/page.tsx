@@ -25,7 +25,7 @@ export default async function PropertiesPage() {
       </section>
       <section className="py-14 sm:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {buildings.length > 0 ? <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-14 sm:gap-y-20">
+          {buildings.length > 0 ? <div className="space-y-12 sm:space-y-16">
             {buildings.map(building => <PropertyCard key={building.id} building={building} coverOverride={coverMap.get(building.slug)} />)}
           </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please check back soon.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">
