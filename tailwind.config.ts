@@ -17,8 +17,8 @@ const config: Config = {
           900: "#44484B", 950: "#3C4043",
         },
         "teams-gold": {
-          DEFAULT: "#B58A3A", highlight: "#9F742B",
-          muted: "#9F742B", pale: "#F1E8D6", light: "#D8BD83",
+          DEFAULT: "#D4A62A", highlight: "#E0B93F",
+          muted: "#B98A1F", pale: "#F1E8D6", light: "#F0D58A",
         },
         "teams-offwhite": {
           50: "#fffffc",
@@ -28,12 +28,12 @@ const config: Config = {
           400: "#fff3e0",
           500: "#ffe0b2",
         },
-        "teams-accent": { 500: "#B58A3A", 600: "#9F742B" },
+        "teams-accent": { 500: "#D4A62A", 600: "#B98A1F" },
         "teams-charcoal": "#44484B",
         "teams-ink": "#2D3032",
         "teams-secondary": "#565B5F",
         "teams-cta-ink": "#111111",
-        "teams-gold-on-dark": "#D8BD83",
+        "teams-gold-on-dark": "#F0D58A",
       },
       fontFamily: {
         sans: [

@@ -12,11 +12,12 @@
   --teams-surface: #F7F4EE;
   --teams-soft-background: #EAE7E2;
   --teams-border: #E0DDD7;
-  --teams-gold: #B58A3A;
-  --teams-gold-hover: #9F742B;
-  --teams-gold-light: #D8BD83;
-  --teams-gold-on-dark: #D8BD83;
-  --teams-accent-500: #B58A3A;
+  --teams-gold: #D4A62A;
+  --teams-gold-hover: #E0B93F;
+  --teams-gold-light: #F0D58A;
+  --teams-gold-deep: #B98A1F;
+  --teams-gold-on-dark: #F0D58A;
+  --teams-accent-500: #D4A62A;
 }
 
 /* Typography */
@@ -55,9 +56,10 @@ p {
   color: white;
 }
 
-/* Gold controls keep AA contrast in both resting and hover states. */
+/* Sunlit gold controls keep dark text and a distinct focus outline. */
 a.bg-teams-gold, button.bg-teams-gold { color: var(--teams-cta-ink); }
 a.bg-teams-gold:hover, button.bg-teams-gold:hover { background-color: var(--teams-gold-hover); }
+a.bg-teams-gold:focus-visible, button.bg-teams-gold:focus-visible { outline: 3px solid var(--teams-ink); outline-offset: 3px; box-shadow: 0 0 0 6px var(--teams-white); }
 input::placeholder, textarea::placeholder { color: var(--teams-secondary); opacity: 1; }
 
 /* Quiet interaction system for public property photography and actions. */

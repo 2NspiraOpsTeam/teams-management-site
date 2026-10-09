@@ -32,7 +32,7 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       popup.appendChild(title); popup.appendChild(address); popup.appendChild(link);
-      L.circleMarker(point, { radius: 9, color: '#2D3032', weight: 2, fillColor: '#B58A3A', fillOpacity: 1 })
+      L.circleMarker(point, { radius: 9, color: '#2D3032', weight: 2, fillColor: '#D4A62A', fillOpacity: 1 })
         .addTo(map).bindPopup(popup);
     }
     if (points.length === 1) map.setView(points[0], 14);
