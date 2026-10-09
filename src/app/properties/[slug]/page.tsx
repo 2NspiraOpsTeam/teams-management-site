@@ -9,6 +9,7 @@ import { getPublicBuilding } from '@/lib/public-buildings';
 import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { previewBuildingFacts } from '@/lib/preview-building-facts';
+import { PropertyGallery } from '@/components/property-gallery';
 
 export const runtime = 'edge';
 
@@ -17,9 +18,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const building = previewPortfolioEnabled ? previewPortfolio.find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) notFound();
   const media = await propertyMedia(adminDb(),slug);
-  const assignedCover = media.find(item=>item.is_cover);
-  const cover = assignedCover ? publicMediaSrc(assignedCover) : null;
-  const gallery = media.filter(item=>!item.is_cover).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
+  const images = [...media.filter(item=>item.is_cover),...media.filter(item=>!item.is_cover)].map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
 
   return <>
     <Header />
@@ -35,15 +34,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <h1 className="text-4xl font-serif font-semibold text-teams-ink mb-4">{building.name}</h1>
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {building.address.zip}</p>
         <div className="mb-10 flex flex-wrap gap-3"><a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">Map &amp; Directions ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
-        {cover && <img src={cover} alt={assignedCover?.alt_text||`Approved property image for ${building.address.street}`} className="mb-12 w-full aspect-[16/9] object-cover border border-slate-200" />}
-        {gallery.length > 0 && <section aria-labelledby="gold-street-gallery" className="mb-12">
-          <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-ink">Gold Street gallery</h2>
-          <div className="grid gap-5 sm:grid-cols-2">
-            {gallery.map((item) => <figure key={item.src} className="overflow-hidden border border-slate-200 bg-slate-50">
-              <img src={item.src} alt={item.alt} loading="lazy" className="property-image w-full aspect-[4/3] object-cover" />
-            {item.caption&&<figcaption className="p-3 text-sm text-slate-600">{item.caption}</figcaption>}</figure>)}
-          </div>
-        </section>}
+        <section aria-label={`${building.name} photo gallery`} className="mb-12"><PropertyGallery images={images} name={building.name} /></section>
         {previewPortfolioEnabled && <div className="mb-10"><PreviewBuildingDetails slug={building.slug} /></div>}
         {!building.description_public && (!previewPortfolioEnabled || !previewBuildingFacts[building.slug]) && <p className="mb-10 border-l-2 border-slate-300 pl-4 text-slate-600">Property details coming soon.</p>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}

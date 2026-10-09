@@ -2,23 +2,23 @@ import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
 import { directionsUrl } from '@/lib/map-location';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
+import { PropertyGallery, type GalleryImage } from '@/components/property-gallery';
 
 interface PropertyCardProps {
   building: BuildingPublic;
   coverOverride?: {src:string;alt:string}|null;
+  images?: GalleryImage[];
   showPreviewFacts?: boolean;
 }
 
-export function PropertyCard({ building, coverOverride, showPreviewFacts = false }: PropertyCardProps) {
+export function PropertyCard({ building, coverOverride, images = [], showPreviewFacts = false }: PropertyCardProps) {
   const location = [building.address.city, building.address.state].filter(Boolean).join(', ');
   const address = [building.address.street, location, building.address.zip].filter(Boolean).join(', ');
-  const cover = coverOverride?.src ?? null;
+  const photos = images.length ? images : coverOverride ? [coverOverride] : [];
 
   return (
     <article className="property-card grid grid-cols-1 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] gap-6 md:gap-10 min-w-0 border-b border-slate-200 pb-12 sm:pb-16">
-      {cover ? <img src={cover} alt={coverOverride?.alt || `Approved property image for ${building.address.street}`} className="property-image aspect-[4/3] w-full object-cover border border-slate-200" /> : <div className="aspect-[4/3] bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
-        <span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property photography coming soon</span>
-      </div>}
+      <PropertyGallery images={photos} name={building.name} compact />
       <div className="flex flex-col items-start min-w-0 md:py-2">
         <h2 className="font-serif text-2xl sm:text-3xl leading-tight text-teams-ink">{building.name}</h2>
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>

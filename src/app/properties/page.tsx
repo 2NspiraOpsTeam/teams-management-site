@@ -12,8 +12,8 @@ export const runtime = 'edge';
 
 export default async function PropertiesPage() {
   const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
-  const covers = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const cover=media.find(m=>m.is_cover);return [building.slug,cover?{src:publicMediaSrc(cover),alt:cover.alt_text||`Approved property image for ${building.name}`}:null] as const;}));
-  const coverMap = new Map(covers);
+  const galleries = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];return [building.slug,ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}))] as const;}));
+  const galleryMap = new Map(galleries);
   return <>
     <Header />
     <main>
@@ -26,7 +26,7 @@ export default async function PropertiesPage() {
       <section className="py-14 sm:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {buildings.length > 0 ? <div className="space-y-12 sm:space-y-16">
-            {buildings.map(building => <PropertyCard key={building.id} building={building} coverOverride={coverMap.get(building.slug)} showPreviewFacts={previewPortfolioEnabled} />)}
+            {buildings.map(building => <PropertyCard key={building.id} building={building} images={galleryMap.get(building.slug)} showPreviewFacts={previewPortfolioEnabled} />)}
           </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please check back soon.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">
             <p className="text-slate-600 mb-4">Questions about a property or our management services?</p>
