@@ -10,8 +10,7 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-4"><img src="/brand/teams-management-logo.png" alt="" width="72" height="72" className="h-[72px] w-[72px] object-contain" /><h3 className="text-lg font-serif font-semibold">Teams Management</h3></div>
             <p className="text-slate-300 text-sm leading-relaxed max-w-md">
-              The Property Steward | Premium property management and portfolio services in New York City. 
-              Establishing calm, reliable, and organized excellence for our properties and residents.
+              Teams Management property portfolio in New York City. Property-specific information is published after review.
             </p>
             <div className="mt-4 flex items-center space-x-2 text-sm text-slate-400">
               <span>&copy; {new Date().getFullYear()} Teams Management</span>

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Teams Management - Premium Property Portfolio",
-  description: "The Property Steward | Premium NYC property management and portfolio services",
+  title: "Teams Management - Property Portfolio",
+  description: "Teams Management property portfolio in New York City",
 };
 
 export default function RootLayout({

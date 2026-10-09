@@ -18,6 +18,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     address = JSON.stringify({street:String(a.street).trim(),city:String(a.city).trim(),state:String(a.state).trim(),zip:String(a.zip || '').trim(),neighborhood:String(a.neighborhood || '').trim()});
   }
   if (name.length < 2 || name.length > 120 || !states.has(state)) return NextResponse.json({error:'Invalid request'},{status:400});
+  if (state === 'published' && before.publication_state !== 'published') return NextResponse.json({ error: 'Publishing is unavailable until property content and media are approved.' }, { status: 409 });
   // Publishing does not release old unapproved copy: public projection suppresses it.
   await admin.db.prepare("UPDATE buildings SET name=?, address_json=?, publication_state=?, updated_at=datetime('now') WHERE id=?").bind(name,address,state,id).run();
   const after = { ...before, name, address_json:address, publication_state:state };

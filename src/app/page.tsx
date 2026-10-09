@@ -26,8 +26,7 @@ export default async function Home() {
               The Property Steward
             </h1>
             <p className="text-xl text-slate-300 leading-relaxed mb-8">
-              Premium property management and portfolio services in New York City. 
-              Establishing calm, reliable excellence for our properties and residents.
+              Teams Management properties across New York City. Explore published profiles or contact the team for information.
             </p>
             
             {/* Call to actions */}
@@ -62,8 +61,7 @@ export default async function Home() {
               Our Portfolio
             </h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
-              Discover our carefully curated selection of premium properties, 
-              each managed with the highest standards of care and attention.
+              Property profiles are published as approved information becomes available.
             </p>
           </div>
 
@@ -73,6 +71,8 @@ export default async function Home() {
               <PropertyCard key={building.id} building={building} />
             ))}
           </div>
+
+          {buildings.length === 0 && <p className="mx-auto max-w-2xl border-t border-teams-gold pt-6 text-center text-slate-600">Property profiles are being prepared for publication. Please contact our team for information about the portfolio.</p>}
 
           <div className="text-center mt-12">
             <a
@@ -94,11 +94,10 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-serif font-semibold text-slate-900 mb-6">
-                Why Trust Teams Management
+                About the Portfolio
               </h2>
               <p className="text-slate-600 leading-relaxed mb-6">
-                We believe in the power of thoughtful stewardship. Our approach combines 
-                operational excellence with genuine care for our properties and communities.
+                The Phase 1 portfolio includes addresses in Flushing, the Bronx, and New York. Property-specific details will be added after review.
               </p>
               
               {/* Features */}
@@ -108,8 +107,8 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <div>
-                    <h3 className="font-medium text-slate-900">Established & Reliable</h3>
-                    <p className="text-sm text-slate-500">Proven track record of exceptional service</p>
+                    <h3 className="font-medium text-slate-900">Verified Locations</h3>
+                    <p className="text-sm text-slate-500">Addresses supplied for the Teams Management portfolio</p>
                   </div>
                 </div>
 
@@ -118,8 +117,8 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                   <div>
-                    <h3 className="font-medium text-slate-900">Operational Excellence</h3>
-                    <p className="text-sm text-slate-500">Industry-leading maintenance and management</p>
+                    <h3 className="font-medium text-slate-900">Publication by Review</h3>
+                    <p className="text-sm text-slate-500">Property details remain draft until approved</p>
                   </div>
                 </div>
 
@@ -128,8 +127,8 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.988 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zM4.75 15.25v-2a3.75 3.75 0 013.75-3.75h7.5a3.75 3.75 0 013.75 3.75v2" />
                   </svg>
                   <div>
-                    <h3 className="font-medium text-slate-900">Distinctly NYC</h3>
-                    <p className="text-sm text-slate-500">Understanding the nuances of Manhattan living</p>
+                    <h3 className="font-medium text-slate-900">Contact for Details</h3>
+                    <p className="text-sm text-slate-500">Ask Teams Management about a property</p>
                   </div>
                 </div>
               </div>
@@ -139,7 +138,7 @@ export default async function Home() {
             <div className="bg-slate-100 rounded-xl aspect-[4/3] flex items-center justify-center">
               <p className="text-slate-400 text-sm text-center px-4">
                 [Property Showcase Image]<br />
-                Premium NYC architecture and<br />community highlights
+                Approved property photography pending
               </p>
             </div>
           </div>

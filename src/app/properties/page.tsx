@@ -21,10 +21,10 @@ export default async function PropertiesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {buildings.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {buildings.map(building => <PropertyCard key={building.id} building={building} />)}
-          </div> : <p className="text-slate-600">No properties are published yet.</p>}
+          </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please contact Teams Management for current information.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">
             <p className="text-slate-600 mb-4">Questions about a property or our management services?</p>
-            <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-lg font-medium bg-slate-900 text-white hover:bg-slate-800">Contact Teams Management</Link>
+            <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-sm font-medium bg-slate-950 text-white border border-teams-gold hover:bg-slate-800">Contact Teams Management</Link>
           </div>
         </div>
       </section>
