@@ -28,7 +28,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-5">
+          <div className="hidden lg:flex items-center gap-5">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -46,7 +46,7 @@ export function Header() {
           </div>
 
           {/* Tenant Services Gateway */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden lg:flex items-center">
             <Link
               href="/tenant-services"
               className="inline-flex items-center px-4 py-2 rounded-sm text-sm font-medium text-white border border-teams-gold hover:bg-white hover:text-slate-950 transition-colors"
@@ -67,7 +67,7 @@ export function Header() {
           {/* Mobile menu button */}
           <button 
             type="button"
-            className="md:hidden p-2 text-white hover:text-teams-gold-highlight"
+            className="lg:hidden p-2 text-white hover:text-teams-gold-highlight"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
@@ -78,7 +78,7 @@ export function Header() {
             </svg>
           </button>
         </div>
-        {menuOpen && <div id="mobile-navigation" className="md:hidden border-t border-teams-gold/40 py-3 flex flex-col gap-1">
+        {menuOpen && <div id="mobile-navigation" className="lg:hidden border-t border-teams-gold/40 py-3 flex flex-col gap-1">
           {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href ? 'page' : undefined} className="rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold">{item.label}</Link>)}
           <Link href="/tenant-services" onClick={() => setMenuOpen(false)} className="rounded px-3 py-3 text-white border-t border-teams-gold/30 hover:bg-white/10">Tenant Services</Link>
         </div>}
