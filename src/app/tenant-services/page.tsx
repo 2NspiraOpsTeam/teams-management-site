@@ -1,8 +1,10 @@
+export const runtime = 'edge';
+import { PageShowcase } from '@/components/page-showcase';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { ContactDetails } from '@/components/contact-details';
 
-export default function TenantServicesPage() {
+export default async function TenantServicesPage() {
   return <>
     <Header />
     <main className="min-h-[70vh] bg-slate-50">
@@ -18,7 +20,7 @@ export default function TenantServicesPage() {
         <ContactDetails />
         <a href="/contact" className="inline-flex px-6 py-3 rounded-lg bg-teams-charcoal text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">Contact information</a>
       </section>
-    </main>
+<PageShowcase page="tenant-services" variant="split"/>    </main>
     <Footer />
   </>;
 }

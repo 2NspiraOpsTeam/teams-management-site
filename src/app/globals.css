@@ -86,3 +86,16 @@ main a:active, main button:active { transform: translateY(1px); }
 .home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: scale(1.035); }
 .home-rail { scrollbar-width: thin; }
 @media (prefers-reduced-motion: reduce) { .home-button:hover, .home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: none; } }
+
+/* Page-specific editorial rhythm; the media and typography remain shared. */
+@media (min-width: 1024px) {
+  .page-showcase--wide > div { grid-template-columns: minmax(0, 1.45fr) minmax(320px, .55fr); }
+  .page-showcase--wide .page-showcase-image img { aspect-ratio: 16 / 10; }
+  .page-showcase--offset > div { grid-template-columns: minmax(320px, .72fr) minmax(0, 1.28fr); }
+  .page-showcase--offset .page-showcase-image { order: 2; transform: translateY(-1.5rem); }
+  .page-showcase--offset .page-showcase-image img { aspect-ratio: 5 / 4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-showcase img { transition: none !important; }
+  .page-showcase .group:hover img { transform: none !important; }
+}

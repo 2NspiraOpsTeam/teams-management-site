@@ -1,3 +1,4 @@
+import { PageShowcase } from '@/components/page-showcase';
 import Link from 'next/link';
 import { PortfolioMap } from '@/components/map/PortfolioMap';
 import { PropertyCard } from '@/components/property-card';
@@ -34,7 +35,7 @@ export default async function PropertiesPage() {
           </div>
         </div>
       </section>
-      <PortfolioMap buildings={buildings} />
+<PageShowcase page="properties" variant="wide"/>      <PortfolioMap buildings={buildings} />
     </main>
     <Footer />
   </>;
