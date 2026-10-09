@@ -1,4 +1,4 @@
-// Public, building-level aggregates manually reviewed from the October 2026 rent roll.
+// Public, building-level aggregates manually reviewed from the supplied source records.
 // Never import the source workbook: it contains tenant names and financial records.
 // This preview-only projection intentionally omits occupants, rents, lease dates, and unit IDs.
 export interface PreviewBuildingFacts {

@@ -11,6 +11,6 @@ export function PreviewBuildingDetails({ slug }: { slug: string }) {
       {facts.bedroomMix && <div><dt className="text-slate-500">Unit types</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.bedroomMix}</dd></div>}
       {facts.sizeRange && <div><dt className="text-slate-500">Recorded sizes</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.sizeRange}</dd></div>}
     </dl>
-    <p className="mt-4 text-sm leading-relaxed text-slate-700"><span className="font-semibold text-teams-ink">Retail space: </span>{facts.retail?.length ? `${facts.retail.length} ${facts.retail.length === 1 ? 'storefront' : 'storefronts'} recorded · ${facts.retail.join(' · ')}` : 'No storefront recorded in the supplied rent roll.'}</p>
+    <p className="mt-4 text-sm leading-relaxed text-slate-700"><span className="font-semibold text-teams-ink">Retail space: </span>{facts.retail?.length ? `${facts.retail.length} ${facts.retail.length === 1 ? 'storefront' : 'storefronts'} recorded · ${facts.retail.join(' · ')}` : 'Storefront information is being verified.'}</p>
   </section>;
 }
