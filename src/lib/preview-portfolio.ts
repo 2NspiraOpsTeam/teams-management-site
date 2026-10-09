@@ -4,10 +4,13 @@ import type { BuildingPublic } from './database.types';
 export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1';
 
 // Supplied property-specific cover, scoped to the preview fixture until publication is approved.
+const previewCovers: Record<string, string> = {
+  '42-70-156th-st-flushing': '/preview-properties/42-70-156th-street.jpg',
+  '3425-east-tremont-bronx': '/preview-properties/3425-east-tremont-ave.jpg',
+};
+
 export const previewPropertyCover = (slug: string) =>
-  previewPortfolioEnabled && slug === '42-70-156th-st-flushing'
-    ? '/preview-properties/42-70-156th-street.jpg'
-    : null;
+  previewPortfolioEnabled ? previewCovers[slug] ?? null : null;
 
 const confirmedAddresses = [
   ['42-70-156th-st-flushing', '42-70 156th St', 'Flushing'],
