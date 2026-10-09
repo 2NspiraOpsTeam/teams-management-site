@@ -1,0 +1,67 @@
+import { NextResponse } from 'next/server';
+import { listPublicBuildings, type BuildingPublic } from '@/lib/public-buildings';
+
+export const runtime = 'edge';
+
+/**
+ * GET /api/buildings - Public endpoint for building listings
+ * Uses existing Teams Management D1 (teams-database-dev)
+ * Only returns published buildings filtered by publication_state
+ */
+export async function GET() {
+  try {
+    // Use existing public projection from teams management app
+    const buildings = await listPublicBuildings();
+    
+    // Map to simplified structure for 2nspira public consumption
+    const publicBuildings: any[] = buildings.map(({ id, name, slug, address_json, gallery }) => ({
+      id,
+      name,
+      slug,
+      address: JSON.parse(address_json || '{}'),
+      neighborhood: address_json && typeof address_json === 'string' ? 
+        JSON.parse(address_json).neighborhood : undefined,
+      borough: 'Manhattan', // Could be extracted from address if needed
+    }));
+    
+    return NextResponse.json({ buildings: publicBuildings, count: publicBuildings.length });
+    
+  } catch (error) {
+    console.error('Public building list failed:', error);
+    return NextResponse.json(
+      { 
+        error: 'Service unavailable',
+        message: error instanceof Error ? error.message : 'Unknown error' 
+      }, 
+      { status: 503 }
+    );
+  }
+}
+
+/** GET /api/buildings/{slug} - Single building detail */
+export async function GET(
+  req: Request,
+  { params }: { params: { slug?: string } }
+) {
+  if (!params.slug) {
+    return NextResponse.json({ error: 'Missing slug parameter' }, { status: 400 });
+  }
+  
+  try {
+    const building = await listPublicBuildings();
+    const found = building.find(b => b.slug === params.slug);
+    
+    if (!found) {
+      return NextResponse.json({ error: 'Building not found' }, { status: 404 });
+    }
+    
+    return NextResponse.json({ building: found });
+    
+  } catch (error) {
+    console.error('Building detail failed:', error);
+    return NextResponse.json(
+      { error: 'Failed to load building' },
+      { status: 500 }
+    );
+  }
+}
