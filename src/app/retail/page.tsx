@@ -1,44 +1,12 @@
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-
+import { adminDb } from '@/lib/admin-auth';
+import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
+import { directionsUrl } from '@/lib/map-location';
+import { listPublicRetail, type RetailProperty } from '@/lib/public-retail';
 export const runtime = 'edge';
-
-export const metadata = {
-  title: 'Retail & Commercial | Teams Management',
-  description: 'Contact Teams Management about retail and commercial property management in New York City.',
-};
-
-export default function RetailPage() {
-  return <>
-    <Header />
-    <main>
-      <section className="bg-teams-charcoal text-white py-20 sm:py-28">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16 items-end">
-          <div>
-            <p className="text-sm uppercase tracking-[.18em] text-slate-300 mb-5">Teams Management</p>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl mb-6">Retail & commercial</h1>
-            <p className="max-w-xl text-lg text-slate-200 mb-0">A direct connection for questions about the retail and commercial spaces managed by our team.</p>
-          </div>
-          <div className="border-t border-white/20 pt-6">
-            <p className="text-slate-200 mb-5">Property-specific commercial information is shared once it is verified. Contact us to discuss a location or make an inquiry.</p>
-            <Link href="/contact" className="inline-flex items-center justify-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-charcoal transition-all duration-200 hover:bg-teams-gold-highlight hover:-translate-y-0.5">Contact our team <span aria-hidden="true" className="ml-2">→</span></Link>
-          </div>
-        </div>
-      </section>
-      <section className="bg-[#F8F7F3] py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 md:gap-20">
-          <div>
-            <p className="text-sm uppercase tracking-[.18em] text-slate-600 mb-4">Property context</p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-teams-charcoal mb-5">The right details, when confirmed.</h2>
-          </div>
-          <div className="self-end">
-            <p className="text-slate-700 mb-5">This section will grow with verified property imagery, locations, and building context. We do not publish unconfirmed space or leasing information.</p>
-            <Link href="/properties" className="font-semibold text-teams-charcoal underline underline-offset-4 decoration-slate-400 hover:decoration-teams-gold">Explore the portfolio <span aria-hidden="true">→</span></Link>
-          </div>
-        </div>
-      </section>
-    </main>
-    <Footer />
-  </>;
-}
+export const metadata = {title:'Retail & Commercial | Teams Management',description:'Explore verified retail and commercial properties managed by Teams Management.'};
+type Item=RetailProperty&{cover:{src:string;alt:string}|null};
+function RetailCard({item}:{item:Item}){const planned=item.retail_status==='planned';return <article className="group overflow-hidden border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md"><div className="relative">{item.cover?<img src={item.cover.src} alt={item.cover.alt} className="aspect-[4/3] w-full object-cover" loading="lazy"/>:<div className="flex aspect-[4/3] flex-col items-center justify-center bg-teams-charcoal px-6 text-center"><span className="font-serif text-5xl text-teams-gold" aria-hidden="true">TM</span><span className="mt-3 text-xs uppercase tracking-[.16em] text-white">Property photography coming soon</span></div>}{planned&&<span className="absolute left-4 top-4 bg-teams-gold px-3 py-2 text-xs font-bold uppercase tracking-wider text-teams-charcoal">Planned Retail</span>}</div><div className="p-5 sm:p-6"><p className="text-xs font-semibold uppercase tracking-[.13em] text-slate-600">{planned?'Future retail':'Retail / commercial component'}</p><h3 className="mt-2 font-serif text-2xl text-teams-charcoal">{item.name}</h3><p className="mt-2 text-sm text-slate-700">{item.address.street}, {item.address.city}, {item.address.state}</p>{item.retail_notes&&<p className="mt-4 text-sm leading-relaxed text-slate-700">{item.retail_notes}</p>}<div className="mt-5 flex flex-wrap gap-x-6 gap-y-2"><Link href={`/properties/${item.slug}`} className="inline-flex min-h-11 items-center border-b border-stone-400 font-semibold text-teams-charcoal hover:border-teams-gold">View Property →</Link><a href={directionsUrl(item.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-stone-400 font-semibold text-teams-charcoal hover:border-teams-gold">Map &amp; Directions ↗</a></div></div></article>}
+export default async function RetailPage(){const properties=await listPublicRetail();const items:Item[]=await Promise.all(properties.map(async item=>{const media=await propertyMedia(adminDb(),item.slug);const cover=media.find(row=>row.is_cover);return {...item,cover:cover?{src:publicMediaSrc(cover),alt:cover.alt_text||`Approved property image for ${item.name}`}:null};}));const current=items.filter(item=>item.retail_status!=='planned');const planned=items.filter(item=>item.retail_status==='planned');return <><Header/><main><section className="bg-teams-charcoal py-18 text-white sm:py-24"><div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8"><p className="mb-5 text-sm uppercase tracking-[.2em] text-teams-gold">Teams Management portfolio</p><h1 className="max-w-3xl font-serif text-4xl leading-tight sm:text-5xl lg:text-6xl">Retail &amp; commercial properties</h1><p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-200">Explore properties with verified retail or commercial use. For property-specific questions, connect directly with our team.</p><Link href="/contact#contact-details" className="mt-8 inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-charcoal hover:bg-teams-gold-highlight">Retail &amp; Commercial Inquiries →</Link></div></section><section className="bg-[#F8F7F3] py-14 sm:py-20"><div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"><div className="mb-8 max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[.18em] text-slate-600">Documented property use</p><h2 className="mt-3 font-serif text-3xl text-teams-charcoal sm:text-4xl">Across the portfolio</h2><p className="mt-3 text-slate-700">Property information is limited to verified addresses and approved imagery. Contact us for details about a location.</p></div>{current.length?<div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">{current.map(item=><RetailCard key={item.id} item={item}/>)}</div>:<p className="rounded border bg-white p-6 text-slate-600">Retail property profiles are being prepared.</p>}</div></section>{planned.length>0&&<section className="bg-white py-14 sm:py-20"><div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"><div className="mb-8 max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[.18em] text-slate-600">Looking ahead</p><h2 className="mt-3 font-serif text-3xl text-teams-charcoal">Planned retail</h2><p className="mt-3 text-slate-700">Future retail components are shown separately from current commercial properties.</p></div><div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">{planned.map(item=><RetailCard key={item.id} item={item}/>)}</div></div></section>}<section className="border-t border-stone-200 bg-teams-charcoal py-14 text-white"><div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8"><div><h2 className="font-serif text-3xl">Questions about a property?</h2><p className="mt-2 text-slate-200">Reach the Teams Management team using the published contact details.</p></div><Link href="/contact#contact-details" className="inline-flex min-h-11 items-center justify-center bg-teams-gold px-6 py-3 font-semibold text-teams-charcoal">Retail &amp; Commercial Inquiries →</Link></div></section></main><Footer/></>}

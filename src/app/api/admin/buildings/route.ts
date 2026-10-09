@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const admin = await requireAdmin(); if (!admin) return unauthorized();
   const q = new URL(request.url).searchParams.get('q')?.trim().slice(0,100) || '';
   const includeArchived = new URL(request.url).searchParams.get('include_archived') === '1';
-  const rows = await admin.db.prepare("SELECT id,name,slug,address_json,latitude,longitude,geocode_status,map_verified,publication_state,created_at,updated_at FROM buildings WHERE (name LIKE ? OR slug LIKE ?) AND (? = 1 OR publication_state != 'archived') ORDER BY name LIMIT 100").bind(`%${q}%`,`%${q}%`,includeArchived ? 1 : 0).all();
+  const rows = await admin.db.prepare("SELECT id,name,slug,address_json,latitude,longitude,geocode_status,map_verified,has_retail,retail_status,retail_notes,retail_published,publication_state,created_at,updated_at FROM buildings WHERE (name LIKE ? OR slug LIKE ?) AND (? = 1 OR publication_state != 'archived') ORDER BY name LIMIT 100").bind(`%${q}%`,`%${q}%`,includeArchived ? 1 : 0).all();
   return NextResponse.json(rows.results, { headers: { 'Cache-Control': 'no-store' } });
 }
 export async function POST(request: Request) {
