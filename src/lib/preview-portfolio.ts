@@ -17,17 +17,6 @@ export const goldStreetGallery = [
   '/preview-properties/61-gold-st/input-IMG_5284---88aaeaac-e28b-4bd6-a193-2f0c0d9bab21.jpg',
 ] as const;
 
-// Supplied property-specific cover, scoped to the preview fixture until publication is approved.
-const previewCovers: Record<string, string> = {
-  '42-70-156th-st-flushing': '/preview-properties/42-70-156th-street.jpg',
-  '3425-east-tremont-bronx': '/preview-properties/3425-east-tremont-ave.jpg',
-  '166-e-118th-st': '/preview-properties/166-e-118th-street.jpg',
-  '61-gold-st': goldStreetGallery[0],
-};
-
-export const previewPropertyCover = (slug: string) =>
-  previewPortfolioEnabled ? previewCovers[slug] ?? null : null;
-
 const confirmedAddresses = [
   ['42-70-156th-st-flushing', '42-70 156th St', 'Flushing'],
   ['3425-east-tremont-bronx', '3425 East Tremont Ave', 'Bronx'],

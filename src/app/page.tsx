@@ -3,14 +3,18 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
 import { listPublicBuildings } from '@/lib/public-buildings';
-import { goldStreetGallery, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { adminDb } from '@/lib/admin-auth';
+import { homeMedia, publicMediaSrc } from '@/lib/media-management';
+import { previewPortfolioEnabled } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
 export default async function Home() {
   const buildings = (await listPublicBuildings()).slice(0, 3);
   
-  const curatedGoldStreetImages = [goldStreetGallery[0], goldStreetGallery[3]];
+  const homeImages = await homeMedia(adminDb());
+  const hero = homeImages.find(item=>item.slot==='hero');
+  const curatedGoldStreetImages = homeImages.filter(item=>item.slot==='featured').map(item=>({src:publicMediaSrc(item),alt:item.alt_text||'Featured property image'}));
 
   return (
     <>
@@ -20,7 +24,7 @@ export default async function Home() {
       <section className="relative bg-teams-charcoal text-white min-h-[70vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           {/* Placeholder for hero image - use building exterior in production */}
-          <div className="absolute inset-0 bg-teams-charcoal" />
+          {hero?<img src={publicMediaSrc(hero)} alt={hero.alt_text||"Teams Management featured property"} className="absolute inset-0 h-full w-full object-cover opacity-35"/>:<div className="absolute inset-0 bg-teams-charcoal" />}
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
@@ -57,7 +61,7 @@ export default async function Home() {
       </section>
 
       {/* Portfolio Visual Showcase - Curated Gold Street images */}
-      {previewPortfolioEnabled && <section className="py-12 bg-white border-y border-slate-200">
+      {previewPortfolioEnabled && curatedGoldStreetImages.length>0 && <section className="py-12 bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-xl font-serif text-slate-800 mb-2">
@@ -70,11 +74,11 @@ export default async function Home() {
 
           {/* Curated image grid - 2-4 images maximum */}
           <div className="grid gap-5 sm:grid-cols-2">
-          {curatedGoldStreetImages.map((src) => (
-            <div key={src} className="relative overflow-hidden rounded-sm border border-slate-200">
+          {curatedGoldStreetImages.map((item) => (
+            <div key={item.src} className="relative overflow-hidden rounded-sm border border-slate-200">
               <img
-                src={src}
-                alt="Portfolio visual showcase from Gold Street property"
+                src={item.src}
+                alt={item.alt}
                 className="w-full aspect-[2/1] object-cover bg-[#F8F7F3] hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />

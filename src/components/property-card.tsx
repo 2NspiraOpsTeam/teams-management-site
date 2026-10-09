@@ -1,20 +1,20 @@
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
 import { directionsUrl } from '@/lib/map-location';
-import { previewPropertyCover } from '@/lib/preview-portfolio';
 
 interface PropertyCardProps {
   building: BuildingPublic;
+  coverOverride?: {src:string;alt:string}|null;
 }
 
-export function PropertyCard({ building }: PropertyCardProps) {
+export function PropertyCard({ building, coverOverride }: PropertyCardProps) {
   const location = [building.address.city, building.address.state].filter(Boolean).join(', ');
   const address = [building.address.street, location, building.address.zip].filter(Boolean).join(', ');
-  const cover = previewPropertyCover(building.slug);
+  const cover = coverOverride?.src ?? null;
 
   return (
     <article className="property-card grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-5 sm:gap-6 min-w-0">
-      {cover ? <img src={cover} alt={`Approved property image for ${building.address.street}`} className="property-image aspect-[4/3] sm:aspect-square w-full object-cover border border-slate-200" /> : <div className="aspect-[4/3] sm:aspect-square bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
+      {cover ? <img src={cover} alt={coverOverride?.alt || `Approved property image for ${building.address.street}`} className="property-image aspect-[4/3] sm:aspect-square w-full object-cover border border-slate-200" /> : <div className="aspect-[4/3] sm:aspect-square bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
         <span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property photography coming soon</span>
       </div>}
       <div className="flex flex-col items-start min-w-0 sm:py-1">

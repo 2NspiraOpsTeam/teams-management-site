@@ -1,3 +1,3 @@
 import Link from 'next/link';
 export const runtime='edge';
-export default function AdminHome(){return <main className="mx-auto max-w-4xl p-6"><h1 className="text-3xl font-semibold">Admin</h1><nav className="mt-6 flex gap-4"><Link href="/admin/buildings">Buildings</Link><Link href="/admin/units">Units</Link><Link href="/admin/inquiries">Inquiries</Link></nav></main>}
+export default function AdminHome(){return <main className="mx-auto max-w-4xl p-6"><h1 className="text-3xl font-semibold">Teams Admin</h1><p className="mt-3 text-slate-600">Manage property details, approved imagery, homepage visuals, and inquiries.</p><div className="mt-7 grid gap-4 sm:grid-cols-2">{[['Properties','/admin/buildings'],['Homepage','/admin/homepage'],['Media Library','/admin/media'],['Inquiries','/admin/inquiries']].map(([name,href])=><Link key={href} href={href} className="rounded border bg-white p-5 font-semibold hover:border-amber-500">{name} →</Link>)}</div></main>}
