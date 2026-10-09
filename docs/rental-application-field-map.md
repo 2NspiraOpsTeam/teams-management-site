@@ -4,9 +4,9 @@
 
 ## Scope and counts
 
-- **84 current canonical fields** across applicant-entered, deferred, document-metadata, and system-managed fields; 4 legacy keys are recorded separately below and are not application fields.
+- **86 current canonical fields** across applicant-entered, deferred, document-metadata, and system-managed fields; 4 legacy keys are recorded separately below and are not application fields.
 - **53 existing AcroForm fields** in the supplied 4-page PDF. The registry maps all 53: 49 direct or grouped mappings, with the two occupant row patterns covering three PDF rows each.
-- **56 target semantic PDF mappings**. A target name is a specification, not proof that the supplied PDF already uses it.
+- **58 target semantic PDF mappings**. A target name is a specification, not proof that the supplied PDF already uses it.
 - **8 highly sensitive fields** and **9 legal-review fields**. Screening question definitions below are additional catalogue items, not seven separate applicant field keys.
 
 ## Contract
@@ -36,7 +36,8 @@
 | applicant.home_phone | Home Phone | phone | optional | Valid phone number. | No | personal | home_phone | applicant.home_phone | applicant.home_phone | Home Phone | application_data.applicant.home_phone | No | Yes | — |
 | applicant.cell_phone | Cell Phone | phone | required | Valid phone number. | No | personal | cell_phone | applicant.mobile | applicant.cell_phone | Cell Phone | application_data.applicant.cell_phone | No | Yes | — |
 | applicant.work_phone | Work Phone | phone | optional | Valid phone number. | No | personal | work_phone | applicant.work_phone | applicant.work_phone | Work Phone | application_data.applicant.work_phone | No | Yes | — |
-| applicant.guarantor_relationship | Guarantor Relationship | text | conditional | Required when applicant is a guarantor. | No | personal | guarantor_relationship | applicant.guarantor_relationship | applicant.guarantor_relationship | Guarantor Relationship | application_data.applicant.guarantor_relationship | No | Yes | — |
+| applicant.uses_guarantor | Will you be using a guarantor? | boolean | required | Select yes or no. | No | personal | uses_guarantor | — | applicant.uses_guarantor | Will you be using a guarantor? | application_data.applicant.uses_guarantor | No | Yes | — |
+| applicant.guarantor_relationship | Guarantor Relationship | text | conditional | Required when uses_guarantor is yes. | No | personal | guarantor_relationship | applicant.guarantor_relationship | applicant.guarantor_relationship | Guarantor Relationship | application_data.applicant.guarantor_relationship | No | Yes | — |
 | occupants[].name | Occupant Name | text | conditional | Required for each added occupant. | Yes | personal | occupants[].name | occupants.{1..3}.name | occupants[].name | Occupant Name | application_data.occupants[].name | No | Yes | — |
 | occupants[].relationship | Relationship | text | optional | Trim; reject control characters; enforce bounded length. | Yes | personal | occupants[].relationship | occupants.{1..3}.relationship | occupants[].relationship | Relationship | application_data.occupants[].relationship | No | Yes | — |
 | rental_history[].landlord_name | Landlord | text | optional | Trim; reject control characters; enforce bounded length. | Yes | personal | rental_history[].landlord_name | rental.landlord | rental_history[].landlord_name | Landlord | application_data.rental_history[].landlord_name | No | Yes | — |
@@ -70,6 +71,7 @@
 | employment_previous.gross_annual_salary | Gross Annual Salary | currency | optional | Nonnegative USD amount. | No | financial | employment_previous.gross_annual_salary | employment.previous.salary | employment_previous.gross_annual_salary | Gross Annual Salary | application_data.employment_previous.gross_annual_salary | No | Yes | — |
 | employment_previous.employed_since | Employed Since | month | optional | Valid YYYY-MM. | No | personal | employment_previous.employed_since | employment.previous.since | employment_previous.employed_since | Employed Since | application_data.employment_previous.employed_since | No | Yes | — |
 | employment_previous.employed_until | Employed Until | month | optional | Valid YYYY-MM; after employed_since. | No | personal | employment_previous.employed_until | employment.previous.to | employment_previous.employed_until | Employed Until | application_data.employment_previous.employed_until | No | Yes | Present in supplied PDF; added explicitly to canonical schema. |
+| income.other_source_to_verify | Do you have another income source for Teams to verify? | boolean | required | Select yes or no. | No | financial | other_income_to_verify | — | income.other_source_to_verify | Do you have another income source for Teams to verify? | application_data.income.other_source_to_verify | No | Yes | — |
 | pets.has_pets | Has Pets | boolean | required | True or false. | No | personal | pets.has_pets | pets.planned | pets.has_pets | Has Pets | application_data.pets.has_pets | No | Yes | Assistance animals follow reasonable-accommodation process. |
 | pets.details | Number and Type of Pets | textarea | conditional | Required if has_pets is true; no medical details. | No | personal | pets.details | pets.description | pets.details | Number and Type of Pets | application_data.pets.details | No | Yes | — |
 | additional.notes | Additional Information | textarea | optional | Reject obvious identifier patterns; warn not to enter SSN/DOB/license or screening history. | No | personal | additional.notes | additional.notes | additional.notes | Additional Information | application_data.additional.notes | No | Yes | — |
@@ -118,9 +120,11 @@ These keys are historical references only, with status `removed_from_current_app
 ## Document requirements — uploads disabled in preview
 
 - `government_photo_id` — **Government-Issued Photo ID**; requirement: `required`; multiple files: no; examples: Driver’s License, State ID, Passport, Other valid government-issued photo identification; visibility: `private`; sensitivity: `highly_sensitive`; Admin summary: **Government Photo ID — Uploaded / Missing**; active: **no**.
-- `proof_of_income` — **Proof of Income**; requirement: `when_applicable`; multiple files: yes; examples: Recent pay stubs, Employment verification, Other approved income documentation; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Proof of Income — Uploaded / Missing**; active: **no**.
+- `proof_of_income` — **Proof of Income**; requirement: `when_applicable`; multiple files: yes; examples: Recent pay stubs, Employment verification letter, Other verifiable income documentation; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Proof of Income — Uploaded / Missing**; active: **no**.
 - `guarantor_documents` — **Guarantor Documents**; requirement: `if_guarantor`; multiple files: yes; examples: none specified; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Guarantor Documents — Uploaded / Not Required / Missing**; active: **no**.
 - `additional_supporting_document` — **Additional Supporting Document**; requirement: `optional`; multiple files: no; examples: none specified; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Additional Document — Uploaded / None**; active: **no**.
+
+Proof of income applies when current employment or another income source to verify is indicated. `applicant.uses_guarantor` gates guarantor details and future guarantor documents. Neither condition enables uploads in preview.
 
 When enabled, accept only `application/pdf`, `image/jpeg`, `image/png` after server-side verification. Do not set an exact proof-of-income file count or document age until approved. Show guarantor documents only when a guarantor is indicated; omit them for other applicants. Keep optional supporting uploads bounded to relevant application material, not a general request for sensitive information. Future upload UX: drag/drop or file picker, progress, type and size, and replace/remove before submission.
 

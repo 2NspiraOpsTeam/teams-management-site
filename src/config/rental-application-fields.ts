@@ -45,7 +45,8 @@ export const rentalApplicationFields: readonly Field[] = [
   f('applicant.home_phone','Home Phone','phone','optional',personal,{validation:'Valid phone number.',pdfField:'home_phone',currentPdfField:'applicant.home_phone'}),
   f('applicant.cell_phone','Cell Phone','phone','required',personal,{validation:'Valid phone number.',pdfField:'cell_phone',currentPdfField:'applicant.mobile'}),
   f('applicant.work_phone','Work Phone','phone','optional',personal,{validation:'Valid phone number.',pdfField:'work_phone',currentPdfField:'applicant.work_phone'}),
-  f('applicant.guarantor_relationship','Guarantor Relationship','text','conditional',personal,{validation:'Required when applicant is a guarantor.',pdfField:'guarantor_relationship',currentPdfField:'applicant.guarantor_relationship'}),
+  f('applicant.uses_guarantor','Will you be using a guarantor?','boolean','required',personal,{validation:'Select yes or no.',pdfField:'uses_guarantor'}),
+  f('applicant.guarantor_relationship','Guarantor Relationship','text','conditional',personal,{validation:'Required when uses_guarantor is yes.',pdfField:'guarantor_relationship',currentPdfField:'applicant.guarantor_relationship'}),
   // Repeatable collections: [] means each item, never a fixed three-row cap online.
   f('occupants[].name','Occupant Name','text','conditional',personal,{repeatable:true,validation:'Required for each added occupant.',pdfField:'occupants[].name',currentPdfField:'occupants.{1..3}.name'}),
   f('occupants[].relationship','Relationship','text','optional',personal,{repeatable:true,pdfField:'occupants[].relationship',currentPdfField:'occupants.{1..3}.relationship'}),
@@ -75,6 +76,7 @@ export const rentalApplicationFields: readonly Field[] = [
     ];
     return items;
   }),
+  f('income.other_source_to_verify','Do you have another income source for Teams to verify?','boolean','required',financial,{validation:'Select yes or no.',pdfField:'other_income_to_verify'}),
   f('pets.has_pets','Has Pets','boolean','required',personal,{validation:'True or false.',pdfField:'pets.has_pets',currentPdfField:'pets.planned',notes:'Assistance animals follow reasonable-accommodation process.'}),
   f('pets.details','Number and Type of Pets','textarea','conditional',personal,{validation:'Required if has_pets is true; no medical details.',pdfField:'pets.details',currentPdfField:'pets.description'}),
   f('additional.notes','Additional Information','textarea','optional',personal,{validation:'Reject obvious identifier patterns; warn not to enter SSN/DOB/license or screening history.',pdfField:'additional.notes',currentPdfField:'additional.notes'}),
@@ -128,7 +130,7 @@ export const rentalDocumentRequirements = [
     adminLabel:'Government Photo ID',adminStates:['Uploaded','Missing'],
     visibility:'private',sensitivity:'highly_sensitive',active:false},
   {key:'proof_of_income',label:'Proof of Income',requirement:'when_applicable',multiple:true,category:'income',
-    acceptedExamples:['Recent pay stubs','Employment verification','Other approved income documentation'],
+    acceptedExamples:['Recent pay stubs','Employment verification letter','Other verifiable income documentation'],
     adminLabel:'Proof of Income',adminStates:['Uploaded','Missing'],
     visibility:'private',sensitivity:'financial_private',active:false},
   {key:'guarantor_documents',label:'Guarantor Documents',requirement:'if_guarantor',multiple:true,category:'guarantor',
@@ -139,4 +141,11 @@ export const rentalDocumentRequirements = [
     visibility:'private',sensitivity:'financial_private',active:false},
 ] as const;
 export const rentalDocumentAcceptedFormats = ['application/pdf','image/jpeg','image/png'] as const;
+/** Shared applicability rules for future form, Admin, PDF, and validation projections. */
+export const rentalDocumentApplicability = (answers: Record<string,string>) => ({
+  government_photo_id: true,
+  proof_of_income: answers['employment_current.currently_employed']==='yes' || answers['income.other_source_to_verify']==='yes',
+  guarantor_documents: answers['applicant.uses_guarantor']==='yes',
+  additional_supporting_document: false,
+});
 export const applicationStatuses = ['draft','submitted','under_review','additional_information_requested','approved','declined','withdrawn','archived'] as const;

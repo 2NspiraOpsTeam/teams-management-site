@@ -51,8 +51,10 @@ SSN, applicant date of birth, driver's-license number, and occupant date of birt
 
 **Legal/business:** exact screening questions and when asked; disclosures and e-signature method; consent/PDF retention; jurisdictional rules and fees; status/decision workflow and applicant communications; whether previous rental-history address means landlord mailing address or rented property address; whether the legacy PDF must be revised for repeatable entries.
 
-**Document policy:** define when proof of income applies, what evidence is approved, any age/count/size limits, how applicants indicate a guarantor, and whether guarantor-document subtypes are needed. No exact counts or age limits are assumed here.
+**Document policy:** `proof_of_income` is required when `employment_current.currently_employed` or `income.other_source_to_verify` is yes, and not required when both are no. Evidence categories include recent pay stubs, an employment verification letter, or other verifiable income documentation. `applicant.uses_guarantor` controls whether guarantor relationship and future `guarantor_documents` are required; no guarantor qualification criteria are assumed. Additional supporting documents remain optional. Exact document counts, age rules, size limits, and guarantor document types await approval.
 
 ## Release gates
 
 Before enabling collection: approved threat model and legal copy; isolated test environment; server authorization and idempotency tests; encryption/rotation and deletion proof; scanner failure tests; applicant isolation and staff-role tests; audit and analytics redaction verification; mobile/keyboard QA; generated-PDF field-by-field verification. Production submission remains off until these gates pass.
+
+**Still blocked:** secure object storage, malware scanning, private reviewer access, retention/deletion policy, final file-size and count limits, document-age rules, exact guarantor documentation, and production upload enablement. No uploads are collected in preview.
