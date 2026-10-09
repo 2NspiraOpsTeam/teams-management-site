@@ -7,7 +7,7 @@ const source = fs.readFileSync(path.join(root, 'src/config/rental-application-fi
 const js = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
 const mod = { exports: {} };
 vm.runInNewContext(js, { module: mod, exports: mod.exports });
-const { rentalApplicationFields: fields, screeningQuestionCatalogue: questions, applicationStatuses, documentTypes, removedRentalApplicationFields: removed, rentalDocumentRequirements: requirements } = mod.exports;
+const { rentalApplicationFields: fields, screeningQuestionCatalogue: questions, applicationStatuses, documentTypes, removedRentalApplicationFields: removed, rentalDocumentRequirements: requirements, rentalDocumentAcceptedFormats: formats } = mod.exports;
 const esc = value => String(value ?? '—').replaceAll('|', '\\|').replaceAll('\n', ' ');
 const code = value => '`' + value + '`';
 const rows = fields.map(x => `| ${[x.key,x.label,x.type,x.required,x.validation,x.repeatable?'Yes':'No',x.sensitivity,x.pdfField,x.currentPdfField,x.onlineField,x.adminDisplay,x.storage,x.legalReview?'Yes':'No',x.active?'Yes':'No',x.notes].map(esc).join(' | ')} |`).join('\n');
@@ -45,7 +45,9 @@ ${removed.map(x=>`| \`${x.key}\` | \`${x.status}\` | \`${x.legacyPdfField}\` |`)
 
 ## Document requirements — uploads disabled in preview
 
-${requirements.map(x=>`- \`${x.key}\` — **${x.label}**; category: \`${x.category}\`; required when secure uploads are enabled: **${x.requiredWhenUploadsEnabled?'yes':'no'}**; accepted examples: ${x.acceptedExamples.join(', ')}; approved formats: ${x.acceptedFormats.map(code).join(', ')}; visibility: \`${x.visibility}\`; sensitivity: \`${x.sensitivity}\`. Admin list display after upload: **${x.adminListDisplay}**. Current status: **not enabled**.`).join('\n')}
+${requirements.map(x=>`- ${code(x.key)} — **${x.label}**; requirement: ${code(x.requirement)}; multiple files: ${x.multiple?'yes':'no'}; examples: ${x.acceptedExamples.length?x.acceptedExamples.join(', '):'none specified'}; visibility: ${code(x.visibility)}; sensitivity: ${code(x.sensitivity)}; Admin summary: **${x.adminLabel} — ${x.adminStates.join(' / ')}**; active: **no**.`).join('\n')}
+
+When enabled, accept only ${formats.map(code).join(', ')} after server-side verification. Do not set an exact proof-of-income file count or document age until approved. Show guarantor documents only when a guarantor is indicated; omit them for other applicants. Keep optional supporting uploads bounded to relevant application material, not a general request for sensitive information. Future upload UX: drag/drop or file picker, progress, type and size, and replace/remove before submission.
 
 No file input, upload endpoint, storage, public URL, or email attachment is enabled by this requirement. Use private object storage rather than D1 blobs; authorize each reviewer before opening a document. Do not log filenames or contents unnecessarily.
 
@@ -65,7 +67,7 @@ Other personal and financial fields are classified individually in the table; sa
 
 ## Workflow metadata
 
-Statuses: ${applicationStatuses.map(code).join(', ')}. Sources: \`web\`, \`pdf\`, \`admin\`. Suggested document types: ${documentTypes.map(code).join(', ')}. System fields must be server-controlled; \`review_notes\`, assignment, and internal status are private Admin data. \`property_id\` is defined once, in the property section, and stored as \`applications.property_id\`. The disclosure version is defined once at \`consent.disclosure_version\` rather than duplicated in metadata.
+Statuses: ${applicationStatuses.map(code).join(', ')}. Sources: \`web\`, \`pdf\`, \`admin\`. Canonical document types: ${documentTypes.map(code).join(', ')}. System fields must be server-controlled; \`review_notes\`, assignment, and internal status are private Admin data. \`property_id\` is defined once, in the property section, and stored as \`applications.property_id\`. The disclosure version is defined once at \`consent.disclosure_version\` rather than duplicated in metadata.
 
 ## Open decisions before enabling application workflows
 

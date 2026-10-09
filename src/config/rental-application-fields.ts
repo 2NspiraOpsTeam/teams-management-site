@@ -112,7 +112,7 @@ export const screeningQuestionCatalogue = [
   {id:'bankruptcy',label:'Have you ever filed for bankruptcy?',legalReview:true,active:false},
   {id:'other_name',label:'Have you ever used another name?',legalReview:true,active:false},
 ] as const;
-export const documentTypes = ['proof_of_income','identification','employment_document','landlord_reference','guarantor_document','other'] as const;
+export const documentTypes = ['government_photo_id','proof_of_income','guarantor_documents','additional_supporting_document'] as const;
 /** Historical keys only: never project into web, PDF, Admin, validation, or storage. */
 export const removedRentalApplicationFields = [
   {key:'applicant.ssn',status:'removed_from_current_application',legacyPdfField:'ssn'},
@@ -120,11 +120,23 @@ export const removedRentalApplicationFields = [
   {key:'applicant.drivers_license_number',status:'removed_from_current_application',legacyPdfField:'drivers_license'},
   {key:'occupants[].date_of_birth',status:'removed_from_current_application',legacyPdfField:'occupants[].date_of_birth'},
 ] as const;
-/** Requirement only; upload controls and storage remain disabled pending security approval. */
+/** Shared document contract for future web, Admin, PDF record, validation, and storage projections.
+ * Requirement only: no upload controls or storage are enabled by this registry. */
 export const rentalDocumentRequirements = [
-  {key:'government_photo_id',label:'Government-Issued Photo ID',category:'identity',requiredWhenUploadsEnabled:true,
+  {key:'government_photo_id',label:'Government-Issued Photo ID',requirement:'required',multiple:false,category:'identity',
     acceptedExamples:['Driver’s License','State ID','Passport','Other valid government-issued photo identification'],
-    acceptedFormats:['image/jpeg','image/png','application/pdf'],visibility:'private',sensitivity:'highly-sensitive',active:false,
-    adminListDisplay:'Government Photo ID — Uploaded'},
+    adminLabel:'Government Photo ID',adminStates:['Uploaded','Missing'],
+    visibility:'private',sensitivity:'highly_sensitive',active:false},
+  {key:'proof_of_income',label:'Proof of Income',requirement:'when_applicable',multiple:true,category:'income',
+    acceptedExamples:['Recent pay stubs','Employment verification','Other approved income documentation'],
+    adminLabel:'Proof of Income',adminStates:['Uploaded','Missing'],
+    visibility:'private',sensitivity:'financial_private',active:false},
+  {key:'guarantor_documents',label:'Guarantor Documents',requirement:'if_guarantor',multiple:true,category:'guarantor',
+    acceptedExamples:[],adminLabel:'Guarantor Documents',adminStates:['Uploaded','Not Required','Missing'],
+    visibility:'private',sensitivity:'financial_private',active:false},
+  {key:'additional_supporting_document',label:'Additional Supporting Document',requirement:'optional',multiple:false,category:'supporting',
+    acceptedExamples:[],adminLabel:'Additional Document',adminStates:['Uploaded','None'],
+    visibility:'private',sensitivity:'financial_private',active:false},
 ] as const;
+export const rentalDocumentAcceptedFormats = ['application/pdf','image/jpeg','image/png'] as const;
 export const applicationStatuses = ['draft','submitted','under_review','additional_information_requested','approved','declined','withdrawn','archived'] as const;

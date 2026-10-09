@@ -117,7 +117,12 @@ These keys are historical references only, with status `removed_from_current_app
 
 ## Document requirements — uploads disabled in preview
 
-- `government_photo_id` — **Government-Issued Photo ID**; category: `identity`; required when secure uploads are enabled: **yes**; accepted examples: Driver’s License, State ID, Passport, Other valid government-issued photo identification; approved formats: `image/jpeg`, `image/png`, `application/pdf`; visibility: `private`; sensitivity: `highly-sensitive`. Admin list display after upload: **Government Photo ID — Uploaded**. Current status: **not enabled**.
+- `government_photo_id` — **Government-Issued Photo ID**; requirement: `required`; multiple files: no; examples: Driver’s License, State ID, Passport, Other valid government-issued photo identification; visibility: `private`; sensitivity: `highly_sensitive`; Admin summary: **Government Photo ID — Uploaded / Missing**; active: **no**.
+- `proof_of_income` — **Proof of Income**; requirement: `when_applicable`; multiple files: yes; examples: Recent pay stubs, Employment verification, Other approved income documentation; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Proof of Income — Uploaded / Missing**; active: **no**.
+- `guarantor_documents` — **Guarantor Documents**; requirement: `if_guarantor`; multiple files: yes; examples: none specified; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Guarantor Documents — Uploaded / Not Required / Missing**; active: **no**.
+- `additional_supporting_document` — **Additional Supporting Document**; requirement: `optional`; multiple files: no; examples: none specified; visibility: `private`; sensitivity: `financial_private`; Admin summary: **Additional Document — Uploaded / None**; active: **no**.
+
+When enabled, accept only `application/pdf`, `image/jpeg`, `image/png` after server-side verification. Do not set an exact proof-of-income file count or document age until approved. Show guarantor documents only when a guarantor is indicated; omit them for other applicants. Keep optional supporting uploads bounded to relevant application material, not a general request for sensitive information. Future upload UX: drag/drop or file picker, progress, type and size, and replace/remove before submission.
 
 No file input, upload endpoint, storage, public URL, or email attachment is enabled by this requirement. Use private object storage rather than D1 blobs; authorize each reviewer before opening a document. Do not log filenames or contents unnecessarily.
 
@@ -143,7 +148,7 @@ Other personal and financial fields are classified individually in the table; sa
 
 ## Workflow metadata
 
-Statuses: `draft`, `submitted`, `under_review`, `additional_information_requested`, `approved`, `declined`, `withdrawn`, `archived`. Sources: `web`, `pdf`, `admin`. Suggested document types: `proof_of_income`, `identification`, `employment_document`, `landlord_reference`, `guarantor_document`, `other`. System fields must be server-controlled; `review_notes`, assignment, and internal status are private Admin data. `property_id` is defined once, in the property section, and stored as `applications.property_id`. The disclosure version is defined once at `consent.disclosure_version` rather than duplicated in metadata.
+Statuses: `draft`, `submitted`, `under_review`, `additional_information_requested`, `approved`, `declined`, `withdrawn`, `archived`. Sources: `web`, `pdf`, `admin`. Canonical document types: `government_photo_id`, `proof_of_income`, `guarantor_documents`, `additional_supporting_document`. System fields must be server-controlled; `review_notes`, assignment, and internal status are private Admin data. `property_id` is defined once, in the property section, and stored as `applications.property_id`. The disclosure version is defined once at `consent.disclosure_version` rather than duplicated in metadata.
 
 ## Open decisions before enabling application workflows
 

@@ -16,7 +16,8 @@ SSN, applicant date of birth, driver's-license number, and occupant date of birt
 
 ## Documents
 
-- Require one Government-Issued Photo ID when secure uploads are enabled: driver's license, state ID, passport, or other valid government-issued photo identification. Accept only approved JPEG, PNG, or PDF formats after server-side content verification. This document is highly sensitive and private; the preview Documents step remains disabled.
+- Follow the four inactive categories in `rentalDocumentRequirements`: required private Government-Issued Photo ID; Proof of Income when applicable (one or more files); Guarantor Documents only when a guarantor is indicated; and optional Additional Supporting Document. Limit that optional category to relevant material, not an invitation for unnecessary sensitive information. Accept only PDF, JPEG, or PNG after server-side verification. Do not fix income-document counts or age requirements before client approval. The preview Documents step remains disabled.
+- When enabled, provide drag/drop and file picker, progress, type and size, and replacement/removal before submission. Show only the registry's Uploaded / Missing / Not Required / None category states in Admin summaries; never filenames or content in list views. Only authorized application reviewers may open private files.
 - Use private object storage with random keys and application ownership metadata; never public object URLs. Generate short-lived, single-purpose upload/download grants only after authentication and server authorization.
 - Never store document bytes in D1 blobs, email the document, or log its filename/content unnecessarily.
 - Validate allowed type by content signature, extension, and size; cap count and total bytes. Quarantine uploads until asynchronous malware scan and file normalization pass. Block viewing/downloading while pending or failed; safely retry scanner failures.
@@ -39,7 +40,7 @@ SSN, applicant date of birth, driver's-license number, and occupant date of birt
 `Applications` list → application summary → property → status → documents → secure details → notes → audit history.
 
 - List view: confirmation number, applicant display name, property/unit, submitted date, status, and assigned reviewer. No raw identifiers, document previews, screening answers, or sensitive values.
-- Once secure uploads are active, show only “Government Photo ID — Uploaded” for the identity-document status in summary/list views; only authorized application reviewers may open the file.
+- Once secure uploads are active, show only registry-defined category statuses in summary/list views; only authorized application reviewers may open the files.
 - Detail view: summary and property first; role-gated documents and secure details behind explicit access actions. Show scan state and disclosure version. Notes are staff-only, attributed, timestamped, and excluded from applicant exports.
 - Statuses: submitted, in review, more information needed, decision pending, closed; exact decision labels and applicant messaging require business/legal approval. Record actor, timestamp, old/new status, and reason. Do not make email delivery the status source of truth.
 - Search and exports must respect the same field-level permissions as detail views. Audit history is append-only and includes access to secure details, downloads, edits, and status changes without raw values.
@@ -49,6 +50,8 @@ SSN, applicant date of birth, driver's-license number, and occupant date of birt
 **Security:** identity/resume verification method; KMS and key ownership; staff roles and reveal policy; draft/object/identifier retention and deletion; malware scanning service and failure policy; audit-log retention; incident and backup handling.
 
 **Legal/business:** exact screening questions and when asked; disclosures and e-signature method; consent/PDF retention; jurisdictional rules and fees; status/decision workflow and applicant communications; whether previous rental-history address means landlord mailing address or rented property address; whether the legacy PDF must be revised for repeatable entries.
+
+**Document policy:** define when proof of income applies, what evidence is approved, any age/count/size limits, how applicants indicate a guarantor, and whether guarantor-document subtypes are needed. No exact counts or age limits are assumed here.
 
 ## Release gates
 
