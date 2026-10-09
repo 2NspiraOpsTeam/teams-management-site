@@ -3,13 +3,13 @@ import { PortfolioMap } from '@/components/map/PortfolioMap';
 import { PropertyCard } from '@/components/property-card';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { listPublicBuildings, previewBuildingsWithVerifiedLocations } from '@/lib/public-buildings';
+import { listPublicBuildings } from '@/lib/public-buildings';
 import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
 export default async function PropertiesPage() {
-  const buildings = previewPortfolioEnabled ? await previewBuildingsWithVerifiedLocations(previewPortfolio) : await listPublicBuildings();
+  const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
   return <>
     <Header />
     <main>
