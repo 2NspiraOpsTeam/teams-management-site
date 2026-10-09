@@ -11,14 +11,14 @@ const config: Config = {
       colors: {
         // Shared warm-neutral palette for public and admin UI.
         slate: {
-          50: "#F7F5F1", 100: "#EFEDEA", 200: "#E2DFDA",
-          300: "#D1D0CA", 400: "#6B6F73", 500: "#5A5E62",
-          600: "#5A5E62", 700: "#45494D", 800: "#383B3E",
-          900: "#4A4D50", 950: "#424548",
+          50: "#F7F4EE", 100: "#EAE7E2", 200: "#E0DDD7",
+          300: "#D1D0CA", 400: "#6F7478", 500: "#565B5F",
+          600: "#565B5F", 700: "#45494D", 800: "#383B3E",
+          900: "#44484B", 950: "#3C4043",
         },
         "teams-gold": {
-          DEFAULT: "#B98A2E", highlight: "#A87922",
-          muted: "#A87922", pale: "#F1E8D6", light: "#D6B56C",
+          DEFAULT: "#B58A3A", highlight: "#9F742B",
+          muted: "#9F742B", pale: "#F1E8D6", light: "#D8BD83",
         },
         "teams-offwhite": {
           50: "#fffffc",
@@ -28,12 +28,12 @@ const config: Config = {
           400: "#fff3e0",
           500: "#ffe0b2",
         },
-        "teams-accent": { 500: "#B98A2E", 600: "#A87922" },
-        "teams-charcoal": "#4A4D50",
-        "teams-ink": "#2F3133",
-        "teams-secondary": "#5A5E62",
-        "teams-cta-ink": "#17191A",
-        "teams-gold-on-dark": "#E4C88D",
+        "teams-accent": { 500: "#B58A3A", 600: "#9F742B" },
+        "teams-charcoal": "#44484B",
+        "teams-ink": "#2D3032",
+        "teams-secondary": "#565B5F",
+        "teams-cta-ink": "#111111",
+        "teams-gold-on-dark": "#D8BD83",
       },
       fontFamily: {
         sans: [

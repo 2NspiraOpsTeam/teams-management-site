@@ -4,19 +4,19 @@
 
 /* Teams Management — warm charcoal, warm white, selective gold */
 :root {
-  --teams-charcoal: #4A4D50;
-  --teams-ink: #2F3133;
-  --teams-secondary: #5A5E62;
-  --teams-cta-ink: #17191A;
+  --teams-charcoal: #44484B;
+  --teams-ink: #2D3032;
+  --teams-secondary: #565B5F;
+  --teams-cta-ink: #111111;
   --teams-white: #FFFFFF;
-  --teams-surface: #F7F5F1;
-  --teams-soft-background: #EFEDEA;
-  --teams-border: #E2DFDA;
-  --teams-gold: #B98A2E;
-  --teams-gold-hover: #A87922;
-  --teams-gold-light: #D6B56C;
-  --teams-gold-on-dark: #E4C88D;
-  --teams-accent-500: #B98A2E;
+  --teams-surface: #F7F4EE;
+  --teams-soft-background: #EAE7E2;
+  --teams-border: #E0DDD7;
+  --teams-gold: #B58A3A;
+  --teams-gold-hover: #9F742B;
+  --teams-gold-light: #D8BD83;
+  --teams-gold-on-dark: #D8BD83;
+  --teams-accent-500: #B58A3A;
 }
 
 /* Typography */
@@ -44,7 +44,7 @@ p {
 
 /* Focus styles */
 :focus-visible {
-  outline: 3px solid var(--teams-gold);
+  outline: 3px solid var(--teams-ink);
   outline-offset: 2px;
 }
 
