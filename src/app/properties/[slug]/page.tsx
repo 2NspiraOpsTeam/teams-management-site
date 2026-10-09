@@ -35,8 +35,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {building.address.zip}</p>
         <div className="mb-10 flex flex-wrap gap-3"><a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">Map &amp; Directions ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
         {cover && <img src={cover} alt={assignedCover?.alt_text||`Street-facing exterior of ${building.address.street}`} className="mb-12 w-full aspect-[16/9] object-cover border border-slate-200" />}
-        {gallery.length > 0 && <section aria-labelledby="gold-street-gallery" className="mb-12">
-          <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-ink">Gold Street gallery</h2>
+        {gallery.length > 0 && <section aria-labelledby="property-gallery" className="mb-12">
+          <h2 id="property-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-ink">Property gallery</h2>
           <div className="grid gap-5 sm:grid-cols-2">
             {gallery.map((item) => <figure key={item.src} className="overflow-hidden border border-slate-200 bg-slate-50">
               <img src={item.src} alt={item.alt} loading="lazy" className="property-image w-full aspect-[4/3] object-cover" />
