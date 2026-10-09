@@ -42,10 +42,10 @@ export default async function Home() {
               </a>
               
               <a
-                href="/tenant-services"
+                href="/rent-with-us"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-medium border border-teams-gold text-white hover:bg-white hover:text-slate-950 transition-colors"
               >
-                Tenant Services
+                Rent with Us
               </a>
             </div>
           </div>
@@ -58,7 +58,7 @@ export default async function Home() {
           <div className="text-center mb-12">
             <div className="h-px w-12 bg-teams-gold mx-auto mb-5" aria-hidden="true" />
             <h2 className="text-3xl font-serif font-semibold text-slate-900 mb-4">
-              Our Portfolio
+              Featured properties
             </h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
               Property profiles are published as approved information becomes available.
@@ -79,7 +79,7 @@ export default async function Home() {
               href="/properties"
               className="inline-flex items-center px-6 py-3 rounded-sm font-medium text-slate-900 bg-white border border-teams-gold hover:bg-slate-100 transition-colors"
             >
-              View Complete Portfolio
+              Explore properties
               <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4L3 16" />
               </svg>
@@ -127,23 +127,23 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.988 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zM4.75 15.25v-2a3.75 3.75 0 013.75-3.75h7.5a3.75 3.75 0 013.75 3.75v2" />
                   </svg>
                   <div>
-                    <h3 className="font-medium text-slate-900">Contact for Details</h3>
-                    <p className="text-sm text-slate-500">Ask Teams Management about a property</p>
+                    <h3 className="font-medium text-slate-900">Building Stories</h3>
+                    <p className="text-sm text-slate-500">Property profiles will grow as verified details are approved</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Placeholder for image - team or property showcase */}
-            <div className="bg-slate-100 rounded-xl aspect-[4/3] flex items-center justify-center">
-              <p className="text-slate-400 text-sm text-center px-4">
-                [Property Showcase Image]<br />
-                Approved property photography pending
-              </p>
+            <div className="bg-slate-950 text-white aspect-[4/3] flex flex-col justify-end p-8 sm:p-12 border-b-4 border-teams-gold">
+              <div className="h-px w-14 bg-teams-gold mb-6" aria-hidden="true" />
+              <p className="uppercase tracking-[.2em] text-xs text-teams-gold-highlight mb-4">New York portfolio</p>
+              <p className="font-serif text-3xl sm:text-4xl leading-tight">Every address has a story.</p>
             </div>
           </div>
         </div>
       </section>
+
+      <section className="py-16 bg-[#fafaf8] border-y border-teams-gold/30"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8"><div><h2 className="text-2xl font-serif text-slate-950 mb-3">Rent with Us</h2><p className="text-slate-700 mb-4">A starting point for prospective renters.</p><a href="/rent-with-us" className="underline decoration-teams-gold underline-offset-4">Learn more</a></div><div><h2 className="text-2xl font-serif text-slate-950 mb-3">Gallery</h2><p className="text-slate-700 mb-4">View approved property imagery as it becomes available.</p><a href="/gallery" className="underline decoration-teams-gold underline-offset-4">Explore gallery</a></div><div><h2 className="text-2xl font-serif text-slate-950 mb-3">Tenant Services</h2><p className="text-slate-700 mb-4">Information for current residents.</p><a href="/tenant-services" className="underline decoration-teams-gold underline-offset-4">Resident information</a></div></div></section>
 
       {/* Contact CTA */}
       <section className="py-20 bg-slate-900 text-white">
@@ -152,7 +152,7 @@ export default async function Home() {
             Have Questions?
           </h2>
           <p className="text-slate-300 mb-8 max-w-xl mx-auto">
-            Whether you're interested in one of our properties, have a service request, or simply want to learn more about our approach to property stewardship.
+            For property, rental, business, or resident questions, find the appropriate contact pathway.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

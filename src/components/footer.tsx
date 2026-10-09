@@ -30,35 +30,24 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/properties" className="text-slate-300 hover:text-white text-sm transition-colors">
-                  Portfolio
+                  Properties
                 </Link>
               </li>
-              <li>
-                <Link href="/about" className="text-slate-300 hover:text-white text-sm transition-colors">
-                  About
-                </Link>
-              </li>
+              <li><Link href="/about" className="text-slate-300 hover:text-white text-sm">About Us</Link></li>
+              <li><Link href="/rent-with-us" className="text-slate-300 hover:text-white text-sm">Rent with Us</Link></li>
+              <li><Link href="/gallery" className="text-slate-300 hover:text-white text-sm">Gallery</Link></li>
+              <li><Link href="/contact" className="text-slate-300 hover:text-white text-sm">Contact</Link></li>
+              <li><Link href="/tenant-services" className="text-slate-300 hover:text-white text-sm">Tenant Services</Link></li>
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-200 mb-3">Contact</h4>
-            <ul className="space-y-2 text-sm text-slate-300">
-              <li className="flex items-center space-x-2">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M3 16h18M3 16l7.89-5.26a2 2 0 002.22 0L21 16" />
-                </svg>
-                <a href="mailto:info@teams-management.com" className="hover:text-white">info@teams-management.com</a>
-              </li>
-            </ul>
-          </div>
+          <div><h4 className="text-sm font-semibold text-slate-200 mb-3">Get in touch</h4><p className="text-sm text-slate-300 mb-4">Contact details and the online inquiry pathway are being verified.</p><Link href="/contact" className="text-sm text-white underline decoration-teams-gold underline-offset-4">Contact information</Link></div>
 
         </div>
 
         <div className="mt-12 pt-8 border-t border-teams-gold/50 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-xs text-slate-300 text-center md:text-left">
-            Accessibility feedback is welcome via our contact page.
+            Property information is published after review.
           </p>
         </div>
       </div>

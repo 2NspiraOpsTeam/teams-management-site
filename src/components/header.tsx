@@ -10,10 +10,12 @@ export function Header() {
 
   const navItems = [
     { href: '/', label: 'Home' },
-    { href: '/properties', label: 'Portfolio' },
-    { href: '/about', label: 'About' },
-    { href: '/services', label: 'Services' },
+    { href: '/about', label: 'About Us' },
+    { href: '/properties', label: 'Properties' },
+    { href: '/rent-with-us', label: 'Rent with Us' },
+    { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact' },
+    { href: '/tenant-services', label: 'Tenant Services' },
   ];
 
   return (
@@ -28,14 +30,14 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-5">
+          <div className="hidden xl:flex items-center gap-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={pathname === item.href ? 'page' : undefined}
-                className={`text-sm font-medium border-b-2 py-2 transition-colors ${
-                  pathname === item.href
+                aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined}
+                className={`text-sm font-medium border-b-2 py-2 transition-colors ${item.href === '/tenant-services' ? 'ml-1 px-3 border border-teams-gold rounded-sm' : ''} ${
+                  pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/'))
                     ? 'text-white border-teams-gold'
                     : 'text-white/80 border-transparent hover:text-white hover:border-teams-gold/70'
                 }`}
@@ -45,29 +47,10 @@ export function Header() {
             ))}
           </div>
 
-          {/* Tenant Services Gateway */}
-          <div className="hidden lg:flex items-center">
-            <Link
-              href="/tenant-services"
-              className="inline-flex items-center px-4 py-2 rounded-sm text-sm font-medium text-white border border-teams-gold hover:bg-white hover:text-slate-950 transition-colors"
-            >
-              Tenant Services
-              <svg 
-                className="ml-2 w-4 h-4" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-
           {/* Mobile menu button */}
           <button 
             type="button"
-            className="lg:hidden p-2 text-white hover:text-teams-gold-highlight"
+            className="xl:hidden p-2 text-white hover:text-teams-gold-highlight"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
@@ -78,9 +61,8 @@ export function Header() {
             </svg>
           </button>
         </div>
-        {menuOpen && <div id="mobile-navigation" className="lg:hidden border-t border-teams-gold/40 py-3 flex flex-col gap-1">
-          {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href ? 'page' : undefined} className="rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold">{item.label}</Link>)}
-          <Link href="/tenant-services" onClick={() => setMenuOpen(false)} className="rounded px-3 py-3 text-white border-t border-teams-gold/30 hover:bg-white/10">Tenant Services</Link>
+        {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-teams-gold/40 py-3 flex flex-col gap-1">
+          {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className={`rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold ${item.href === '/tenant-services' ? 'border-t border-teams-gold/30 mt-1' : ''}`}>{item.label}</Link>)}
         </div>}
       </nav>
     </header>

@@ -13,8 +13,8 @@ export default function TenantServicesPage() {
       </section>
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <h2 className="text-2xl font-serif font-semibold text-slate-900 mb-4">Need assistance now?</h2>
-        <p className="text-slate-700 mb-6">Please use your existing building-management contact method for urgent property needs. For general questions, you can email Teams Management.</p>
-        <a href="mailto:info@teams-management.com" className="inline-flex px-6 py-3 rounded-lg bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">Email Teams Management</a>
+        <p className="text-slate-700 mb-6">Please use your existing building-management contact method for urgent property needs. For general questions, see the Contact page for the current inquiry status.</p>
+        <a href="/contact" className="inline-flex px-6 py-3 rounded-lg bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">Contact information</a>
       </section>
     </main>
     <Footer />
