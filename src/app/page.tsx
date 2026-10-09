@@ -8,6 +8,14 @@ export const runtime = 'edge';
 
 export default async function Home() {
   const buildings = (await listPublicBuildings()).slice(0, 3);
+  
+  // Curated preview images for Gold Street (2-4 strongest images)
+  // These are used as portfolio visual support, not full gallery
+  const curatedGoldStreetImages = [
+    '/input-IMG_1540---8fb1ca65-a1a8-4978-b538-0e29844bd4e8.jpg', // Primary cover - building exterior/NYC context
+    '/input-IMG_1767---4fd2b4cc-d24d-480a-84c3-fcbc244e515b.jpg',  // Architectural detail
+  ];
+  
   return (
     <>
       <Header />
@@ -49,6 +57,32 @@ export default async function Home() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Portfolio Visual Showcase - Curated Gold Street images */}
+      <section className="py-12 bg-white border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-serif text-slate-800 mb-2">
+              Portfolio Visuals
+            </h2>
+            <p className="text-sm text-slate-500 max-w-2xl mx-auto">
+              Featured imagery from the Gold Street property. Property profiles will expand as details are approved.
+            </p>
+          </div>
+
+          {/* Curated image grid - 2-4 images maximum */}
+          {curatedGoldStreetImages.map((src) => (
+            <div key="gold-street-preview" className="relative overflow-hidden rounded-sm border border-slate-100 mb-6">
+              <img
+                src={src}
+                alt="Portfolio visual showcase from Gold Street property"
+                className="w-full aspect-[2/1] object-cover bg-slate-50 hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              </img>
+            </div>
+          )))}
         </div>
       </section>
 
