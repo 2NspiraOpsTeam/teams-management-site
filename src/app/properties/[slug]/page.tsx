@@ -7,6 +7,8 @@ import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { getPublicBuilding } from '@/lib/public-buildings';
 import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { PreviewBuildingDetails } from '@/components/preview-building-details';
+import { previewBuildingFacts } from '@/lib/preview-building-facts';
 
 export const runtime = 'edge';
 
@@ -42,7 +44,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             {item.caption&&<figcaption className="p-3 text-sm text-slate-600">{item.caption}</figcaption>}</figure>)}
           </div>
         </section>}
-        {!building.description_public && <p className="mb-10 border-l-2 border-slate-300 pl-4 text-slate-600">Property details coming soon.</p>}
+        {previewPortfolioEnabled && <div className="mb-10"><PreviewBuildingDetails slug={building.slug} /></div>}
+        {!building.description_public && (!previewPortfolioEnabled || !previewBuildingFacts[building.slug]) && <p className="mb-10 border-l-2 border-slate-300 pl-4 text-slate-600">Property details coming soon.</p>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
 

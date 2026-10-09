@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
 import { directionsUrl } from '@/lib/map-location';
+import { PreviewBuildingDetails } from '@/components/preview-building-details';
 
 interface PropertyCardProps {
   building: BuildingPublic;
   coverOverride?: {src:string;alt:string}|null;
+  showPreviewFacts?: boolean;
 }
 
-export function PropertyCard({ building, coverOverride }: PropertyCardProps) {
+export function PropertyCard({ building, coverOverride, showPreviewFacts = false }: PropertyCardProps) {
   const location = [building.address.city, building.address.state].filter(Boolean).join(', ');
   const address = [building.address.street, location, building.address.zip].filter(Boolean).join(', ');
   const cover = coverOverride?.src ?? null;
@@ -22,6 +24,7 @@ export function PropertyCard({ building, coverOverride }: PropertyCardProps) {
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>
         <p className="mt-5 mb-0 text-sm text-slate-600 break-words">{address}</p>
         {building.description_public && <p className="mt-5 mb-0 text-base leading-relaxed text-slate-700">{building.description_public}</p>}
+        {showPreviewFacts && <PreviewBuildingDetails slug={building.slug} />}
         {building.amenities_public.length > 0 && (
           <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-x-5 gap-y-2 text-sm leading-snug text-slate-700" aria-label="Verified property features">
             {building.amenities_public.map(amenity => <li key={amenity.id}>{amenity.name}</li>)}
