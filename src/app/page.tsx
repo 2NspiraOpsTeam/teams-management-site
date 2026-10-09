@@ -89,7 +89,7 @@ export default async function Home() {
       </section>}
 
       {/* Selected Properties */}
-      <section className="py-16 sm:py-20 bg-slate-50">
+      <section className="texture-paper py-16 sm:py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="h-px w-12 bg-slate-400 mx-auto mb-5" aria-hidden="true" />
