@@ -1,16 +1,18 @@
 'use client';
-import dynamic from 'next/dynamic';
+
 import { useEffect, useState } from 'react';
 import type { BuildingPublic } from '@/lib/database.types';
 
 
-const LeafletMap = dynamic(() => import('./LeafletMap'), { ssr: false, loading: () => <div className="h-[360px] bg-stone-100 animate-pulse" aria-label="Loading property map" /> });
+type MapComponent = typeof import('./LeafletMap').default;
 
 export function PortfolioMap({ buildings }: { buildings: BuildingPublic[] }) {
+  const [LeafletMap, setLeafletMap] = useState<MapComponent | null>(null);
   const [verified, setVerified] = useState<(BuildingPublic & { latitude: number; longitude: number })[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     let alive = true;
+    void import('./LeafletMap').then(module => { if (alive) setLeafletMap(() => module.default); });
     fetch('/api/buildings/map', { cache: 'no-store' }).then(response => response.ok ? response.json() as Promise<{slug:string;latitude:number;longitude:number}[]> : Promise.resolve([] as {slug:string;latitude:number;longitude:number}[])).then((rows: {slug:string;latitude:number;longitude:number}[]) => {
       if (alive) setVerified(buildings.flatMap(building => {
         const row = rows.find(item => item.slug === building.slug);
@@ -24,7 +26,7 @@ export function PortfolioMap({ buildings }: { buildings: BuildingPublic[] }) {
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">Explore the portfolio</p>
       <h2 id="portfolio-map-heading" className="mb-4 font-serif text-3xl text-teams-charcoal sm:text-4xl">Property map</h2>
       <p className="mb-8 max-w-2xl text-slate-600">Browse verified locations. Every property profile also offers address-based directions.</p>
-      {loading ? <div className="min-h-[280px] animate-pulse rounded-sm bg-stone-100" aria-label="Loading property map" /> : verified.length ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm"><LeafletMap buildings={verified} /></div> :
+      {loading ? <div className="min-h-[280px] animate-pulse rounded-sm bg-stone-100" aria-label="Loading property map" /> : verified.length ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm">{LeafletMap ? <LeafletMap buildings={verified} /> : <div className="h-[360px] bg-stone-100" aria-label="Loading property map" />}</div> :
         <div className="flex min-h-[280px] flex-col justify-center rounded-sm border border-stone-200 bg-white px-6 py-12 text-center sm:min-h-[340px]">
           <span className="mb-4 text-3xl text-teams-gold" aria-hidden="true">⌖</span>
           <h3 className="font-serif text-2xl text-teams-charcoal">Property map coming soon</h3>
