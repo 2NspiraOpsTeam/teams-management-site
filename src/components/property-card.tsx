@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
 
@@ -8,45 +6,26 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ building }: PropertyCardProps) {
+  const location = [building.address.city, building.address.state].filter(Boolean).join(', ');
+  const address = [building.address.street, location, building.address.zip].filter(Boolean).join(', ');
+
   return (
-    <article className="group bg-white overflow-hidden border border-slate-200 border-b-2 border-b-teams-gold hover:border-teams-gold-muted transition-colors">
-      {/* Image Container */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-slate-800 flex items-end p-6">
-        <span className="text-white text-lg font-serif font-semibold">{building.name}</span>
+    <article className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-5 sm:gap-6 min-w-0">
+      <div className="aspect-[4/3] sm:aspect-square bg-stone-100 border border-stone-200 flex items-center justify-center px-6 text-center" aria-label="Property photography not yet available">
+        <span className="text-xs uppercase tracking-[0.18em] text-stone-500">Photography coming soon</span>
       </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-serif font-semibold text-slate-900 mb-2 border-t border-teams-gold pt-4">
-          {building.name}
-        </h3>
-        
-        <p className="text-sm text-slate-500 mb-3">
-          {building.address.neighborhood ? `${building.address.neighborhood}, ` : ''}{building.address.city} {building.address.zip}
-        </p>
-        
-        {/* Description */}
-        {building.description_public && <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
-          {building.description_public}
-        </p>}
-
-        {/* Amenities preview */}
-        {building.amenities_public.slice(0, 3).map((amenity) => (
-          <div key={amenity.id} className="flex items-center text-xs text-slate-500 mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-2" />
-            {amenity.name}
-          </div>
-        ))}
-
-        {/* Link to property detail */}
-        <Link
-          href={`/properties/${building.slug}`}
-          className="inline-flex items-center text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors mt-4"
-        >
-          Explore this property
-          <svg className="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+      <div className="flex flex-col items-start min-w-0 sm:py-1">
+        <h2 className="font-serif text-2xl leading-tight text-slate-950">{building.name}</h2>
+        <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>
+        {building.description_public && <p className="mt-4 mb-0 text-sm text-slate-600">{building.description_public}</p>}
+        {building.amenities_public.length > 0 && (
+          <ul className="mt-4 space-y-1 text-sm text-slate-700" aria-label="Verified property features">
+            {building.amenities_public.map(amenity => <li key={amenity.id}>{amenity.name}</li>)}
+          </ul>
+        )}
+        <p className="mt-5 mb-0 text-sm text-slate-600">{address}</p>
+        <Link href={`/properties/${building.slug}`} className="mt-5 inline-flex items-center gap-2 border-b border-teams-gold pb-1 text-sm font-semibold text-slate-950 hover:text-amber-800 focus-visible:rounded-sm">
+          View property <span aria-hidden="true">→</span>
         </Link>
       </div>
     </article>

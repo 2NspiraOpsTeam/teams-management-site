@@ -11,17 +11,17 @@ export default async function PropertiesPage() {
   return <>
     <Header />
     <main>
-      <section className="bg-slate-50 py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-serif font-semibold text-slate-900 mb-4">Our Portfolio</h1>
-          <p className="text-lg text-slate-600 max-w-2xl">Explore the properties currently featured by Teams Management.</p>
+      <section className="bg-stone-50 py-14 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-slate-950 mb-4">Our Portfolio</h1>
+          <p className="text-lg text-slate-600 max-w-2xl">Explore our published property profiles.</p>
         </div>
       </section>
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {buildings.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="py-14 sm:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {buildings.length > 0 ? <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-14 sm:gap-y-20">
             {buildings.map(building => <PropertyCard key={building.id} building={building} />)}
-          </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please contact Teams Management for current information.</p>}
+          </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please check back soon.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">
             <p className="text-slate-600 mb-4">Questions about a property or our management services?</p>
             <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-sm font-medium bg-slate-950 text-white border border-teams-gold hover:bg-slate-800">Contact Teams Management</Link>
