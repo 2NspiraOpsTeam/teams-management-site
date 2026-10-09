@@ -9,15 +9,15 @@ interface PropertyCardProps {
 
 export function PropertyCard({ building }: PropertyCardProps) {
   return (
-    <article className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+    <article className="group bg-white overflow-hidden border border-slate-200 border-b-2 border-b-teams-gold hover:border-teams-gold-muted transition-colors">
       {/* Image Container */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-700 to-slate-900 flex items-end p-6">
+      <div className="relative aspect-[16/9] overflow-hidden bg-slate-800 flex items-end p-6">
         <span className="text-white text-lg font-serif font-semibold">{building.name}</span>
       </div>
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-serif font-semibold text-slate-900 mb-2">
+        <h3 className="text-xl font-serif font-semibold text-slate-900 mb-2 border-t border-teams-gold pt-4">
           {building.name}
         </h3>
         

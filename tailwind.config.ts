@@ -9,18 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Teams Management Design System - Phase 1
-        "teams-slate": {
-          50: "#f8fafc",
-          100: "#f1f5f9",
-          200: "#e2e8f0",
-          300: "#cbd5e1",
-          400: "#94a3b8",
-          500: "#64748b",
-          600: "#475569",
-          700: "#334155", // Deep slate/navy - primary brand color
-          800: "#1e293b",
-          900: "#0f172a",
+        // Neutral aliases preserve existing component utilities while removing navy.
+        slate: {
+          50: "#FAFAF8", 100: "#F6F4EF", 200: "#E7E4DC",
+          300: "#D1CEC7", 400: "#76736E", 500: "#5B5955",
+          600: "#44423F", 700: "#2D2C2A", 800: "#171717",
+          900: "#111111", 950: "#0A0A0A",
+        },
+        "teams-gold": {
+          DEFAULT: "#C99A3D", highlight: "#D9B45A",
+          muted: "#A97C2E", pale: "#E8D6A5",
         },
         "teams-offwhite": {
           50: "#fffffc",
@@ -30,10 +28,7 @@ const config: Config = {
           400: "#fff3e0",
           500: "#ffe0b2",
         },
-        "teams-accent": {
-          500: "#d4a574", // Warm restrained accent (terracotta/bronze)
-          600: "#b88f5e",
-        },
+        "teams-accent": { 500: "#A97C2E", 600: "#825E21" },
       },
       fontFamily: {
         sans: [

@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Teams Management Design System - Phase 1 */
+/* Teams Management — black, warm white, restrained gold */
 :root {
-  --teams-slate-50: #f8fafc;
-  --teams-slate-700: #334155;
-  --teams-offwhite-50: #fffffc;
-  --teams-accent-500: #d4a574;
+  --teams-black: #111111;
+  --teams-white: #FAFAF8;
+  --teams-gold: #C99A3D;
+  --teams-accent-500: #A97C2E;
 }
 
 /* Typography */
@@ -35,12 +35,12 @@ p {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid var(--teams-accent-500);
+  outline: 3px solid var(--teams-gold);
   outline-offset: 2px;
 }
 
 /* Selection */
 ::selection {
-  background-color: var(--teams-slate-700);
+  background-color: var(--teams-black);
   color: white;
 }

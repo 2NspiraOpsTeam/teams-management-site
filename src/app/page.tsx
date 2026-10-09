@@ -16,11 +16,12 @@ export default async function Home() {
       <section className="relative bg-slate-900 text-white min-h-[70vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           {/* Placeholder for hero image - use building exterior in production */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950" />
+          <div className="absolute inset-0 bg-slate-950" />
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="max-w-3xl">
+            <div className="h-0.5 w-16 bg-teams-gold mb-6" aria-hidden="true" />
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold leading-tight mb-6">
               The Property Steward
             </h1>
@@ -33,7 +34,7 @@ export default async function Home() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="/contact"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-slate-100 text-slate-900 hover:bg-slate-200 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-medium bg-slate-950 text-white border border-teams-gold hover:bg-slate-800 transition-colors"
               >
                 Contact Teams
                 <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,7 +44,7 @@ export default async function Home() {
               
               <a
                 href="/tenant-services"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium border border-slate-600 text-white hover:bg-slate-800 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-medium border border-teams-gold text-white hover:bg-white hover:text-slate-950 transition-colors"
               >
                 Tenant Services
               </a>
@@ -53,9 +54,10 @@ export default async function Home() {
       </section>
 
       {/* Selected Properties */}
-      <section className="py-20 bg-offwhite">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <div className="h-px w-12 bg-teams-gold mx-auto mb-5" aria-hidden="true" />
             <h2 className="text-3xl font-serif font-semibold text-slate-900 mb-4">
               Our Portfolio
             </h2>
@@ -75,7 +77,7 @@ export default async function Home() {
           <div className="text-center mt-12">
             <a
               href="/properties"
-              className="inline-flex items-center px-6 py-3 rounded-lg font-medium text-slate-700 bg-white border border-slate-200 hover:border-slate-300 transition-colors"
+              className="inline-flex items-center px-6 py-3 rounded-sm font-medium text-slate-900 bg-white border border-teams-gold hover:bg-slate-100 transition-colors"
             >
               View Complete Portfolio
               <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

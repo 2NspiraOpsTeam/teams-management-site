@@ -1,5 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "teams-management-worker"
+account_id = "36a7807b2d8726b889873bab8b572113"
 
 # Development environment - binds to live D1 created above
 [[d1_databases]]
