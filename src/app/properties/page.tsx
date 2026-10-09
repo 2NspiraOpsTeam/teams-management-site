@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, west18thPreviewCover } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
@@ -14,6 +14,9 @@ export default async function PropertiesPage() {
   const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
   const covers = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const cover=media.find(m=>m.is_cover);return [building.slug,cover?{src:publicMediaSrc(cover),alt:cover.alt_text||`Approved property image for ${building.name}`}:null] as const;}));
   const coverMap = new Map(covers);
+  if (previewPortfolioEnabled) {
+    coverMap.set('235-w-18th-st', { src: west18thPreviewCover, alt: 'Exterior of 235 W 18th St' });
+  }
   return <>
     <Header />
     <main>

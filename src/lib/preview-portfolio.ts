@@ -2,6 +2,7 @@ import type { BuildingPublic } from './database.types';
 
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
 export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1';
+export const west18thPreviewCover = '/preview-properties/235-w-18th-st/235-w-18th-st-exterior-01.jpg';
 
 // Approved Gold Street preview sequence; scoped to this property's preview route.
 export const goldStreetGallery = [
@@ -43,7 +44,7 @@ export const previewPortfolio: BuildingPublic[] = confirmedAddresses.map(([slug,
   address: { street, city, state: 'NY', zip: '' },
   description_public: null,
   amenities_public: [],
-  gallery: slug === '235-w-18th-st' ? ['/preview-properties/235-w-18th-st/235-w-18th-st-exterior-01.jpg'] : [],
+  gallery: [],
   publication_state: 'draft',
   created_at: '',
   updated_at: '',

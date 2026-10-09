@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { getPublicBuilding } from '@/lib/public-buildings';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, west18thPreviewCover } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
@@ -14,9 +14,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const { slug } = await params;
   const building = previewPortfolioEnabled ? previewPortfolio.find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) notFound();
-  const media = await propertyMedia(adminDb(),slug);
+  const previewCover = previewPortfolioEnabled && slug === '235-w-18th-st' ? west18thPreviewCover : null;
+  const media = previewCover ? [] : await propertyMedia(adminDb(),slug);
   const assignedCover = media.find(item=>item.is_cover);
-  const cover = assignedCover ? publicMediaSrc(assignedCover) : null;
+  const cover = previewCover || (assignedCover ? publicMediaSrc(assignedCover) : null);
   const gallery = media.filter(item=>!item.is_cover).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
 
   return <>
@@ -33,7 +34,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <h1 className="text-4xl font-serif font-semibold text-teams-ink mb-4">{building.name}</h1>
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {building.address.zip}</p>
         <div className="mb-10 flex flex-wrap gap-3"><a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">Map &amp; Directions ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
-        {cover && <img src={cover} alt={assignedCover?.alt_text||`Approved property image for ${building.address.street}`} className="mb-12 w-full aspect-[16/9] object-cover border border-slate-200" />}
+        {cover && <img src={cover} alt={previewCover ? 'Exterior of 235 W 18th St' : assignedCover?.alt_text||`Approved property image for ${building.address.street}`} className={previewCover ? 'mb-12 mx-auto max-h-[720px] w-full object-contain border border-slate-200 bg-stone-100' : 'mb-12 w-full aspect-[16/9] object-cover border border-slate-200'} />}
         {gallery.length > 0 && <section aria-labelledby="gold-street-gallery" className="mb-12">
           <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-ink">Gold Street gallery</h2>
           <div className="grid gap-5 sm:grid-cols-2">
