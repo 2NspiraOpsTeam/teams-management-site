@@ -7,6 +7,7 @@ export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO
 const previewCovers: Record<string, string> = {
   '42-70-156th-st-flushing': '/preview-properties/42-70-156th-street.jpg',
   '3425-east-tremont-bronx': '/preview-properties/3425-east-tremont-ave.jpg',
+  '166-e-118th-st': '/preview-properties/166-e-118th-street.jpg',
 };
 
 export const previewPropertyCover = (slug: string) =>
@@ -15,7 +16,8 @@ export const previewPropertyCover = (slug: string) =>
 const confirmedAddresses = [
   ['42-70-156th-st-flushing', '42-70 156th St', 'Flushing'],
   ['3425-east-tremont-bronx', '3425 East Tremont Ave', 'Bronx'],
-  ['166-170-e-118th-st', '166-170 E 118th St', 'New York'],
+  ['166-e-118th-st', '166 E 118th St', 'New York'],
+  ['170-e-118th-st', '170 E 118th St', 'New York'],
   ['71-e-110th-st', '71 E 110th St', 'New York'],
   ['173-e-91st-st', '173 E 91st St', 'New York'],
   ['1626-2nd-ave', '1626 2nd Ave', 'New York'],
