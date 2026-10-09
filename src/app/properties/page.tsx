@@ -3,18 +3,19 @@ import { PropertyCard } from '@/components/property-card';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
+import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
 export default async function PropertiesPage() {
-  const buildings = await listPublicBuildings();
+  const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
   return <>
     <Header />
     <main>
       <section className="bg-stone-50 py-14 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-slate-950 mb-4">Our Portfolio</h1>
-          <p className="text-lg text-slate-600 max-w-2xl">Explore our published property profiles.</p>
+          <p className="text-lg text-slate-600 max-w-2xl">Explore Teams Management properties. Details are added as they are verified.</p>
         </div>
       </section>
       <section className="py-14 sm:py-20 bg-white">

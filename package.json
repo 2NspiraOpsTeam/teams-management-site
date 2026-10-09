@@ -7,11 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "build:pages": "next-on-pages",
+    "build:preview:pages": "NEXT_PUBLIC_PREVIEW_PORTFOLIO=1 npm run build:pages",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "deploy:preview": "npm run build:pages && wrangler pages deploy .vercel/output/static --project-name teams-management-preview --branch preview"
+    "deploy:preview": "npm run build:preview:pages && wrangler pages deploy .vercel/output/static --project-name teams-management-preview --branch preview"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",

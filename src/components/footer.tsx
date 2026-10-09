@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ContactDetails } from '@/components/contact-details';
 
 export function Footer() {
   return (
@@ -41,7 +42,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div><h4 className="text-sm font-semibold text-slate-200 mb-3">Get in touch</h4><p className="text-sm text-slate-300 mb-4">Contact details and the online inquiry pathway are being verified.</p><Link href="/contact" className="text-sm text-white underline decoration-teams-gold underline-offset-4">Contact information</Link></div>
+          <div><h4 className="text-sm font-semibold text-slate-200 mb-3">Get in touch</h4><ContactDetails dark /><Link href="/contact" className="mt-4 inline-block text-sm text-white underline decoration-teams-gold underline-offset-4">Contact page</Link></div>
 
         </div>
 
