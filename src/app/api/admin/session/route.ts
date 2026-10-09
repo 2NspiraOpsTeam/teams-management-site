@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { activeAdmin, adminDb, adminEnv, cookieName, currentAdmin, hash, sameOrigin, unauthorized } from '@/lib/admin-auth';
+import { gmailConfigured, sendAdminCode } from '@/lib/admin-otp-mail';
 export const runtime = 'edge';
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const generic = { message: 'If this email is authorized, a sign-in code has been sent.' };
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
   if (!/^[^\s@]{1,64}@[^\s@]{1,190}$/.test(email)) return reply(generic);
   const db = adminDb();
   const env = adminEnv();
-  if (!env.ADMIN_OTP_PEPPER || env.ADMIN_OTP_PEPPER.length < 32 || !env.RESEND_API_KEY || !env.ADMIN_LOGIN_FROM_EMAIL) return reply({ error: 'Admin sign-in is temporarily unavailable.' }, 503);
+  if (!env.ADMIN_OTP_PEPPER || env.ADMIN_OTP_PEPPER.length < 32 || !gmailConfigured(env)) return reply({ error: 'Admin sign-in is temporarily unavailable.' }, 503);
   if (input?.action === 'request') {
     // A fixed window limits both a recipient and a network without storing raw IPs.
     const ip = request.headers.get('cf-connecting-ip') || 'unknown';
@@ -40,9 +41,12 @@ export async function POST(request: Request) {
     await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE email=? AND used_at IS NULL").bind(email).run();
     await db.prepare("INSERT INTO admin_login_codes (id,email,code_hash,expires_at) VALUES (?,?,?,datetime('now','+10 minutes'))").bind(id, email, await codeHash(email, code)).run();
     try {
-      const response = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': `teams-admin-login-${id}` }, body: JSON.stringify({ from: env.ADMIN_LOGIN_FROM_EMAIL, to: [email], subject: 'Teams Admin sign-in code', text: `Your Teams Admin sign-in code is ${code}. It expires in 10 minutes. If you did not request it, ignore this email.` }) });
-      if (!response.ok) await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run();
-    } catch { await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run(); }
+      await sendAdminCode(env, email, code);
+    } catch {
+      await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run();
+      console.warn('Admin code delivery failed');
+      return reply({ error: 'Admin sign-in is temporarily unavailable.' }, 503);
+    }
     return reply(generic);
   }
   if (input?.action !== 'verify' || typeof input.code !== 'string' || !/^\d{8}$/.test(input.code)) return unauthorized();
