@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
+import { previewPropertyCover } from '@/lib/preview-portfolio';
 
 interface PropertyCardProps {
   building: BuildingPublic;
@@ -8,12 +9,13 @@ interface PropertyCardProps {
 export function PropertyCard({ building }: PropertyCardProps) {
   const location = [building.address.city, building.address.state].filter(Boolean).join(', ');
   const address = [building.address.street, location, building.address.zip].filter(Boolean).join(', ');
+  const cover = previewPropertyCover(building.slug);
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-5 sm:gap-6 min-w-0">
-      <div className="aspect-[4/3] sm:aspect-square bg-slate-950 border-2 border-teams-gold flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
+      {cover ? <img src={cover} alt={`Front entrance of ${building.address.street}`} className="aspect-[4/3] sm:aspect-square w-full object-cover border-2 border-teams-gold" /> : <div className="aspect-[4/3] sm:aspect-square bg-slate-950 border-2 border-teams-gold flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
         <span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property photography coming soon</span>
-      </div>
+      </div>}
       <div className="flex flex-col items-start min-w-0 sm:py-1">
         <h2 className="font-serif text-2xl leading-tight text-slate-950">{building.name}</h2>
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>

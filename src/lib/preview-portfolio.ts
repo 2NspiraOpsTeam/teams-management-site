@@ -3,6 +3,12 @@ import type { BuildingPublic } from './database.types';
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
 export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1';
 
+// Supplied property-specific cover, scoped to the preview fixture until publication is approved.
+export const previewPropertyCover = (slug: string) =>
+  previewPortfolioEnabled && slug === '42-70-156th-st-flushing'
+    ? '/preview-properties/42-70-156th-street.jpg'
+    : null;
+
 const confirmedAddresses = [
   ['42-70-156th-st-flushing', '42-70 156th St', 'Flushing'],
   ['3425-east-tremont-bronx', '3425 East Tremont Ave', 'Bronx'],
