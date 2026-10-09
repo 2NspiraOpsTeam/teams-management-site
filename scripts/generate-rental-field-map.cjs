@@ -7,7 +7,7 @@ const source = fs.readFileSync(path.join(root, 'src/config/rental-application-fi
 const js = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
 const mod = { exports: {} };
 vm.runInNewContext(js, { module: mod, exports: mod.exports });
-const { rentalApplicationFields: fields, screeningQuestionCatalogue: questions, applicationStatuses, documentTypes } = mod.exports;
+const { rentalApplicationFields: fields, screeningQuestionCatalogue: questions, applicationStatuses, documentTypes, removedRentalApplicationFields: removed, rentalDocumentRequirements: requirements } = mod.exports;
 const esc = value => String(value ?? '—').replaceAll('|', '\\|').replaceAll('\n', ' ');
 const code = value => '`' + value + '`';
 const rows = fields.map(x => `| ${[x.key,x.label,x.type,x.required,x.validation,x.repeatable?'Yes':'No',x.sensitivity,x.pdfField,x.currentPdfField,x.onlineField,x.adminDisplay,x.storage,x.legalReview?'Yes':'No',x.active?'Yes':'No',x.notes].map(esc).join(' | ')} |`).join('\n');
@@ -18,7 +18,7 @@ const doc = `# Teams Management rental application — canonical field map
 
 ## Scope and counts
 
-- **${fields.length} unique canonical fields** across applicant-entered, deferred, document-metadata, and system-managed fields.
+- **${fields.length} current canonical fields** across applicant-entered, deferred, document-metadata, and system-managed fields; ${removed.length} legacy keys are recorded separately below and are not application fields.
 - **53 existing AcroForm fields** in the supplied 4-page PDF. The registry maps all 53: 49 direct or grouped mappings, with the two occupant row patterns covering three PDF rows each.
 - **${fields.filter(x=>x.pdfField).length} target semantic PDF mappings**. A target name is a specification, not proof that the supplied PDF already uses it.
 - **${fields.filter(x=>x.sensitivity==='highly-sensitive').length} highly sensitive fields** and **${fields.filter(x=>x.legalReview).length} legal-review fields**. Screening question definitions below are additional catalogue items, not seven separate applicant field keys.
@@ -34,6 +34,20 @@ const doc = `# Teams Management rental application — canonical field map
 | Key | Display label | Type | Required | Validation | Repeatable | Sensitivity | Target PDF field | Current PDF field | Online field | Admin display | Storage destination | Legal review | Active | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 ${rows}
+
+## Removed legacy fields — not collected
+
+These keys are historical references only, with status \`removed_from_current_application\`. They must not be rendered, accepted by APIs, stored, or generated into new PDFs. The supplied modernized PDF already omits them. Occupant date of birth must not be reintroduced without a verified business and legal reason.
+
+| Legacy key | Status | Historical PDF mapping |
+|---|---|---|
+${removed.map(x=>`| \`${x.key}\` | \`${x.status}\` | \`${x.legacyPdfField}\` |`).join('\n')}
+
+## Document requirements — uploads disabled in preview
+
+${requirements.map(x=>`- \`${x.key}\` — **${x.label}**; category: \`${x.category}\`; required when secure uploads are enabled: **${x.requiredWhenUploadsEnabled?'yes':'no'}**; accepted examples: ${x.acceptedExamples.join(', ')}; approved formats: ${x.acceptedFormats.map(code).join(', ')}; visibility: \`${x.visibility}\`; sensitivity: \`${x.sensitivity}\`. Admin list display after upload: **${x.adminListDisplay}**. Current status: **not enabled**.`).join('\n')}
+
+No file input, upload endpoint, storage, public URL, or email attachment is enabled by this requirement. Use private object storage rather than D1 blobs; authorize each reviewer before opening a document. Do not log filenames or contents unnecessarily.
 
 ## Screening catalogue — all inactive
 

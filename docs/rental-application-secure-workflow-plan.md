@@ -10,19 +10,15 @@ Status: design only. The preview at `/rent-with-us/apply` remains an in-memory w
 - Set draft inactivity and absolute expiration, purge expired drafts and associated objects, and define a deletion/retention schedule before launch. Log only actor, draft ID, action, timestamp, and outcome—not field values or tokens.
 - Resume at the last completed step after server-side ownership validation; show expiration and recovery states. Prevent concurrent stale writes with a version check. Never infer a saved draft from an unsaved preview answer.
 
-## Sensitive identifiers: decision gate
+## Removed typed identifiers
 
-| Identifier | Necessity decision before collection | If approved |
-| --- | --- | --- |
-| SSN | Determine whether a licensed screening provider can collect it directly; prefer no Teams storage. | Use provider-hosted/tokenized collection where possible; otherwise field-level encryption, last-four masking, restricted reveal, short retention, and no PDF/email copy by default. |
-| Date of birth | Determine exact screening or identity-verification need and whether the provider can collect it. | Encrypt, mask in Admin, restrict reveal and retention to the approved purpose. |
-| Driver's license | Determine whether it is needed at all; avoid by default. | Prefer provider-hosted verification; if retained, encrypt number and image separately, restrict reveal, and purge on schedule. |
-
-Never place raw identifiers in logs, analytics, URLs, notification bodies, list APIs, or unrestricted generated PDFs. Every reveal requires a role, purpose, audit event, and short-lived authorization. Document field-by-field retention and deletion before enabling any identifier.
+SSN, applicant date of birth, driver's-license number, and occupant date of birth are removed from the current application. Their keys remain only in the registry's historical record. Do not add typed controls, API acceptance, PDF output, or storage for them. Any future reconsideration requires a verified business/legal reason and a separate approved change; occupant date of birth is not automatically collected.
 
 ## Documents
 
+- Require one Government-Issued Photo ID when secure uploads are enabled: driver's license, state ID, passport, or other valid government-issued photo identification. Accept only approved JPEG, PNG, or PDF formats after server-side content verification. This document is highly sensitive and private; the preview Documents step remains disabled.
 - Use private object storage with random keys and application ownership metadata; never public object URLs. Generate short-lived, single-purpose upload/download grants only after authentication and server authorization.
+- Never store document bytes in D1 blobs, email the document, or log its filename/content unnecessarily.
 - Validate allowed type by content signature, extension, and size; cap count and total bytes. Quarantine uploads until asynchronous malware scan and file normalization pass. Block viewing/downloading while pending or failed; safely retry scanner failures.
 - Restrict applicant uploads to their own draft; staff downloads to approved roles. Log metadata-only access and changes. Set object lifecycle expiration, legal hold rules, deletion handling, and backup retention before launch.
 
@@ -43,6 +39,7 @@ Never place raw identifiers in logs, analytics, URLs, notification bodies, list 
 `Applications` list → application summary → property → status → documents → secure details → notes → audit history.
 
 - List view: confirmation number, applicant display name, property/unit, submitted date, status, and assigned reviewer. No raw identifiers, document previews, screening answers, or sensitive values.
+- Once secure uploads are active, show only “Government Photo ID — Uploaded” for the identity-document status in summary/list views; only authorized application reviewers may open the file.
 - Detail view: summary and property first; role-gated documents and secure details behind explicit access actions. Show scan state and disclosure version. Notes are staff-only, attributed, timestamped, and excluded from applicant exports.
 - Statuses: submitted, in review, more information needed, decision pending, closed; exact decision labels and applicant messaging require business/legal approval. Record actor, timestamp, old/new status, and reason. Do not make email delivery the status source of truth.
 - Search and exports must respect the same field-level permissions as detail views. Audit history is append-only and includes access to secure details, downloads, edits, and status changes without raw values.
@@ -51,7 +48,7 @@ Never place raw identifiers in logs, analytics, URLs, notification bodies, list 
 
 **Security:** identity/resume verification method; KMS and key ownership; staff roles and reveal policy; draft/object/identifier retention and deletion; malware scanning service and failure policy; audit-log retention; incident and backup handling.
 
-**Legal/business:** necessity of each identifier; exact screening questions and when asked; disclosures and e-signature method; consent/PDF retention; jurisdictional rules and fees; status/decision workflow and applicant communications; whether previous rental-history address means landlord mailing address or rented property address; whether the legacy PDF must be revised for repeatable entries.
+**Legal/business:** exact screening questions and when asked; disclosures and e-signature method; consent/PDF retention; jurisdictional rules and fees; status/decision workflow and applicant communications; whether previous rental-history address means landlord mailing address or rented property address; whether the legacy PDF must be revised for repeatable entries.
 
 ## Release gates
 

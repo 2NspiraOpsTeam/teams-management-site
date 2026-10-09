@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { rentalApplicationFields, type Field } from '@/config/rental-application-fields';
+import { rentalApplicationFields, rentalDocumentRequirements, type Field } from '@/config/rental-application-fields';
 
 type Values = Record<string, string>;
 const steps = ['Property','Applicant','Occupants','Rental History','Employment','Pets','Screening','Documents','Consent','Review'] as const;
@@ -17,13 +17,13 @@ const sections: Field[][] = [
 ];
 const unavailable: Record<number,string> = {
   6:'Screening questions are awaiting legal review. No answers are requested here.',
-  7:'Document uploads are not available. No files can be added here.',
+  7:`${rentalDocumentRequirements[0].label} will be required when secure uploads are available. Accepted examples: ${rentalDocumentRequirements[0].acceptedExamples.join(', ')}. No files can be added in preview.`,
   8:'Consent and signatures are not available. Nothing is recorded here.',
 };
 const stepIntro: Record<number,string> = {
   0:'Choose the property you are interested in.',
   1:'Tell us how to reach you. Do not enter SSN, date of birth, or license details.',
-  2:'Add anyone else who would live with you, if applicable.',
+  2:'Add the name and relationship of anyone else who would live with you, if applicable.',
   3:'Add previous rental addresses, if applicable.',
   4:'Add your current work details. Previous employment is optional.',
   5:'Tell us about pets and add any other relevant details.',

@@ -41,9 +41,6 @@ export const rentalApplicationFields: readonly Field[] = [
   f('applicant.city','City','text','required',personal,{pdfField:'current_city',currentPdfField:'applicant.city'}),
   f('applicant.state','State','text','required',personal,{validation:'Two-letter US state or approved territory.',pdfField:'current_state',currentPdfField:'applicant.state'}),
   f('applicant.zip','ZIP','text','required',personal,{validation:'US ZIP or ZIP+4.',pdfField:'current_zip',currentPdfField:'applicant.zip'}),
-  f('applicant.ssn','Social Security Number','text','review','highly-sensitive',{...deferred,validation:'Deferred; secure verification process only.',pdfField:'ssn',storage:'secure_verification.ssn'}),
-  f('applicant.date_of_birth','Date of Birth','date','review','highly-sensitive',{...deferred,validation:'Deferred; valid past date.',pdfField:'dob',storage:'secure_verification.date_of_birth'}),
-  f('applicant.drivers_license_number',"Driver’s License No.",'text','review','highly-sensitive',{...deferred,validation:'Deferred; jurisdiction-specific.',pdfField:'drivers_license',storage:'secure_verification.drivers_license_number'}),
   f('applicant.email','Email Address','email','required',personal,{validation:'Valid email address; max 254 characters.',pdfField:'email',currentPdfField:'applicant.email'}),
   f('applicant.home_phone','Home Phone','phone','optional',personal,{validation:'Valid phone number.',pdfField:'home_phone',currentPdfField:'applicant.home_phone'}),
   f('applicant.cell_phone','Cell Phone','phone','required',personal,{validation:'Valid phone number.',pdfField:'cell_phone',currentPdfField:'applicant.mobile'}),
@@ -51,7 +48,6 @@ export const rentalApplicationFields: readonly Field[] = [
   f('applicant.guarantor_relationship','Guarantor Relationship','text','conditional',personal,{validation:'Required when applicant is a guarantor.',pdfField:'guarantor_relationship',currentPdfField:'applicant.guarantor_relationship'}),
   // Repeatable collections: [] means each item, never a fixed three-row cap online.
   f('occupants[].name','Occupant Name','text','conditional',personal,{repeatable:true,validation:'Required for each added occupant.',pdfField:'occupants[].name',currentPdfField:'occupants.{1..3}.name'}),
-  f('occupants[].date_of_birth','Occupant Date of Birth','date','review','highly-sensitive',{...deferred,repeatable:true,validation:'Deferred; valid past date.',pdfField:'occupants[].date_of_birth'}),
   f('occupants[].relationship','Relationship','text','optional',personal,{repeatable:true,pdfField:'occupants[].relationship',currentPdfField:'occupants.{1..3}.relationship'}),
   f('rental_history[].landlord_name','Landlord','text','optional',personal,{repeatable:true,pdfField:'rental_history[].landlord_name',currentPdfField:'rental.landlord'}),
   f('rental_history[].landlord_address','Rental Property Address','text','optional',personal,{repeatable:true,pdfField:'rental_history[].landlord_address',currentPdfField:'rental.address',notes:'Current PDF requests rental property address, not landlord mailing address; confirm business meaning.'}),
@@ -117,4 +113,18 @@ export const screeningQuestionCatalogue = [
   {id:'other_name',label:'Have you ever used another name?',legalReview:true,active:false},
 ] as const;
 export const documentTypes = ['proof_of_income','identification','employment_document','landlord_reference','guarantor_document','other'] as const;
+/** Historical keys only: never project into web, PDF, Admin, validation, or storage. */
+export const removedRentalApplicationFields = [
+  {key:'applicant.ssn',status:'removed_from_current_application',legacyPdfField:'ssn'},
+  {key:'applicant.date_of_birth',status:'removed_from_current_application',legacyPdfField:'dob'},
+  {key:'applicant.drivers_license_number',status:'removed_from_current_application',legacyPdfField:'drivers_license'},
+  {key:'occupants[].date_of_birth',status:'removed_from_current_application',legacyPdfField:'occupants[].date_of_birth'},
+] as const;
+/** Requirement only; upload controls and storage remain disabled pending security approval. */
+export const rentalDocumentRequirements = [
+  {key:'government_photo_id',label:'Government-Issued Photo ID',category:'identity',requiredWhenUploadsEnabled:true,
+    acceptedExamples:['Driver’s License','State ID','Passport','Other valid government-issued photo identification'],
+    acceptedFormats:['image/jpeg','image/png','application/pdf'],visibility:'private',sensitivity:'highly-sensitive',active:false,
+    adminListDisplay:'Government Photo ID — Uploaded'},
+] as const;
 export const applicationStatuses = ['draft','submitted','under_review','additional_information_requested','approved','declined','withdrawn','archived'] as const;

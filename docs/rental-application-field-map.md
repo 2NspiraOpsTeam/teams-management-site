@@ -4,10 +4,10 @@
 
 ## Scope and counts
 
-- **88 unique canonical fields** across applicant-entered, deferred, document-metadata, and system-managed fields.
+- **84 current canonical fields** across applicant-entered, deferred, document-metadata, and system-managed fields; 4 legacy keys are recorded separately below and are not application fields.
 - **53 existing AcroForm fields** in the supplied 4-page PDF. The registry maps all 53: 49 direct or grouped mappings, with the two occupant row patterns covering three PDF rows each.
-- **60 target semantic PDF mappings**. A target name is a specification, not proof that the supplied PDF already uses it.
-- **12 highly sensitive fields** and **13 legal-review fields**. Screening question definitions below are additional catalogue items, not seven separate applicant field keys.
+- **56 target semantic PDF mappings**. A target name is a specification, not proof that the supplied PDF already uses it.
+- **8 highly sensitive fields** and **9 legal-review fields**. Screening question definitions below are additional catalogue items, not seven separate applicant field keys.
 
 ## Contract
 
@@ -32,16 +32,12 @@
 | applicant.city | City | text | required | Trim; reject control characters; enforce bounded length. | No | personal | current_city | applicant.city | applicant.city | City | application_data.applicant.city | No | Yes | — |
 | applicant.state | State | text | required | Two-letter US state or approved territory. | No | personal | current_state | applicant.state | applicant.state | State | application_data.applicant.state | No | Yes | — |
 | applicant.zip | ZIP | text | required | US ZIP or ZIP+4. | No | personal | current_zip | applicant.zip | applicant.zip | ZIP | application_data.applicant.zip | No | Yes | — |
-| applicant.ssn | Social Security Number | text | review | Deferred; secure verification process only. | No | highly-sensitive | ssn | — | — | Social Security Number | secure_verification.ssn | Yes | No | — |
-| applicant.date_of_birth | Date of Birth | date | review | Deferred; valid past date. | No | highly-sensitive | dob | — | — | Date of Birth | secure_verification.date_of_birth | Yes | No | — |
-| applicant.drivers_license_number | Driver’s License No. | text | review | Deferred; jurisdiction-specific. | No | highly-sensitive | drivers_license | — | — | Driver’s License No. | secure_verification.drivers_license_number | Yes | No | — |
 | applicant.email | Email Address | email | required | Valid email address; max 254 characters. | No | personal | email | applicant.email | applicant.email | Email Address | application_data.applicant.email | No | Yes | — |
 | applicant.home_phone | Home Phone | phone | optional | Valid phone number. | No | personal | home_phone | applicant.home_phone | applicant.home_phone | Home Phone | application_data.applicant.home_phone | No | Yes | — |
 | applicant.cell_phone | Cell Phone | phone | required | Valid phone number. | No | personal | cell_phone | applicant.mobile | applicant.cell_phone | Cell Phone | application_data.applicant.cell_phone | No | Yes | — |
 | applicant.work_phone | Work Phone | phone | optional | Valid phone number. | No | personal | work_phone | applicant.work_phone | applicant.work_phone | Work Phone | application_data.applicant.work_phone | No | Yes | — |
 | applicant.guarantor_relationship | Guarantor Relationship | text | conditional | Required when applicant is a guarantor. | No | personal | guarantor_relationship | applicant.guarantor_relationship | applicant.guarantor_relationship | Guarantor Relationship | application_data.applicant.guarantor_relationship | No | Yes | — |
 | occupants[].name | Occupant Name | text | conditional | Required for each added occupant. | Yes | personal | occupants[].name | occupants.{1..3}.name | occupants[].name | Occupant Name | application_data.occupants[].name | No | Yes | — |
-| occupants[].date_of_birth | Occupant Date of Birth | date | review | Deferred; valid past date. | Yes | highly-sensitive | occupants[].date_of_birth | — | — | Occupant Date of Birth | application_data.occupants[].date_of_birth | Yes | No | — |
 | occupants[].relationship | Relationship | text | optional | Trim; reject control characters; enforce bounded length. | Yes | personal | occupants[].relationship | occupants.{1..3}.relationship | occupants[].relationship | Relationship | application_data.occupants[].relationship | No | Yes | — |
 | rental_history[].landlord_name | Landlord | text | optional | Trim; reject control characters; enforce bounded length. | Yes | personal | rental_history[].landlord_name | rental.landlord | rental_history[].landlord_name | Landlord | application_data.rental_history[].landlord_name | No | Yes | — |
 | rental_history[].landlord_address | Rental Property Address | text | optional | Trim; reject control characters; enforce bounded length. | Yes | personal | rental_history[].landlord_address | rental.address | rental_history[].landlord_address | Rental Property Address | application_data.rental_history[].landlord_address | No | Yes | Current PDF requests rental property address, not landlord mailing address; confirm business meaning. |
@@ -108,6 +104,23 @@
 | assigned_to | Assigned To | identifier | system | Server-controlled; never accepted from public input. | No | internal | — | — | — | Assigned To | applications.assigned_to | No | No | — |
 | review_notes | Review Notes | textarea | system | Server-controlled; never accepted from public input. | No | internal | — | — | — | Review Notes | applications.review_notes | No | No | Private Admin only. |
 
+## Removed legacy fields — not collected
+
+These keys are historical references only, with status `removed_from_current_application`. They must not be rendered, accepted by APIs, stored, or generated into new PDFs. The supplied modernized PDF already omits them. Occupant date of birth must not be reintroduced without a verified business and legal reason.
+
+| Legacy key | Status | Historical PDF mapping |
+|---|---|---|
+| `applicant.ssn` | `removed_from_current_application` | `ssn` |
+| `applicant.date_of_birth` | `removed_from_current_application` | `dob` |
+| `applicant.drivers_license_number` | `removed_from_current_application` | `drivers_license` |
+| `occupants[].date_of_birth` | `removed_from_current_application` | `occupants[].date_of_birth` |
+
+## Document requirements — uploads disabled in preview
+
+- `government_photo_id` — **Government-Issued Photo ID**; category: `identity`; required when secure uploads are enabled: **yes**; accepted examples: Driver’s License, State ID, Passport, Other valid government-issued photo identification; approved formats: `image/jpeg`, `image/png`, `application/pdf`; visibility: `private`; sensitivity: `highly-sensitive`. Admin list display after upload: **Government Photo ID — Uploaded**. Current status: **not enabled**.
+
+No file input, upload endpoint, storage, public URL, or email attachment is enabled by this requirement. Use private object storage rather than D1 blobs; authorize each reviewer before opening a document. Do not log filenames or contents unnecessarily.
+
 ## Screening catalogue — all inactive
 
 | ID | Legacy question | Legal review | Active |
@@ -124,7 +137,7 @@ The reusable `screening_questions[]` structure stores `question_id`, `answer`, a
 
 ## Sensitive and access boundaries
 
-Highly sensitive keys: `applicant.ssn`, `applicant.date_of_birth`, `applicant.drivers_license_number`, `occupants[].date_of_birth`, `screening_questions[].answer`, `screening_questions[].explanation`, `consent.accepted`, `consent.accepted_at`, `consent.ip_metadata`, `consent.signature_name`, `consent.signature_date`, `documents[].storage_key`.
+Highly sensitive keys: `screening_questions[].answer`, `screening_questions[].explanation`, `consent.accepted`, `consent.accepted_at`, `consent.ip_metadata`, `consent.signature_name`, `consent.signature_date`, `documents[].storage_key`.
 
 Other personal and financial fields are classified individually in the table; salary and rent are financial. Draft and submitted applications, PDFs, and documents require applicant isolation, staff least-privilege authorization, encrypted private storage where applicable, malware scanning for uploads, no raw sensitive values in logs/analytics/ordinary email, and masked Admin list views. Do not enable production storage of highly sensitive values, uploads, screening, or signatures until the security path and legal text are explicitly reviewed. The currently supplied PDF itself intentionally omits SSN, DOB, license, screening, fee, and binding-signature inputs.
 
