@@ -2,7 +2,6 @@ import type { BuildingPublic } from './database.types';
 
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
 export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1';
-export const west18thPreviewCover = '/preview-properties/235-w-18th-st/235-w-18th-st-exterior-01.jpg';
 
 // Approved Gold Street preview sequence; scoped to this property's preview route.
 export const goldStreetGallery = [
@@ -17,6 +16,14 @@ export const goldStreetGallery = [
   '/preview-properties/61-gold-st/input-IMG_1520---436992c6-0073-4f96-86d9-708fb2a6b23f.jpg',
   '/preview-properties/61-gold-st/input-IMG_5284---88aaeaac-e28b-4bd6-a193-2f0c0d9bab21.jpg',
 ] as const;
+
+// Approved static cover used only by the preview build until media publication is approved.
+const previewStaticCovers: Record<string, string> = {
+  '235-w-18th-st': '/preview-properties/235-w-18th-st/235-w-18th-st-exterior-01.jpg',
+};
+
+export const previewStaticCover = (slug: string) =>
+  previewPortfolioEnabled ? previewStaticCovers[slug] ?? null : null;
 
 const confirmedAddresses = [
   ['42-70-156th-st-flushing', '42-70 156th St', 'Flushing'],
