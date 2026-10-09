@@ -19,7 +19,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#2F3133]/95 backdrop-blur-md border-b border-white/10 text-white transition-colors">
+    <header className="sticky top-0 z-50 bg-teams-charcoal/95 backdrop-blur-md border-b border-white/10 text-white transition-colors">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex items-center justify-between min-h-20 gap-4">
           <Link href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">

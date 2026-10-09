@@ -30,14 +30,14 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           <span className="mx-2" aria-hidden="true">/</span>
           <span aria-current="page">{building.name}</span>
         </nav>
-        <h1 className="text-4xl font-serif font-semibold text-teams-charcoal mb-4">{building.name}</h1>
+        <h1 className="text-4xl font-serif font-semibold text-teams-ink mb-4">{building.name}</h1>
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {building.address.zip}</p>
-        <div className="mb-10 flex flex-wrap gap-3"><a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-charcoal transition-colors hover:bg-teams-gold-highlight">Map &amp; Directions ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-charcoal transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
+        <div className="mb-10 flex flex-wrap gap-3"><a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">Map &amp; Directions ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
         {cover && <img src={cover} alt={assignedCover?.alt_text||`Approved property image for ${building.address.street}`} className="mb-12 w-full aspect-[16/9] object-cover border border-slate-200" />}
         {gallery.length > 0 && <section aria-labelledby="gold-street-gallery" className="mb-12">
-          <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-charcoal">Gold Street gallery</h2>
+          <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-ink">Gold Street gallery</h2>
           <div className="grid gap-5 sm:grid-cols-2">
-            {gallery.map((item) => <figure key={item.src} className="overflow-hidden border border-slate-200 bg-[#F8F7F3]">
+            {gallery.map((item) => <figure key={item.src} className="overflow-hidden border border-slate-200 bg-slate-50">
               <img src={item.src} alt={item.alt} loading="lazy" className="property-image w-full aspect-[4/3] object-cover" />
             {item.caption&&<figcaption className="p-3 text-sm text-slate-600">{item.caption}</figcaption>}</figure>)}
           </div>

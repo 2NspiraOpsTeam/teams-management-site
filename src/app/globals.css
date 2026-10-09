@@ -4,12 +4,19 @@
 
 /* Teams Management — warm charcoal, warm white, selective gold */
 :root {
-  --teams-charcoal: #2F3133;
+  --teams-charcoal: #4A4D50;
+  --teams-ink: #2F3133;
+  --teams-secondary: #5A5E62;
+  --teams-cta-ink: #17191A;
   --teams-white: #FFFFFF;
-  --teams-surface: #F8F7F3;
-  --teams-border: #E4E2DD;
-  --teams-gold: #C89A3D;
-  --teams-accent-500: #B68B35;
+  --teams-surface: #F7F5F1;
+  --teams-soft-background: #EFEDEA;
+  --teams-border: #E2DFDA;
+  --teams-gold: #B98A2E;
+  --teams-gold-hover: #A87922;
+  --teams-gold-light: #D6B56C;
+  --teams-gold-on-dark: #E4C88D;
+  --teams-accent-500: #B98A2E;
 }
 
 /* Typography */
@@ -46,6 +53,11 @@ p {
   background-color: var(--teams-charcoal);
   color: white;
 }
+
+/* Gold controls keep AA contrast in both resting and hover states. */
+a.bg-teams-gold, button.bg-teams-gold { color: var(--teams-cta-ink); }
+a.bg-teams-gold:hover, button.bg-teams-gold:hover { background-color: var(--teams-gold-hover); }
+input::placeholder, textarea::placeholder { color: var(--teams-secondary); opacity: 1; }
 
 /* Quiet interaction system for public property photography and actions. */
 .property-card { transition: transform 240ms ease, box-shadow 240ms ease; }

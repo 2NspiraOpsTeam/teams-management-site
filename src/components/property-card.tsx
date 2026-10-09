@@ -18,7 +18,7 @@ export function PropertyCard({ building, coverOverride }: PropertyCardProps) {
         <span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property photography coming soon</span>
       </div>}
       <div className="flex flex-col items-start min-w-0 sm:py-1">
-        <h2 className="font-serif text-2xl leading-tight text-teams-charcoal">{building.name}</h2>
+        <h2 className="font-serif text-2xl leading-tight text-teams-ink">{building.name}</h2>
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>
         {building.description_public && <p className="mt-4 mb-0 text-sm text-slate-600">{building.description_public}</p>}
         {building.amenities_public.length > 0 && (
@@ -28,10 +28,10 @@ export function PropertyCard({ building, coverOverride }: PropertyCardProps) {
         )}
         <p className="mt-5 mb-0 text-sm text-slate-600 break-words">{address}</p>
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link href={`/properties/${building.slug}`} className="inline-flex min-h-11 items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-teams-charcoal hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
+        <Link href={`/properties/${building.slug}`} className="inline-flex min-h-11 items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-teams-ink hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
           View property <span aria-hidden="true">→</span>
         </Link>
-        <a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-charcoal hover:text-slate-700">Map &amp; Directions ↗</a>
+        <a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">Map &amp; Directions ↗</a>
         </div>
       </div>
     </article>

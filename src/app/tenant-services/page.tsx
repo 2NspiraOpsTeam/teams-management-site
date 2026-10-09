@@ -5,7 +5,7 @@ import { ContactDetails } from '@/components/contact-details';
 export default function TenantServicesPage() {
   return <>
     <Header />
-    <main className="min-h-[70vh] bg-[#F8F7F3]">
+    <main className="min-h-[70vh] bg-slate-50">
       <section className="bg-teams-charcoal text-white py-16 sm:py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-serif font-semibold mb-5">Tenant Services</h1>
@@ -13,7 +13,7 @@ export default function TenantServicesPage() {
         </div>
       </section>
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <h2 className="text-2xl font-serif font-semibold text-teams-charcoal mb-4">Need assistance now?</h2>
+        <h2 className="text-2xl font-serif font-semibold text-teams-ink mb-4">Need assistance now?</h2>
         <p className="text-slate-700 mb-6">For urgent property needs, continue using your established building-management or emergency contact method. For general questions, contact Teams Management directly:</p>
         <ContactDetails />
         <a href="/contact" className="inline-flex px-6 py-3 rounded-lg bg-teams-charcoal text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">Contact information</a>
