@@ -28,7 +28,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <h1 className="text-4xl font-serif font-semibold text-teams-charcoal mb-4">{building.name}</h1>
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {building.address.zip}</p>
         <div className="mb-10 flex flex-wrap gap-3"><a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-charcoal transition-colors hover:bg-teams-gold-highlight">Map &amp; Directions ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-charcoal transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
-        {cover && <img src={cover} alt={`Street-facing exterior of ${building.address.street}`} className="mb-12 w-full aspect-[16/9] object-cover border border-slate-200" />}
+        {cover && <img src={cover} alt={`Approved property image for ${building.address.street}`} className="mb-12 w-full aspect-[16/9] object-cover border border-slate-200" />}
         {previewPortfolioEnabled && slug === '61-gold-st' && <section aria-labelledby="gold-street-gallery" className="mb-12">
           <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-teams-charcoal">Gold Street gallery</h2>
           <div className="grid gap-5 sm:grid-cols-2">
