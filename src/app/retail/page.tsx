@@ -13,7 +13,7 @@ export default function RetailPage() {
   return <>
     <Header />
     <main>
-      <section className="bg-slate-900 text-white py-20 sm:py-28">
+      <section className="bg-teams-charcoal text-white py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16 items-end">
           <div>
             <p className="text-sm uppercase tracking-[.18em] text-slate-300 mb-5">Teams Management</p>
@@ -22,7 +22,7 @@ export default function RetailPage() {
           </div>
           <div className="border-t border-white/20 pt-6">
             <p className="text-slate-200 mb-5">Property-specific commercial information is shared once it is verified. Contact us to discuss a location or make an inquiry.</p>
-            <Link href="/contact" className="inline-flex items-center justify-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-slate-950 transition-all duration-200 hover:bg-teams-gold-highlight hover:-translate-y-0.5">Contact our team <span aria-hidden="true" className="ml-2">→</span></Link>
+            <Link href="/contact" className="inline-flex items-center justify-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-charcoal transition-all duration-200 hover:bg-teams-gold-highlight hover:-translate-y-0.5">Contact our team <span aria-hidden="true" className="ml-2">→</span></Link>
           </div>
         </div>
       </section>
@@ -30,11 +30,11 @@ export default function RetailPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 md:gap-20">
           <div>
             <p className="text-sm uppercase tracking-[.18em] text-slate-600 mb-4">Property context</p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-slate-900 mb-5">The right details, when confirmed.</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl text-teams-charcoal mb-5">The right details, when confirmed.</h2>
           </div>
           <div className="self-end">
             <p className="text-slate-700 mb-5">This section will grow with verified property imagery, locations, and building context. We do not publish unconfirmed space or leasing information.</p>
-            <Link href="/properties" className="font-semibold text-slate-900 underline underline-offset-4 decoration-slate-400 hover:decoration-teams-gold">Explore the portfolio <span aria-hidden="true">→</span></Link>
+            <Link href="/properties" className="font-semibold text-teams-charcoal underline underline-offset-4 decoration-slate-400 hover:decoration-teams-gold">Explore the portfolio <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>

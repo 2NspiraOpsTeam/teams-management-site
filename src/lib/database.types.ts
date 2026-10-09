@@ -23,6 +23,10 @@ export interface BuildingPublic {
   };
   amenities_public: AmenitiesPublic[];
   gallery: MediaAssignmentPublic[];
+  latitude?: number | null;
+  longitude?: number | null;
+  geocode_status?: 'pending' | 'verified' | 'failed' | null;
+  map_verified?: boolean;
   publication_state: PublicationState;
   management_context?: {
     team_name?: string;

@@ -46,3 +46,14 @@ p {
   background-color: var(--teams-charcoal);
   color: white;
 }
+
+/* Quiet interaction system for public property photography and actions. */
+.property-card { transition: transform 240ms ease, box-shadow 240ms ease; }
+.property-image { transition: transform 400ms ease; }
+.property-card:hover { transform: translateY(-3px); }
+.property-card:hover .property-image { transform: scale(1.015); }
+main a, main button { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease; }
+main a:active, main button:active { transform: translateY(1px); }
+@media (prefers-reduced-motion: reduce) {
+  .property-card:hover, .property-card:hover .property-image, main a:active, main button:active { transform: none; }
+}

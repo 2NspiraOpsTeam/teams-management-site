@@ -4,6 +4,10 @@ export type PublicBuildingRow = Pick<BuildingPublic, 'id' | 'name' | 'slug' | 'd
   address_json: string;
   amenities_public: string;
   gallery: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  geocode_status?: BuildingPublic['geocode_status'];
+  map_verified?: number;
 };
 
 export function parsePublicBuildingRow(row: PublicBuildingRow): BuildingPublic {
@@ -18,6 +22,10 @@ export function parsePublicBuildingRow(row: PublicBuildingRow): BuildingPublic {
     // becomes public only after an approved media_assets/assignments join.
     gallery: [],
     publication_state: row.publication_state,
+    latitude: row.latitude ?? null,
+    longitude: row.longitude ?? null,
+    geocode_status: row.geocode_status,
+    map_verified: row.map_verified === 1,
     created_at: row.created_at,
     updated_at: row.updated_at,
   };
