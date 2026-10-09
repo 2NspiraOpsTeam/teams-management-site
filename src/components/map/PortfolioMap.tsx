@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { BuildingPublic } from '@/lib/database.types';
-
+import { verifiedLocation } from '@/lib/map-location';
 
 type MapComponent = typeof import('./LeafletMap').default;
 
@@ -12,15 +12,21 @@ export function PortfolioMap({ buildings }: { buildings: BuildingPublic[] }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     let alive = true;
-    void import('./LeafletMap').then(module => { if (alive) setLeafletMap(() => module.default); });
     fetch('/api/buildings/map', { cache: 'no-store' }).then(response => response.ok ? response.json() as Promise<{slug:string;latitude:number;longitude:number}[]> : Promise.resolve([] as {slug:string;latitude:number;longitude:number}[])).then((rows: {slug:string;latitude:number;longitude:number}[]) => {
       if (alive) setVerified(buildings.flatMap(building => {
         const row = rows.find(item => item.slug === building.slug);
-        return row ? [{ ...building, latitude: row.latitude, longitude: row.longitude }] : [];
+        const candidate = row && { ...building, latitude: row.latitude, longitude: row.longitude, geocode_status: 'verified' as const, map_verified: true };
+        return candidate && verifiedLocation(candidate) ? [candidate] : [];
       }));
     }).catch(() => {}).finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
   }, [buildings]);
+  useEffect(() => {
+    if (!verified.length) return;
+    let alive = true;
+    void import('./LeafletMap').then(module => { if (alive) setLeafletMap(() => module.default); }).catch(() => {});
+    return () => { alive = false; };
+  }, [verified.length]);
   return <section aria-labelledby="portfolio-map-heading" className="bg-stone-50 py-16 sm:py-20">
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">Explore the portfolio</p>
