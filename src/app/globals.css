@@ -74,3 +74,13 @@ main a:active, main button:active { transform: translateY(1px); }
 /* Small transparent grain tiles add material depth without covering content or photography. */
 .texture-paper { background-image: url("/textures/paper-grain.png"); background-repeat: repeat; }
 .texture-graphite { background-image: url("/textures/graphite-grain.png"); background-repeat: repeat; }
+
+/* Homepage: spacious editorial compositions with restrained motion. */
+.home-eyebrow { margin-bottom: 1rem; font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+.home-button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 1.5rem; padding: .75rem 1.35rem; font-size: .875rem; font-weight: 600; transition: background-color .22s ease, color .22s ease, transform .22s ease; }
+.home-button:hover { transform: translateY(-2px); }
+.home-text-link { display: inline-flex; min-height: 44px; align-items: center; gap: 1.5rem; border-bottom: 1px solid currentColor; font-size: .875rem; font-weight: 600; }
+.home-photo { transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+.home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: scale(1.035); }
+.home-rail { scrollbar-width: thin; }
+@media (prefers-reduced-motion: reduce) { .home-button:hover, .home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: none; } }
