@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Teams Management — black, warm white, restrained gold */
+/* Teams Management — warm charcoal, warm white, selective gold */
 :root {
-  --teams-black: #111111;
-  --teams-white: #FAFAF8;
-  --teams-gold: #C99A3D;
-  --teams-accent-500: #A97C2E;
+  --teams-charcoal: #2F3133;
+  --teams-white: #FFFFFF;
+  --teams-surface: #F8F7F3;
+  --teams-border: #E4E2DD;
+  --teams-gold: #C89A3D;
+  --teams-accent-500: #B68B35;
 }
 
 /* Typography */
@@ -41,6 +43,6 @@ p {
 
 /* Selection */
 ::selection {
-  background-color: var(--teams-black);
+  background-color: var(--teams-charcoal);
   color: white;
 }

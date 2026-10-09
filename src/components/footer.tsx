@@ -3,7 +3,7 @@ import { ContactDetails } from '@/components/contact-details';
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-white mt-16 border-t border-teams-gold">
+    <footer className="bg-slate-950 text-white mt-16 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
@@ -42,11 +42,11 @@ export function Footer() {
             </ul>
           </div>
 
-          <div><h4 className="text-sm font-semibold text-slate-200 mb-3">Get in touch</h4><ContactDetails dark /><Link href="/contact" className="mt-4 inline-block text-sm text-white underline decoration-teams-gold underline-offset-4">Contact page</Link></div>
+          <div><h4 className="text-sm font-semibold text-slate-200 mb-3">Get in touch</h4><ContactDetails dark /><Link href="/contact" className="mt-4 inline-block text-sm text-white underline decoration-slate-400 underline-offset-4">Contact page</Link></div>
 
         </div>
 
-        <div className="mt-12 pt-8 border-t border-teams-gold/50 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="mt-12 pt-8 border-t border-slate-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-xs text-slate-300 text-center md:text-left">
             Property information is published after review.
           </p>

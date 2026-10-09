@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 /**
  * GET /api/buildings/data - Internal data reporting endpoint
  * NOT public - used during development to verify actual D1 state before build

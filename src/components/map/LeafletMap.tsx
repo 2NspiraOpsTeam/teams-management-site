@@ -21,7 +21,7 @@ interface LeafletMapContainerProps {
 const createDefaultIcon = () => {
   return L.divIcon({
     className: 'leaflet-div-icon',
-    html: '<i style="color:#b89f6e;font-size:18px"></i>',
+    html: '<i style="color:#C89A3D;font-size:18px"></i>',
     iconSize: [20, 20],
     iconAnchor: [10, 10]
   })
@@ -37,7 +37,7 @@ const CustomMarker = ({ position, popup }: MarkerProps) => {
     <div style={{
       width: '24px', height: '24px',
       borderRadius: '50%',
-      backgroundColor: '#b89f6e',
+      backgroundColor: '#C89A3D',
       border: '3px solid white',
       boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
       display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -74,7 +74,7 @@ export function LeafletMapContainer({
 
     // Fit bounds if provided
     if (bounds && fitBounds) {
-      map.fitBounds(bounds)
+      map.fitBounds([[bounds.south, bounds.west], [bounds.north, bounds.east]])
     }
 
     mapRef.current = map
@@ -155,7 +155,7 @@ export function PopupContent({ building }: { building: any }) {
         style={{ 
           display: 'inline-block', marginTop: '0.5rem',
           padding: '0.375rem 0.75rem',
-          background: '#b89f6e', color: 'white', textDecoration: 'none',
+          background: '#C89A3D', color: '#2F3133', textDecoration: 'none',
           fontSize: '0.85rem', borderRadius: '4px'
         }}
       >

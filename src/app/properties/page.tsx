@@ -25,7 +25,7 @@ export default async function PropertiesPage() {
           </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please check back soon.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">
             <p className="text-slate-600 mb-4">Questions about a property or our management services?</p>
-            <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-sm font-medium bg-slate-950 text-white border border-teams-gold hover:bg-slate-800">Contact Teams Management</Link>
+            <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-sm font-medium bg-teams-gold text-slate-950 hover:bg-teams-gold-highlight">Contact Teams Management</Link>
           </div>
         </div>
       </section>

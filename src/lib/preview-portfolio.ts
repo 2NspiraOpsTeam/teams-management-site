@@ -3,11 +3,26 @@ import type { BuildingPublic } from './database.types';
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
 export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1';
 
+// Approved Gold Street preview sequence; scoped to this property's preview route.
+export const goldStreetGallery = [
+  '/preview-properties/61-gold-st/input-IMG_1540---8fb1ca65-a1a8-4978-b538-0e29844bd4e8.jpg',
+  '/preview-properties/61-gold-st/input-IMG_1621---5b1701de-49f5-465f-afeb-0d6d7f05dfd5.jpg',
+  '/preview-properties/61-gold-st/input-IMG_1768---aee1973b-f300-46c7-95fa-e60c1c3205c7.jpg',
+  '/preview-properties/61-gold-st/input-IMG_1767---4fd2b4cc-d24d-480a-84c3-fcbc244e515b.jpg',
+  '/preview-properties/61-gold-st/input-IMG_1622---13fe8f18-9eff-4772-9462-c883aadf1958.jpg',
+  '/preview-properties/61-gold-st/input-IMG_1519---1dc9bbce-eba4-4a7b-a16a-9b751e51006c.jpg',
+  '/preview-properties/61-gold-st/input-brooklyn_bridge---26ecca4c-d9fd-4d83-840c-315d9018e018.png',
+  '/preview-properties/61-gold-st/input-IMG_1517---d432685b-dd66-4e50-9446-fde47ea8585f.jpg',
+  '/preview-properties/61-gold-st/input-IMG_1520---436992c6-0073-4f96-86d9-708fb2a6b23f.jpg',
+  '/preview-properties/61-gold-st/input-IMG_5284---88aaeaac-e28b-4bd6-a193-2f0c0d9bab21.jpg',
+] as const;
+
 // Supplied property-specific cover, scoped to the preview fixture until publication is approved.
 const previewCovers: Record<string, string> = {
   '42-70-156th-st-flushing': '/preview-properties/42-70-156th-street.jpg',
   '3425-east-tremont-bronx': '/preview-properties/3425-east-tremont-ave.jpg',
   '166-e-118th-st': '/preview-properties/166-e-118th-street.jpg',
+  '61-gold-st': goldStreetGallery[0],
 };
 
 export const previewPropertyCover = (slug: string) =>

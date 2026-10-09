@@ -13,7 +13,7 @@ export function PropertyCard({ building }: PropertyCardProps) {
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-5 sm:gap-6 min-w-0">
-      {cover ? <img src={cover} alt={`Street-facing exterior of ${building.address.street}`} className="aspect-[4/3] sm:aspect-square w-full object-cover border-2 border-teams-gold" /> : <div className="aspect-[4/3] sm:aspect-square bg-slate-950 border-2 border-teams-gold flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
+      {cover ? <img src={cover} alt={`Street-facing exterior of ${building.address.street}`} className="aspect-[4/3] sm:aspect-square w-full object-cover border border-slate-200" /> : <div className="aspect-[4/3] sm:aspect-square bg-slate-950 border border-slate-200 flex flex-col items-center justify-center px-6 text-center min-w-0" aria-label="Branded placeholder; no property photograph available">
         <span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property photography coming soon</span>
       </div>}
       <div className="flex flex-col items-start min-w-0 sm:py-1">
@@ -27,7 +27,7 @@ export function PropertyCard({ building }: PropertyCardProps) {
         )}
         <p className="mt-4 text-sm text-slate-600">Property details coming soon.</p>
         <p className="mt-5 mb-0 text-sm text-slate-600 break-words">{address}</p>
-        <Link href={`/properties/${building.slug}`} className="mt-5 inline-flex items-center gap-2 border-b border-teams-gold pb-1 text-sm font-semibold text-slate-950 hover:text-amber-800 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
+        <Link href={`/properties/${building.slug}`} className="mt-5 inline-flex items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-slate-950 hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
           View property <span aria-hidden="true">→</span>
         </Link>
       </div>

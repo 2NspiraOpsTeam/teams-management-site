@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { getPublicBuilding } from '@/lib/public-buildings';
-import { previewPortfolio, previewPortfolioEnabled, previewPropertyCover } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, previewPropertyCover, goldStreetGallery } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
@@ -26,11 +26,19 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </nav>
         <h1 className="text-4xl font-serif font-semibold text-slate-900 mb-4">{building.name}</h1>
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {building.address.zip}</p>
-        {cover && <img src={cover} alt={`Street-facing exterior of ${building.address.street}`} className="mb-10 w-full aspect-[16/9] object-cover border-2 border-teams-gold" />}
-        {!building.description_public && <p className="mb-10 border-l-2 border-teams-gold pl-4 text-slate-600">Property details coming soon.</p>}
+        {cover && <img src={cover} alt={`Street-facing exterior of ${building.address.street}`} className="mb-10 w-full aspect-[16/9] object-cover border border-slate-200" />}
+        {previewPortfolioEnabled && slug === '61-gold-st' && <section aria-labelledby="gold-street-gallery" className="mb-12">
+          <h2 id="gold-street-gallery" className="mb-6 text-2xl font-serif font-semibold text-slate-900">Gold Street gallery</h2>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {goldStreetGallery.slice(1).map((src, index) => <figure key={src} className="overflow-hidden border border-slate-200 bg-slate-50">
+              <img src={src} alt={`61 Gold St gallery image ${index + 2}`} loading="lazy" className="w-full aspect-[4/3] object-cover" />
+            </figure>)}
+          </div>
+        </section>}
+        {!building.description_public && <p className="mb-10 border-l-2 border-slate-300 pl-4 text-slate-600">Property details coming soon.</p>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
-        <Link href="/contact" className="inline-flex px-6 py-3 rounded-lg bg-slate-900 text-white hover:bg-slate-800">Contact Teams Management</Link>
+        <Link href="/contact" className="inline-flex px-6 py-3 rounded-sm bg-teams-gold font-semibold text-slate-950 hover:bg-teams-gold-highlight">Contact Teams Management</Link>
       </div>
     </main>
     <Footer />

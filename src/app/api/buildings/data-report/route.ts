@@ -1,32 +1,32 @@
+import { getRequestContext } from '@cloudflare/next-on-pages';
 import { NextResponse } from 'next/server';
 
-interface Env {
-  DB: D1Database;
-}
+export const runtime = 'edge';
 
-export async function GET(request: Request, env: Env) {
+export async function GET(request: Request) {
   try {
     const searchParams = new URL(request.url).searchParams;
     const query = searchParams.get('q') || ''; // SQL fragment (sanitized)
     
-    if (!env.DB) {
+    const db = (getRequestContext().env as { DB?: D1Database }).DB;
+    if (!db) {
       return NextResponse.json({ error: 'D1 binding not available' }, { status: 503 });
     }
     
     // Report total records and publication states
-    const stateCounts = await env.DB.prepare(`
+    const stateCounts = await db.prepare(`
       SELECT publication_state, COUNT(*) as count 
       FROM buildings 
       GROUP BY publication_state 
-      ORDER BY name
+      ORDER BY publication_state
     `).all();
     
     // Get specific property details
     const targetProperties = ['166 E 118th St', '170 E 118th St', '3425 East Tremont Ave'];
     const targetRecords = await Promise.all(
       targetProperties.map(name => 
-        env.DB.prepare(`
-          SELECT id, name, slug, address_json, latitude, longitude, geocode_status
+        db.prepare(`
+          SELECT id, name, slug, address_json
           FROM buildings 
           WHERE name = ? 
             AND (publication_state = 'published' OR publication_state = 'draft')
@@ -35,7 +35,7 @@ export async function GET(request: Request, env: Env) {
     );
     
     // Get count by state
-    const statesCount = await env.DB.prepare(`
+    const statesCount = await db.prepare(`
       SELECT 
         COUNT(*) as total,
         SUM(CASE WHEN publication_state = 'published' THEN 1 ELSE 0 END) as published_count,
@@ -49,9 +49,9 @@ export async function GET(request: Request, env: Env) {
       stateCounts: stateCounts.results,
       targetPropertiesCount: targetProperties.length,
       targetRecords: targetRecords.filter(r => r !== null),
-      totalBuildings: statesCount.total,
-      publishedCount: statesCount.published_count,
-      draftCount: statesCount.draft_count
+      totalBuildings: statesCount?.total ?? 0,
+      publishedCount: statesCount?.published_count ?? 0,
+      draftCount: statesCount?.draft_count ?? 0
     });
     
   } catch (error) {

@@ -9,16 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Neutral aliases preserve existing component utilities while removing navy.
+        // Shared warm-neutral palette for public and admin UI.
         slate: {
-          50: "#FAFAF8", 100: "#F6F4EF", 200: "#E7E4DC",
-          300: "#D1CEC7", 400: "#76736E", 500: "#5B5955",
-          600: "#44423F", 700: "#2D2C2A", 800: "#171717",
-          900: "#111111", 950: "#0A0A0A",
+          50: "#F8F7F3", 100: "#F1F0EC", 200: "#E4E2DD",
+          300: "#D1D0CA", 400: "#767A7D", 500: "#5B5F63",
+          600: "#505458", 700: "#45494D", 800: "#383B3E",
+          900: "#2F3133", 950: "#292B2D",
         },
         "teams-gold": {
-          DEFAULT: "#C99A3D", highlight: "#D9B45A",
-          muted: "#A97C2E", pale: "#E8D6A5",
+          DEFAULT: "#C89A3D", highlight: "#D2AA5B",
+          muted: "#B68B35", pale: "#F1E8D6",
         },
         "teams-offwhite": {
           50: "#fffffc",
@@ -28,7 +28,7 @@ const config: Config = {
           400: "#fff3e0",
           500: "#ffe0b2",
         },
-        "teams-accent": { 500: "#A97C2E", 600: "#825E21" },
+        "teams-accent": { 500: "#B68B35", 600: "#906D29" },
       },
       fontFamily: {
         sans: [
