@@ -12,13 +12,15 @@ export function Header() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
     { href: '/properties', label: 'Properties' },
+    { href: '/retail', label: 'Retail' },
+    { href: '/rent-with-us', label: 'Rent with Us' },
     { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact' },
     { href: '/tenant-services', label: 'Tenant Services' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-950 border-b border-slate-700 text-white">
+    <header className="sticky top-0 z-50 bg-[#2F3133]/95 backdrop-blur-md border-b border-white/10 text-white transition-colors">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex items-center justify-between min-h-20 gap-4">
           <Link href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">
@@ -44,7 +46,6 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link href="/rent-with-us" className="rounded-sm bg-teams-gold px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-teams-gold-highlight transition-colors">Rent with Us</Link>
           </div>
 
           {/* Mobile menu button */}
@@ -63,7 +64,6 @@ export function Header() {
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-slate-700 py-3 flex flex-col gap-1">
           {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className={`rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold`}>{item.label}</Link>)}
-          <Link href="/rent-with-us" onClick={() => setMenuOpen(false)} className="mx-3 mt-2 rounded-sm bg-teams-gold px-4 py-3 text-center font-semibold text-slate-950 hover:bg-teams-gold-highlight">Rent with Us</Link>
         </div>}
       </nav>
     </header>
