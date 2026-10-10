@@ -1,4 +1,4 @@
-export type MailEnv = { GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; INQUIRY_NOTIFICATION_EMAIL?: string; INQUIRY_FROM_EMAIL?: string; MAIL_PROVIDER?: string };
+export type MailEnv = { GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; TENANT_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; INQUIRY_NOTIFICATION_EMAIL?: string; INQUIRY_FROM_EMAIL?: string; MAIL_PROVIDER?: string };
 
 import { gmailConfigured, sendGmail } from './gmail-provider';
 
@@ -11,6 +11,11 @@ export interface TeamsMailService {
 export class MailService implements TeamsMailService {
   constructor(private readonly env: MailEnv) {}
   configured() { return gmailConfigured(this.env); }
+  async sendTenantOtp(to: string, code: string) {
+    const from = this.env.TENANT_AUTH_FROM;
+    if (!from) throw new Error('tenant_sender_not_configured');
+    return sendGmail(this.env, from, to, 'Your Teams Management tenant sign-in code', `Your Teams Management sign-in code is ${code}. It expires in 10 minutes. If you did not request this code, ignore this email.`);
+  }
   async sendAdminOtp(to: string, code: string) {
     const from = this.env.ADMIN_AUTH_FROM;
     if (!from) throw new Error('admin_sender_not_configured');

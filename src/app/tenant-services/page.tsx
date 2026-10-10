@@ -17,7 +17,8 @@ export default async function TenantServicesPage() {
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <h2 className="text-2xl font-serif font-semibold text-teams-ink mb-4">How can we help?</h2>
         <p className="text-slate-700 mb-6">For urgent property needs, continue using your established building-management or emergency contact method. For general questions, contact Teams Management directly:</p>
-        <ContactDetails />
+        <a href="/tenant/login" className="inline-flex px-6 py-3 rounded-lg bg-teams-gold text-teams-ink font-semibold hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">Tenant Login</a>
+        <div className="mt-10"><ContactDetails /></div>
         <a href="/contact" className="inline-flex px-6 py-3 rounded-lg bg-teams-gold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">Contact information</a>
       </section>
 <PageShowcase page="tenant-services" variant="split"/>    </main>
