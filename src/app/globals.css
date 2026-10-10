@@ -76,6 +76,7 @@ main a:active, main button:active { transform: translateY(1px); }
 /* Small transparent grain tiles add material depth without covering content or photography. */
 .texture-paper { background-image: url("/textures/paper-grain.png"); background-repeat: repeat; }
 .texture-graphite { background-image: url("/textures/graphite-grain.png"); background-repeat: repeat; }
+.gold-street-hero { background-color: #25292b; background-image: linear-gradient(90deg, rgba(20,24,26,.88), rgba(20,24,26,.56)), url("/preview-properties/61-gold-st/input-IMG_1540---8fb1ca65-a1a8-4978-b538-0e29844bd4e8.jpg"); background-size: cover; background-position: center 48%; }
 
 /* Homepage: spacious editorial compositions with restrained motion. */
 .home-eyebrow { margin-bottom: 1rem; font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }

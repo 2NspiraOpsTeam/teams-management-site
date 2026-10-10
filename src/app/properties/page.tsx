@@ -18,10 +18,10 @@ export default async function PropertiesPage() {
   return <>
     <Header />
     <main>
-      <section className="bg-stone-50 py-14 sm:py-20">
+      <section className="gold-street-hero text-white py-14 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-teams-ink mb-4">Our Portfolio</h1>
-          <p className="text-lg text-slate-600 max-w-2xl">Explore our New York portfolio and find a property that feels right for you.</p>
+          <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-white mb-4">Our Portfolio</h1>
+          <p className="text-lg text-slate-100 max-w-2xl">Explore our New York portfolio and find a property that feels right for you.</p>
         </div>
       </section>
       <section className="py-14 sm:py-20 bg-white">

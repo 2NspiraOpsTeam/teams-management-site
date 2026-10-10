@@ -8,7 +8,7 @@ export default async function TenantServicesPage() {
   return <>
     <Header />
     <main className="min-h-[70vh] bg-slate-50">
-      <section className="bg-teams-charcoal text-white py-16 sm:py-20">
+      <section className="gold-street-hero text-white py-16 sm:py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-serif font-semibold mb-5">Tenant Services</h1>
           <p className="text-lg text-slate-200 leading-relaxed">Support and useful information for the people who call our properties home.</p>
