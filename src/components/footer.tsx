@@ -36,7 +36,6 @@ export function Footer() {
               </li>
               <li><Link href="/about" className="text-slate-300 hover:text-white text-sm">About Us</Link></li>
               <li><Link href="/rent-with-us" className="text-slate-300 hover:text-white text-sm">Rent with Us</Link></li>
-              <li><Link href="/gallery" className="text-slate-300 hover:text-white text-sm">Gallery</Link></li>
               <li><Link href="/contact" className="text-slate-300 hover:text-white text-sm">Contact</Link></li>
               <li><Link href="/tenant-services" className="text-slate-300 hover:text-white text-sm">Tenant Services</Link></li>
             </ul>

@@ -21,14 +21,14 @@ export default async function PropertiesPage() {
       <section className="bg-stone-50 py-14 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-teams-ink mb-4">Our Portfolio</h1>
-          <p className="text-lg text-slate-600 max-w-2xl">Explore Teams Management properties. Details are added as they are verified.</p>
+          <p className="text-lg text-slate-600 max-w-2xl">Explore our New York portfolio and find a property that feels right for you.</p>
         </div>
       </section>
       <section className="py-14 sm:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {buildings.length > 0 ? <div className="space-y-12 sm:space-y-16">
             {buildings.map(building => <PropertyCard key={building.id} building={building} images={galleryMap.get(building.slug)} showPreviewFacts={previewPortfolioEnabled} />)}
-          </div> : <p className="text-slate-600">Property profiles are being prepared for publication. Please check back soon.</p>}
+          </div> : <p className="text-slate-600">Contact our team to ask about a property.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">
             <p className="text-slate-600 mb-4">Questions about a property or our management services?</p>
             <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-sm font-medium bg-teams-gold text-teams-ink hover:bg-teams-gold-highlight">Contact Teams Management</Link>

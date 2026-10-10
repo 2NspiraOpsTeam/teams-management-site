@@ -13,9 +13,7 @@ export function Header() {
     { href: '/properties', label: 'Properties' },
     { href: '/retail', label: 'Retail' },
     { href: '/rent-with-us', label: 'Rent with Us' },
-    { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact' },
-    { href: '/tenant-services', label: 'Tenant Services' },
   ];
 
   return (
@@ -31,6 +29,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden xl:flex items-center gap-4">
+            <Link href="/" aria-current={pathname === '/' ? 'page' : undefined} className="text-sm font-medium border-b-2 border-transparent py-2 text-white/80 transition-colors hover:border-slate-400 hover:text-white aria-[current=page]:border-teams-gold aria-[current=page]:text-white">Home</Link>
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -45,6 +44,7 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link href="/tenant-services" aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="nav-tenant-cta rounded-sm bg-teams-gold px-4 py-2 text-sm font-semibold text-teams-ink hover:bg-teams-gold-highlight">Tenant Services</Link>
           </div>
 
           {/* Mobile menu button */}
@@ -62,7 +62,9 @@ export function Header() {
           </button>
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-slate-700 py-3 flex flex-col gap-1">
+          <Link href="/" onClick={() => setMenuOpen(false)} aria-current={pathname === '/' ? 'page' : undefined} className="rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold">Home</Link>
           {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className={`rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold`}>{item.label}</Link>)}
+          <Link href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="nav-tenant-cta mt-2 rounded-sm bg-teams-gold px-4 py-3 text-center font-semibold text-teams-ink hover:bg-teams-gold-highlight">Tenant Services</Link>
         </div>}
       </nav>
     </header>

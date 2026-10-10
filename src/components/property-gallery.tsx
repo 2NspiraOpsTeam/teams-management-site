@@ -23,7 +23,7 @@ export function PropertyGallery({ images, name, compact = false }: { images: Gal
     return () => window.clearInterval(timer);
   }, [images.length, paused, manuallyPaused, reducedMotion]);
 
-  if (!images.length) return <div className={`${compact ? 'aspect-[4/3]' : 'aspect-[16/9]'} bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center`} aria-label="Branded placeholder; no property photograph available"><span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property photography coming soon</span></div>;
+  if (!images.length) return <div className={`${compact ? 'aspect-[4/3]' : 'aspect-[16/9]'} bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center`} aria-label="Branded placeholder; no property photograph available"><span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property image unavailable</span></div>;
 
   const current = images[index % images.length];
   const move = (delta: number) => setIndex(value => (value + delta + images.length) % images.length);
