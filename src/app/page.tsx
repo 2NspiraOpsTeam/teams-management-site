@@ -29,10 +29,12 @@ export default async function Home() {
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
   const featured = unique([...curated, ...eligible.filter(item => !curated.some(selected => selected.building.slug === item.building.slug))]).slice(0, 3);
   const showcase = unique(eligible.filter(item => !featured.some(selected => selected.building.slug === item.building.slug))).slice(0, 6);
+  const hero = assignments.find(item => item.slot === 'hero') || featured[0]?.image;
   const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || showcase[0]?.image;
 
   return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
-    <section className="texture-graphite relative isolate flex min-h-[min(720px,78svh)] items-end overflow-hidden bg-teams-charcoal text-white sm:min-h-[680px]">
+    <section className="relative isolate flex min-h-[min(720px,78svh)] items-end overflow-hidden bg-teams-charcoal text-white sm:min-h-[680px]">
+      {hero && <div className="absolute inset-0 -z-20">{photo(hero, 'Teams Management property', true)}</div>}
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#1d2022]/90 via-[#1d2022]/35 to-[#1d2022]/15" />
       <div className="mx-auto w-full max-w-7xl px-5 pb-16 pt-32 sm:px-8 sm:pb-24 lg:px-12">
         <p className="mb-5 text-xs font-semibold uppercase tracking-[.24em] text-[#e5d5b2]">Teams Management · New York City</p>
