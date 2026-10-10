@@ -1,6 +1,24 @@
 import type { D1Database } from '@cloudflare/workers-types';
+import { goldStreetGallery } from './preview-portfolio';
 
 export type MediaRow = { id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; slot?:string };
+const numberedPreviewMedia = (slug:string,count:number) => Array.from(
+  { length: count },
+  (_,index) => `/preview-properties/${slug}/image-${String(index + 1).padStart(2,'0')}.jpg`,
+);
+const deliverableStaticMedia = new Set([
+  '/preview-properties/42-70-156th-street.jpg',
+  '/preview-properties/3425-east-tremont-ave.jpg',
+  '/preview-properties/166-e-118th-street.jpg',
+  ...goldStreetGallery,
+  ...numberedPreviewMedia('1374-1st-ave',10),
+  ...numberedPreviewMedia('225-e-83rd-st',13),
+  ...numberedPreviewMedia('171-e-74th-st',7),
+  ...numberedPreviewMedia('349-351-w-46th-st',16),
+  ...numberedPreviewMedia('1365-1st-ave',8),
+  ...numberedPreviewMedia('42-70-156th-st-flushing',14),
+]);
+export const isDeliverablePublicMedia = (item:MediaRow) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
 export const mediaUrl = (id:string) => `/api/media/${encodeURIComponent(id)}`;
 export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/preview-properties/') ? item.storage_key : mediaUrl(item.id);
 export const mediaPreviewUrl = (id:string) => `/api/admin/media/${encodeURIComponent(id)}/file`;
