@@ -7,13 +7,20 @@ import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, previewStaticCover } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
 export default async function PropertiesPage() {
   const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
-  const galleries = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];return [building.slug,ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}))] as const;}));
+  const galleries = await Promise.all(buildings.map(async building => {
+    const media = await propertyMedia(adminDb(),building.slug);
+    const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];
+    const images=ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
+    const staticCover=previewStaticCover(building.slug);
+    if (!images.length && staticCover) images.push({src:staticCover,alt:`Street-facing exterior of ${building.name}`,caption:null});
+    return [building.slug,images] as const;
+  }));
   const galleryMap = new Map(galleries);
   return <>
     <Header />

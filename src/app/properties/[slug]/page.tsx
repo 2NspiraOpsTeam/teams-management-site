@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { getPublicBuilding } from '@/lib/public-buildings';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, previewStaticCover } from '@/lib/preview-portfolio';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery } from '@/components/property-gallery';
 
@@ -16,8 +16,11 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const { slug } = await params;
   const building = previewPortfolioEnabled ? previewPortfolio.find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) notFound();
-  const media = await propertyMedia(adminDb(),slug);
-  const images = [...media.filter(item=>item.is_cover),...media.filter(item=>!item.is_cover)].map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
+  const staticCover = previewStaticCover(slug);
+  const media = staticCover ? [] : await propertyMedia(adminDb(),slug);
+  const images = staticCover
+    ? [{ src: staticCover, alt: `Street-facing exterior of ${building.address.street}`, caption: null }]
+    : [...media.filter(item=>item.is_cover),...media.filter(item=>!item.is_cover)].map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
 
   return <>
     <Header />
