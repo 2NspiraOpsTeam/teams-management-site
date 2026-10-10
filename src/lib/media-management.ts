@@ -1,15 +1,23 @@
 import type { D1Database } from '@cloudflare/workers-types';
+import { goldStreetGallery } from './preview-portfolio';
 
 export type MediaRow = { id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; slot?:string; property_name?:string|null; property_slug?:string|null };
+const deliverableStaticMedia = new Set([
+  '/preview-properties/42-70-156th-street.jpg',
+  '/preview-properties/3425-east-tremont-ave.jpg',
+  '/preview-properties/166-e-118th-street.jpg',
+  ...goldStreetGallery,
+]);
+export const isDeliverablePublicMedia = (item:MediaRow) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
 export const mediaUrl = (id:string) => `/api/media/${encodeURIComponent(id)}`;
 export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/preview-properties/') ? item.storage_key : mediaUrl(item.id);
 export const mediaPreviewUrl = (id:string) => `/api/admin/media/${encodeURIComponent(id)}/file`;
 export async function propertyMedia(db:D1Database,slug:string,includeDraft=false) {
  const query = `SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,m.id AS assignment_id,m.is_cover,m.order_index,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(m.caption,''),a.caption) AS caption,COALESCE(p.published,0) AS published FROM media_assignments m JOIN media_assets a ON a.id=m.asset_id JOIN buildings b ON b.id=m.building_id LEFT JOIN media_publications p ON p.assignment_id=m.id WHERE b.slug=? ${includeDraft?'':"AND a.visibility='public' AND COALESCE(p.published,0)=1"} ORDER BY m.order_index,m.created_at`;
- return (await db.prepare(query).bind(slug).all<MediaRow>()).results;
+ return (await db.prepare(query).bind(slug).all<MediaRow>()).results.filter(isDeliverablePublicMedia);
 }
 export async function homeMedia(db:D1Database,includeDraft=false) {
- return (await db.prepare(`SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,h.id AS assignment_id,h.slot,h.order_index,COALESCE(NULLIF(h.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(h.caption,''),a.caption) AS caption,h.published,(SELECT b.name FROM media_assignments m JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN buildings b ON b.id=m.building_id WHERE m.asset_id=a.id ORDER BY m.created_at LIMIT 1) AS property_name,(SELECT b.slug FROM media_assignments m JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN buildings b ON b.id=m.building_id WHERE m.asset_id=a.id ORDER BY m.created_at LIMIT 1) AS property_slug FROM media_home_assignments h JOIN media_assets a ON a.id=h.asset_id ${includeDraft?'':"WHERE h.published=1 AND a.visibility='public'"} ORDER BY CASE h.slot WHEN 'hero' THEN 0 WHEN 'featured' THEN 1 ELSE 2 END,h.order_index`).all<MediaRow>()).results;
+ return (await db.prepare(`SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,h.id AS assignment_id,h.slot,h.order_index,COALESCE(NULLIF(h.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(h.caption,''),a.caption) AS caption,h.published,(SELECT b.name FROM media_assignments m JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN buildings b ON b.id=m.building_id WHERE m.asset_id=a.id ORDER BY m.created_at LIMIT 1) AS property_name,(SELECT b.slug FROM media_assignments m JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN buildings b ON b.id=m.building_id WHERE m.asset_id=a.id ORDER BY m.created_at LIMIT 1) AS property_slug FROM media_home_assignments h JOIN media_assets a ON a.id=h.asset_id ${includeDraft?'':"WHERE h.published=1 AND a.visibility='public'"} ORDER BY CASE h.slot WHEN 'hero' THEN 0 WHEN 'featured' THEN 1 ELSE 2 END,h.order_index`).all<MediaRow>()).results.filter(isDeliverablePublicMedia);
 }
 export function imageDimensions(bytes:Uint8Array,mime:string):{width:number;height:number}|null {
  const d=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
