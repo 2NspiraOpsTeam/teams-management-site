@@ -38,6 +38,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         {previewPortfolioEnabled && <div className="mb-10"><PreviewBuildingDetails slug={building.slug} /></div>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
+        {previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402' && <section className="mb-10 text-sm text-slate-600" aria-label="Property information sources">
+          <h2 className="text-lg font-semibold text-teams-ink mb-2">About these details</h2>
+          <p>Unit facts and area measurements come from the <a className="underline" href="https://www.sarasotapropertyappraiser.gov/propertysearch/parcel/details/2010098006" target="_blank" rel="noopener noreferrer">Sarasota County Property Appraiser’s Unit 402 record</a>. Features and building amenities are described in a <a className="underline" href="https://www.homesbymarco.com/properties/609-golden-gate-point-402-sarasota-fl-34236/2343981/3537199" target="_blank" rel="noopener noreferrer">historical sales listing</a> and should be confirmed before a rental is offered. Ask Teams Management about current availability, rent, lease terms, pets, parking, and amenity access.</p>
+        </section>}
 
       </div>
     </main>
