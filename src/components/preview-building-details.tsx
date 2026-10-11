@@ -9,8 +9,8 @@ export function PreviewBuildingDetails({ slug }: { slug: string }) {
       <div><dt className="text-slate-500">Apartments</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.apartments}</dd></div>
       {facts.residentialFloors && <div><dt className="text-slate-500">Residential floors</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.residentialFloors}</dd></div>}
       {facts.bedroomMix && <div><dt className="text-slate-500">Unit types</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.bedroomMix}</dd></div>}
-      {facts.sizeRange && <div><dt className="text-slate-500">Recorded sizes</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.sizeRange}</dd></div>}
+      {facts.sizeRange && <div><dt className="text-slate-500">Apartment sizes</dt><dd className="mt-1 font-semibold text-teams-ink">{facts.sizeRange}</dd></div>}
     </dl>
-    {facts.retail?.length ? <p className="mt-4 text-sm leading-relaxed text-slate-700"><span className="font-semibold text-teams-ink">Retail space: </span>{`${facts.retail.length} ${facts.retail.length === 1 ? 'storefront' : 'storefronts'} recorded · ${facts.retail.join(' · ')}`}</p> : null}
+    {facts.retail?.length ? <p className="mt-4 text-sm leading-relaxed text-slate-700"><span className="font-semibold text-teams-ink">Retail space: </span>{`${facts.retail.length} ${facts.retail.length === 1 ? 'storefront' : 'storefronts'} · ${facts.retail.join(' · ')}`}</p> : null}
   </section>;
 }
