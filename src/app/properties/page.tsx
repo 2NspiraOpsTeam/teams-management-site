@@ -7,7 +7,7 @@ import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhoto } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
@@ -15,13 +15,14 @@ export default async function PropertiesPage() {
   const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
   const galleries = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];return [building.slug,ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}))] as const;}));
   const galleryMap = new Map(galleries);
+  if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt-unit-402', [sarasotaUnitPhoto]);
   return <>
     <Header />
     <main>
       <section className="gold-street-hero gold-street-hero--properties text-white py-14 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-white mb-4">Our Portfolio</h1>
-          <p className="text-lg text-slate-100 max-w-2xl">Explore our New York portfolio and find a property that feels right for you.</p>
+          <p className="text-lg text-slate-100 max-w-2xl">Explore the properties and individual residences in our portfolio.</p>
         </div>
       </section>
       <section className="py-14 sm:py-20 bg-white">

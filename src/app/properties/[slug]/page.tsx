@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { getPublicBuilding } from '@/lib/public-buildings';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhoto } from '@/lib/preview-portfolio';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery } from '@/components/property-gallery';
 
@@ -18,6 +18,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   if (!building) notFound();
   const media = await propertyMedia(adminDb(),slug);
   const images = [...media.filter(item=>item.is_cover),...media.filter(item=>!item.is_cover)].map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
+  if (previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402') images.unshift(sarasotaUnitPhoto);
 
   return <>
     <Header />

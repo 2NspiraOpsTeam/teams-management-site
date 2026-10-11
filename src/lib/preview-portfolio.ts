@@ -48,3 +48,23 @@ export const previewPortfolio: BuildingPublic[] = confirmedAddresses.map(([slug,
   created_at: '',
   updated_at: '',
 }));
+
+// Unit-only Sarasota portfolio entry. Do not imply management of the condominium building.
+previewPortfolio.push({
+  id: 'preview-609-golden-gate-pt-unit-402',
+  name: '609 Golden Gate Point, Unit 402',
+  slug: '609-golden-gate-pt-unit-402',
+  address: { street: '609 Golden Gate Point, Unit 402', city: 'Sarasota', state: 'FL', zip: '34236' },
+  description_public: 'Teams Management manages Unit 402 only. Historical listing records describe this condominium as a three-bedroom, three-bathroom residence with approximately 2,750 square feet. This portfolio entry does not indicate current availability.',
+  amenities_public: [],
+  gallery: [],
+  publication_state: 'draft',
+  created_at: '',
+  updated_at: '',
+});
+
+export const sarasotaUnitPhoto = {
+  src: '/preview-properties/609-golden-gate-pt-unit-402/area-aerial.jpg',
+  alt: 'Aerial view of the Golden Gate Point waterfront area in Sarasota',
+  caption: 'Area aerial from the historical Unit 402 listing; not a photograph of the apartment interior.',
+};
