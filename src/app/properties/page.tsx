@@ -7,7 +7,7 @@ import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhoto } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 
@@ -15,7 +15,7 @@ export default async function PropertiesPage() {
   const buildings = previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings();
   const galleries = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];return [building.slug,ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}))] as const;}));
   const galleryMap = new Map(galleries);
-  if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt-unit-402', [sarasotaUnitPhoto]);
+  if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt-unit-402', sarasotaUnitPhotos);
   return <>
     <Header />
     <main>

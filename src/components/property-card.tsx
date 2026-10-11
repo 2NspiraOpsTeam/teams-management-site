@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
-import { directionsUrl } from '@/lib/map-location';
+import { directionsUrl, streetViewExploreUrl } from '@/lib/map-location';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery, type GalleryImage } from '@/components/property-gallery';
 
@@ -35,6 +35,7 @@ export function PropertyCard({ building, coverOverride, images = [], showPreview
           View property <span aria-hidden="true">→</span>
         </Link>
         <a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">Map &amp; Directions ↗</a>
+        <a href={streetViewExploreUrl(building.address)} target="_blank" rel="noopener noreferrer" aria-label={`Explore Street View for ${building.name} in Google Maps, where available`} className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">Explore Street View ↗</a>
         </div>
       </div>
     </article>

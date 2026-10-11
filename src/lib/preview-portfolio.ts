@@ -68,8 +68,26 @@ previewPortfolio.push({
   updated_at: '',
 });
 
-export const sarasotaUnitPhoto = {
-  src: '/preview-properties/609-golden-gate-pt-unit-402/area-aerial.jpg',
-  alt: 'Aerial view of the Golden Gate Point waterfront area in Sarasota',
-  caption: 'Area aerial from the historical Unit 402 listing; not a photograph of the apartment interior.',
-};
+// Owner-supplied historical listing photos. Do not imply that furnishings or access are current.
+export const sarasotaUnitPhotos = [
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/living-room.webp', alt: 'Historical photo of the Unit 402 living area opening onto a terrace', caption: 'Historical Unit 402 living area; furnishings may have changed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/bathroom.webp', alt: 'Historical photo of a bathroom with double vanity and glass shower', caption: 'Historical Unit 402 bathroom photo.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/shower.webp', alt: 'Historical photo of the glass-enclosed shower and bathroom', caption: 'Another historical view of a Unit 402 bathroom.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/bathroom-tub.webp', alt: 'Historical photo of a bathroom with double vanity and freestanding tub', caption: 'Historical Unit 402 bathroom photo; fixtures should be confirmed before a rental is offered.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/bedroom.webp', alt: 'Historical photo of a bedroom with a bed and tall windows', caption: 'Historical Unit 402 bedroom photo; furnishings may have changed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/pearl-entrance.webp', alt: 'Historical photo of The Pearl condominium entrance', caption: 'Historical photo of The Pearl building entrance; Teams Management manages Unit 402 only.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/kitchen-living.webp', alt: 'Historical photo of the open kitchen and living area in Unit 402', caption: 'Historical Unit 402 interior photo; furnishings may have changed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/kitchen-dining.webp', alt: 'Historical photo of the kitchen island, cooktop, and dining area', caption: 'Historical Unit 402 kitchen photo; appliances and furnishings should be confirmed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/kitchen-to-living.webp', alt: 'Historical view from the kitchen toward the living area and terrace', caption: 'Historical Unit 402 interior photo; furnishings may have changed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/interior-terrace.webp', alt: 'Historical interior photo showing two lounge chairs beside a terrace', caption: 'Historical Unit 402 interior photo; furnishings may have changed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/interior-reverse.webp', alt: 'Historical interior photo showing lounge chairs, television, and an adjoining bathroom', caption: 'Another view of the same room in the historical listing.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/building-waterfront.webp', alt: 'Aerial view of The Pearl and the nearby waterfront', caption: 'Historical aerial view of The Pearl and its waterfront surroundings.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/building-pool.webp', alt: 'Aerial view of The Pearl, nearby waterfront, and pool area', caption: 'Historical building aerial; confirm current amenity access with Teams Management.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/garage-402.webp', alt: 'Historical photo of the garage door marked 402', caption: 'Historical photo of the garage marked 402; confirm current parking rights with Teams Management.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/pool.webp', alt: 'Historical photo of the condominium pool', caption: 'Historical building pool photo; confirm current amenity access with Teams Management.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/pool-deck.webp', alt: 'Historical photo of the condominium pool deck and lounge chairs', caption: 'Another historical view of the pool area; amenity access should be confirmed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/waterfront-view.webp', alt: 'Historical view toward the Sarasota waterfront from Golden Gate Point', caption: 'Historical neighborhood waterfront view; not a verified view from Unit 402.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/terrace-view.webp', alt: 'Historical photo of a terrace overlooking the waterfront', caption: 'Historical terrace photo; furnishings and views should be confirmed before a rental is offered.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/laundry.webp', alt: 'Historical photo of a laundry room with washer and dryer', caption: 'Historical interior photo; appliance availability should be confirmed.' },
+  { src: '/preview-properties/609-golden-gate-pt-unit-402/office.webp', alt: 'Historical photo of an office with two desks', caption: 'Historical interior photo; furniture is not represented as included.' },
+];

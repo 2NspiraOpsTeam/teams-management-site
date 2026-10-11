@@ -8,6 +8,10 @@ export function directionsUrl(address: BuildingPublic['address']) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addressLabel(address))}`;
 }
 
+export function streetViewExploreUrl(address: BuildingPublic['address']) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLabel(address))}`;
+}
+
 export function verifiedLocation(building: BuildingPublic) {
   const { latitude, longitude, geocode_status, map_verified } = building;
   return map_verified === true && geocode_status === 'verified' &&
