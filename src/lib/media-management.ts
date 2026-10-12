@@ -17,7 +17,7 @@ const deliverableStaticMedia = new Set([
 ]);
 export const isDeliverablePublicMedia = (item:Pick<MediaRow,'storage_key'>) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
 export const mediaUrl = (id:string) => `/api/media/${encodeURIComponent(id)}`;
-export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/preview-properties/') ? item.storage_key : mediaUrl(item.id);
+export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/') ? item.storage_key : mediaUrl(item.id);
 export const mediaPreviewUrl = (id:string) => `/api/admin/media/${encodeURIComponent(id)}/file`;
 export async function propertyMedia(db:D1Database,slug:string,includeDraft=false) {
  const query = `SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,m.id AS assignment_id,m.is_cover,m.order_index,u.unit_identifier,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(m.caption,''),a.caption) AS caption,COALESCE(p.published,0) AS published FROM media_assignments m JOIN media_assets a ON a.id=m.asset_id JOIN buildings b ON b.id=m.building_id LEFT JOIN units u ON u.id=m.unit_id LEFT JOIN media_publications p ON p.assignment_id=m.id WHERE b.slug=? ${includeDraft?'':"AND m.unit_id IS NULL AND a.visibility='public' AND COALESCE(p.published,0)=1"} ORDER BY m.unit_id,m.order_index,m.created_at`;

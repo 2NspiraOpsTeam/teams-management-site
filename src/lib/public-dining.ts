@@ -1,6 +1,7 @@
 import type { D1Database } from '@cloudflare/workers-types';
 import { adminDb } from './admin-auth';
 import { isDeliverablePublicMedia, publicMediaSrc, type MediaRow } from './media-management';
+import { previewPortfolioEnabled } from './preview-portfolio';
 
 type DiningRow = {
   id: string; name: string; slug: string; property_id: string; property_name: string;
@@ -22,7 +23,7 @@ export async function listPublicDining(propertySlug?: string, db: D1Database = a
     d.ordering_url,d.phone,d.hero_media_asset_id,a.storage_key,a.file_type,a.visibility,a.alt_text,a.caption
     FROM dining_venues d JOIN buildings b ON b.id=d.property_id
     LEFT JOIN media_assets a ON a.id=d.hero_media_asset_id
-    WHERE d.publication_state='published' AND b.publication_state!='archived'
+    WHERE d.publication_state='published' AND ${previewPortfolioEnabled ? "b.publication_state!='archived'" : "b.publication_state='published'"}
     ${propertySlug ? 'AND b.slug=?' : ''}
     ORDER BY d.display_order,d.name`).bind(...(propertySlug ? [propertySlug] : [])).all<DiningRow>();
   return result.results.map(row => {
