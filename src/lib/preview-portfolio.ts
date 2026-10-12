@@ -49,6 +49,9 @@ export const previewPortfolio: BuildingPublic[] = confirmedAddresses.map(([slug,
   updated_at: '',
 }));
 
+const tremont = previewPortfolio.find(item => item.slug === '3425-east-tremont-bronx');
+if (tremont) tremont.description_public = 'A two-story commercial property on East Tremont Avenue in the Bronx, combining street-facing retail frontage with office space above.';
+
 // Unit-only Sarasota portfolio entry. Do not imply management of the condominium building.
 previewPortfolio.push({
   id: 'preview-609-golden-gate-pt-unit-402',
@@ -95,9 +98,17 @@ export const sarasotaUnitPhotos = [
 // Owner-supplied Apartment 1B images. Keep unit imagery scoped to this preview detail page.
 export const east110UnitPhotos = [
   { src: '/preview-properties/71-e-110th-st/living-wide.jpg', alt: 'Wide view of the living area in Apartment 1B', caption: 'Apartment 1B · Living area' },
-  { src: '/preview-properties/71-e-110th-st/living-entry.jpg', alt: 'Living area and entry in Apartment 1B', caption: 'Apartment 1B · Living area' },
   { src: '/preview-properties/71-e-110th-st/kitchen.jpg', alt: 'Kitchen with wood cabinets and stainless-steel appliances in Apartment 1B', caption: 'Apartment 1B · Kitchen' },
   { src: '/preview-properties/71-e-110th-st/bedroom-one.jpg', alt: 'Bedroom with a window and wood flooring in Apartment 1B', caption: 'Apartment 1B · Bedroom' },
   { src: '/preview-properties/71-e-110th-st/bedroom-two.jpg', alt: 'Second bedroom view with mirrored closet doors in Apartment 1B', caption: 'Apartment 1B · Bedroom' },
   { src: '/preview-properties/71-e-110th-st/bathroom.jpg', alt: 'Bathroom with tub, vanity, and laundry appliance in Apartment 1B', caption: 'Apartment 1B · Bathroom' },
+];
+
+// Owner-supplied Penthouse A images; never present its terrace as shared grounds.
+export const east110PenthousePhotos = [
+  { src: '/preview-properties/71-e-110th-st/penthouse-living.jpg', alt: 'Living area and city-facing windows in Penthouse A', caption: 'Penthouse A · Living area' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-kitchen.jpg', alt: 'Open kitchen and adjoining living area in Penthouse A', caption: 'Penthouse A · Kitchen and living area' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-bedroom.jpg', alt: 'Room with mirrored closet and terrace door in Penthouse A', caption: 'Penthouse A · Interior room' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-bathroom.jpg', alt: 'Bathroom with tub and laundry appliance in Penthouse A', caption: 'Penthouse A · Bathroom' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-terrace.jpg', alt: 'Private terrace photographed from Penthouse A', caption: 'Penthouse A · Terrace' },
 ];

@@ -1,4 +1,5 @@
 import { PageShowcase } from '@/components/page-showcase';
+import { AcrossCityRail } from '@/components/across-city-rail';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -27,8 +28,13 @@ export default async function Home() {
     return match && { building: match.building, image: item };
   }).filter((item): item is Feature => !!item);
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
-  const featured = unique([...curated, ...eligible.filter(item => !curated.some(selected => selected.building.slug === item.building.slug))]).slice(0, 3);
-  const showcase = unique(eligible.filter(item => !featured.some(selected => selected.building.slug === item.building.slug))).slice(0, 6);
+  const featured = previewPortfolioEnabled
+    ? ['61-gold-st', '3425-east-tremont-bronx'].map(slug => unique([...curated, ...eligible]).find(item => item.building.slug === slug)).filter((item): item is Feature => !!item)
+    : unique([...curated, ...eligible.filter(item => !curated.some(selected => selected.building.slug === item.building.slug))]).slice(0, 3);
+  const showcaseCandidates = unique(eligible.filter(item => !featured.some(selected => selected.building.slug === item.building.slug)));
+  const showcase = (previewPortfolioEnabled
+    ? [...showcaseCandidates, ...featured.filter(item => item.building.slug === '61-gold-st')]
+    : showcaseCandidates).slice(0, previewPortfolioEnabled ? 5 : 6);
   const hero = assignments.find(item => item.slot === 'hero') || featured[0]?.image;
   const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || showcase[0]?.image;
 
@@ -47,12 +53,12 @@ export default async function Home() {
     <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12" aria-labelledby="featured-title">
       <div className="mb-11 flex flex-wrap items-end justify-between gap-5"><div><p className="home-eyebrow">The portfolio</p><h2 id="featured-title" className="font-serif text-4xl font-normal sm:text-6xl">Featured properties</h2></div><p className="mb-0 max-w-xs text-sm text-teams-secondary">A closer look at selected addresses in our portfolio.</p></div>
       {featured.length > 0 ? <div className="space-y-14 sm:space-y-20">{featured.map(({building,image},index) => <article key={building.slug} className={`grid gap-5 lg:grid-cols-12 lg:items-center lg:gap-12 ${index % 2 ? 'lg:[&>div:first-child]:order-2' : ''}`}>
-        <Link href={`/properties/${building.slug}`} className="home-image-link block aspect-[4/3] overflow-hidden bg-stone-200 sm:aspect-[16/10] lg:col-span-8" aria-label={`View ${building.name}`}>{photo(image, `Approved photo of ${building.name}`)}</Link>
-        <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3><p className="mb-6 text-sm text-teams-secondary">{building.address.street} · {building.address.city}, {building.address.state}</p><Link className="home-text-link" href={`/properties/${building.slug}`}>View Property <span aria-hidden="true">↗</span></Link></div>
+        <Link href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`} className="home-image-link block aspect-[4/3] overflow-hidden bg-stone-200 sm:aspect-[16/10] lg:col-span-8" aria-label={`View ${building.name}`}>{photo(image, `Approved photo of ${building.name}`)}</Link>
+        <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3>{previewPortfolioEnabled && <p className="mb-2 text-sm font-semibold text-teams-ink">{building.slug === '61-gold-st' ? 'Premier property · Coming soon' : 'Retail space'}</p>}<p className="mb-6 text-sm text-teams-secondary">{building.address.street} · {building.address.city}, {building.address.state}</p><Link className="home-text-link" href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`}>View Property <span aria-hidden="true">↗</span></Link></div>
       </article>)}</div> : <div className="border-t border-stone-300 py-14"><p className="mb-5">Explore the properties currently available to view.</p><Link className="home-text-link" href="/properties">View All Properties ↗</Link></div>}
     </section>
 
-    {showcase.length > 0 && <section className="bg-[#eae7e2] py-16 sm:py-24" aria-labelledby="more-title"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12"><div className="mb-8 flex items-end justify-between gap-4"><div><p className="home-eyebrow">Discover more</p><h2 id="more-title" className="font-serif text-3xl font-normal sm:text-5xl">Across the city</h2></div><p className="mb-0 hidden text-sm text-teams-secondary sm:block">Browse →</p></div><div className="home-rail flex snap-x snap-mandatory gap-4 overflow-x-auto pb-5 sm:gap-6">{showcase.map(({building,image}) => <Link key={building.slug} href={`/properties/${building.slug}`} className="home-image-link group min-w-[78vw] snap-start overflow-hidden bg-white sm:min-w-[42%] lg:min-w-[30%]"><div className="aspect-[4/3] overflow-hidden">{photo(image, `Approved photo of ${building.name}`)}</div><div className="flex items-center justify-between gap-3 p-5"><div><h3 className="font-serif text-xl font-normal">{building.name}</h3><p className="mb-0 text-xs text-teams-secondary">{location(building)}</p></div><span aria-hidden="true">↗</span></div></Link>)}</div></div></section>}
+    {showcase.length > 0 && <section className="bg-[#eae7e2] py-16 sm:py-24" aria-labelledby="more-title"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12"><div className="mb-8 flex items-end justify-between gap-4"><div><p className="home-eyebrow">Discover more</p><h2 id="more-title" className="font-serif text-3xl font-normal sm:text-5xl">Across the city</h2></div><Link href="/properties" className="home-text-link shrink-0 text-sm">Browse all ↗</Link></div><AcrossCityRail items={showcase.map(({building,image}) => ({slug:building.slug,name:building.name,location:location(building),src:publicMediaSrc(image),alt:image.alt_text || `Approved photo of ${building.name}`}))} /></div></section>}
 
     <section className="mx-auto max-w-7xl px-5 py-16 text-center sm:px-8 sm:py-20"><Link className="home-button border border-teams-ink text-teams-ink hover:bg-teams-ink hover:text-white" href="/properties">View All Properties <span aria-hidden="true">↗</span></Link></section>
 
