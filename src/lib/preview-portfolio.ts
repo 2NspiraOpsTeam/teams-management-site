@@ -91,3 +91,13 @@ export const sarasotaUnitPhotos = [
   { src: '/preview-properties/609-golden-gate-pt-unit-402/laundry.webp', alt: 'Laundry room with washer and dryer', caption: 'Laundry room' },
   { src: '/preview-properties/609-golden-gate-pt-unit-402/office.webp', alt: 'Office area', caption: 'Office' },
 ];
+
+// Owner-supplied Apartment 1B images. Keep unit imagery scoped to this preview detail page.
+export const east110UnitPhotos = [
+  { src: '/preview-properties/71-e-110th-st/living-wide.jpg', alt: 'Wide view of the living area in Apartment 1B', caption: 'Apartment 1B · Living area' },
+  { src: '/preview-properties/71-e-110th-st/living-entry.jpg', alt: 'Living area and entry in Apartment 1B', caption: 'Apartment 1B · Living area' },
+  { src: '/preview-properties/71-e-110th-st/kitchen.jpg', alt: 'Kitchen with wood cabinets and stainless-steel appliances in Apartment 1B', caption: 'Apartment 1B · Kitchen' },
+  { src: '/preview-properties/71-e-110th-st/bedroom-one.jpg', alt: 'Bedroom with a window and wood flooring in Apartment 1B', caption: 'Apartment 1B · Bedroom' },
+  { src: '/preview-properties/71-e-110th-st/bedroom-two.jpg', alt: 'Second bedroom view with mirrored closet doors in Apartment 1B', caption: 'Apartment 1B · Bedroom' },
+  { src: '/preview-properties/71-e-110th-st/bathroom.jpg', alt: 'Bathroom with tub, vanity, and laundry appliance in Apartment 1B', caption: 'Apartment 1B · Bathroom' },
+];
