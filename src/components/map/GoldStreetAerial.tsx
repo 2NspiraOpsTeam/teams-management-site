@@ -68,7 +68,7 @@ export function GoldStreetAerial() {
           map.addSource('property-coordinate', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: propertyCoordinate } } });
           map.addLayer({ id: 'property-halo', type: 'circle', source: 'property-coordinate', paint: { 'circle-radius': 17, 'circle-color': '#f3b927', 'circle-opacity': 0.25 } });
           map.addLayer({ id: 'property-marker', type: 'circle', source: 'property-coordinate', paint: { 'circle-radius': 6, 'circle-color': '#f8c636', 'circle-stroke-color': '#30270a', 'circle-stroke-width': 2 } });
-          map.addLayer({ id: 'property-label', type: 'symbol', source: 'property-coordinate', layout: { 'text-field': '61 Gold St · Teams', 'text-font': ['Noto Sans Regular'], 'text-size': 15, 'text-offset': [0, 1.6], 'text-anchor': 'top' }, paint: { 'text-color': '#fff', 'text-halo-color': '#171717', 'text-halo-width': 2.5 } });
+          map.addLayer({ id: 'property-label', type: 'symbol', source: 'property-coordinate', layout: { 'text-field': '61 Gold St · Teams', 'text-font': ['Noto Sans Regular'], 'text-size': 15, 'text-offset': [0, -1.6], 'text-anchor': 'bottom' }, paint: { 'text-color': '#fff', 'text-halo-color': '#171717', 'text-halo-width': 2.5 } });
           setState('ready');
           if (reduced.matches) return;
           setMoving(true);
@@ -79,7 +79,7 @@ export function GoldStreetAerial() {
             motionTimerRef.current = setTimeout(() => setMoving(false), 3500);
           }, 6200);
         });
-      } catch { fail(); }
+      } catch (error) { console.error('Aerial map initialization failed', error); fail(); }
     })();
     return () => { cancelled = true; clearTimeout(timer); clearTimeout(motionTimerRef.current); reduced.removeEventListener('change', onMotionChange); mapRef.current?.remove(); mapRef.current = null; };
   }, []);
