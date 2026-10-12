@@ -17,6 +17,7 @@ export interface Unit {
 }
 
 export type UnitStatus = 
+  | 'unverified'          // Occupancy/availability not confirmed
   | 'available_internal'   // Available for lease (internal record)
   | 'occupied'            // Currently occupied
   | 'under_construction'   // Not yet ready

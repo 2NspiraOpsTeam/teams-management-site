@@ -6,19 +6,23 @@ import { PropertyGallery, type GalleryImage } from '@/components/property-galler
 
 interface PropertyCardProps {
   building: BuildingPublic;
+  anchorId?: string;
   coverOverride?: {src:string;alt:string}|null;
   images?: GalleryImage[];
   showPreviewFacts?: boolean;
+  hasRetail?: boolean;
 }
 
-export function PropertyCard({ building, coverOverride, images = [], showPreviewFacts = false }: PropertyCardProps) {
+export function PropertyCard({ building, anchorId, coverOverride, images = [], showPreviewFacts = false, hasRetail = false }: PropertyCardProps) {
   const location = [building.address.city, building.address.state].filter(Boolean).join(', ');
   const address = [building.address.street, location, building.address.zip].filter(Boolean).join(', ');
   const photos = images.length ? images : coverOverride ? [coverOverride] : [];
 
   return (
-    <article className="property-card grid grid-cols-1 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] gap-6 md:gap-10 min-w-0 border-b border-slate-200 pb-12 sm:pb-16">
-      <PropertyGallery images={photos} name={building.name} compact />
+    <article id={anchorId} className="property-card scroll-mt-6 grid grid-cols-1 md:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] gap-6 md:gap-8 min-w-0 border-b border-slate-200 pb-12 sm:pb-16">
+      <div className="min-w-0 self-start">
+        <PropertyGallery images={photos} name={building.name} compact />
+      </div>
       <div className="flex flex-col items-start min-w-0 md:py-2">
         <h2 className="font-serif text-2xl sm:text-3xl leading-tight text-teams-ink">{building.name}</h2>
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>
@@ -32,8 +36,9 @@ export function PropertyCard({ building, coverOverride, images = [], showPreview
         )}
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
         <Link href={`/properties/${building.slug}`} className="inline-flex min-h-11 items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-teams-ink hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
-          View property <span aria-hidden="true">→</span>
+          View Residential Property <span aria-hidden="true">→</span>
         </Link>
+        {hasRetail && <Link href={`/retail/${building.slug}`} className="inline-flex min-h-11 items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-teams-ink hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">View Retail Property <span aria-hidden="true">→</span></Link>}
         <a href={directionsUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">Map &amp; Directions ↗</a>
         <a href={streetViewExploreUrl(building.address)} target="_blank" rel="noopener noreferrer" aria-label={`Explore Street View for ${building.name} in Google Maps, where available`} className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">Explore Street View ↗</a>
         </div>

@@ -5,6 +5,7 @@ import { contactAddress, siteContact } from '@/lib/site-contact';
 export const metadata: Metadata = {
   title: "Teams Management - Property Portfolio",
   description: "Teams Management property portfolio in New York City",
+  robots: process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1' ? { index: false, follow: false } : undefined,
   other: {
     'contact:email': siteContact.email,
     'contact:phone_number': siteContact.phone,

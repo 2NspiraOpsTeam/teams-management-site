@@ -11,7 +11,7 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <img src="/brand/teams-management-logo.png" alt="Teams Management" width="192" height="192" className="mb-4 h-40 w-40 sm:h-48 sm:w-48 object-contain" />
             <p className="text-slate-300 text-sm leading-relaxed max-w-md">
-              Teams Management property portfolio in New York City. Property-specific information is published after review.
+              Teams Management property portfolio in New York City.
             </p>
             <div className="mt-4 flex items-center space-x-2 text-sm text-slate-300">
               <span>&copy; {new Date().getFullYear()} Teams Management</span>
@@ -31,9 +31,10 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/properties" className="text-slate-300 hover:text-white text-sm transition-colors">
-                  Properties
+                  Residences
                 </Link>
               </li>
+              <li><Link href="/retail" className="text-slate-300 hover:text-white text-sm transition-colors">Retail</Link></li>
               <li><Link href="/about" className="text-slate-300 hover:text-white text-sm">About Us</Link></li>
               <li><Link href="/rent-with-us" className="text-slate-300 hover:text-white text-sm">Rent with Us</Link></li>
               <li><Link href="/contact" className="text-slate-300 hover:text-white text-sm">Contact</Link></li>
@@ -45,10 +46,10 @@ export function Footer() {
 
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-xs text-slate-300 text-center md:text-left">
-            Property information is published after review.
-          </p>
+        <div className="mt-12 pt-8 border-t border-slate-700 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-300">
+          <Link href="/privacy-policy" className="hover:text-white focus-visible:underline">Privacy Policy</Link>
+          <Link href="/terms-and-conditions" className="hover:text-white focus-visible:underline">Terms &amp; Conditions</Link>
+          <Link href="/copyright" className="hover:text-white focus-visible:underline">Copyright</Link>
         </div>
       </div>
     </footer>
