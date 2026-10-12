@@ -95,7 +95,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         {previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402' && <section className="mb-10 text-sm text-slate-700" aria-label="Leasing information"><h2 className="text-2xl font-serif font-semibold text-teams-ink mb-3">Contact</h2><p>For current availability, rent, lease terms, pet policies, parking, and amenity access, please contact Teams Management.</p></section>}
 
         <section aria-labelledby="residence-location-title" className="mb-10 border-t border-stone-200 pt-10">
-          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:items-start">
+          <div className={previewPortfolioEnabled && slug === '61-gold-st' ? 'grid gap-8' : 'grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:items-start'}>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">Location</p>
               <h2 id="residence-location-title" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">Find {building.name}</h2>
