@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 type Unit={id:string;building_id:string;building_name:string;unit_identifier:string;floor_number:number;layout_id:string|null;status:string};type Building={id:string;name:string};
-const statuses=['available_internal','occupied','under_construction','maintenance'];
+const statuses=['unverified','available_internal','occupied','under_construction','maintenance'];
 export default function UnitsPage(){const [rows,setRows]=useState<Unit[]>([]),[buildings,setBuildings]=useState<Building[]>([]),[q,setQ]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false),[editing,setEditing]=useState<string|null>(null),[form,setForm]=useState({building_id:'',unit_identifier:'',floor_number:1,layout_id:'',status:'available_internal'});
  async function load(search=''){try{const [u,b]=await Promise.all([fetch('/api/admin/units?q='+encodeURIComponent(search),{cache:'no-store'}),fetch('/api/admin/buildings',{cache:'no-store'})]);if(!u.ok||!b.ok)throw new Error('Unable to load units');setRows(await u.json());setBuildings(await b.json());}catch(e){setError(String(e));}}
  useEffect(()=>{void load();},[]);

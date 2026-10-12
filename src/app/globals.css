@@ -12,11 +12,12 @@
   --teams-surface: #F7F4EE;
   --teams-soft-background: #EAE7E2;
   --teams-border: #E0DDD7;
-  --teams-gold: #B58A3A;
-  --teams-gold-hover: #9F742B;
-  --teams-gold-light: #D8BD83;
-  --teams-gold-on-dark: #D8BD83;
-  --teams-accent-500: #B58A3A;
+  --teams-gold: #D4A62A;
+  --teams-gold-hover: #E0B93F;
+  --teams-gold-light: #F0D58A;
+  --teams-gold-deep: #B98A1F;
+  --teams-gold-on-dark: #F0D58A;
+  --teams-accent-500: #D4A62A;
 }
 
 /* Typography */
@@ -55,9 +56,10 @@ p {
   color: white;
 }
 
-/* Gold controls keep AA contrast in both resting and hover states. */
+/* Sunlit gold controls keep dark text and a distinct focus outline. */
 a.bg-teams-gold, button.bg-teams-gold { color: var(--teams-cta-ink); }
 a.bg-teams-gold:hover, button.bg-teams-gold:hover { background-color: var(--teams-gold-hover); }
+a.bg-teams-gold:focus-visible, button.bg-teams-gold:focus-visible { outline: 3px solid var(--teams-ink); outline-offset: 3px; box-shadow: 0 0 0 6px var(--teams-white); }
 input::placeholder, textarea::placeholder { color: var(--teams-secondary); opacity: 1; }
 
 /* Quiet interaction system for public property photography and actions. */
@@ -74,3 +76,84 @@ main a:active, main button:active { transform: translateY(1px); }
 /* Small transparent grain tiles add material depth without covering content or photography. */
 .texture-paper { background-image: url("/textures/paper-grain.png"); background-repeat: repeat; }
 .texture-graphite { background-image: url("/textures/graphite-grain.png"); background-repeat: repeat; }
+.gold-street-hero { background-color: #25292b; background-image: linear-gradient(90deg, rgba(20,24,26,.88), rgba(20,24,26,.56)), var(--gold-street-photo); background-size: cover; background-position: center 48%; }
+.gold-street-hero--about { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1621---5b1701de-49f5-465f-afeb-0d6d7f05dfd5.jpg"); }
+.gold-street-hero--services { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1768---aee1973b-f300-46c7-95fa-e60c1c3205c7.jpg"); }
+.gold-street-hero--contact { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_5284---88aaeaac-e28b-4bd6-a193-2f0c0d9bab21.jpg"); }
+.contact-details-panel { background: linear-gradient(125deg, #f7f4ee 0%, #fff 100%); border: 1px solid var(--teams-border); box-shadow: 0 14px 40px rgba(45,48,50,.045); }
+.contact-details-panel a { text-decoration-color: var(--teams-gold-deep); transition: color 180ms ease, text-decoration-color 180ms ease; }
+.contact-details-panel a:hover { color: var(--teams-gold-deep); text-decoration-color: currentColor; }
+.contact-topic { transition: transform 240ms ease, border-color 240ms ease, background-color 240ms ease, box-shadow 240ms ease; }
+.contact-topic::before { content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: 2px; background: var(--teams-gold); transform: scaleX(0); transform-origin: left; transition: transform 280ms ease; }
+.contact-topic:hover { transform: translateY(-4px); border-color: var(--teams-border); background: #fff; box-shadow: 0 16px 36px rgba(45,48,50,.09); }
+.contact-topic:hover::before { transform: scaleX(1); }
+.tenant-service-card { transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease; }
+.tenant-service-card::before { content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: 2px; background: var(--teams-gold); transform: scaleX(0); transform-origin: left; transition: transform 280ms ease; }
+.tenant-service-card:hover { transform: translateY(-4px); border-color: var(--teams-border); box-shadow: 0 16px 36px rgba(45,48,50,.09); }
+.tenant-service-card:hover::before { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) { .contact-topic:hover { transform: none; } .contact-topic::before { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .tenant-service-card:hover { transform: none; } .tenant-service-card::before { transition: none; } }
+.gold-street-hero--properties { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1517---d432685b-dd66-4e50-9446-fde47ea8585f.jpg"); }
+.gold-street-hero--retail { --gold-street-photo: url("/preview-properties/retail-delizia-hero.jpg"); background-position: center 32%; }
+.gold-street-hero--rent { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1622---13fe8f18-9eff-4772-9462-c883aadf1958.jpg"); }
+.gold-street-hero--tenant-services { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1520---436992c6-0073-4f96-86d9-708fb2a6b23f.jpg"); }
+.gold-street-hero--gallery { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1519---1dc9bbce-eba4-4a7b-a16a-9b751e51006c.jpg"); }
+
+/* Homepage: spacious editorial compositions with restrained motion. */
+.home-eyebrow { margin-bottom: 1rem; font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+.home-button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 1.5rem; padding: .75rem 1.35rem; font-size: .875rem; font-weight: 600; transition: background-color .22s ease, color .22s ease, transform .22s ease; }
+.home-button:hover { transform: translateY(-2px); }
+.home-text-link { display: inline-flex; min-height: 44px; align-items: center; gap: 1.5rem; border-bottom: 1px solid currentColor; font-size: .875rem; font-weight: 600; }
+.home-photo { transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+.home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: scale(1.035); }
+.home-rail { scrollbar-width: thin; }
+.home-resident { background-image: radial-gradient(circle at 88% 10%, rgba(212,166,42,.12), transparent 38%); }
+.home-resident-link span { transition: transform 240ms ease; }
+.home-resident-link:hover span { transform: translate(3px, -3px); }
+.rent-hero { background-attachment: scroll; }
+.rent-hero > div { animation: rent-enter 650ms ease-out both; }
+.rent-step { transition: transform 240ms ease, border-color 240ms ease; }
+.rent-step:hover { transform: translateY(-3px); border-color: var(--teams-gold-deep); }
+.rent-download { box-shadow: 0 8px 26px rgba(45,48,50,.045); transition: box-shadow 240ms ease, border-color 240ms ease; }
+.rent-download:hover { border-color: var(--teams-gold); box-shadow: 0 16px 36px rgba(45,48,50,.1); }
+.rent-faq summary:hover { color: var(--teams-gold-deep); }
+@keyframes rent-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .rent-hero > div { animation: none; } .rent-step:hover, .home-resident-link:hover span { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .home-button:hover, .home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: none; } }
+
+/* Page-specific editorial rhythm; the media and typography remain shared. */
+@media (min-width: 1024px) {
+  .page-showcase--wide > div { grid-template-columns: minmax(0, 1.45fr) minmax(320px, .55fr); }
+  .page-showcase--wide .page-showcase-image img { aspect-ratio: 16 / 10; }
+  .page-showcase--offset > div { grid-template-columns: minmax(320px, .72fr) minmax(0, 1.28fr); }
+  .page-showcase--offset .page-showcase-image { order: 2; transform: translateY(-1.5rem); }
+  .page-showcase--offset .page-showcase-image img { aspect-ratio: 5 / 4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-showcase img { transition: none !important; }
+  .page-showcase .group:hover img { transform: none !important; }
+}
+
+/* Restrained shared interactions across all public pages. */
+header a { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease; }
+.nav-tenant-cta:hover { transform: translateY(-2px); }
+.nav-tenant-cta:focus-visible { outline: 3px solid var(--teams-gold-light); outline-offset: 3px; box-shadow: 0 0 0 6px var(--teams-ink); }
+main img { transition: transform 380ms cubic-bezier(.2,.7,.2,1); }
+main a:hover img, main figure:hover img { transform: scale(1.015); }
+main details > div { animation: detail-open 240ms ease both; }
+@keyframes detail-open { from { opacity: .65; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .nav-tenant-cta:hover, main a:hover img, main figure:hover img { transform: none; } main details > div { animation: none; } }
+
+/* Retail listing: quiet depth and responsive, motion-safe interactions. */
+.retail-card { transition: border-color 280ms ease, box-shadow 280ms ease, transform 280ms ease; }
+.retail-card:hover { border-color: #d6c9ad; box-shadow: 0 20px 45px -32px rgba(30, 35, 38, .45); transform: translateY(-3px); }
+.retail-card-image { transition: transform 650ms cubic-bezier(.2,.7,.2,1), filter 650ms ease; }
+.retail-card:hover .retail-card-image { transform: scale(1.025); filter: saturate(1.05); }
+.retail-primary-link { transition: background-color 200ms ease, transform 200ms ease; }
+.retail-primary-link:hover { transform: translateY(-2px); }
+.retail-toc-link { transition: background-color 180ms ease, box-shadow 180ms ease; }
+.retail-toc-link:hover { box-shadow: inset 3px 0 0 var(--teams-gold); }
+@media (prefers-reduced-motion: reduce) {
+  .retail-card, .retail-card-image, .retail-primary-link, .retail-toc-link { transition: none; }
+  .retail-card:hover, .retail-card:hover .retail-card-image, .retail-primary-link:hover { transform: none; }
+}

@@ -22,10 +22,14 @@ export async function POST(request: Request) {
     const message = typeof input.message === 'string' ? input.message.trim() : '';
     const category = typeof input.category === 'string' ? input.category : '';
     const buildingSlug = typeof input.building === 'string' ? input.building : '';
+    const propertyInterest = typeof input.propertyInterest === 'string' ? input.propertyInterest.trim() : '';
     const id = typeof input.idempotencyKey === 'string' ? input.idempotencyKey : '';
     if (!idPattern.test(id) || !categories.has(category) || name.length < 2 || name.length > 120 ||
         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 ||
-        phone.length > 30 || message.length < 10 || message.length > 4000 || buildingSlug.length > 120) {
+        phone.length > 30 || message.length < 10 || message.length > 4000 || buildingSlug.length > 120 || propertyInterest.length > 120 ||
+        /[\x00-\x1f]/.test(propertyInterest) ||
+        (category === 'property' && (!propertyInterest && !buildingSlug || propertyInterest.length > 0 && propertyInterest.length < 3 || !/^\+?[\d\s().-]{7,30}$/.test(phone))) ||
+        (category === 'property' && /\b\d{3}-?\d{2}-?\d{4}\b|\b(?:ssn|social security|driver.?s license|date of birth)\b/i.test(message))) {
       return reply({ error: 'Please check the required fields and try again' }, 400);
     }
     if (input.website) return reply({ received: true, id }, 202);
@@ -34,8 +38,8 @@ export async function POST(request: Request) {
     if (!db) throw new Error('Teams D1 binding unavailable');
     const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email));
     const emailHash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
-    const existing = await db.prepare('SELECT contact_info_hash FROM inquiries WHERE id = ? AND source = ?').bind(id, 'website').first<{ contact_info_hash: string }>();
-    if (existing) return existing.contact_info_hash === emailHash
+    const existing = await db.prepare('SELECT i.contact_info_hash, i.category, d.message, d.property_interest FROM inquiries i LEFT JOIN inquiry_details d ON d.inquiry_id=i.id WHERE i.id = ? AND i.source = ?').bind(id, 'website').first<{ contact_info_hash: string; category: string; message: string | null; property_interest: string | null }>();
+    if (existing) return existing.contact_info_hash === emailHash && (category !== 'property' || existing.category === category && existing.message === message && existing.property_interest === propertyInterest)
       ? reply({ received: true, id, duplicate: true }, 200)
       : reply({ error: 'Receipt already used' }, 409);
     const recent = await db.prepare("SELECT COUNT(*) AS count FROM inquiries WHERE source = 'website' AND contact_info_hash = ? AND created_at >= datetime('now', '-1 hour')").bind(emailHash).first<{ count: number }>();
@@ -50,12 +54,12 @@ export async function POST(request: Request) {
     try {
       await db.batch([
         db.prepare('INSERT INTO inquiries (id, source, category, contact_info_hash, status, routing_destination) VALUES (?, ?, ?, ?, ?, ?)').bind(id, 'website', category, emailHash, 'submitted', 'admin_inbox'),
-        db.prepare('INSERT INTO inquiry_details (inquiry_id, name, email, phone, message, building_id) VALUES (?, ?, ?, ?, ?, ?)').bind(id, name, email, phone || null, message, buildingId),
+        db.prepare('INSERT INTO inquiry_details (inquiry_id, name, email, phone, message, building_id, property_interest) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(id, name, email, phone || null, message, buildingId, propertyInterest || null),
         db.prepare("INSERT INTO inquiry_notifications (inquiry_id, state) VALUES (?, 'pending')").bind(id),
       ]);
     } catch (error) {
       // A concurrent click may have committed the same receipt before this insert.
-      const saved = await db.prepare('SELECT id FROM inquiries WHERE id = ? AND source = ? AND contact_info_hash = ?').bind(id, 'website', emailHash).first();
+      const saved = await db.prepare('SELECT i.id FROM inquiries i JOIN inquiry_details d ON d.inquiry_id=i.id WHERE i.id = ? AND i.source = ? AND i.contact_info_hash = ? AND (? != ? OR (i.category=? AND d.message=? AND d.property_interest=?))').bind(id, 'website', emailHash, category, 'property', category, message, propertyInterest).first();
       if (saved) return reply({ received: true, id, duplicate: true }, 200);
       throw error;
     }
