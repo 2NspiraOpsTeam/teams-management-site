@@ -20,7 +20,7 @@ export function PropertyGallery({ images, name, compact = false }: { images: Gal
   }, []);
   useEffect(() => {
     if (images.length < 2 || paused || manuallyPaused || reducedMotion) return;
-    const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 6000);
+    const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 4000);
     return () => window.clearInterval(timer);
   }, [images.length, paused, manuallyPaused, reducedMotion]);
 
