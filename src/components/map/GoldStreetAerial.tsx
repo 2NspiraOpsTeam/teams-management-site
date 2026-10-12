@@ -37,6 +37,7 @@ export function GoldStreetAerial() {
           container: host.current,
           style: {
             version: 8,
+            glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
             sources: {
               aerial: { type: 'raster', tiles: [photo], tileSize: 256, minzoom: 0, maxzoom: 20, attribution: '© City of New York · 2018 aerial imagery · CC BY 4.0' },
               streets: { type: 'raster', tiles: [labels], tileSize: 256, minzoom: 0, maxzoom: 20, attribution: '© City of New York' },
@@ -67,7 +68,7 @@ export function GoldStreetAerial() {
           map.addSource('property-coordinate', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: propertyCoordinate } } });
           map.addLayer({ id: 'property-halo', type: 'circle', source: 'property-coordinate', paint: { 'circle-radius': 17, 'circle-color': '#f3b927', 'circle-opacity': 0.25 } });
           map.addLayer({ id: 'property-marker', type: 'circle', source: 'property-coordinate', paint: { 'circle-radius': 6, 'circle-color': '#f8c636', 'circle-stroke-color': '#30270a', 'circle-stroke-width': 2 } });
-          map.addLayer({ id: 'property-label', type: 'symbol', source: 'property-coordinate', layout: { 'text-field': '61 Gold St · Teams', 'text-size': 15, 'text-offset': [0, 1.6], 'text-anchor': 'top' }, paint: { 'text-color': '#fff', 'text-halo-color': '#171717', 'text-halo-width': 2.5 } });
+          map.addLayer({ id: 'property-label', type: 'symbol', source: 'property-coordinate', layout: { 'text-field': '61 Gold St · Teams', 'text-font': ['Noto Sans Regular'], 'text-size': 15, 'text-offset': [0, 1.6], 'text-anchor': 'top' }, paint: { 'text-color': '#fff', 'text-halo-color': '#171717', 'text-halo-width': 2.5 } });
           setState('ready');
           if (reduced.matches) return;
           setMoving(true);
