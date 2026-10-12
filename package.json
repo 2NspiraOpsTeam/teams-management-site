@@ -12,7 +12,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "deploy:preview": "npm run build:preview:pages && wrangler pages deploy .vercel/output/static --project-name teams-management-preview --branch preview"
+    "deploy:preview": "npm run build:preview:pages && wrangler pages deploy .vercel/output/static --project-name teams-management-preview --branch preview",
+    "qa:d1:local": "bash scripts/setup-local-qa-d1.sh"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",

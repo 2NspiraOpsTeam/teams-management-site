@@ -16,6 +16,11 @@ export class MailService implements TeamsMailService {
     if (!from) throw new Error('tenant_sender_not_configured');
     return sendGmail(this.env, from, to, 'Your Teams Management tenant sign-in code', `Your Teams Management sign-in code is ${code}. It expires in 10 minutes. If you did not request this code, ignore this email.`);
   }
+  async sendTenantInvitation(to: string, loginUrl: string) {
+    const from = this.env.TENANT_AUTH_FROM;
+    if (!from) throw new Error('tenant_sender_not_configured');
+    return sendGmail(this.env, from, to, 'Your Teams Management tenant access', `Your tenant access is ready. Visit ${loginUrl} and enter this email address to request a one-time sign-in code. If you were not expecting this invitation, contact Teams Management.`);
+  }
   async sendAdminOtp(to: string, code: string) {
     const from = this.env.ADMIN_AUTH_FROM;
     if (!from) throw new Error('admin_sender_not_configured');
