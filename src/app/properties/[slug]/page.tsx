@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { mapLocationUrl, streetViewExploreUrl } from '@/lib/map-location';
+import { directionsToPropertyUrl, mapLocationUrl, nearbyStreetMapCenter, satelliteMapUrl, streetViewExploreUrl } from '@/lib/map-location';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -13,6 +13,7 @@ import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
 import { greatSchoolsZipUrl, nycLivingFacts } from '@/lib/nyc-living-facts';
 import { NeighborhoodPreview } from '@/components/neighborhood-preview';
+import { PropertyLocationPanel } from '@/components/map/PropertyLocationPanel';
 
 export const runtime = 'edge';
 
@@ -34,7 +35,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const retail = await getPublicRetail(slug);
   const location = await adminDb().prepare('SELECT latitude, longitude, geocode_status, map_verified FROM buildings WHERE slug = ?').bind(slug).first<{ latitude: number | null; longitude: number | null; geocode_status: string | null; map_verified: number | null }>();
   const hasMap = location?.map_verified === 1 && location.geocode_status === 'verified' && typeof location.latitude === 'number' && Number.isFinite(location.latitude) && Math.abs(location.latitude) <= 90 && typeof location.longitude === 'number' && Number.isFinite(location.longitude) && Math.abs(location.longitude) <= 180;
-  const mapUrl = hasMap ? `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(`${location.longitude! - .004},${location.latitude! - .004},${location.longitude! + .004},${location.latitude! + .004}`)}&layer=mapnik&marker=${encodeURIComponent(`${location.latitude},${location.longitude}`)}` : null;
+  const streetViewUrl = streetViewExploreUrl(building.address, hasMap ? { latitude: location!.latitude, longitude: location!.longitude, map_verified: true, geocode_status: 'verified' } : building);
+  const streetAreaCenter = previewPortfolioEnabled && !hasMap ? nearbyStreetMapCenter(building.address) : null;
   const livingFacts = building.address.state === 'NY' ? nycLivingFacts(slug) : undefined;
   const zip = livingFacts?.zip || building.address.zip;
   const media = await propertyMedia(adminDb(),slug);
@@ -57,7 +59,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </nav>
         <h1 className="text-4xl font-serif font-semibold text-teams-ink mb-4">{building.name}</h1>
         <p className="text-lg text-slate-600 mb-10">{building.address.street}, {building.address.city}, {building.address.state} {zip}</p>
-        <div className="mb-2 flex flex-wrap gap-3"><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">View on Map ↗</a><a href={streetViewExploreUrl(building.address, building)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Explore Street View ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
+        <div className="mb-2 flex flex-wrap gap-3"><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">View on Map ↗</a><a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Explore Street View ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
         <p className="mb-10 text-xs text-slate-600">Opens Google Maps; Street View availability and imagery date vary by address.</p>
         {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-3 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
         <section aria-label={`${building.name} photo gallery`} className="mb-12"><PropertyGallery images={images} name={building.name} /></section>
@@ -92,18 +94,19 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         {previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402' && <section className="mb-10 text-sm text-slate-700" aria-label="Leasing information"><h2 className="text-2xl font-serif font-semibold text-teams-ink mb-3">Contact</h2><p>For current availability, rent, lease terms, pet policies, parking, and amenity access, please contact Teams Management.</p></section>}
 
         <section aria-labelledby="residence-location-title" className="mb-10 border-t border-stone-200 pt-10">
-          <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
+          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:items-start">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">Location</p>
               <h2 id="residence-location-title" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">Find {building.name}</h2>
               <address className="mt-5 not-italic text-slate-700">{building.address.street}<br />{building.address.city}, {building.address.state} {zip}</address>
               <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
                 <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on Map ↗</a>
-                <a href={streetViewExploreUrl(building.address, building)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">Explore Street View ↗</a>
+                <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">Directions to this Property ↗</a>
+                <a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">Explore Street View ↗</a>
               </div>
               <p className="mt-2 text-xs text-slate-600">Opens Google Maps; Street View coverage varies.</p>
             </div>
-            {mapUrl ? <iframe title={`Map of ${building.name}`} src={mapUrl} loading="lazy" referrerPolicy="no-referrer" className="min-h-[300px] w-full border-0 bg-stone-100" /> : <div className="flex min-h-[300px] flex-col items-center justify-center bg-stone-100 p-8 text-center"><p className="font-serif text-2xl text-teams-ink">Visit this address</p><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on map ↗</a></div>}
+            {hasMap || streetAreaCenter ? <div><PropertyLocationPanel name={building.name} latitude={hasMap ? location.latitude! : streetAreaCenter!.latitude} longitude={hasMap ? location.longitude! : streetAreaCenter!.longitude} showPin={!!hasMap} />{!hasMap && <p className="mt-2 text-xs text-slate-600">Nearby streets only; exact property pin not yet verified.</p>}<a href={hasMap ? satelliteMapUrl(location.latitude!, location.longitude!) : satelliteMapUrl(streetAreaCenter!.latitude, streetAreaCenter!.longitude)} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center border-b border-teams-ink text-sm font-semibold text-teams-ink">Open satellite view ↗</a></div> : <div className="flex min-h-[380px] flex-col items-center justify-center bg-stone-100 p-8 text-center"><p className="font-serif text-2xl text-teams-ink">Visit this address</p><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on map ↗</a></div>}
           </div>
         </section>
 
