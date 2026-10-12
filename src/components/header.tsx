@@ -9,13 +9,13 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
+    { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
     { href: '/properties', label: 'Properties' },
     { href: '/retail', label: 'Retail' },
+    { href: '/dining', label: 'Dining' },
     { href: '/rent-with-us', label: 'Rent with Us' },
-    { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact' },
-    { href: '/tenant-services', label: 'Tenant Services' },
   ];
 
   return (
@@ -45,6 +45,7 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link href="/tenant-services" aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-sm bg-teams-gold px-4 py-2 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Tenant Services</Link>
           </div>
 
           {/* Mobile menu button */}
@@ -63,6 +64,7 @@ export function Header() {
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-slate-700 py-3 flex flex-col gap-1">
           {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className={`rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold`}>{item.label}</Link>)}
+          <Link href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center rounded-sm bg-teams-gold px-4 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight">Tenant Services</Link>
         </div>}
       </nav>
     </header>

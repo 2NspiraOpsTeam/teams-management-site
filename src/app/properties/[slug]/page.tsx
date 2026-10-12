@@ -6,6 +6,7 @@ import { Footer } from '@/components/footer';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { getPublicBuilding } from '@/lib/public-buildings';
+import { listPublicDining } from '@/lib/public-dining';
 import { previewPortfolio, previewPortfolioEnabled, previewStaticCover } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
@@ -19,6 +20,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const assignedCover = media.find(item=>item.is_cover);
   const cover = staticCover ?? (assignedCover ? publicMediaSrc(assignedCover) : null);
   const gallery = media.filter(item=>!item.is_cover).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
+  const dining = await listPublicDining(slug);
 
   return <>
     <Header />
@@ -43,9 +45,9 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             {item.caption&&<figcaption className="p-3 text-sm text-slate-600">{item.caption}</figcaption>}</figure>)}
           </div>
         </section>}
-        {!building.description_public && <p className="mb-10 border-l-2 border-slate-300 pl-4 text-slate-600">Property details coming soon.</p>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
+        {dining.length > 0 && <section className="mb-12 border-t border-stone-200 pt-10" aria-labelledby="dining-at-property"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#8b681f]">A neighborhood address</p><h2 id="dining-at-property" className="mt-3 font-serif text-3xl text-teams-ink">Dining at this property</h2><div className="mt-6 grid gap-5 sm:grid-cols-2">{dining.map(venue => <article key={venue.id} className="border border-stone-200 bg-[#f7f4ee] p-6"><h3 className="font-serif text-2xl text-teams-ink">{venue.name}</h3><p className="mt-2 text-sm font-medium text-slate-600">{venue.category}</p><p className="mt-4 leading-relaxed text-slate-700">{venue.summary}</p><Link href={`/dining#${venue.slug}`} className="mt-5 inline-flex min-h-11 items-center border-b-2 border-teams-gold font-semibold text-teams-ink hover:text-[#8b681f]">Explore {venue.name} →</Link></article>)}</div></section>}
 
       </div>
     </main>

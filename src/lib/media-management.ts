@@ -18,7 +18,7 @@ const deliverableStaticMedia = new Set([
   ...numberedPreviewMedia('1365-1st-ave',8),
   ...numberedPreviewMedia('42-70-156th-st-flushing',14),
 ]);
-export const isDeliverablePublicMedia = (item:MediaRow) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
+export const isDeliverablePublicMedia = (item:Pick<MediaRow,'storage_key'>) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
 export const mediaUrl = (id:string) => `/api/media/${encodeURIComponent(id)}`;
 export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/preview-properties/') ? item.storage_key : mediaUrl(item.id);
 export const mediaPreviewUrl = (id:string) => `/api/admin/media/${encodeURIComponent(id)}/file`;
