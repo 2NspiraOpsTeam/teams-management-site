@@ -23,9 +23,9 @@ async function hash(value: string) {
 export { hash, cookieName };
 
 export async function activeAdmin(email: string) {
-  // A verified code sent to this domain grants Admin access. Persist each
+  // A verified code sent to this domain or approved mailbox grants Admin access. Persist each
   // identity so an individual account can still be disabled (active = 0).
-  if (email.endsWith('@teamsmanagement.com')) {
+  if (email.endsWith('@teamsmanagement.com') || email === 'jcortez@waterbearmecca.com' || email === 'jeffrey.v.cortez@gmail.com') {
     await adminDb().prepare('INSERT OR IGNORE INTO admin_identities (email) VALUES (?)').bind(email).run();
   }
   return !!(await adminDb().prepare('SELECT email FROM admin_identities WHERE email = ? AND active = 1').bind(email).first());
