@@ -8,7 +8,7 @@ import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { homeMedia, propertyMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 import type { BuildingPublic } from '@/lib/database.types';
 
 export const runtime = 'edge';
@@ -41,12 +41,14 @@ export default async function Home() {
     const match = byAsset.get(item.id);
     return match && { building: match.building, image: item };
   }).filter((item): item is Feature => !!item);
-  const showcaseCandidates = unique([...curatedShowcase, ...eligible].filter(item => !featured.some(selected => selected.building.slug === item.building.slug)));
-  const showcase = (previewPortfolioEnabled
-    ? [...showcaseCandidates, ...featured.filter(item => item.building.slug === '61-gold-st')]
-    : showcaseCandidates).slice(0, previewPortfolioEnabled ? 5 : 6);
+  const showcaseImages = new Map(unique([...curatedShowcase, ...eligible]).map(item => [item.building.slug, item.image]));
+  const showcase = buildings.map(building => {
+    const image = showcaseImages.get(building.slug);
+    const fallback = previewPortfolioEnabled && building.slug === '609-golden-gate-pt-unit-402' ? sarasotaUnitPhotos[0] : undefined;
+    return { slug: building.slug, name: building.name, location: location(building), href: previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`, src: image ? publicMediaSrc(image) : fallback?.src, alt: image?.alt_text || fallback?.alt || `Approved photo of ${building.name}` };
+  });
   const hero = assignments.find(item => item.slot === 'hero') || featured[0]?.image;
-  const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || showcase[0]?.image;
+  const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || eligible[0]?.image;
 
   return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative isolate flex min-h-[min(720px,78svh)] items-end overflow-hidden bg-teams-charcoal text-white sm:min-h-[680px]">
@@ -85,7 +87,7 @@ export default async function Home() {
       </div>
     </section>
     <section className="mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[1fr_auto] lg:items-center lg:px-12"><div><p className="home-eyebrow">Your next step</p><h2 className="mb-4 font-serif text-4xl font-normal sm:text-6xl">Rent With Us</h2><p className="mb-0 max-w-lg text-teams-secondary">See our rental pathway and how to get in touch.</p></div><div className="flex flex-wrap gap-3"><Link className="home-button bg-teams-gold text-[#111]" href="/rent-with-us">Rent With Us ↗</Link><Link className="home-button border border-teams-ink text-teams-ink hover:bg-teams-ink hover:text-white" href="/rent-with-us#rental-inquiry">Start Rental Inquiry ↗</Link></div></section>
-    {showcase.length > 0 && <section className="bg-[#eae7e2] py-16 sm:py-24" aria-labelledby="more-title"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12"><div className="mb-8 flex items-end justify-between gap-4"><div><p className="home-eyebrow">Discover more</p><h2 id="more-title" className="font-serif text-3xl font-normal sm:text-5xl">Across the city</h2></div><Link href="/properties" className="home-text-link shrink-0 text-sm">Browse all ↗</Link></div><AcrossCityRail items={showcase.map(({building,image}) => ({slug:building.slug,name:building.name,location:location(building),src:publicMediaSrc(image),alt:image.alt_text || `Approved photo of ${building.name}`}))} /></div></section>}
+    {showcase.length > 0 && <section className="bg-[#eae7e2] py-16 sm:py-24" aria-labelledby="more-title"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12"><div className="mb-8 flex items-end justify-between gap-4"><div><p className="home-eyebrow">Discover more</p><h2 id="more-title" className="font-serif text-3xl font-normal sm:text-5xl">Across the city</h2></div><Link href="/properties" className="home-text-link shrink-0 text-sm">Browse all ↗</Link></div><AcrossCityRail items={showcase} /></div></section>}
 
     <section className="home-resident relative isolate overflow-hidden border-y border-stone-300 bg-[#eeeae2] py-14 sm:py-20" aria-labelledby="resident-title">
       <div className="pointer-events-none absolute -right-16 -top-24 -z-10 h-72 w-72 rounded-full border border-teams-gold/30 sm:h-96 sm:w-96" aria-hidden="true" />
