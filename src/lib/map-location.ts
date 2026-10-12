@@ -4,12 +4,15 @@ export function addressLabel(address: BuildingPublic['address']) {
   return [address.street, address.city, address.state, address.zip].filter(Boolean).join(', ');
 }
 
-export function directionsUrl(address: BuildingPublic['address']) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addressLabel(address))}`;
+export function mapLocationUrl(address: BuildingPublic['address']) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLabel(address))}`;
 }
 
-export function streetViewExploreUrl(address: BuildingPublic['address']) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLabel(address))}`;
+export function streetViewExploreUrl(address: BuildingPublic['address'], location?: { latitude?: number | null; longitude?: number | null; map_verified?: boolean; geocode_status?: string | null }) {
+  if (location?.map_verified && location.geocode_status === 'verified' && typeof location.latitude === 'number' && typeof location.longitude === 'number' && Number.isFinite(location.latitude) && Number.isFinite(location.longitude) && location.latitude >= -90 && location.latitude <= 90 && location.longitude >= -180 && location.longitude <= 180) {
+    return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${location.latitude},${location.longitude}`;
+  }
+  return `https://www.google.com/maps?q=${encodeURIComponent(addressLabel(address))}&layer=c`;
 }
 
 export function verifiedLocation(building: BuildingPublic) {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { BuildingPublic } from '@/lib/database.types';
 import type { RetailProperty } from '@/lib/public-retail';
-import { directionsUrl } from '@/lib/map-location';
+import { mapLocationUrl } from '@/lib/map-location';
 
 type Pin = BuildingPublic & { latitude: number; longitude: number };
 type MapComponent = typeof import('./LeafletMap').default;
@@ -41,9 +41,9 @@ export function RetailMap({ properties }: { properties: RetailProperty[] }) {
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <p className="text-xs font-semibold uppercase tracking-[.18em] text-slate-600">Explore by location</p>
       <h2 id="retail-map-heading" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">NYC retail property map</h2>
-      <p className="mt-3 mb-8 max-w-2xl text-slate-700">Explore verified retail locations across New York City. Select a marker for its address and directions.</p>
-      {loading ? <div className="h-[360px] animate-pulse rounded-sm bg-stone-200" aria-label="Loading retail map" /> : pins.length && LeafletMap ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm"><LeafletMap buildings={pins} /></div> : <div className="flex h-[360px] items-center justify-center rounded-sm border border-stone-200 bg-white p-6 text-center text-slate-700">{pins.length ? 'Loading map…' : 'Verified map locations are not available right now. Use the property addresses below for directions.'}</div>}
-      {unpinned.length > 0 && !loading && <div className="mt-6"><h3 className="font-semibold text-teams-ink">Additional retail addresses</h3><p className="mt-1 text-sm text-slate-700">These properties are listed below while their individual map locations are being verified.</p><ul className="mt-3 flex flex-wrap gap-3">{unpinned.map(property => <li key={property.id}><a className="inline-flex min-h-11 items-center border-b border-stone-400 text-sm font-medium text-teams-ink hover:border-teams-gold" href={directionsUrl(property.address)} target="_blank" rel="noopener noreferrer">{property.name} · Directions ↗</a></li>)}</ul></div>}
+      <p className="mt-3 mb-8 max-w-2xl text-slate-700">Explore verified retail locations across New York City. Select a marker to view its address on the map.</p>
+      {loading ? <div className="h-[360px] animate-pulse rounded-sm bg-stone-200" aria-label="Loading retail map" /> : pins.length && LeafletMap ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm"><LeafletMap buildings={pins} /></div> : <div className="flex h-[360px] items-center justify-center rounded-sm border border-stone-200 bg-white p-6 text-center text-slate-700">{pins.length ? 'Loading map…' : 'Verified map locations are not available right now. Use the property addresses below on the map.'}</div>}
+      {unpinned.length > 0 && !loading && <div className="mt-6"><h3 className="font-semibold text-teams-ink">Additional retail addresses</h3><p className="mt-1 text-sm text-slate-700">These properties are listed below while their individual map locations are being verified.</p><ul className="mt-3 flex flex-wrap gap-3">{unpinned.map(property => <li key={property.id}><a className="inline-flex min-h-11 items-center border-b border-stone-400 text-sm font-medium text-teams-ink hover:border-teams-gold" href={mapLocationUrl(property.address)} target="_blank" rel="noopener noreferrer">{property.name} · View on map ↗</a></li>)}</ul></div>}
     </div>
   </section>;
 }

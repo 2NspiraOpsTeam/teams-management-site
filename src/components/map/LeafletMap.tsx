@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { BuildingPublic } from '@/lib/database.types';
-import { addressLabel, directionsUrl } from '@/lib/map-location';
+import { addressLabel, mapLocationUrl } from '@/lib/map-location';
 
 type VerifiedBuilding = BuildingPublic & { latitude: number; longitude: number };
 
@@ -27,8 +27,8 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
       const address = document.createElement('p');
       address.textContent = addressLabel(building.address);
       const link = document.createElement('a');
-      link.textContent = 'Map & Directions';
-      link.href = directionsUrl(building.address);
+      link.textContent = 'View on Map';
+      link.href = mapLocationUrl(building.address);
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       popup.appendChild(title); popup.appendChild(address); popup.appendChild(link);
