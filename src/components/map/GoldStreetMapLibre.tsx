@@ -27,6 +27,7 @@ export function GoldStreetMapLibre() {
     void (async () => {
       try {
         const [maplibregl, response] = await Promise.all([import('maplibre-gl'), fetch(styleUrl)]);
+        maplibregl.setWorkerUrl('/maplibre-gl-worker.mjs');
         if (!response.ok) throw new Error('Style unavailable');
         const style = await response.json() as any;
         const probe = document.createElement('canvas');
