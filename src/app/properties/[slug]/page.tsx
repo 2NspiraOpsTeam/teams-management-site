@@ -14,6 +14,7 @@ import { getPublicRetail } from '@/lib/public-retail';
 import { greatSchoolsZipUrl, nycLivingFacts } from '@/lib/nyc-living-facts';
 import { NeighborhoodPreview } from '@/components/neighborhood-preview';
 import { PropertyLocationPanel } from '@/components/map/PropertyLocationPanel';
+import { GoldStreetAerial } from '@/components/map/GoldStreetAerial';
 
 export const runtime = 'edge';
 
@@ -106,7 +107,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               </div>
               <p className="mt-2 text-xs text-slate-600">Opens Google Maps; Street View coverage varies.</p>
             </div>
-            {hasMap || streetAreaCenter ? <div><PropertyLocationPanel name={building.name} latitude={hasMap ? location.latitude! : streetAreaCenter!.latitude} longitude={hasMap ? location.longitude! : streetAreaCenter!.longitude} showPin={!!hasMap} />{!hasMap && <p className="mt-2 text-xs text-slate-600">Nearby streets only; exact property pin not yet verified.</p>}<a href={hasMap ? satelliteMapUrl(location.latitude!, location.longitude!) : satelliteMapUrl(streetAreaCenter!.latitude, streetAreaCenter!.longitude)} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center border-b border-teams-ink text-sm font-semibold text-teams-ink">Open satellite view ↗</a></div> : <div className="flex min-h-[380px] flex-col items-center justify-center bg-stone-100 p-8 text-center"><p className="font-serif text-2xl text-teams-ink">Visit this address</p><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on map ↗</a></div>}
+            {previewPortfolioEnabled && slug === '61-gold-st' ? <GoldStreetAerial /> : hasMap || streetAreaCenter ? <div><PropertyLocationPanel name={building.name} latitude={hasMap ? location.latitude! : streetAreaCenter!.latitude} longitude={hasMap ? location.longitude! : streetAreaCenter!.longitude} showPin={!!hasMap} />{!hasMap && <p className="mt-2 text-xs text-slate-600">Nearby streets only; exact property pin not yet verified.</p>}<a href={hasMap ? satelliteMapUrl(location.latitude!, location.longitude!) : satelliteMapUrl(streetAreaCenter!.latitude, streetAreaCenter!.longitude)} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center border-b border-teams-ink text-sm font-semibold text-teams-ink">Open satellite view ↗</a></div> : <div className="flex min-h-[380px] flex-col items-center justify-center bg-stone-100 p-8 text-center"><p className="font-serif text-2xl text-teams-ink">Visit this address</p><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on map ↗</a></div>}
           </div>
         </section>
 
