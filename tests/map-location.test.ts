@@ -10,6 +10,9 @@ describe('public map eligibility', () => {
   it('opens Street View directly for verified coordinates', () => {
     expect(streetViewExploreUrl(building.address, { ...building, geocode_status: 'verified', map_verified: true })).toContain('map_action=pano&viewpoint=40.7,-74');
   });
+  it('opens the checked street-level panorama for 351 W 46th St', () => {
+    expect(streetViewExploreUrl({ street: '351 W 46th St', city: 'New York', state: 'NY', zip: '10036' })).toContain('viewpoint=40.76057,-73.98977&heading=0');
+  });
   it('never displays a candidate or unchecked coordinate', () => {
     expect(verifiedLocation(building)).toBe(false);
     expect(verifiedLocation({ ...building, geocode_status: 'verified' })).toBe(false);
