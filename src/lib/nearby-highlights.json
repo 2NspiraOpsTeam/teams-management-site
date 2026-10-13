@@ -238,6 +238,7 @@
       "category": "cafe",
       "label": "Coffee & dining",
       "name": "Café Maud",
+      "mapQuery": "Café Maud, 1640 2nd Ave, New York, NY 10028",
       "source": "https://www.openstreetmap.org/node/9683499914"
     },
     {

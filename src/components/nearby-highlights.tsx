@@ -5,13 +5,13 @@ import pedestrianData from '@/lib/retail-pedestrian-data.json';
 import retailAnchors from '@/lib/retail-nearby-anchors.json';
 import { previewRetailNeighborhood } from '@/lib/retail-neighborhood-preview';
 
-type Highlight = { category: string; label: string; name: string; source: string };
+type Highlight = { category: string; label: string; name: string; source: string; mapQuery?: string };
 const icons: Record<string, string> = {
   transit: '▥', supermarket: '◫', pharmacy: '+', cafe: '☕', park: '♧', library: '▤', clinic: '✚', street: '↗', pedestrian: '◉', hotel: '⌂', theatre: '✦', parking: 'P',
 };
 
 function FactCard({ item, address, retail = false }: { item: Highlight; address: BuildingPublic['address']; retail?: boolean }) {
-  const mapQuery = `${item.name}, ${address.city}, ${address.state}`;
+  const mapQuery = item.mapQuery || `${item.name}, ${address.city}, ${address.state}`;
   const isStreetSetting = retail && item.category === 'street';
   const mapUrl = isStreetSetting ? mapLocationUrl(address) : directionsFromPropertyUrl(address, mapQuery);
   const linkLabel = isStreetSetting ? `View ${item.name} in Google Maps` : `Get directions from this property to ${item.name}`;

@@ -15,17 +15,17 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
   useEffect(() => {
     if (!container.current || buildings.length === 0) return;
     const map = L.map(container.current, { scrollWheelZoom: false, zoomControl: true });
-    const streets = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/carto/basemap-lt/{z}/{x}/{y}.png8', {
-      maxZoom: 20,
-      attribution: '&copy; City of New York',
+    const streets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19,
+      attribution: 'Tiles &copy; Esri and its data providers',
     }).addTo(map);
-    const aerial = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {
-      maxZoom: 20,
-      attribution: '&copy; City of New York · aerial imagery captured 2018',
+    const aerial = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19,
+      attribution: 'Imagery &copy; Esri and its data providers',
     }).addTo(map);
-    const labels = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/carto/label-lt/{z}/{x}/{y}.png8', {
-      maxZoom: 20,
-      attribution: '&copy; City of New York',
+    const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19,
+      attribution: 'Labels &copy; Esri and its data providers',
     }).addTo(map);
     layers.current = { streets, aerial, labels, map };
     const points: L.LatLngExpression[] = [];
@@ -67,6 +67,6 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
       <button type="button" onClick={() => setView('aerial')} aria-pressed={view === 'aerial'} className={`min-h-11 px-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-ink ${view === 'aerial' ? 'bg-teams-ink text-white' : 'text-teams-ink'}`}>Satellite</button>
       <button type="button" onClick={() => setView('streets')} aria-pressed={view === 'streets'} className={`min-h-11 px-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-ink ${view === 'streets' ? 'bg-teams-ink text-white' : 'text-teams-ink'}`}>Streets</button>
     </div>
-    {view === 'aerial' && <p className="absolute bottom-20 left-3 z-[1000] rounded-sm bg-white/95 px-2 py-1 text-xs text-teams-ink shadow">NYC aerial imagery · 2018</p>}
+    {view === 'aerial' && <p className="absolute bottom-20 left-3 z-[1000] rounded-sm bg-white/95 px-2 py-1 text-xs text-teams-ink shadow">Satellite imagery · Esri</p>}
   </div>;
 }

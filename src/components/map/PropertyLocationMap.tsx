@@ -10,9 +10,9 @@ export default function PropertyLocationMap({ name, latitude, longitude, showPin
   useEffect(() => {
     if (!isNyc || !container.current) return;
     const map = L.map(container.current, { scrollWheelZoom: false }).setView([latitude, longitude], 16);
-    L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/carto/basemap-lt/{z}/{x}/{y}.png8', {
-      maxZoom: 20,
-      attribution: '&copy; City of New York',
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19,
+      attribution: 'Tiles &copy; Esri and its data providers',
     }).addTo(map);
     if (showPin) L.circleMarker([latitude, longitude], { radius: 9, color: '#2D3032', weight: 2, fillColor: '#D4A62A', fillOpacity: 1 }).addTo(map).bindPopup(name);
     return () => { map.remove(); };
