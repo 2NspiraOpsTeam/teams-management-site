@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { DiningPhotoCarousel } from '@/components/dining-photo-carousel';
+import { DiningFeatureVideo } from '@/components/dining-feature-video';
 import { Footer } from '@/components/footer';
 import { listPublicDining, type DiningVenue } from '@/lib/public-dining';
 
@@ -33,13 +34,13 @@ function VenueCard({ venue, index }: { venue: DiningVenue; index: number }) {
       </div>
     </div>
     <div className="relative min-h-72 overflow-hidden bg-[#e9e1d3] lg:min-h-[540px]">
-      <DiningPhotoCarousel name={venue.name} photos={venue.photos} />
+      {venue.slug === 'delizia-73' ? <DiningFeatureVideo /> : <DiningPhotoCarousel name={venue.name} photos={venue.photos} />}
     </div>
   </article>;
 }
 
 export default async function DiningPage() {
-  const venues = await listPublicDining();
+  const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
   return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative isolate flex min-h-[470px] items-center overflow-hidden bg-teams-charcoal text-white sm:min-h-[560px]">
       <img src="/dining/delizia-73-interior-client.jpg" alt="Guests and staff inside a neighborhood restaurant" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
