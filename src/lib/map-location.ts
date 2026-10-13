@@ -12,6 +12,10 @@ export function directionsToPropertyUrl(address: BuildingPublic['address']) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addressLabel(address))}`;
 }
 
+export function directionsFromPropertyUrl(address: BuildingPublic['address'], destination: string) {
+  return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(addressLabel(address))}&destination=${encodeURIComponent(destination)}&travelmode=walking`;
+}
+
 export function satelliteMapUrl(latitude: number, longitude: number) {
   return `https://www.google.com/maps/@?api=1&map_action=map&center=${latitude},${longitude}&zoom=18&basemap=satellite`;
 }
