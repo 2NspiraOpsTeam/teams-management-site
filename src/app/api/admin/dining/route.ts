@@ -9,6 +9,7 @@ type VenueInput = {
   category: string; neighborhood: string; website_url: string; menu_url: string;
   reservation_url: string; ordering_url: string; phone: string;
   hero_media_asset_id: string; publication_state: 'draft' | 'published'; display_order: number;
+  photo_asset_ids: string[];
 };
 
 function parseInput(value: unknown): VenueInput | null {
@@ -21,10 +22,14 @@ function parseInput(value: unknown): VenueInput | null {
   input.id = typeof v.id === 'string' ? v.id : undefined;
   input.publication_state = v.publication_state as VenueInput['publication_state'];
   input.display_order = v.display_order as number;
+  input.photo_asset_ids = v.photo_asset_ids as string[];
   if (!input.name || input.name.length > 100 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug) || input.slug.length > 100 ||
       !input.property_id || input.summary.length > 400 || input.category.length > 100 ||
       input.neighborhood.length > 100 || input.phone.length > 40 || !['draft','published'].includes(input.publication_state) ||
-      !Number.isInteger(input.display_order) || input.display_order < 0 || input.display_order > 10000) return null;
+      !Number.isInteger(input.display_order) || input.display_order < 0 || input.display_order > 10000 ||
+      !Array.isArray(input.photo_asset_ids) || input.photo_asset_ids.length > 30 ||
+      input.photo_asset_ids.some(id => typeof id !== 'string' || id.length > 100) ||
+      new Set(input.photo_asset_ids).size !== input.photo_asset_ids.length) return null;
   if (input.publication_state === 'published' && (!input.summary || !input.category || !input.website_url)) return null;
   for (const field of ['website_url','menu_url','reservation_url','ordering_url'] as const) {
     if (!input[field]) continue;
@@ -42,14 +47,14 @@ export async function POST(request: Request) {
   if (!input) return NextResponse.json({ error: 'Check the venue details and required publication fields.' }, { status: 400 });
   const property = await admin.db.prepare("SELECT id FROM buildings WHERE id=? AND publication_state!='archived'").bind(input.property_id).first();
   if (!property) return NextResponse.json({ error: 'Select an existing property.' }, { status: 400 });
-  if (input.hero_media_asset_id) {
-    const asset = await admin.db.prepare("SELECT storage_key FROM media_assets WHERE id=? AND visibility='public' AND file_type LIKE 'image/%'").bind(input.hero_media_asset_id).first<{storage_key:string}>();
-    if (!asset || !isDeliverablePublicMedia(asset)) return NextResponse.json({ error: 'Select an approved public image from the Media Library.' }, { status: 400 });
+  for (const id of new Set([...input.photo_asset_ids,...(input.hero_media_asset_id ? [input.hero_media_asset_id] : [])])) {
+    const asset = await admin.db.prepare("SELECT storage_key FROM media_assets WHERE id=? AND visibility='public' AND file_type LIKE 'image/%'").bind(id).first<{storage_key:string}>();
+    if (!asset || !isDeliverablePublicMedia(asset)) return NextResponse.json({ error: 'Select approved public photos from the Media Library.' }, { status: 400 });
   }
   const id = input.id || crypto.randomUUID();
   const before = await admin.db.prepare('SELECT * FROM dining_venues WHERE id=?').bind(id).first();
   try {
-    await admin.db.prepare(`INSERT INTO dining_venues
+    await admin.db.batch([admin.db.prepare(`INSERT INTO dining_venues
       (id,name,slug,property_id,summary,category,neighborhood,website_url,menu_url,reservation_url,ordering_url,phone,hero_media_asset_id,publication_state,display_order)
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ON CONFLICT(id) DO UPDATE SET name=excluded.name,slug=excluded.slug,property_id=excluded.property_id,
@@ -59,7 +64,9 @@ export async function POST(request: Request) {
       publication_state=excluded.publication_state,display_order=excluded.display_order,updated_at=datetime('now')`)
       .bind(id,input.name,input.slug,input.property_id,input.summary,input.category,input.neighborhood || null,
         input.website_url || null,input.menu_url || null,input.reservation_url || null,input.ordering_url || null,
-        input.phone || null,input.hero_media_asset_id || null,input.publication_state,input.display_order).run();
+        input.phone || null,input.photo_asset_ids[0] || null,input.publication_state,input.display_order),
+      admin.db.prepare('DELETE FROM dining_venue_photos WHERE venue_id=?').bind(id),
+      ...input.photo_asset_ids.map((assetId,position) => admin.db.prepare('INSERT INTO dining_venue_photos (venue_id,asset_id,position) VALUES (?,?,?)').bind(id,assetId,position))]);
   } catch { return NextResponse.json({ error: 'Unable to save. Check that the slug is unique.' }, { status: 409 }); }
   await audit(admin.db,admin.email,before ? 'dining_updated' : 'dining_created','dining_venue',id,before,input);
   return NextResponse.json({ ok: true, id }, { headers: { 'Cache-Control': 'no-store' } });

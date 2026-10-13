@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Header } from '@/components/header';
+import { DiningPhotoCarousel } from '@/components/dining-photo-carousel';
 import { Footer } from '@/components/footer';
 import { listPublicDining, type DiningVenue } from '@/lib/public-dining';
 
@@ -32,7 +33,7 @@ function VenueCard({ venue, index }: { venue: DiningVenue; index: number }) {
       </div>
     </div>
     <div className="relative min-h-72 overflow-hidden bg-[#e9e1d3] lg:min-h-[540px]">
-      {venue.image ? <><img src={venue.image.src} alt={venue.image.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 motion-safe:hover:scale-[1.035]" />{venue.image.caption && <p className="absolute bottom-3 right-3 rounded-sm bg-teams-charcoal/80 px-3 py-1 text-xs text-white">{venue.image.caption}</p>}</> : <div className="flex h-full items-center justify-center p-10 text-center"><p className="font-serif text-3xl text-teams-ink">A place to gather.</p></div>}
+      <DiningPhotoCarousel name={venue.name} photos={venue.photos} />
     </div>
   </article>;
 }
