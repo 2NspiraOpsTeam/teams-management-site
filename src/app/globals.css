@@ -33,7 +33,10 @@ p {
 }
 
 /* Accessibility */
+.nearby-fact { transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease; }
+.nearby-fact:hover, .nearby-fact:focus-within { transform: translateY(-3px); border-color: #d4b669; box-shadow: 0 12px 28px rgba(45, 48, 50, .09); }
 @media (prefers-reduced-motion: reduce) {
+  .nearby-fact:hover, .nearby-fact:focus-within { transform: none; }
   *,
   *::before,
   *::after {

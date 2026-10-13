@@ -82,13 +82,13 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </section>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {previewPortfolioEnabled && <NeighborhoodPreview slug={slug} residence />}
-        {building.address.state === 'NY' && <section className="mb-10 rounded-lg border border-slate-200 bg-slate-50 p-5 sm:p-7" aria-labelledby="living-nearby-title">
-          <h2 id="living-nearby-title" className="text-2xl font-serif font-semibold text-teams-ink">Living nearby</h2>
+        {building.address.state === 'NY' && <section className="mb-10 rounded-2xl border border-stone-200 bg-[#f7f5ef] p-5 shadow-sm sm:p-8 lg:p-10" aria-labelledby="living-nearby-title">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-[#8b681f]">The neighborhood at a glance</p>
+          <h2 id="living-nearby-title" className="text-3xl font-serif font-semibold text-teams-ink sm:text-4xl">Living nearby</h2>
           {previewPortfolioEnabled && <ResidentialNearby slug={slug} />}
-          {livingFacts?.yearBuilt && <p className="mt-3 text-slate-700">Year built: <strong>{livingFacts.yearBuilt}</strong></p>}
-          {livingFacts?.yearBuilt && <p className="mt-2 text-sm text-slate-600">Year built is from <a href="https://data.cityofnewyork.us/resource/64uk-42ks" target="_blank" rel="noopener noreferrer" className="underline hover:text-teams-ink">NYC Planning property records ↗</a>.</p>}
-          <div className="mt-7 border-t border-slate-200 pt-5">
-            <h3 className="text-sm font-semibold text-teams-ink">Plan your visit</h3>
+          {livingFacts?.yearBuilt && <p className="mb-0 mt-7 text-sm text-slate-600">Property record · Built <strong className="text-teams-ink">{livingFacts.yearBuilt}</strong> · <a href="https://data.cityofnewyork.us/resource/64uk-42ks" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-teams-ink">NYC Planning ↗</a></p>}
+          <div className="mt-7 rounded-xl border border-stone-200 bg-white/70 p-5 sm:p-6">
+            <h3 className="mb-1 font-serif text-xl font-semibold text-teams-ink">Plan your visit</h3>
             <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">
               {zip && <a href={greatSchoolsZipUrl(zip)} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Schools near {zip} ↗</a>}
               <a href="https://schoolsearch.schools.nyc/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC school search ↗</a>
