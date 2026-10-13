@@ -12,11 +12,12 @@ const icons: Record<string, string> = {
 
 function FactCard({ item, address, retail = false }: { item: Highlight; address: BuildingPublic['address']; retail?: boolean }) {
   const mapQuery = `${item.name}, ${address.city}, ${address.state}`;
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+  const isSubway = item.category === 'transit';
+  const mapUrl = isSubway ? 'https://www.mta.info/maps' : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
   return <li className="nearby-fact group min-w-0 rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
     <span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl font-semibold text-teams-ink">{icons[item.category] || '•'}</span>
     <div className="min-w-0"><p className="mb-2 text-[11px] font-bold uppercase tracking-[.16em] text-teams-secondary">{retail && item.category === 'supermarket' ? 'Nearby retail' : item.label}</p>
-      <a href={mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Find ${item.name} in Google Maps (opens in a new tab)`} className="inline-flex min-h-11 items-center gap-2 break-words text-lg font-semibold leading-snug text-teams-ink underline decoration-transparent underline-offset-4 transition-colors hover:decoration-teams-ink focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{item.name} <span aria-hidden="true" className="text-sm text-[#9b7420]">↗</span></a>
+      <a href={mapUrl} target="_blank" rel="noopener noreferrer" aria-label={isSubway ? `View the MTA subway map for ${item.name} (opens in a new tab)` : `Find ${item.name} in Google Maps (opens in a new tab)`} className="inline-flex min-h-11 items-center gap-2 break-words text-lg font-semibold leading-snug text-teams-ink underline decoration-transparent underline-offset-4 transition-colors hover:decoration-teams-ink focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{item.name} <span aria-hidden="true" className="text-sm text-[#9b7420]">↗</span></a>
     </div>
   </li>;
 }

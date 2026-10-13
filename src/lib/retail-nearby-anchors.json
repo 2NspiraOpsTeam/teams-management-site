@@ -69,12 +69,6 @@
       "label": "Theater & culture",
       "name": "Caspary Auditorium",
       "source": "https://www.openstreetmap.org/node/368051495"
-    },
-    {
-      "category": "parking",
-      "label": "Parking",
-      "name": "Surrey Garage",
-      "source": "https://www.openstreetmap.org/way/266900801"
     }
   ],
   "1365-1st-ave": [
@@ -83,12 +77,6 @@
       "label": "Theater & culture",
       "name": "Caspary Auditorium",
       "source": "https://www.openstreetmap.org/node/368051495"
-    },
-    {
-      "category": "parking",
-      "label": "Parking",
-      "name": "Surrey Garage",
-      "source": "https://www.openstreetmap.org/way/266900801"
     }
   ],
   "41-w-46th-st": [
