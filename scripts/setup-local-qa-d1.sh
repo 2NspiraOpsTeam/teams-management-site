@@ -14,7 +14,9 @@ for schema_file in \
   src/lib/migrations/retail-management.sql \
   src/lib/migrations/retail-profiles.sql \
   src/lib/migrations/page-showcase.sql \
-  src/lib/migrations/add-building-map-fields.sql; do
+  src/lib/migrations/add-building-map-fields.sql \
+  src/lib/migrations/dining-venues.sql \
+  src/lib/migrations/dining-card-image.sql; do
   npx wrangler d1 execute teams-database-dev --local --persist-to "$qa_state_dir" --file "$schema_file" >/dev/null
 done
 printf 'Isolated local D1 ready: %s\n' "$qa_state_dir"
