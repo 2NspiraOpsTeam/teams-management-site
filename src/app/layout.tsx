@@ -3,8 +3,19 @@ import "./globals.css";
 import { contactAddress, siteContact } from '@/lib/site-contact';
 
 export const metadata: Metadata = {
-  title: "Teams Management - Property Portfolio",
-  description: "Teams Management property portfolio in New York City",
+  title: "Teams Management | New York Residential & Retail Properties",
+  description: "Explore Teams Management's residential and retail properties across Manhattan, the Bronx, and Queens. Find property information, rental guidance, and ways to connect with our team.",
+  openGraph: {
+    type: 'website',
+    siteName: 'Teams Management',
+    title: 'Teams Management | New York Residential & Retail Properties',
+    description: 'Explore residential and retail properties across Manhattan, the Bronx, and Queens, plus rental guidance and ways to connect with Teams Management.',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Teams Management | New York Residential & Retail Properties',
+    description: 'Explore residential and retail properties across Manhattan, the Bronx, and Queens with Teams Management.',
+  },
   robots: process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1' ? { index: false, follow: false } : undefined,
   other: {
     'contact:email': siteContact.email,
