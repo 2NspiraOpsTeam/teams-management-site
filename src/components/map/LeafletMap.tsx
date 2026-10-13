@@ -18,7 +18,7 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
     const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors',
-    });
+    }).addTo(map);
     const aerial = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {
       maxZoom: 20,
       attribution: '&copy; City of New York · aerial imagery captured 2018',
@@ -54,13 +54,11 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
     const current = layers.current;
     if (!current) return;
     if (view === 'aerial') {
-      current.map.removeLayer(current.streets);
       current.aerial.addTo(current.map);
       current.labels.addTo(current.map);
     } else {
       current.map.removeLayer(current.aerial);
       current.map.removeLayer(current.labels);
-      current.streets.addTo(current.map);
     }
   }, [view]);
   return <div className="relative">
