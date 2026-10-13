@@ -10,7 +10,7 @@ export function Header() {
 
   const navItems = [
     { href: '/about', label: 'About Us' },
-    { href: '/properties', label: 'Properties' },
+    { href: '/properties', label: 'Residences' },
     { href: '/retail', label: 'Retail' },
     { href: '/dining', label: 'Dining' },
     { href: '/rent-with-us', label: 'Rent with Us' },
