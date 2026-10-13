@@ -13,8 +13,8 @@ import type { BuildingPublic } from '@/lib/database.types';
 
 export const runtime = 'edge';
 export const metadata: Metadata = {
-  title: 'Teams Management | New York Residential & Retail Properties',
-  description: 'Explore Teams Management properties in Manhattan, the Bronx, and Queens, find rental inquiry guidance, and connect with our New York team.',
+  title: 'Teams Management | New York Property Management',
+  description: 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.',
 };
 
 type Feature = { building: BuildingPublic; image: MediaRow };
@@ -56,8 +56,8 @@ export default async function Home() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#1d2022]/90 via-[#1d2022]/35 to-[#1d2022]/15" />
       <div className="mx-auto w-full max-w-7xl px-5 pb-16 pt-32 sm:px-8 sm:pb-24 lg:px-12">
         <p className="mb-5 text-xs font-semibold uppercase tracking-[.24em] text-[#e5d5b2]">Teams Management · New York City</p>
-        <h1 className="mb-5 max-w-[11ch] font-serif text-5xl font-normal leading-[1.05] sm:text-7xl lg:text-[6rem]">Where New York feels like home.</h1>
-        <p className="mb-8 max-w-lg text-base leading-relaxed text-white/85 sm:text-lg">Discover places to live, connect, and make everyday life your own.</p>
+        <h1 className="mb-5 max-w-[14ch] font-serif text-5xl font-normal leading-[1.05] sm:text-7xl lg:text-[6rem]">New York properties. People-first management.</h1>
+        <p className="mb-8 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">We care for residential and retail properties across the city, helping residents, prospective renters, and businesses connect with the right place and the right team.</p>
         <div className="flex flex-wrap gap-3"><Link className="home-button bg-teams-gold text-[#111]" href="/properties">Explore Our Properties <span aria-hidden="true">↗</span></Link><Link className="home-button border border-white/70 text-white hover:bg-white/10" href="/rent-with-us">Rent With Us <span aria-hidden="true">↗</span></Link></div>
       </div>
     </section>
