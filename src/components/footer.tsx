@@ -32,13 +32,13 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/properties" className="text-slate-300 hover:text-white text-sm transition-colors">
-                  Properties
+                  Residences
                 </Link>
               </li>
               <li><Link href="/retail" className="text-slate-300 hover:text-white text-sm transition-colors">Retail</Link></li>
-              <li><Link href="/about" className="text-slate-300 hover:text-white text-sm">About Us</Link></li>
               <li><Link href="/dining" className="text-slate-300 hover:text-white text-sm">Dining</Link></li>
               <li><Link href="/rent-with-us" className="text-slate-300 hover:text-white text-sm">Rent with Us</Link></li>
+              <li><Link href="/about" className="text-slate-300 hover:text-white text-sm">About</Link></li>
               <li><Link href="/contact" className="text-slate-300 hover:text-white text-sm">Contact</Link></li>
               <li><Link href="/tenant-services" className="text-slate-300 hover:text-white text-sm">Tenant Services</Link></li>
             </ul>
