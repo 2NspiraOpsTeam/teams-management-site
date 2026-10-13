@@ -45,6 +45,7 @@ export default async function PropertiesPage() {
                     <a href={`#property-${building.slug}`} className="flex min-h-11 items-center rounded-sm px-2 py-2 text-sm font-medium leading-snug text-teams-ink hover:bg-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold">{building.name}</a>
                   </li>)}
                 </ol>
+                <a href="#portfolio-map-heading" className="mt-4 flex min-h-11 items-center rounded-sm border-t border-slate-200 px-2 pt-3 text-sm font-semibold text-teams-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold">All Properties on Map →</a>
               </div>
             </nav>
             <div className="min-w-0 space-y-12 sm:space-y-16">
