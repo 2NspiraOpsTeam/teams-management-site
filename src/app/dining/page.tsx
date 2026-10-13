@@ -32,7 +32,7 @@ function VenueCard({ venue, index }: { venue: DiningVenue; index: number }) {
       </div>
     </div>
     <div className="relative min-h-72 overflow-hidden bg-[#e9e1d3] lg:min-h-[540px]">
-      {venue.image ? <><img src={venue.image.src} alt={venue.image.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 motion-safe:hover:scale-[1.035]" /><p className="absolute bottom-3 right-3 rounded-sm bg-teams-charcoal/80 px-3 py-1 text-xs text-white">{venue.image.caption || 'Dining photography'}</p></> : <div className="flex h-full items-center justify-center p-10 text-center"><p className="font-serif text-3xl text-teams-ink">A place to gather.</p></div>}
+      {venue.image ? <><img src={venue.image.src} alt={venue.image.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 motion-safe:hover:scale-[1.035]" />{venue.image.caption && <p className="absolute bottom-3 right-3 rounded-sm bg-teams-charcoal/80 px-3 py-1 text-xs text-white">{venue.image.caption}</p>}</> : <div className="flex h-full items-center justify-center p-10 text-center"><p className="font-serif text-3xl text-teams-ink">A place to gather.</p></div>}
     </div>
   </article>;
 }
@@ -41,7 +41,7 @@ export default async function DiningPage() {
   const venues = await listPublicDining();
   return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative isolate flex min-h-[470px] items-center overflow-hidden bg-teams-charcoal text-white sm:min-h-[560px]">
-      <img src="/dining/people-sharing-pizza-unsplash.jpg" alt="Friends gathered around a pizza at a restaurant" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+      <img src="/dining/delizia-73-interior-client.jpg" alt="Guests and staff inside a neighborhood restaurant" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-teams-charcoal/95 via-teams-charcoal/75 to-teams-charcoal/25" />
       <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <p className="text-xs font-bold uppercase tracking-[.24em] text-teams-gold-on-dark">Places to meet. Places to stay.</p>
@@ -49,7 +49,6 @@ export default async function DiningPage() {
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-100">The best neighborhood moments often begin around a table. Meet the dining destinations at our properties.</p>
         {venues.length > 0 && <a href={`#${venues[0].slug}`} className="mt-8 inline-flex min-h-11 items-center border-b-2 border-teams-gold pb-1 font-semibold text-white transition-colors hover:text-teams-gold-on-dark">Explore {venues[0].name} <span className="ml-2" aria-hidden="true">↓</span></a>}
       </div>
-      <p className="absolute bottom-3 right-4 text-xs text-white/80">Illustrative dining photography</p>
     </section>
     <section className="texture-paper px-4 py-16 sm:px-6 sm:py-24 lg:px-8" aria-label="Dining destinations"><div className="mx-auto max-w-7xl space-y-12">
       {venues.map((venue, index) => <VenueCard key={venue.id} venue={venue} index={index} />)}
