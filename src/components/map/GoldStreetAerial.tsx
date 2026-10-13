@@ -69,12 +69,12 @@ export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.7095060043
     <div className="relative h-[480px] overflow-hidden rounded-lg border border-stone-300 bg-stone-100 sm:h-[650px] lg:h-[740px]">
       <div ref={host} className="h-full w-full" role="region" aria-label={`Interactive map of ${name}`} />
       <div className="absolute left-3 top-3 z-[1000] flex rounded-sm bg-white p-1 shadow-lg" role="group" aria-label="Map view">
-        <button type="button" onClick={() => setView('aerial')} disabled={imageryFailed} aria-pressed={view === 'aerial' && !imageryFailed} className="min-h-11 px-3 text-sm font-semibold disabled:opacity-50">Aerial</button>
+        <button type="button" onClick={() => { setImageryFailed(false); setView('aerial'); }} aria-pressed={view === 'aerial' && !imageryFailed} className="min-h-11 px-3 text-sm font-semibold">Aerial</button>
         <button type="button" onClick={() => setView('streets')} aria-pressed={view === 'streets' || imageryFailed} className="min-h-11 px-3 text-sm font-semibold">Streets</button>
       </div>
       {moving && <button type="button" onClick={() => { mapRef.current?.stop(); setMoving(false); }} className="absolute right-3 top-3 z-[1000] min-h-11 rounded-sm bg-white px-3 text-sm font-semibold shadow">Skip animation</button>}
       <p className="pointer-events-none absolute bottom-7 left-3 z-[1000] rounded-sm bg-white/95 px-2 py-1 text-xs text-teams-ink shadow">{imageryFailed || view === 'streets' ? 'Street map · Esri' : 'Aerial imagery · Esri'}</p>
     </div>
-    <p className="mt-2 text-sm text-slate-600" role="status">{imageryFailed ? 'Aerial imagery is unavailable; showing the interactive street map.' : 'Aerial view of the surrounding area. The gold marker shows the verified property location; imagery is not live.'}</p>
+    <p className="mt-2 text-sm text-slate-600" role="status">{imageryFailed ? 'Aerial imagery is unavailable; showing the interactive street map. Select Aerial to retry.' : 'Aerial view of the surrounding area. The gold marker shows the verified property location; imagery is not live.'}</p>
   </section>;
 }
