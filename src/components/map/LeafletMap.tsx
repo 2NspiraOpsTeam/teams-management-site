@@ -15,9 +15,9 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
   useEffect(() => {
     if (!container.current || buildings.length === 0) return;
     const map = L.map(container.current, { scrollWheelZoom: false, zoomControl: true });
-    const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors',
+    const streets = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/carto/basemap-lt/{z}/{x}/{y}.png8', {
+      maxZoom: 20,
+      attribution: '&copy; City of New York',
     }).addTo(map);
     const aerial = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {
       maxZoom: 20,
