@@ -12,9 +12,8 @@ const icons: Record<string, string> = {
 
 function FactCard({ item, address, retail = false }: { item: Highlight; address: BuildingPublic['address']; retail?: boolean }) {
   const mapQuery = `${item.name}, ${address.city}, ${address.state}`;
-  const isSubway = item.category === 'transit';
-  const mapUrl = retail ? (isSubway ? 'https://www.mta.info/maps' : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`) : directionsFromPropertyUrl(address, mapQuery);
-  const linkLabel = retail ? (isSubway ? `View the MTA subway map for ${item.name}` : `Find ${item.name} in Google Maps`) : `Get directions from this property to ${item.name}`;
+  const mapUrl = retail ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : directionsFromPropertyUrl(address, mapQuery);
+  const linkLabel = retail ? `Find ${item.name} in Google Maps` : `Get directions from this property to ${item.name}`;
   return <li className="nearby-fact group min-w-0 rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
     <span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl font-semibold text-teams-ink">{icons[item.category] || '•'}</span>
     <div className="min-w-0"><p className="mb-2 text-[11px] font-bold uppercase tracking-[.16em] text-teams-secondary">{retail && item.category === 'supermarket' ? 'Nearby retail' : item.label}</p>
