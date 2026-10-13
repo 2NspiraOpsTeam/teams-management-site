@@ -9,11 +9,11 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { href: '/about', label: 'About Us' },
     { href: '/properties', label: 'Residences' },
     { href: '/retail', label: 'Retail' },
     { href: '/dining', label: 'Dining' },
     { href: '/rent-with-us', label: 'Rent with Us' },
+    { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
   ];
 
@@ -30,7 +30,6 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
-            <Link href="/" aria-current={pathname === '/' ? 'page' : undefined} className="text-sm font-medium border-b border-transparent py-2 text-[#252525] transition-colors hover:text-[#B49355] aria-[current=page]:border-[#B49355]">Home</Link>
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -63,7 +62,6 @@ export function Header() {
           </button>
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-[#E8E5DF] py-3 flex flex-col gap-1">
-          <Link href="/" onClick={() => setMenuOpen(false)} aria-current={pathname === '/' ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#B49355] aria-[current=page]:border-[#B49355]">Home</Link>
           {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#B49355] aria-[current=page]:border-[#B49355]">{item.label}</Link>)}
           <Link href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
         </div>}
