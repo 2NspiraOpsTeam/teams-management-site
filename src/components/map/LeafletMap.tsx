@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { BuildingPublic } from '@/lib/database.types';
@@ -10,13 +10,24 @@ type VerifiedBuilding = BuildingPublic & { latitude: number; longitude: number }
 
 export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[] }) {
   const container = useRef<HTMLDivElement>(null);
+  const layers = useRef<{ streets: L.TileLayer; aerial: L.TileLayer; labels: L.TileLayer; map: L.Map } | null>(null);
+  const [view, setView] = useState<'aerial' | 'streets'>('aerial');
   useEffect(() => {
     if (!container.current || buildings.length === 0) return;
     const map = L.map(container.current, { scrollWheelZoom: false, zoomControl: true });
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors',
+    });
+    const aerial = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {
+      maxZoom: 20,
+      attribution: '&copy; City of New York · aerial imagery captured 2018',
     }).addTo(map);
+    const labels = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/carto/label-lt/{z}/{x}/{y}.png8', {
+      maxZoom: 20,
+      attribution: '&copy; City of New York',
+    }).addTo(map);
+    layers.current = { streets, aerial, labels, map };
     const points: L.LatLngExpression[] = [];
     for (const building of buildings) {
       const point: L.LatLngExpression = [building.latitude, building.longitude];
@@ -37,7 +48,27 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
     }
     if (points.length === 1) map.setView(points[0], 14);
     else map.fitBounds(L.latLngBounds(points), { padding: [32, 32], maxZoom: 14 });
-    return () => { map.remove(); };
+    return () => { layers.current = null; map.remove(); };
   }, [buildings]);
-  return <div ref={container} className="h-[360px] w-full sm:h-[460px]" role="region" aria-label="Map of verified portfolio locations" />;
+  useEffect(() => {
+    const current = layers.current;
+    if (!current) return;
+    if (view === 'aerial') {
+      current.map.removeLayer(current.streets);
+      current.aerial.addTo(current.map);
+      current.labels.addTo(current.map);
+    } else {
+      current.map.removeLayer(current.aerial);
+      current.map.removeLayer(current.labels);
+      current.streets.addTo(current.map);
+    }
+  }, [view]);
+  return <div className="relative">
+    <div ref={container} className="h-[360px] w-full sm:h-[460px]" role="region" aria-label="Map of verified portfolio locations" />
+    <div className="absolute bottom-8 left-3 z-[1000] flex rounded-sm bg-white p-1 shadow-lg" role="group" aria-label="Map view">
+      <button type="button" onClick={() => setView('aerial')} aria-pressed={view === 'aerial'} className={`min-h-11 px-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-ink ${view === 'aerial' ? 'bg-teams-ink text-white' : 'text-teams-ink'}`}>Satellite</button>
+      <button type="button" onClick={() => setView('streets')} aria-pressed={view === 'streets'} className={`min-h-11 px-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-ink ${view === 'streets' ? 'bg-teams-ink text-white' : 'text-teams-ink'}`}>Streets</button>
+    </div>
+    {view === 'aerial' && <p className="absolute bottom-20 left-3 z-[1000] rounded-sm bg-white/95 px-2 py-1 text-xs text-teams-ink shadow">NYC aerial imagery · 2018</p>}
+  </div>;
 }
