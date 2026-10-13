@@ -2,10 +2,17 @@ import { getRequestContext } from '@cloudflare/next-on-pages';
 import type { D1Database } from '@cloudflare/workers-types';
 import { previewPortfolioEnabled } from './preview-portfolio';
 export type RetailProperty={id:string;name:string;slug:string;address:{street:string;city:string;state:string;zip:string;neighborhood?:string};retail_status:'active'|'commercial_component'|'planned';retail_notes:string|null;latitude?:number|null;longitude?:number|null;map_verified?:boolean;geocode_status?:string|null};
-const splitWest46th: RetailProperty[] = [349,351].map(number=>({
+// NYC Planning Labs GeoSearch / NYC PAD address points, checked 2026-10-13.
+// These preview-only split listings do not have corresponding verified D1 map rows.
+const splitWest46thPoints = {
+  349: { latitude: 40.76077, longitude: -73.989656 },
+  351: { latitude: 40.76076, longitude: -73.98966 },
+} as const;
+const splitWest46th: RetailProperty[] = ([349,351] as const).map(number=>({
  id:`real-${number}-w-46th-st`,name:`${number} W 46th St`,slug:`${number}-w-46th-st`,
  address:{street:`${number} W 46th St`,city:'New York',state:'NY',zip:'10036'},
  retail_status:'commercial_component',retail_notes:null,
+ ...splitWest46thPoints[number],map_verified:true,geocode_status:'verified',
 }));
 export async function listPublicRetail():Promise<RetailProperty[]>{
  const db=(getRequestContext().env as {DB?:D1Database}).DB;if(!db)throw new Error('Teams D1 unavailable');

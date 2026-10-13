@@ -21,8 +21,8 @@ export function RetailMap({ properties }: { properties: RetailProperty[] }) {
         if (!alive) return;
         const verified = new Map(rows.map(row => [row.slug, row]));
         setPins(properties.flatMap(property => {
-          const point = verified.get(property.slug);
-          if (!point || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude)) return [];
+          const point = verified.get(property.slug) ?? (property.map_verified && property.geocode_status === 'verified' ? property : null);
+          if (!point || typeof point.latitude !== 'number' || typeof point.longitude !== 'number' || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude)) return [];
           return [{...property, latitude:point.latitude, longitude:point.longitude, geocode_status:'verified' as const, map_verified:true, description_public:null, amenities_public:[], gallery:[], publication_state:'published' as const, created_at:'', updated_at:''}];
         }));
       }).catch(() => {}).finally(() => { if (alive) setLoading(false); });
