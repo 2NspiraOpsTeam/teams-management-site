@@ -1,4 +1,5 @@
-import Link from 'next/link';
+import type { BuildingPublic } from '@/lib/database.types';
+import { mapLocationUrl } from '@/lib/map-location';
 import highlights from '@/lib/nearby-highlights.json';
 import pedestrianData from '@/lib/retail-pedestrian-data.json';
 import retailAnchors from '@/lib/retail-nearby-anchors.json';
@@ -18,18 +19,18 @@ function FactCard({ item, retail = false }: { item: Highlight; retail?: boolean 
   </li>;
 }
 
-export function ResidentialNearby({ slug }: { slug: string }) {
+export function ResidentialNearby({ slug, address }: { slug: string; address: BuildingPublic['address'] }) {
   const items = (highlights as Record<string, Highlight[]>)[slug] || [];
   if (!items.length) return null;
   return <>
     <p className="mt-3 max-w-2xl leading-relaxed text-slate-700">A quick look at everyday essentials and places to unwind around this address.</p>
     <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{items.map(item => <FactCard key={`${item.category}-${item.name}`} item={item} />)}</ul>
-    <div className="mt-7 flex flex-wrap items-center gap-4"><Link href="#residence-location-title" className="inline-flex min-h-12 items-center gap-4 rounded-md bg-teams-gold px-6 py-3 font-semibold text-teams-ink shadow-sm transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-teams-gold-highlight hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink motion-reduce:transform-none">Explore the Neighborhood <span aria-hidden="true">↓</span></Link><span className="text-sm text-slate-600">See the property on the map</span></div>
+    <div className="mt-7 flex flex-wrap items-center gap-4"><a href={mapLocationUrl(address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-4 rounded-md bg-teams-gold px-6 py-3 font-semibold text-teams-ink shadow-sm transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-teams-gold-highlight hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink motion-reduce:transform-none">Explore the Neighborhood <span aria-hidden="true">↗</span></a><span className="text-sm text-slate-600">Opens Google Maps in a new tab</span></div>
     <p className="mb-0 mt-5 text-xs text-slate-600">Places: OpenStreetMap; transit: MTA open data. Checked October 13, 2026. The map shows the property setting; distances and walk times are not estimated.</p>
   </>;
 }
 
-export function RetailNeighborhood({ slug, street }: { slug: string; street: string }) {
+export function RetailNeighborhood({ slug, street, address }: { slug: string; street: string; address: BuildingPublic['address'] }) {
   const items = (highlights as Record<string, Highlight[]>)[slug] || [];
   const anchors = (retailAnchors as Record<string, Highlight[]>)[slug] || [];
   const area = previewRetailNeighborhood(slug);
@@ -46,7 +47,7 @@ export function RetailNeighborhood({ slug, street }: { slug: string; street: str
       {anchors.map(item => <FactCard retail key={`${item.category}-${item.name}`} item={item} />)}
       {publishedCount && <li className="nearby-fact rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6"><span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl text-teams-ink">{icons.pedestrian}</span><div><p className="mb-2 text-[11px] font-bold uppercase tracking-[.16em] text-teams-secondary">Nearby DOT pedestrian count</p><a href={pedestrian.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-lg font-semibold text-teams-ink underline decoration-transparent underline-offset-4 hover:decoration-teams-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{Number(pedestrian.count_value).toLocaleString()} · {pedestrian.count_period} ↗</a><p className="mb-0 mt-2 text-sm leading-relaxed text-slate-700">{pedestrian.measurement_location}, about {pedestrian.distance_from_property} m straight-line from this address. This count is at the named corridor, not this storefront.</p></div></li>}
     </ul>
-    <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3"><Link href="#retail-location-title" className="inline-flex min-h-12 items-center gap-3 bg-teams-gold px-6 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Explore the Neighborhood <span aria-hidden="true">↓</span></Link><a href={area.guide} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">Area guide ↗</a></div>
+    <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3"><a href={mapLocationUrl(address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-3 bg-teams-gold px-6 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Explore the Neighborhood <span aria-hidden="true">↗</span></a><span className="text-sm text-slate-600">Opens Google Maps in a new tab</span><a href={area.guide} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">Area guide ↗</a></div>
     <p className="mt-4 text-xs text-slate-600">Places: OpenStreetMap; transit: MTA open data. Checked October 13, 2026. NYC DOT count: May 2026, verified October 13, 2026 where shown. Verify current businesses and access before making a leasing decision.</p>
   </div></section>;
 }
