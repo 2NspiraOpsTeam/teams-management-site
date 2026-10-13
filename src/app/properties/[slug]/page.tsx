@@ -69,6 +69,16 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <section aria-label={`${building.name} photo gallery`} className="mb-12"><PropertyGallery images={images} name={building.name} /></section>
         {Object.entries(unitGroups).map(([unit,items])=><section key={unit} aria-label={`Apartment ${unit} photos`} className="mb-12"><h2 className="mb-3 text-2xl font-serif font-semibold text-teams-ink">Apartment {unit} photos</h2><p className="mb-4 text-sm text-slate-600">These photos show this apartment only. Contact Teams Management for current availability.</p><PropertyGallery images={(items||[]).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Apartment ${unit} interior`,caption:item.caption}))} name={`Apartment ${unit}`} /></section>)}
         {previewPortfolioEnabled && <div className="mb-10"><PreviewBuildingDetails slug={building.slug} /></div>}
+        {previewPortfolioEnabled && slug === '61-gold-st' && <section className="mb-10 rounded-lg border border-stone-200 bg-[#f7f4ee] p-6 sm:p-8" aria-labelledby="gold-street-plans">
+          <p className="text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">Coming soon</p>
+          <h2 id="gold-street-plans" className="mt-2 font-serif text-3xl text-teams-ink">Planned residences at 61 Gold Street</h2>
+          <p className="mt-4 text-slate-700">Plans call for 90 residences, with studios, one-bedroom and two-bedroom homes, and luxury suites.</p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned fitness</h3><p className="mt-1 text-sm text-slate-600">A gym for residents.</p></div>
+            <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned retail</h3><p className="mt-1 text-sm text-slate-600">Retail stores at the property.</p></div>
+          </div>
+          <p className="mt-5 text-sm text-slate-600">Details are planned and may change. Contact Teams Management for current information.</p>
+        </section>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {previewPortfolioEnabled && <NeighborhoodPreview slug={slug} residence />}
         {building.address.state === 'NY' && <section className="mb-10 rounded-lg border border-slate-200 bg-slate-50 p-5 sm:p-7" aria-labelledby="living-nearby-title">
