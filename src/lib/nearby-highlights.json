@@ -1,0 +1,636 @@
+{
+  "42-70-156th-st-flushing": [
+    {
+      "category": "transit",
+      "label": "Bus access",
+      "name": "Sanford Ave / 158th St · Q65 bus",
+      "source": "https://data.ny.gov/resource/2ucp-7wg5.json?stop_id=500925&in_effect=true"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "H Mart",
+      "source": "https://www.openstreetmap.org/node/7270879430"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "The Well Coffee",
+      "source": "https://www.openstreetmap.org/node/10937301892"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Murray Hill Playground",
+      "source": "https://www.openstreetmap.org/way/425627322"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Mcgoldrick",
+      "source": "https://www.openstreetmap.org/way/284526634"
+    }
+  ],
+  "3425-east-tremont-bronx": [
+    {
+      "category": "transit",
+      "label": "Bus access",
+      "name": "E Tremont Ave / Bruckner Blvd · Bx40, Bx42 buses",
+      "source": "https://data.ny.gov/resource/2ucp-7wg5.json?stop_id=102666&in_effect=true"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Super Foodtown",
+      "source": "https://www.openstreetmap.org/node/13044783545"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Walgreens",
+      "source": "https://www.openstreetmap.org/node/13044613343"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Miele Park",
+      "source": "https://www.openstreetmap.org/way/723090342"
+    },
+    {
+      "category": "clinic",
+      "label": "Healthcare",
+      "name": "Throgs Neck Urgent Medical Care",
+      "source": "https://www.openstreetmap.org/node/9696646760"
+    }
+  ],
+  "166-e-118th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "116 St (6)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=393"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "City Fresh Market",
+      "source": "https://www.openstreetmap.org/way/265796841"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Second Avenue Pharmacy",
+      "source": "https://www.openstreetmap.org/node/2765399934"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Capy",
+      "source": "https://www.openstreetmap.org/node/5269095866"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Harlem Art Park",
+      "source": "https://www.openstreetmap.org/way/225134049"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "125th Street Library",
+      "source": "https://www.openstreetmap.org/way/271605663"
+    }
+  ],
+  "170-e-118th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "116 St (6)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=393"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Shop Fair",
+      "source": "https://www.openstreetmap.org/node/5952881385"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Second Avenue Pharmacy",
+      "source": "https://www.openstreetmap.org/node/2765399934"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Capy",
+      "source": "https://www.openstreetmap.org/node/5269095866"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Harlem Art Park",
+      "source": "https://www.openstreetmap.org/way/225134049"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "125th Street Library",
+      "source": "https://www.openstreetmap.org/way/271605663"
+    }
+  ],
+  "71-e-110th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "110 St (6)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=394"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "C-Town",
+      "source": "https://www.openstreetmap.org/node/6001375861"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Eco Green Pharmacy",
+      "source": "https://www.openstreetmap.org/node/6270572929"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Dear Mama Coffee",
+      "source": "https://www.openstreetmap.org/node/5876977173"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Peter Minuit Playground",
+      "source": "https://www.openstreetmap.org/way/225171034"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Aguilar Library",
+      "source": "https://www.openstreetmap.org/way/271277515"
+    }
+  ],
+  "173-e-91st-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "96 St (6)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=396"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Westside Market",
+      "source": "https://www.openstreetmap.org/node/6055243196"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "CVS Pharmacy",
+      "source": "https://www.openstreetmap.org/node/3590689284"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "La Librairie des Enfants Café",
+      "source": "https://www.openstreetmap.org/node/10179234747"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Ruppert Park",
+      "source": "https://www.openstreetmap.org/way/353000933"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "96th Street Library",
+      "source": "https://www.openstreetmap.org/way/266924969"
+    }
+  ],
+  "1626-2nd-ave": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "86 St (Q)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=476"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Fairway Market",
+      "source": "https://www.openstreetmap.org/node/12920325700"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "CVS Pharmacy",
+      "source": "https://www.openstreetmap.org/node/5599203463"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Café Maud",
+      "source": "https://www.openstreetmap.org/node/9683499914"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Ruppert Park",
+      "source": "https://www.openstreetmap.org/way/353000933"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Yorkville Library",
+      "source": "https://www.openstreetmap.org/way/266899958"
+    }
+  ],
+  "225-e-83rd-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "86 St (Q)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=476"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Gristedes",
+      "source": "https://www.openstreetmap.org/node/2620513862"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Caligor Pharmacy",
+      "source": "https://www.openstreetmap.org/node/9233658444"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Madame Bontè Café",
+      "source": "https://www.openstreetmap.org/node/9497036165"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Ruppert Park",
+      "source": "https://www.openstreetmap.org/way/353000933"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Yorkville Library",
+      "source": "https://www.openstreetmap.org/way/266899958"
+    }
+  ],
+  "171-e-74th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "77 St (6)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=398"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "D'Agostino",
+      "source": "https://www.openstreetmap.org/node/7322799428"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "New Drug Loft",
+      "source": "https://www.openstreetmap.org/node/9233618003"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Joe Coffee Company",
+      "source": "https://www.openstreetmap.org/node/5859940717"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Poses Park",
+      "source": "https://www.openstreetmap.org/way/334715965"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "The New York Society Library",
+      "source": "https://www.openstreetmap.org/way/266928744"
+    }
+  ],
+  "1374-1st-ave": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "72 St (Q)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=477"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "A Matter of Health",
+      "source": "https://www.openstreetmap.org/node/8617534012"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Duane Reade",
+      "source": "https://www.openstreetmap.org/node/2629371822"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Alex Cafe & Deli",
+      "source": "https://www.openstreetmap.org/node/12070920014"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "John Jay Park",
+      "source": "https://www.openstreetmap.org/relation/1751075"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Webster Library",
+      "source": "https://www.openstreetmap.org/way/266900751"
+    }
+  ],
+  "1365-1st-ave": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "72 St (Q)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=477"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "A Matter of Health",
+      "source": "https://www.openstreetmap.org/node/8617534012"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Duane Reade",
+      "source": "https://www.openstreetmap.org/node/2629371822"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Kravé Cafe and Juice Bar",
+      "source": "https://www.openstreetmap.org/node/7013006319"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "John Jay Park",
+      "source": "https://www.openstreetmap.org/relation/1751075"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Webster Library",
+      "source": "https://www.openstreetmap.org/way/266900751"
+    }
+  ],
+  "41-w-46th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "47-50 Sts-Rockefeller Ctr (B,D,F,M)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=225"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Whole Foods Market",
+      "source": "https://www.openstreetmap.org/node/4665840837"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Duane Reade",
+      "source": "https://www.openstreetmap.org/node/12968777478"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "For five coffee roasters",
+      "source": "https://www.openstreetmap.org/node/6615272821"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Channel Gardens",
+      "source": "https://www.openstreetmap.org/way/159028631"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Stephen A. Schwarzman Building",
+      "source": "https://www.openstreetmap.org/way/265302076"
+    }
+  ],
+  "349-w-46th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "50 St (C,E)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=162"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "The Food Emporium",
+      "source": "https://www.openstreetmap.org/node/1000798085"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Esco Pharmacy",
+      "source": "https://www.openstreetmap.org/node/14205796401"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Frisson Espresso",
+      "source": "https://www.openstreetmap.org/node/4330787300"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Ramone Aponte Park",
+      "source": "https://www.openstreetmap.org/way/266113539"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Columbus Library",
+      "source": "https://www.openstreetmap.org/way/265325033"
+    }
+  ],
+  "351-w-46th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "50 St (C,E)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=162"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "The Food Emporium",
+      "source": "https://www.openstreetmap.org/node/1000798085"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Esco Pharmacy",
+      "source": "https://www.openstreetmap.org/node/14205796401"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Rind",
+      "source": "https://www.openstreetmap.org/node/9699175979"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Ramone Aponte Park",
+      "source": "https://www.openstreetmap.org/way/266113539"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Columbus Library",
+      "source": "https://www.openstreetmap.org/way/265325033"
+    }
+  ],
+  "307-w-39th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "Times Sq-42 St/Port Authority Bus Terminal (1,2,3,7,A,C,E,N,Q,R,W,S)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=611"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Aldi",
+      "source": "https://www.openstreetmap.org/node/13731188444"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Duane Reade",
+      "source": "https://www.openstreetmap.org/node/2649092003"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Grace Cafe",
+      "source": "https://www.openstreetmap.org/node/2709629969"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "McCaffrey Playground",
+      "source": "https://www.openstreetmap.org/way/266077861"
+    },
+    {
+      "category": "clinic",
+      "label": "Healthcare",
+      "name": "CityMD",
+      "source": "https://www.openstreetmap.org/node/5855965350"
+    }
+  ],
+  "235-w-18th-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "18 St (1)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=321"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "Gristedes",
+      "source": "https://www.openstreetmap.org/node/2377128155"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Duane Reade",
+      "source": "https://www.openstreetmap.org/node/2377128145"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Café Grumpy",
+      "source": "https://www.openstreetmap.org/node/2826407083"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Chelsea Green",
+      "source": "https://www.openstreetmap.org/way/371120098"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "Muhlenberg Library",
+      "source": "https://www.openstreetmap.org/way/264650639"
+    }
+  ],
+  "61-gold-st": [
+    {
+      "category": "transit",
+      "label": "Subway access",
+      "name": "Fulton St (2,3,4,5,A,C,J,Z)",
+      "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=628"
+    },
+    {
+      "category": "supermarket",
+      "label": "Groceries",
+      "name": "55 Fulton Market",
+      "source": "https://www.openstreetmap.org/node/3094612698"
+    },
+    {
+      "category": "pharmacy",
+      "label": "Pharmacy",
+      "name": "Southbridge Pharmacy",
+      "source": "https://www.openstreetmap.org/node/12919871439"
+    },
+    {
+      "category": "cafe",
+      "label": "Coffee & dining",
+      "name": "Birch Coffee",
+      "source": "https://www.openstreetmap.org/node/6074315900"
+    },
+    {
+      "category": "park",
+      "label": "Parks & recreation",
+      "name": "Titanic Memorial Park",
+      "source": "https://www.openstreetmap.org/way/109441961"
+    },
+    {
+      "category": "library",
+      "label": "Library",
+      "name": "New Amsterdam Library",
+      "source": "https://www.openstreetmap.org/node/2632446787"
+    }
+  ]
+}

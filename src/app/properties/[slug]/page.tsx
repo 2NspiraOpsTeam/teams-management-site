@@ -14,6 +14,7 @@ import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
 import { greatSchoolsZipUrl, nycLivingFacts } from '@/lib/nyc-living-facts';
 import { NeighborhoodPreview } from '@/components/neighborhood-preview';
+import { ResidentialNearby } from '@/components/nearby-highlights';
 import { PropertyLocationPanel } from '@/components/map/PropertyLocationPanel';
 import { GoldStreetAerial } from '@/components/map/GoldStreetAerial';
 
@@ -83,13 +84,18 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         {previewPortfolioEnabled && <NeighborhoodPreview slug={slug} residence />}
         {building.address.state === 'NY' && <section className="mb-10 rounded-lg border border-slate-200 bg-slate-50 p-5 sm:p-7" aria-labelledby="living-nearby-title">
           <h2 id="living-nearby-title" className="text-2xl font-serif font-semibold text-teams-ink">Living nearby</h2>
+          {previewPortfolioEnabled && <ResidentialNearby slug={slug} />}
           {livingFacts?.yearBuilt && <p className="mt-3 text-slate-700">Year built: <strong>{livingFacts.yearBuilt}</strong></p>}
           {livingFacts?.yearBuilt && <p className="mt-2 text-sm text-slate-600">Year built is from <a href="https://data.cityofnewyork.us/resource/64uk-42ks" target="_blank" rel="noopener noreferrer" className="underline hover:text-teams-ink">NYC Planning property records ↗</a>.</p>}
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {zip && <a href={greatSchoolsZipUrl(zip)} target="_blank" rel="noopener noreferrer" className="rounded border border-slate-300 bg-white p-4 text-teams-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-gold"><strong>Explore schools near {zip} ↗</strong><span className="mt-1 block text-sm text-slate-600">GreatSchools ZIP-code search. A ZIP code does not determine school eligibility.</span></a>}
-            <a href="https://schoolsearch.schools.nyc/" target="_blank" rel="noopener noreferrer" className="rounded border border-slate-300 bg-white p-4 text-teams-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-gold"><strong>NYC public school search ↗</strong><span className="mt-1 block text-sm text-slate-600">Check current school options and enrollment details.</span></a>
-            <a href="https://new.mta.info/maps" target="_blank" rel="noopener noreferrer" className="rounded border border-slate-300 bg-white p-4 text-teams-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-gold"><strong>Explore transit maps ↗</strong><span className="mt-1 block text-sm text-slate-600">View current subway and bus maps from the MTA.</span></a>
-            <a href="https://portal.311.nyc.gov/" target="_blank" rel="noopener noreferrer" className="rounded border border-slate-300 bg-white p-4 text-teams-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-gold"><strong>NYC 311 neighborhood services ↗</strong><span className="mt-1 block text-sm text-slate-600">Find city services and neighborhood information.</span></a>
+          <div className="mt-7 border-t border-slate-200 pt-5">
+            <h3 className="text-sm font-semibold text-teams-ink">Plan your visit</h3>
+            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+              {zip && <a href={greatSchoolsZipUrl(zip)} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Schools near {zip} ↗</a>}
+              <a href="https://schoolsearch.schools.nyc/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC school search ↗</a>
+              <a href="https://new.mta.info/maps" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">MTA maps ↗</a>
+              <a href="https://portal.311.nyc.gov/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC 311 ↗</a>
+            </div>
+            {zip && <p className="mt-2 text-xs text-slate-600">A ZIP code does not determine school eligibility; confirm options with NYC Public Schools.</p>}
           </div>
         </section>}
         {retail && <section aria-labelledby="retail-frontage-title" className="group relative mb-10 overflow-hidden rounded-xl bg-teams-charcoal text-white shadow-lg">
