@@ -52,6 +52,7 @@ export function Footer() {
           <Link href="/privacy-policy" className="hover:text-white focus-visible:underline">Privacy Policy</Link>
           <Link href="/terms-and-conditions" className="hover:text-white focus-visible:underline">Terms &amp; Conditions</Link>
           <Link href="/copyright" className="hover:text-white focus-visible:underline">Copyright</Link>
+          <a href="https://2nspira.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white focus-visible:underline">Designed by 2Nspira</a>
         </div>
       </div>
     </footer>

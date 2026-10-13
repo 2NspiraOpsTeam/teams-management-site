@@ -1,23 +1,28 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import L from 'leaflet';
+import type * as Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.709506004338, longitude = -74.005146181808 }: { name?: string; latitude?: number; longitude?: number; showFootprint?: boolean }) {
   const host = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<L.Map | null>(null);
+  const mapRef = useRef<Leaflet.Map | null>(null);
   const [view, setView] = useState<'aerial' | 'streets'>('aerial');
   const [moving, setMoving] = useState(false);
   const [imageryFailed, setImageryFailed] = useState(false);
-  const aerialRef = useRef<L.TileLayer | null>(null);
-  const labelsRef = useRef<L.TileLayer | null>(null);
+  const aerialRef = useRef<Leaflet.TileLayer | null>(null);
+  const labelsRef = useRef<Leaflet.TileLayer | null>(null);
 
   useEffect(() => {
     if (!host.current) return;
+    let disposed = false;
+    let cleanup: (() => void) | undefined;
+    void import('leaflet').then(({ default: L }) => {
+    if (disposed || !host.current) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const destination: L.LatLngExpression = [latitude, longitude];
-    const map = L.map(host.current, { scrollWheelZoom: false, zoomControl: true, preferCanvas: true });
+    const destination: Leaflet.LatLngExpression = [latitude, longitude];
+    const map = L.map(host.current, { scrollWheelZoom: false, zoomControl: false, preferCanvas: true });
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
     mapRef.current = map;
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19, attribution: 'Streets &copy; Esri and its data providers',
@@ -43,9 +48,12 @@ export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.7095060043
       setMoving(true);
       const timer = window.setTimeout(() => map.flyTo(destination, 18, { duration: 5 }), 500);
       map.once('moveend', () => setMoving(false));
-      return () => { window.clearTimeout(timer); reduced.removeEventListener('change', onReduce); map.remove(); mapRef.current = null; };
+      cleanup = () => { window.clearTimeout(timer); reduced.removeEventListener('change', onReduce); map.remove(); mapRef.current = null; };
+      return;
     }
-    return () => { reduced.removeEventListener('change', onReduce); map.remove(); mapRef.current = null; };
+    cleanup = () => { reduced.removeEventListener('change', onReduce); map.remove(); mapRef.current = null; };
+    });
+    return () => { disposed = true; cleanup?.(); };
   }, [latitude, longitude, name]);
 
   useEffect(() => {
