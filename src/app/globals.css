@@ -100,6 +100,12 @@ main a:active, main button:active { transform: translateY(1px); }
 .gold-street-hero--gallery { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1519---1dc9bbce-eba4-4a7b-a16a-9b751e51006c.jpg"); }
 
 /* Homepage: spacious editorial compositions with restrained motion. */
+.home-featured { background-color: #fffbf5; } /* Light gallery: the individual properties take focus. */
+.home-rent { background-color: #f0e8d7; } /* Warm gold-tinted invitation to take the next step. */
+.home-across { background-color: #e9eceb; } /* Cooler map-like pause for the wider portfolio. */
+.home-resident { background-color: #eeeee8; } /* Calm service space, distinct from the acquisition CTA. */
+.home-rent .home-eyebrow { color: #765b22; }
+.home-across .home-eyebrow { color: #455b59; }
 .home-eyebrow { margin-bottom: 1rem; font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
 .home-button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 1.5rem; padding: .75rem 1.35rem; font-size: .875rem; font-weight: 600; transition: background-color .22s ease, color .22s ease, transform .22s ease; }
 .home-button:hover { transform: translateY(-2px); }
