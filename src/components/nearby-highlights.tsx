@@ -30,7 +30,7 @@ export function ResidentialNearby({ slug, address }: { slug: string; address: Bu
   const items = (highlights as Record<string, Highlight[]>)[slug] || [];
   if (!items.length) return null;
   return <>
-    <p className="mt-3 max-w-2xl leading-relaxed text-slate-700">A quick look at everyday essentials and places to unwind around this address.</p>
+    <p className="mt-3 max-w-2xl leading-relaxed text-slate-700">The places around a building help shape everyday life. Explore nearby shops, parks, transit, and other neighborhood essentials around this address.</p>
     <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{items.map(item => <FactCard key={`${item.category}-${item.name}`} item={item} address={address} slug={slug} />)}</ul>
     <div className="mt-7 flex flex-wrap items-center gap-4"><a href={mapLocationUrl(address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-4 rounded-md bg-teams-gold px-6 py-3 font-semibold text-teams-ink shadow-sm transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-teams-gold-highlight hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink motion-reduce:transform-none">Explore the Neighborhood <span aria-hidden="true">↗</span></a><span className="text-sm text-slate-600">Opens Google Maps in a new tab</span></div>
     <p className="mb-0 mt-5 text-xs text-slate-600">Places: OpenStreetMap; transit: MTA open data. Checked October 13, 2026. The map shows the property setting; distances and walk times are not estimated.</p>
@@ -47,7 +47,7 @@ export function RetailNeighborhood({ slug, street, address }: { slug: string; st
   return <section aria-labelledby="retail-neighborhood-title" className="bg-[#ede7dc] py-16 sm:py-20"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
     <p className="text-xs font-bold uppercase tracking-[.18em] text-teams-secondary">Commercial setting</p>
     <h2 id="retail-neighborhood-title" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">Neighborhood</h2>
-    <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} These mapped places offer a starting point for exploring the surrounding mix—not a prediction of business performance.</p>
+    <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} Explore the nearby shops, transit, and local destinations that shape this setting. These mapped places offer a starting point for understanding the surrounding mix—not a prediction of business performance.</p>
     <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       <FactCard retail address={address} slug={slug} item={{ category: 'street', label: 'Street setting', name: street, source: '' }} />
       {items.filter(item => anchors.length ? ['transit', 'supermarket', 'cafe', ...(anchors.length === 1 ? ['pharmacy'] : [])].includes(item.category) : item.category !== 'park').map(item => <FactCard retail address={address} slug={slug} key={`${item.category}-${item.name}`} item={item} />)}
