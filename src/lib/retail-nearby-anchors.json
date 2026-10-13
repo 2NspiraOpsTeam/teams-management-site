@@ -1,0 +1,178 @@
+{
+  "71-e-110th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Park View Hotel",
+      "source": "https://www.openstreetmap.org/relation/3623587"
+    }
+  ],
+  "173-e-91st-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Franklin",
+      "source": "https://www.openstreetmap.org/node/7868765654"
+    },
+    {
+      "category": "parking",
+      "label": "Parking",
+      "name": "Knickerbocker Plaza Car Park",
+      "source": "https://www.openstreetmap.org/way/651661740"
+    }
+  ],
+  "1626-2nd-ave": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Franklin",
+      "source": "https://www.openstreetmap.org/node/7868765654"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Comic Strip Live",
+      "source": "https://www.openstreetmap.org/node/5794935823"
+    }
+  ],
+  "225-e-83rd-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Franklin",
+      "source": "https://www.openstreetmap.org/node/7868765654"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Comic Strip Live",
+      "source": "https://www.openstreetmap.org/node/5794935823"
+    }
+  ],
+  "171-e-74th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Carlyle",
+      "source": "https://www.openstreetmap.org/way/266898264"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "The Kaye Playhouse",
+      "source": "https://www.openstreetmap.org/node/14096143302"
+    }
+  ],
+  "1374-1st-ave": [
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Caspary Auditorium",
+      "source": "https://www.openstreetmap.org/node/368051495"
+    },
+    {
+      "category": "parking",
+      "label": "Parking",
+      "name": "Surrey Garage",
+      "source": "https://www.openstreetmap.org/way/266900801"
+    }
+  ],
+  "1365-1st-ave": [
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Caspary Auditorium",
+      "source": "https://www.openstreetmap.org/node/368051495"
+    },
+    {
+      "category": "parking",
+      "label": "Parking",
+      "name": "Surrey Garage",
+      "source": "https://www.openstreetmap.org/way/266900801"
+    }
+  ],
+  "41-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Hilton Garden Inn",
+      "source": "https://www.openstreetmap.org/way/282065776"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "James Earl Jones Theatre",
+      "source": "https://www.openstreetmap.org/way/266170541"
+    }
+  ],
+  "349-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "InterContinental New York Times Square",
+      "source": "https://www.openstreetmap.org/way/266034045"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Al Hirschfeld Theatre",
+      "source": "https://www.openstreetmap.org/way/265320169"
+    }
+  ],
+  "351-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Hotel Scherman",
+      "source": "https://www.openstreetmap.org/node/13991571083"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Barrymore Theatre",
+      "source": "https://www.openstreetmap.org/way/266149297"
+    }
+  ],
+  "307-w-39th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Element",
+      "source": "https://www.openstreetmap.org/way/265296137"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Nederlander Theatre",
+      "source": "https://www.openstreetmap.org/way/266143337"
+    }
+  ],
+  "235-w-18th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Hotel Chelsea",
+      "source": "https://www.openstreetmap.org/node/2325990473"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "The Joyce Theater",
+      "source": "https://www.openstreetmap.org/way/264629134"
+    }
+  ],
+  "61-gold-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Beekman, A Thompson Hotel",
+      "source": "https://www.openstreetmap.org/node/9095733851"
+    },
+    {
+      "category": "parking",
+      "label": "Parking",
+      "name": "Edison ParkFast",
+      "source": "https://www.openstreetmap.org/way/274853189"
+    }
+  ]
+}

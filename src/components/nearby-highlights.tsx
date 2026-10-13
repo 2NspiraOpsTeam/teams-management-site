@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import highlights from '@/lib/nearby-highlights.json';
 import pedestrianData from '@/lib/retail-pedestrian-data.json';
+import retailAnchors from '@/lib/retail-nearby-anchors.json';
 import { previewRetailNeighborhood } from '@/lib/retail-neighborhood-preview';
 
 type Highlight = { category: string; label: string; name: string; source: string };
 const icons: Record<string, string> = {
-  transit: '▥', supermarket: '◫', pharmacy: '+', cafe: '☕', park: '♧', library: '▤', clinic: '✚', street: '↗', pedestrian: '◉',
+  transit: '▥', supermarket: '◫', pharmacy: '+', cafe: '☕', park: '♧', library: '▤', clinic: '✚', street: '↗', pedestrian: '◉', hotel: '⌂', theatre: '✦', parking: 'P',
 };
 
 function FactCard({ item, retail = false }: { item: Highlight; retail?: boolean }) {
@@ -30,6 +31,7 @@ export function ResidentialNearby({ slug }: { slug: string }) {
 
 export function RetailNeighborhood({ slug, street }: { slug: string; street: string }) {
   const items = (highlights as Record<string, Highlight[]>)[slug] || [];
+  const anchors = (retailAnchors as Record<string, Highlight[]>)[slug] || [];
   const area = previewRetailNeighborhood(slug);
   const pedestrian = (pedestrianData as Record<string, typeof pedestrianData[keyof typeof pedestrianData]>)[slug];
   if (!items.length || !area) return null;
@@ -40,7 +42,8 @@ export function RetailNeighborhood({ slug, street }: { slug: string; street: str
     <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} These mapped places offer a starting point for exploring the surrounding mix—not a prediction of business performance.</p>
     <ul className="mt-8 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
       <FactCard retail item={{ category: 'street', label: 'Street setting', name: street, source: `https://www.openstreetmap.org/search?query=${encodeURIComponent(street + ', New York, NY')}` }} />
-      {items.filter(item => item.category !== 'park').map(item => <FactCard retail key={`${item.category}-${item.name}`} item={item} />)}
+      {items.filter(item => anchors.length ? ['transit', 'supermarket', 'cafe', ...(anchors.length === 1 ? ['pharmacy'] : [])].includes(item.category) : item.category !== 'park').map(item => <FactCard retail key={`${item.category}-${item.name}`} item={item} />)}
+      {anchors.map(item => <FactCard retail key={`${item.category}-${item.name}`} item={item} />)}
       {publishedCount && <li className="flex gap-4 border-t border-stone-300 py-5"><span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-xl text-teams-ink shadow-sm">{icons.pedestrian}</span><div><p className="text-xs font-bold uppercase tracking-[.14em] text-teams-secondary">Nearby DOT pedestrian count</p><a href={pedestrian.source_url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block font-semibold underline decoration-stone-400 underline-offset-4">{Number(pedestrian.count_value).toLocaleString()} · {pedestrian.count_period} ↗</a><p className="mt-1 text-sm text-slate-700">{pedestrian.measurement_location}, about {pedestrian.distance_from_property} m straight-line from this address. This count is at the named corridor, not this storefront.</p></div></li>}
     </ul>
     <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3"><Link href="#retail-location-title" className="inline-flex min-h-12 items-center gap-3 bg-teams-gold px-6 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Explore the Neighborhood <span aria-hidden="true">↓</span></Link><a href={area.guide} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">Area guide ↗</a></div>
