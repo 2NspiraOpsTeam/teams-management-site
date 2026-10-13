@@ -157,3 +157,26 @@ main details > div { animation: detail-open 240ms ease both; }
   .retail-card, .retail-card-image, .retail-primary-link, .retail-toc-link { transition: none; }
   .retail-card:hover, .retail-card:hover .retail-card-image, .retail-primary-link:hover { transform: none; }
 }
+
+/* Dining: a quiet editorial reveal, warm image movement, and tactile actions. */
+.dining-venue-card { scroll-margin-top: 112px; transition: border-color 280ms ease, box-shadow 280ms ease, transform 280ms ease; }
+.dining-venue-card:focus-within { border-color: #d6c9ad; box-shadow: 0 20px 45px -32px rgba(30, 35, 38, .45); }
+.dining-venue-photo { transition: transform 700ms cubic-bezier(.2,.7,.2,1), filter 700ms ease; }
+.dining-action { transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease, transform 200ms ease; }
+.dining-explore span { display: inline-block; transition: transform 220ms ease; }
+@media (prefers-reduced-motion: no-preference) {
+  .dining-hero-photo { animation: dining-photo-enter 900ms cubic-bezier(.2,.7,.2,1) both; }
+  .dining-hero-content { animation: dining-content-enter 650ms ease-out 100ms both; }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .dining-venue-card:hover { border-color: #d6c9ad; box-shadow: 0 20px 45px -32px rgba(30, 35, 38, .45); transform: translateY(-3px); }
+  .dining-venue-card:hover .dining-venue-photo { transform: scale(1.025); filter: saturate(1.04); }
+  .dining-action:hover { transform: translateY(-2px); }
+  .dining-explore:hover span { transform: translateY(3px); }
+}
+@keyframes dining-photo-enter { from { opacity: .8; transform: scale(1.025); } to { opacity: 1; transform: scale(1); } }
+@keyframes dining-content-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .dining-venue-card, .dining-venue-photo, .dining-action, .dining-explore span { transition: none; }
+  .dining-hero-photo, .dining-hero-content { animation: none; }
+}
