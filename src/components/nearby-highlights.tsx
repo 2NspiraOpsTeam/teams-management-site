@@ -44,13 +44,23 @@ export function RetailNeighborhood({ slug, street, address }: { slug: string; st
   const pedestrian = (pedestrianData as Record<string, typeof pedestrianData[keyof typeof pedestrianData]>)[slug];
   if (!items.length || !area) return null;
   const publishedCount = pedestrian?.publication_status === 'published';
+  const selected = items.filter(item => anchors.length ? ['transit', 'supermarket', 'cafe', ...(anchors.length === 1 ? ['pharmacy'] : [])].includes(item.category) : item.category !== 'park');
+  const transit = selected.filter(item => item.category === 'transit');
+  const localBusinesses = selected.filter(item => item.category !== 'transit');
   return <section aria-labelledby="retail-neighborhood-title" className="bg-[#ede7dc] py-16 sm:py-20"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-    <p className="text-xs font-bold uppercase tracking-[.18em] text-teams-secondary">Commercial setting</p>
-    <h2 id="retail-neighborhood-title" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">Neighborhood</h2>
-    <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} Explore the nearby shops, transit, and local destinations that shape this setting. These mapped places offer a starting point for understanding the surrounding mix—not a prediction of business performance.</p>
-    <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      <FactCard retail address={address} slug={slug} item={{ category: 'street', label: 'Street setting', name: street, source: '' }} />
-      {items.filter(item => anchors.length ? ['transit', 'supermarket', 'cafe', ...(anchors.length === 1 ? ['pharmacy'] : [])].includes(item.category) : item.category !== 'park').map(item => <FactCard retail address={address} slug={slug} key={`${item.category}-${item.name}`} item={item} />)}
+    <p className="text-xs font-bold uppercase tracking-[.18em] text-teams-secondary">Retail location intelligence</p>
+    <h2 id="retail-neighborhood-title" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">Explore the commercial setting</h2>
+    <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} Use the address, mapped transit, surrounding businesses, and local anchors below to assess the area. These are points of context, not measurements of activity at this storefront or a prediction of sales.</p>
+    <div className="mt-8 grid gap-4 border-y border-stone-400/50 py-6 sm:grid-cols-3">
+      <div><p className="text-xs font-bold uppercase tracking-wider text-teams-secondary">Street setting</p><p className="mt-2 font-semibold">{street}</p></div>
+      <div><p className="text-xs font-bold uppercase tracking-wider text-teams-secondary">Transit reference</p><p className="mt-2 font-semibold">{transit.length ? transit.map(item => item.name).join(' · ') : 'See property map'}</p></div>
+      <div><p className="text-xs font-bold uppercase tracking-wider text-teams-secondary">Explore further</p><a href={area.guide} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{area.guideLabel} ↗</a></div>
+    </div>
+    <h3 className="mt-9 font-serif text-2xl">Nearby places to investigate</h3>
+    <p className="mt-2 max-w-3xl text-sm text-slate-700">Open each route to check its exact destination and current access before making a leasing decision.</p>
+    <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {transit.map(item => <FactCard retail address={address} slug={slug} key={`${item.category}-${item.name}`} item={item} />)}
+      {localBusinesses.map(item => <FactCard retail address={address} slug={slug} key={`${item.category}-${item.name}`} item={item} />)}
       {anchors.map(item => <FactCard retail address={address} slug={slug} key={`${item.category}-${item.name}`} item={item} />)}
       {publishedCount && <li className="nearby-fact rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6"><span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl text-teams-ink">{icons.pedestrian}</span><div><p className="mb-2 text-[11px] font-bold uppercase tracking-[.16em] text-teams-secondary">Nearby DOT pedestrian count</p><a href={pedestrian.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-lg font-semibold text-teams-ink underline decoration-transparent underline-offset-4 hover:decoration-teams-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{Number(pedestrian.count_value).toLocaleString()} · {pedestrian.count_period} ↗</a><p className="mb-0 mt-2 text-sm leading-relaxed text-slate-700">{pedestrian.measurement_location}, about {pedestrian.distance_from_property} m straight-line from this address. This count is at the named corridor, not this storefront.</p></div></li>}
     </ul>
