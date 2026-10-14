@@ -30,3 +30,16 @@
 - No auth/mail/DNS configuration changes and no production/custom-domain rollout.
 
 Residential detail pages preserve stored gallery membership/order independently of the cover. A different cover is displayed separately; a cover already first in the gallery retains the existing compact single-gallery layout.
+
+## Completed preview release
+- Candidate: https://75785566.teams-management-preview.pages.dev
+- Stable: https://teams-management-preview.pages.dev
+- Stable deployment: `41946bd5-be19-4a44-8c15-40a25caf2244`, primary Pages branch `preview`, source `0f4d9ca01234cfebdb663f2eed08737ed20d08f7`, clean tracked source metadata.
+- Live Admin QA passed at 1440/768/390px: both contexts saved independently; reuse, order, refresh, cancel, simulated failed-save/retry, consumed revision/double-click and approval rejection verified on a hidden fixture.
+- Local rendered positive case confirmed a cover-only photo stays outside the Residential gallery; gallery membership and next-photo order matched saved selections at all three widths.
+- All 17 residence detail routes passed candidate regression, with desktop/tablet/mobile card navigation, slideshow controls, preserved building history and no page errors. Home/About copy and existing Admin/Tenant sessions with cross-role denial also passed candidate regression. No fresh OTP email was requested for this release.
+- Stable Retail feature/Times Square directions and existing role sessions passed. Empty approved-image/gallery states and disabled controls passed on stable.
+- Hidden QA fixture and its presentation/source assignments/publications removed. Source assets were reused, never copied or deleted.
+- Final remote counts: 20 buildings, 204 assets, 186 source assignments, 185 publications, 40 context settings, 174 presentation/gallery rows; foreign-key check empty. The +1 asset/assignment/publication/gallery relative to the pre-migration baseline is a concurrent approved 225 E 83rd St update (asset created 15:31:47 UTC; Retail context revision 1), not this test fixture. It was preserved, not reverted.
+- Test runtime: Node 26; SQLite-backed tests use the built-in `node:sqlite` module.
+- Repository review branch: `review/media-contexts-2026-10-14`; no main merge or production/custom-domain release.
