@@ -10,7 +10,7 @@ import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfol
 import type { BuildingPublic } from '@/lib/database.types';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const metadata: Metadata = {
   title: 'Teams Management | New York Property Management',
   description: 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.',

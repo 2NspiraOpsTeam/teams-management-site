@@ -18,7 +18,7 @@ import { ResidentialNearby } from '@/components/nearby-highlights';
 import { PropertyLocationPanel } from '@/components/map/PropertyLocationPanel';
 import { GoldStreetAerial } from '@/components/map/GoldStreetAerial';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

@@ -1,4 +1,4 @@
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext as getRequestContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import type { BuildingPublic } from './database.types';
 import { parsePublicBuildingRow, type PublicBuildingRow } from './public-building-projection';

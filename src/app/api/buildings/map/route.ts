@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext as getRequestContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import { previewPortfolioEnabled, previewPortfolio } from '@/lib/preview-portfolio';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export async function GET() {
   const db = (getRequestContext().env as { DB?: D1Database }).DB;
   if (!db) return NextResponse.json({ error: 'Map temporarily unavailable' }, { status: 503 });

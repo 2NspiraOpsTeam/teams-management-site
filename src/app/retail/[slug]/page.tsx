@@ -16,7 +16,7 @@ import { tremontStorefronts } from '@/lib/tremont-preview';
 import { commercialDirectory } from '@/lib/retail-tenant-preview';
 import { RetailNeighborhood } from '@/components/nearby-highlights';
 import { RetailFitSections } from '@/components/retail-fit-sections';
-export const runtime='edge';
+export const runtime='nodejs';
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
   const {slug}=await params;
   const item=await getPublicRetail(slug);

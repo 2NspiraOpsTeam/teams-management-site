@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 import { PageShowcase } from '@/components/page-showcase';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';

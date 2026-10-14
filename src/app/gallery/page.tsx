@@ -2,10 +2,10 @@ import { PageShowcase } from '@/components/page-showcase';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext as getRequestContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 type GalleryRow = { storage_key: string; alt_text: string; caption: string | null; name: string; slug: string };
 
