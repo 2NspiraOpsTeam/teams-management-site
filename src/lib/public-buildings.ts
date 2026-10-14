@@ -23,3 +23,10 @@ export async function getPublicBuilding(slug: string): Promise<BuildingPublic | 
   return row ? parsePublicBuildingRow(row) : null;
 }
 
+
+/** Preserve preview-only publication scope, while taking mailing addresses from canonical records. */
+export async function canonicalPreviewBuildings(fixtures: BuildingPublic[]): Promise<BuildingPublic[]> {
+  const rows = await database().prepare("SELECT slug,address_json FROM buildings WHERE publication_state!='archived'").all<{slug:string;address_json:string}>();
+  const addresses = new Map(rows.results.map(row => [row.slug, JSON.parse(row.address_json) as BuildingPublic['address']]));
+  return fixtures.map(building => ({ ...building, address: addresses.get(building.slug) || building.address }));
+}

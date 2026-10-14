@@ -1,13 +1,20 @@
 import type { BuildingPublic } from './database.types';
 
-export function addressLabel(address: BuildingPublic['address']) {
-  return [address.street, address.city, address.state, address.zip].filter(Boolean).join(', ');
+export function addressLabel(address: { street: string; city: string; state: string; zip?: string }) {
+  return [address.street?.trim(), address.city?.trim(), [address.state?.trim(), address.zip?.trim()].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+}
+
+export function postalAddressMetadata(address: { street: string; city: string; state: string; zip?: string }) {
+  return {
+    '@type': 'PostalAddress', streetAddress: address.street, addressLocality: address.city,
+    addressRegion: address.state, ...(address.zip?.trim() ? { postalCode: address.zip.trim() } : {}), addressCountry: 'US',
+  };
 }
 
 /** Navigation routes to a building address, not an apartment identifier. Display copy remains unit-specific. */
 export function navigationAddressLabel(address: BuildingPublic['address']) {
   if (address.state.toUpperCase() === 'FL' && address.city.toLowerCase() === 'sarasota' && /^609 Golden Gate Point,? Unit 402$/i.test(address.street.trim())) {
-    return '609 Golden Gate Point, Sarasota, FL 34236';
+    return addressLabel({ ...address, street: address.street.trim().replace(/,? Unit 402$/i, '') });
   }
   return addressLabel(address);
 }

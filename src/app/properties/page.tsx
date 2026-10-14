@@ -4,7 +4,7 @@ import { PortfolioMap } from '@/components/map/PortfolioMap';
 import { PropertyCard } from '@/components/property-card';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { listPublicBuildings } from '@/lib/public-buildings';
+import { canonicalPreviewBuildings, listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { previewPortfolio, previewPortfolioEnabled, previewStaticCover, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
@@ -13,7 +13,7 @@ import { listPublicRetail } from '@/lib/public-retail';
 export const runtime = 'nodejs';
 
 export default async function PropertiesPage() {
-  const sourceBuildings = (previewPortfolioEnabled ? previewPortfolio : await listPublicBuildings()).filter(building => building.slug !== '3425-east-tremont-bronx');
+  const sourceBuildings = (previewPortfolioEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings()).filter(building => building.slug !== '3425-east-tremont-bronx');
   const previewLocations = previewPortfolioEnabled ? await adminDb().prepare("SELECT slug, latitude, longitude FROM buildings WHERE map_verified=1 AND geocode_status='verified' AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180").all<{ slug: string; latitude: number; longitude: number }>() : null;
   const locationsBySlug = new Map(previewLocations?.results.map(row => [row.slug, row]));
   const buildings = sourceBuildings.map(building => {
