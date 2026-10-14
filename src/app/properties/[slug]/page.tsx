@@ -60,13 +60,9 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return <>
     <Header />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Place", name: building.name, address: postalAddressMetadata(building.address) }).replace(/</g, "\\u003c") }} /><main id="main-content" className="min-h-screen bg-white">
-      <div className="pt-8 pb-16">
-        <header className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-8 sm:mb-10 lg:mb-12">
-          <h1 className="font-serif text-4xl font-semibold leading-tight tracking-tight text-teams-ink sm:text-5xl lg:text-6xl">{building.name}</h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{addressLabel(building.address)}</p>
-        </header>
+      <div className="pb-16">
         <section aria-label={`${building.name} photo gallery`} data-residential-hero>
-          <PropertyGallery images={heroImages} name={building.name} hero />
+          <PropertyGallery images={heroImages} name={building.name} address={addressLabel(building.address)} hero />
         </section>
         <nav aria-label="Property actions" className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
           <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
