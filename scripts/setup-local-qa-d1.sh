@@ -8,6 +8,7 @@ for schema_file in \
   src/lib/migrations/schema.sql \
   "$media_schema_file" \
   src/lib/migrations/tenant-portal.sql \
+  src/lib/migrations/work-orders-mvp.sql \
   src/lib/migrations/media-read-indexes.sql \
   src/lib/migrations/add-inquiry-details.sql \
   src/lib/migrations/rental-inquiry-handoff.sql \

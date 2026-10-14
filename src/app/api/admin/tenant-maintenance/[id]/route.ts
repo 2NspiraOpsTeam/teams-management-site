@@ -1,5 +1,122 @@
-import { NextResponse } from 'next/server';
-import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
-export const runtime='edge';
-const statuses=new Set(['submitted','in_review','scheduled','completed','closed']);
-export async function PATCH(request:Request,{params}:{params:Promise<{id:string}>}){const admin=await requireAdmin();if(!admin)return unauthorized();if(!sameOrigin(request))return unauthorized();const {id}=await params;const input=await request.json().catch(()=>null) as {status?:unknown;staffNotes?:unknown}|null;if(!input||(input.status===undefined&&input.staffNotes===undefined)||input.status!==undefined&&!statuses.has(String(input.status))||input.staffNotes!==undefined&&(typeof input.staffNotes!=='string'||input.staffNotes.length>5000))return NextResponse.json({error:'Invalid request.'},{status:400});const before=await admin.db.prepare('SELECT status,staff_notes FROM tenant_maintenance_requests WHERE id=?').bind(id).first<{status:string;staff_notes:string|null}>();if(!before)return NextResponse.json({error:'Request not found.'},{status:404});const status=input.status===undefined?before.status:String(input.status),notes=input.staffNotes===undefined?before.staff_notes:String(input.staffNotes);await admin.db.prepare("UPDATE tenant_maintenance_requests SET status=?,staff_notes=?,updated_at=datetime('now') WHERE id=?").bind(status,notes,id).run();await audit(admin.db,admin.email,'updated','tenant_maintenance_request',id,before,{status,staff_notes:notes});return NextResponse.json({ok:true},{headers:{'Cache-Control':'no-store'}});}
+import { requireAdmin, sameOrigin, unauthorized } from "@/lib/admin-auth";
+import {
+  reply,
+  input,
+  text,
+  detail,
+  eventStatement,
+  notificationStatement,
+  auditStatement,
+} from "@/lib/work-orders/server";
+import { statuses } from "@/lib/work-orders/shared";
+import { schedule } from "@/lib/work-orders/notifications";
+export const runtime = "edge";
+type Context = { params: Promise<{ id: string }> };
+export async function GET(_r: Request, { params }: Context) {
+  const a = await requireAdmin();
+  if (!a) return unauthorized();
+  try {
+    const d = await detail(a.db, (await params).id, true);
+    return d ? reply(d) : reply({ error: "Request not found." }, 404);
+  } catch {
+    return reply({ error: "Request unavailable." }, 503);
+  }
+}
+export async function PATCH(request: Request, { params }: Context) {
+  const a = await requireAdmin();
+  if (!a) return unauthorized();
+  if (!sameOrigin(request)) return unauthorized();
+  let v: Record<string, unknown>, note: string, update: string;
+  try {
+    v = await input(request);
+    note = text(v.internalNote ?? "", 5000);
+    update = text(v.tenantUpdate ?? "", 2000);
+    if (
+      typeof v.status !== "string" ||
+      !Object.hasOwn(statuses, v.status) ||
+      !Number.isInteger(v.revision)
+    )
+      throw Error();
+  } catch {
+    return reply(
+      { error: "Check the status, notes, and request version." },
+      400,
+    );
+  }
+  const { id } = await params;
+  try {
+    const before = await detail(a.db, id, true);
+    if (!before) return reply({ error: "Request not found." }, 404);
+    if (before.request.revision !== v.revision)
+      return reply(
+        { error: "This request changed. Reload before saving." },
+        409,
+      );
+    const changed = before.request.status !== v.status;
+    if (!changed && !note && !update) return reply({ ok: true });
+    const eventId = crypto.randomUUID(),
+      db = a.db;
+    const statements = [
+      db
+        .prepare(
+          "UPDATE work_order_details SET revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END,completed_at=CASE WHEN ?='completed' THEN COALESCE(completed_at,datetime('now')) ELSE completed_at END WHERE request_id=?",
+        )
+        .bind(v.revision, v.status, id),
+      db
+        .prepare(
+          "UPDATE tenant_maintenance_requests SET status=?,updated_at=datetime('now') WHERE id=?",
+        )
+        .bind(v.status, id),
+    ];
+    if (changed || update) {
+      statements.push(
+        eventStatement(
+          db,
+          id,
+          eventId,
+          changed ? "status" : "update",
+          "tenant",
+          changed ? String(v.status) : null,
+          update,
+          "admin",
+          a.email,
+        ),
+        notificationStatement(db, id, eventId, "tenant"),
+      );
+    }
+    if (note)
+      statements.push(
+        eventStatement(
+          db,
+          id,
+          crypto.randomUUID(),
+          "internal",
+          "internal",
+          null,
+          note,
+          "admin",
+          a.email,
+        ),
+      );
+    statements.push(
+      auditStatement(db, a.email, id, "updated", {
+        fromStatus: before.request.status,
+        toStatus: v.status,
+        internalNoteAdded: Boolean(note),
+        tenantUpdateAdded: Boolean(update),
+        revision: v.revision,
+      }),
+    );
+    await db.batch(statements);
+    if (changed || update) schedule(db, eventId);
+    return reply({ ok: true });
+  } catch {
+    return reply(
+      {
+        error:
+          "Could not save. Reload and retry; concurrent changes may have occurred.",
+      },
+      409,
+    );
+  }
+}
