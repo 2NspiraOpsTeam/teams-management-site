@@ -64,4 +64,10 @@ Primary-site rendered/fetched responses checked on October 14. Sources are kept 
 - /tmp/teams-nearby-approved-websites.json: approved URL selection, with additional primary-fetch evidence in this session.
 - /tmp/teams-nearby-final-inventory.json: every normalized record.
 
-Typecheck, 59 tests, and final Pages preview build passed. Candidate/stable rendered verification and final release record pending. No production custom-domain rollout or fresh OTP claim.
+Typecheck, all 59 tests, and final Pages preview build passed. Source e905096; candidate https://45a730ca.teams-management-preview.pages.dev; stable https://f084c17c.teams-management-preview.pages.dev (Pages primary branch preview), https://teams-management-preview.pages.dev. Existing property/retail/photo-label changes preserved; no main merge/custom-domain rollout.
+
+Candidate and stable checks: 34 public routes, 179 rendered nearby cards; exact official/map-name hrefs and per-property origin/destination parameters matched the normalized records. Every nearby card has exactly two external anchors. 15 desktop/tablet/mobile page-width checks (1440/768/390) passed overflow and keyboard focus; screenshots reviewed for Retail/Residential target cards, Sarasota and Dining. Dining property and standalone actions separately checked against Delizia 73 and 1374 First Avenue.
+
+On stable /retail/225-e-83rd-st, actual new-tab activation verified for Gristedes (https://gristedes.com/), Madame Bonte official locations, map-only 86 St (Q) name (Maps search, no origin or destination route parameters), and separate Madame Bonte Get Directions (225 E 83rd St origin, 318 E 84th St destination). Refresh retains Franklin and Comic Strip official URLs. Google Maps opened the exact route URL; its computed route UI was blank in this headless capture, so no claim of rendered Google route calculation. Site link/navigation contracts passed. All 34 app routes returned 200; no app page errors. Existing Admin and Tenant sessions passed in isolated contexts; no new OTP, D1 mutation or public production release.
+
+Evidence: /tmp/teams-nearby-candidate-qa.json, /tmp/teams-nearby-stable-qa.json, /tmp/teams-nearby-tests.log, /tmp/teams-nearby-build.log, /tmp/teams-nearby-*.png.
