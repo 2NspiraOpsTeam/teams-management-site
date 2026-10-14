@@ -5,8 +5,10 @@ import { Footer } from '@/components/footer';
 import { listPublicDining, type DiningVenue } from '@/lib/public-dining';
 import { DiningPropertyRotation, type DiningProperty } from '@/components/dining-property-rotation';
 import { adminDb } from '@/lib/admin-auth';
-import { eligibleShowcases } from '@/lib/page-showcase';
+import { eligibleShowcases, pageShowcase, showcasePages } from '@/lib/page-showcase';
+import { listPublicRetail } from '@/lib/public-retail';
 import { previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
+import { featuredOrder, rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
 
 export const runtime = 'edge';
 export const metadata = {
@@ -48,24 +50,27 @@ export default async function DiningPage() {
   const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
   const db = adminDb();
   const eligible = await eligibleShowcases(db);
-  const alreadyFeatured = new Set(['61-gold-st', '3425-east-tremont-bronx', ...venues.map(venue => venue.property_slug)]);
-  try {
-    const assignments = await db.prepare("SELECT DISTINCT b.slug FROM page_showcase_assignments s JOIN buildings b ON b.id=s.property_id WHERE s.published=1").all<{slug:string}>();
-    for (const row of assignments.results) alreadyFeatured.add(row.slug);
-  } catch (error) {
-    if (!(error instanceof Error) || !/no such table/i.test(error.message)) throw error;
+  const candidates = [...eligible];
+  if (previewPortfolioEnabled && !candidates.some(item => item.property_slug === '609-golden-gate-pt-unit-402')) {
+    candidates.push({ property_id: 'preview-sarasota', property_slug: '609-golden-gate-pt-unit-402', property_name: '609 Golden Gate Point, Unit 402', address_json: '{}', media_asset_id: 'preview-sarasota', storage_key: sarasotaUnitPhotos[0].src, image: sarasotaUnitPhotos[0].src, alt_text: sarasotaUnitPhotos[0].alt, caption: null });
   }
-  const unique = eligible.filter((item, index) => eligible.findIndex(other => other.property_id === item.property_id) === index);
-  const properties: DiningProperty[] = unique.sort((a, b) => Number(alreadyFeatured.has(a.property_slug)) - Number(alreadyFeatured.has(b.property_slug))).map(item => ({
+  const retailIds = (await listPublicRetail()).map(item => item.id);
+  const selections = await Promise.all(showcasePages.map(page => pageShowcase(db, page, page === 'retail' ? retailIds : undefined)));
+  const occupied = new Set(selections.map(item => item?.property_slug).filter(Boolean));
+  for (const slot of ['home:0', 'home:1', 'home:2'] as FeaturedSlot[]) {
+    const selected = rotateFeatured(eligible, slot);
+    if (selected) occupied.add(selected.property_slug);
+  }
+  const ordered = featuredOrder(candidates, 'dining');
+  const available = ordered.filter(item => !occupied.has(item.property_slug));
+  const unique = available.length ? available : ordered;
+  const properties: DiningProperty[] = unique.map(item => ({
     slug: item.property_slug,
     name: item.property_name,
     image: item.image,
     alt: item.alt_text || `Photograph of ${item.property_name}`,
     href: previewPortfolioEnabled && item.property_slug === '3425-east-tremont-bronx' ? `/retail/${item.property_slug}` : `/properties/${item.property_slug}`,
   }));
-  if (previewPortfolioEnabled && !properties.some(item => item.slug === '609-golden-gate-pt-unit-402')) {
-    properties.push({ slug: '609-golden-gate-pt-unit-402', name: '609 Golden Gate Point, Unit 402', image: sarasotaUnitPhotos[0].src, alt: sarasotaUnitPhotos[0].alt, href: '/properties/609-golden-gate-pt-unit-402' });
-  }
   return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative h-[calc(100svh-89px)] min-h-[360px] w-full overflow-hidden bg-teams-charcoal" aria-label="Delizia 73 film">
       <DiningFeatureVideo />

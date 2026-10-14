@@ -10,6 +10,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { homeMedia, propertyMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
 import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 import type { BuildingPublic } from '@/lib/database.types';
+import { rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
 
 export const runtime = 'edge';
 export const metadata: Metadata = {
@@ -28,15 +29,12 @@ export default async function Home() {
     const images = await propertyMedia(db, building.slug);
     return images.map(image => ({ building, image }));
   }))).flat();
-  const byAsset = new Map(eligible.map(item => [item.image.id, item]));
-  const curated = assignments.filter(item => item.slot === 'featured').map(item => {
-    const match = byAsset.get(item.id);
-    return match && { building: match.building, image: item };
-  }).filter((item): item is Feature => !!item);
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
-  const featured = previewPortfolioEnabled
-    ? ['61-gold-st', '3425-east-tremont-bronx'].map(slug => unique([...curated, ...eligible]).find(item => item.building.slug === slug)).filter((item): item is Feature => !!item)
-    : unique([...curated, ...eligible.filter(item => !curated.some(selected => selected.building.slug === item.building.slug))]).slice(0, 3);
+  const candidates = unique(eligible);
+  const slots: FeaturedSlot[] = ['home:0', 'home:1', 'home:2'];
+  const featured = slots.map(slot => rotateFeatured(candidates.map(item => ({...item, property_slug:item.building.slug})), slot))
+    .filter((item): item is Feature & {property_slug:string} => !!item);
+  const byAsset = new Map(eligible.map(item => [item.image.id, item]));
   const curatedShowcase = assignments.filter(item => item.slot === 'supporting').map(item => {
     const match = byAsset.get(item.id);
     return match && { building: match.building, image: item };
