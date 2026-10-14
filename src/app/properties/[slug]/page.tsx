@@ -60,21 +60,21 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return <>
     <Header />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Place", name: building.name, address: postalAddressMetadata(building.address) }).replace(/</g, "\\u003c") }} /><main id="main-content" className="min-h-screen bg-white">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-8 pb-16">
-        <header className="mb-8 sm:mb-10 lg:mb-12">
+      <div className="pt-8 pb-16">
+        <header className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-8 sm:mb-10 lg:mb-12">
           <h1 className="font-serif text-4xl font-semibold leading-tight tracking-tight text-teams-ink sm:text-5xl lg:text-6xl">{building.name}</h1>
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{addressLabel(building.address)}</p>
         </header>
         <section aria-label={`${building.name} photo gallery`} data-residential-hero>
           <PropertyGallery images={heroImages} name={building.name} hero />
         </section>
-        <nav aria-label="Property actions" className="mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
+        <nav aria-label="Property actions" className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
           <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
           <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Map &amp; Directions ↗</a>
           <a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Explore Street View ↗</a>
           <Link href="/contact" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Contact Teams Management</Link>
         </nav>
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-5xl px-4 sm:px-8">
         {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-8 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
 
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
