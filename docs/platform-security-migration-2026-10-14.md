@@ -17,7 +17,7 @@ Next 15.4.11 and the deprecated next-on-pages adapter have security/support find
 
 ## Evidence and release boundary
 
-Full npm audit: zero findings. Forty-two tests pass; typecheck passes. Supported preview Worker build succeeds; 74 app routes match the Pages baseline with no missing routes. Initial dry run gzip bundle approximately 1.4 MiB, below the free Worker 3 MiB script limit. Local QA uses one approved public storefront image and synthetic local accounts, never real tenant sessions.
+Full npm audit: zero findings. Forty-eight tests pass; typecheck passes. Supported preview Worker build succeeds; 74 app routes match the Pages baseline with no missing routes. Initial dry run gzip bundle approximately 1.4 MiB, below the currently documented 64 MiB script limit. Local QA uses one approved public storefront image and synthetic local accounts, never real tenant sessions.
 
 This does **not** establish deployed Worker authentication, Gmail delivery, production bindings, approved asset publication or operational launch readiness. Local runtime evidence and final updated bundle size are recorded in the parent report.
 
@@ -26,3 +26,7 @@ This does **not** establish deployed Worker authentication, Gmail delivery, prod
 Launch blocker: yes, until supported Worker runtime/bindings and required end-to-end gates are verified. Package changes cost $0. No paid plan, R2 billing activation or custom-domain release performed. Worker/D1 free quotas are bounded, not an unlimited $0 guarantee; production must remain within free quotas and configure upload/abuse policies before launch.
 
 Stable Pages preview remains the review surface until a deliberate runtime transition is approved and verified. Canonical PR6 must not be merged/released merely because this isolated patch passes audit.
+
+## Current free-plan operating constraint
+
+Official Cloudflare limits checked 2026-10-14: Workers Free has 100,000 requests/day and 10 ms CPU/request; script limit now documents 64 MiB. SSR/auth often uses 10–20 ms according to Cloudflare. Local build/guards do not prove edge CPU compliance. Remote budget profiling and optimization remain launch gates; no paid upgrade is authorized. Source: https://developers.cloudflare.com/workers/platform/limits/ .
