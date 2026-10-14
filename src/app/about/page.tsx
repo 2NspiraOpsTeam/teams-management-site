@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageShowcase } from '@/components/page-showcase';

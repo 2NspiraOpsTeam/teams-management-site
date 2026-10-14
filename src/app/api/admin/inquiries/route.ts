@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin, unauthorized } from '@/lib/admin-auth';
-export const runtime='edge';
+export const runtime='nodejs';
 export async function GET(request:Request){
   const admin=await requireAdmin();if(!admin)return unauthorized();
   const status=new URL(request.url).searchParams.get('status');

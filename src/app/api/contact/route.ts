@@ -1,10 +1,10 @@
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext as getRequestContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import { NextResponse } from 'next/server';
 import { attemptInquiryNotification, type NotificationEnv } from '@/lib/inquiry-notifications';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 const reply = (body: object, status: number) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const idPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

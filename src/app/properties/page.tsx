@@ -10,7 +10,7 @@ import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
 import { previewPortfolio, previewPortfolioEnabled, previewStaticCover, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 import { listPublicRetail } from '@/lib/public-retail';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export default async function PropertiesPage() {
   const sourceBuildings = (previewPortfolioEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings()).filter(building => building.slug !== '3425-east-tremont-bronx');

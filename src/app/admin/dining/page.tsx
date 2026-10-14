@@ -2,7 +2,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { DiningEditor, type EditableVenue } from '@/components/admin/DiningEditor';
 import { isDeliverablePublicMedia } from '@/lib/media-management';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export default async function DiningAdminPage() {
   const db = adminDb();

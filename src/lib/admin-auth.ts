@@ -1,9 +1,9 @@
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext as getRequestContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const cookieName = 'teams_admin_session';
 const unauthorized = () => NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: { 'Cache-Control': 'no-store' } });
 export { unauthorized };

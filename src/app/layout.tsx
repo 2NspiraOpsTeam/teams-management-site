@@ -48,3 +48,6 @@ export default function RootLayout({
     </html>
   );
 }
+
+// Bindings are request-scoped; portfolio and authentication must not be prerendered.
+export const dynamic = "force-dynamic";

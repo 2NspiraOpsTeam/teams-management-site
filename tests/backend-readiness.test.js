@@ -2,7 +2,7 @@ import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
 const state = vi.hoisted(() => ({ env: {}, cookies: new Map(), mail: [], failMail: false, jobs: [] }));
-vi.mock('@cloudflare/next-on-pages', () => ({ getRequestContext: () => ({env: state.env,ctx:{waitUntil:p=>state.jobs.push(p)}}) }));
+vi.mock('@opennextjs/cloudflare', () => ({ getCloudflareContext: () => ({env: state.env,ctx:{waitUntil:p=>state.jobs.push(p)}}) }));
 vi.mock('next/headers', () => ({ cookies: async () => ({get:name=>state.cookies.has(name)?{value:state.cookies.get(name)}:undefined}) }));
 vi.mock('../src/lib/mail-service', () => ({ MailService: class {
   configured(){return true;}

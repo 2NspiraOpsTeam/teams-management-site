@@ -28,6 +28,7 @@ export function PropertyCard({ building, anchorId, coverOverride, images = [], s
         <h2 className="font-serif text-2xl sm:text-3xl leading-tight text-teams-ink">{building.name}</h2>
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>
         <p className="mt-5 mb-0 text-sm text-slate-600 break-words">{address}</p>
+        {!building.address.zip && <p className="mt-1 text-xs text-slate-600">ZIP code pending canonical address verification.</p>}
         {building.description_public && <p className="mt-5 mb-0 text-base leading-relaxed text-slate-700">{building.description_public}</p>}
         {showPreviewFacts && <PreviewBuildingDetails slug={building.slug} />}
         {building.amenities_public.length > 0 && (

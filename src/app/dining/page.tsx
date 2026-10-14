@@ -9,7 +9,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 import { previewPortfolioEnabled } from '@/lib/preview-portfolio';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const metadata = {
   title: 'Dining | Teams Management',
   description: 'Explore dining at Teams Management properties, beginning with Delizia 73 on the Upper East Side.',

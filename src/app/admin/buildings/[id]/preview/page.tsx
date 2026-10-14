@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { adminDb } from '@/lib/admin-auth';
 import { mediaPreviewUrl, propertyMedia } from '@/lib/media-management';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export default async function BuildingPreview({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
