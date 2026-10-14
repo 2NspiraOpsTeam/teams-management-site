@@ -13,7 +13,7 @@ const icons: Record<string, string> = {
 function FactCard({ item, address, slug, retail = false }: { item: Highlight; address: BuildingPublic['address']; slug: string; retail?: boolean }) {
   const mapQuery = item.mapQuery || `${item.name}, ${address.city}, ${address.state}`;
   const isStreetSetting = retail && item.category === 'street';
-  const originAddress = slug === '61-gold-st' ? { ...address, street: '61 Gold St, Manhattan', zip: '10038' } : address;
+  const originAddress = address;
   const mapUrl = isStreetSetting ? mapLocationUrl(address) : directionsFromPropertyUrl(originAddress, item.destinationQuery || mapQuery);
   const linkLabel = isStreetSetting ? `View ${item.name} in Google Maps` : `Get directions from this property to ${item.name}`;
   return <li className="nearby-fact group min-w-0 rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">

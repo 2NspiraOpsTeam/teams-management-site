@@ -1,9 +1,10 @@
+import { addressLabel } from '@/lib/map-location';
 import type { Metadata } from 'next';
 import { AcrossCityRail } from '@/components/across-city-rail';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { listPublicBuildings } from '@/lib/public-buildings';
+import { canonicalPreviewBuildings, listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { homeMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
 import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
@@ -18,12 +19,12 @@ export const metadata: Metadata = {
 
 type Feature = { building: BuildingPublic; image: MediaRow };
 const photo = (image: MediaRow, label: string, eager = false) => <img src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className="home-photo h-full w-full object-cover" />;
-const location = (building: BuildingPublic) => [building.address.neighborhood, building.address.city, building.address.state].filter(Boolean).join(' · ');
+const location = (building: BuildingPublic) => addressLabel(building.address);
 
 export default async function Home() {
   const db = adminDb();
   const service = await featuredPropertyService(db);
-  const [buildings, assignments] = await Promise.all([previewPortfolioEnabled ? Promise.resolve(previewPortfolio) : listPublicBuildings(), homeMedia(db)]);
+  const [buildings, assignments] = await Promise.all([previewPortfolioEnabled ? canonicalPreviewBuildings(previewPortfolio) : listPublicBuildings(), homeMedia(db)]);
   const eligible = (await Promise.all(buildings.map(async building => {
     const cover = service.eligible.find(item => item.property_slug === building.slug);
     if (!cover) return [];
@@ -81,7 +82,7 @@ export default async function Home() {
       <div className="mb-11 flex flex-wrap items-end justify-between gap-5"><div><p className="home-eyebrow">The portfolio</p><h2 id="featured-title" className="font-serif text-4xl font-normal sm:text-6xl">Featured properties</h2></div><p className="mb-0 max-w-xs text-sm text-teams-secondary">A closer look at selected addresses in our portfolio.</p></div>
       {featured.length > 0 ? <div className="space-y-14 sm:space-y-20">{featured.map(({building,image},index) => <article key={building.slug} className={`grid gap-5 lg:grid-cols-12 lg:items-center lg:gap-12 ${index % 2 ? 'lg:[&>div:first-child]:order-2' : ''}`}>
         <Link href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`} className="home-image-link block aspect-[4/3] overflow-hidden bg-stone-200 sm:aspect-[16/10] lg:col-span-8" aria-label={`View ${building.name}`}>{photo(image, `Approved cover photo of ${building.name}`)}</Link>
-        <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3><p className="mb-6 text-sm text-teams-secondary">{building.address.street} · {building.address.city}, {building.address.state}</p><Link className="home-text-link" href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`}>{previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? 'View Commercial Property' : 'View Property'} <span aria-hidden="true">↗</span></Link></div>
+        <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3><p className="mb-6 text-sm text-teams-secondary">{addressLabel(building.address)}</p><Link className="home-text-link" href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`}>{previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? 'View Commercial Property' : 'View Property'} <span aria-hidden="true">↗</span></Link></div>
       </article>)}</div> : <div className="border-t border-stone-300 py-14"><p className="mb-5">Explore the properties currently available to view.</p><Link className="home-text-link" href="/properties">View All Properties ↗</Link></div>}
       <div className="pt-16 text-center sm:pt-20"><Link className="home-button border border-teams-ink text-teams-ink hover:bg-teams-ink hover:text-white" href="/properties">View All Properties <span aria-hidden="true">↗</span></Link></div>
     </div></section>
