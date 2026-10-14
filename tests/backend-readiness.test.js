@@ -1017,3 +1017,58 @@ it("admin history/audit failure rolls back status and revision, and invalid tena
       .get(o.id).n,
   ).toBe(1);
 });
+
+it("reopening clears the current completion date without erasing the historical completed event", async () => {
+  const o = await createOrder();
+  await drain();
+  await signIn(admin, "qa-admin@example.test", "teams_admin_session");
+  const patch = (status, revision) =>
+    adminOrderDetail.PATCH(
+      new Request(origin + "/order", {
+        method: "PATCH",
+        headers: { origin, "content-type": "application/json" },
+        body: JSON.stringify({ status, revision }),
+      }),
+      ctx(o.id),
+    );
+  expect((await patch("completed", 1)).status).toBe(200);
+  await drain();
+  expect(
+    sql
+      .prepare("SELECT completed_at FROM work_order_details WHERE request_id=?")
+      .get(o.id).completed_at,
+  ).toBeTruthy();
+  expect((await patch("in_review", 2)).status).toBe(200);
+  await drain();
+  expect(
+    sql
+      .prepare("SELECT completed_at FROM work_order_details WHERE request_id=?")
+      .get(o.id).completed_at,
+  ).toBeNull();
+  expect(
+    sql
+      .prepare(
+        "SELECT COUNT(*) AS n FROM work_order_events WHERE request_id=? AND status='completed'",
+      )
+      .get(o.id).n,
+  ).toBe(1);
+});
+
+it("labeled QA accounts produce unmistakable QA emails without changing normal notification routing", async () => {
+  sql.exec(
+    "UPDATE tenant_accounts SET display_name='[QA] Teams Tenant Portal' WHERE id='t1'",
+  );
+  state.env.WORK_ORDER_NOTIFY_TO = "office@example.test";
+  await createOrder();
+  await drain();
+  const messages = state.mail.filter((m) => m.workOrder);
+  expect(messages).toHaveLength(2);
+  expect(messages.every((m) => m.subject.startsWith("[QA] "))).toBe(true);
+  expect(
+    messages.every((m) =>
+      m.body.startsWith(
+        "QA validation only; no maintenance action is required.",
+      ),
+    ),
+  ).toBe(true);
+});

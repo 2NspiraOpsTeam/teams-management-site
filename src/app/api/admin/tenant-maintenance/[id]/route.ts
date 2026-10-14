@@ -59,9 +59,9 @@ export async function PATCH(request: Request, { params }: Context) {
     const statements = [
       db
         .prepare(
-          "UPDATE work_order_details SET revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END,completed_at=CASE WHEN ?='completed' THEN COALESCE(completed_at,datetime('now')) ELSE completed_at END WHERE request_id=?",
+          "UPDATE work_order_details SET revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END,completed_at=CASE WHEN ?='completed' AND ?!='completed' THEN datetime('now') WHEN ? IN ('submitted','in_review','scheduled') THEN NULL ELSE completed_at END WHERE request_id=?",
         )
-        .bind(v.revision, v.status, id),
+        .bind(v.revision, v.status, before.request.status, v.status, id),
       db
         .prepare(
           "UPDATE tenant_maintenance_requests SET status=?,updated_at=datetime('now') WHERE id=?",

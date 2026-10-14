@@ -12,7 +12,7 @@ const email = /^[^\s@,<>\r\n]+@[^\s@,<>\r\n]+\.[^\s@,<>\r\n]+$/;
 export async function deliver(db: D1Database, env: Env, id: string) {
   const n = await db
     .prepare(
-      `SELECT n.id,n.audience,n.state,n.attempts,d.number,t.email,e.kind,e.status FROM work_order_notifications n JOIN tenant_maintenance_requests r ON r.id=n.request_id JOIN work_order_details d ON d.request_id=r.id JOIN tenant_accounts t ON t.id=r.tenant_id JOIN work_order_events e ON e.id=n.event_id WHERE n.id=?`,
+      `SELECT n.id,n.audience,n.state,n.attempts,d.number,t.email,t.display_name,e.kind,e.status FROM work_order_notifications n JOIN tenant_maintenance_requests r ON r.id=n.request_id JOIN work_order_details d ON d.request_id=r.id JOIN tenant_accounts t ON t.id=r.tenant_id JOIN work_order_events e ON e.id=n.event_id WHERE n.id=?`,
     )
     .bind(id)
     .first<{
@@ -22,6 +22,7 @@ export async function deliver(db: D1Database, env: Env, id: string) {
       attempts: number;
       number: number;
       email: string;
+      display_name: string | null;
       kind: string;
       status: string | null;
     }>();
@@ -60,12 +61,14 @@ export async function deliver(db: D1Database, env: Env, id: string) {
         : n.kind === "submitted"
           ? `Your maintenance request #${n.number} has been received. Teams Management will review your request. You can track its progress under Maintenance Requests in your tenant portal.`
           : `Your maintenance request #${n.number} has an update${n.status ? ": " + label(n.status, statuses) : ""}. Sign in to your tenant portal to view the activity history.`;
+    const qa = /^(\[QA\]|QA \/ TEST)/i.test(n.display_name || "");
     const provider = await sendGmail(
       env,
       from,
       to,
-      `Teams Management — Maintenance request #${n.number}`,
-      message,
+      `${qa ? "[QA] " : ""}Teams Management — Maintenance request #${n.number}`,
+      (qa ? "QA validation only; no maintenance action is required.\n\n" : "") +
+        message,
     );
     await db
       .prepare(

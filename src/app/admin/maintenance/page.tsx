@@ -14,6 +14,7 @@ export default function MaintenanceAdmin() {
   const [rows, setRows] = useState<Order[]>([]),
     [data, setData] = useState<Detail | null>(null),
     [error, setError] = useState(""),
+    [message, setMessage] = useState(""),
     [loading, setLoading] = useState(true),
     [page, setPage] = useState(0),
     [busy, setBusy] = useState(false),
@@ -52,6 +53,7 @@ export default function MaintenanceAdmin() {
     }
   }
   async function open(id: string) {
+    setMessage("");
     try {
       const r = await fetch("/api/admin/tenant-maintenance/" + id, {
           cache: "no-store",
@@ -94,6 +96,7 @@ export default function MaintenanceAdmin() {
       form.current?.reset();
       await open(data.request.id);
       await list(page);
+      setMessage("Changes saved.");
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -117,6 +120,7 @@ export default function MaintenanceAdmin() {
         d = (await r.json()) as Detail & { error: string };
       if (!r.ok) throw Error(d.error);
       await open(data.request.id);
+      setMessage("Email retry processed. Check delivery status below.");
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -197,7 +201,7 @@ export default function MaintenanceAdmin() {
           />
         </label>
         <button
-          disabled={loading}
+          disabled={loading || busy}
           className="min-h-12 self-end rounded bg-teams-gold p-3 font-semibold"
         >
           Apply filters
@@ -221,6 +225,7 @@ export default function MaintenanceAdmin() {
               <button
                 type="button"
                 key={r.id}
+                disabled={busy}
                 onClick={() => void open(r.id)}
                 className="min-w-0 rounded border bg-white p-5 text-left hover:border-teams-gold"
               >
@@ -275,6 +280,7 @@ export default function MaintenanceAdmin() {
             Tenant: {data.request.display_name || "Name not recorded"} ·{" "}
             {data.request.email}
           </p>
+          <p role="status">{message}</p>
           <WorkOrderActivity data={data} admin />
           <form
             ref={form}
