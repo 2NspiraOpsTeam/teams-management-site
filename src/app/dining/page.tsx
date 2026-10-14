@@ -5,10 +5,8 @@ import { Footer } from '@/components/footer';
 import { listPublicDining, type DiningVenue } from '@/lib/public-dining';
 import { DiningPropertyRotation, type DiningProperty } from '@/components/dining-property-rotation';
 import { adminDb } from '@/lib/admin-auth';
-import { eligibleShowcases, pageShowcase, showcasePages } from '@/lib/page-showcase';
-import { listPublicRetail } from '@/lib/public-retail';
-import { previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
-import { currentVisit, featuredOrder, rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
+import { featuredPropertyService } from '@/lib/featured-property-service';
+import { previewPortfolioEnabled } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 export const metadata = {
@@ -47,24 +45,9 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
 }
 
 export default async function DiningPage() {
-  const visit = await currentVisit();
   const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
-  const db = adminDb();
-  const eligible = await eligibleShowcases(db);
-  const candidates = [...eligible];
-  if (previewPortfolioEnabled && !candidates.some(item => item.property_slug === '609-golden-gate-pt-unit-402')) {
-    candidates.push({ property_id: 'preview-sarasota', property_slug: '609-golden-gate-pt-unit-402', property_name: '609 Golden Gate Point, Unit 402', address_json: '{}', media_asset_id: 'preview-sarasota', storage_key: sarasotaUnitPhotos[0].src, image: sarasotaUnitPhotos[0].src, alt_text: sarasotaUnitPhotos[0].alt, caption: null });
-  }
-  const retailIds = (await listPublicRetail()).map(item => item.id);
-  const selections = await Promise.all(showcasePages.map(page => pageShowcase(db, page, page === 'retail' ? retailIds : undefined)));
-  const occupied = new Set(selections.map(item => item?.property_slug).filter(Boolean));
-  for (const slot of ['home:0', 'home:1', 'home:2'] as FeaturedSlot[]) {
-    const selected = rotateFeatured(eligible, slot, visit);
-    if (selected) occupied.add(selected.property_slug);
-  }
-  const ordered = featuredOrder(candidates, 'dining', visit);
-  const available = ordered.filter(item => !occupied.has(item.property_slug));
-  const unique = available.length ? available : ordered;
+  const service = await featuredPropertyService(adminDb());
+  const unique = service.dining;
   const properties: DiningProperty[] = unique.map(item => ({
     slug: item.property_slug,
     name: item.property_name,

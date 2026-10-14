@@ -1,7 +1,6 @@
 import { PageShowcase } from '@/components/page-showcase';
 import type { Metadata } from 'next';
 import { AcrossCityRail } from '@/components/across-city-rail';
-import { FeaturedPropertyCarousel } from '@/components/featured-property-carousel';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -10,7 +9,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { homeMedia, propertyMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
 import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 import type { BuildingPublic } from '@/lib/database.types';
-import { currentVisit, rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
+import { featuredPropertyService } from '@/lib/featured-property-service';
 
 export const runtime = 'edge';
 export const metadata: Metadata = {
@@ -23,28 +22,28 @@ const photo = (image: MediaRow, label: string, eager = false) => <img src={publi
 const location = (building: BuildingPublic) => [building.address.neighborhood, building.address.city, building.address.state].filter(Boolean).join(' · ');
 
 export default async function Home() {
-  const visit = await currentVisit();
   const db = adminDb();
+  const service = await featuredPropertyService(db);
   const [buildings, assignments] = await Promise.all([previewPortfolioEnabled ? Promise.resolve(previewPortfolio) : listPublicBuildings(), homeMedia(db)]);
   const eligible = (await Promise.all(buildings.map(async building => {
+    const cover = service.eligible.find(item => item.property_slug === building.slug);
+    if (!cover) return [];
     const images = await propertyMedia(db, building.slug);
-    return images.map(image => ({ building, image }));
+    const image = images.find(item => item.id === cover.media_asset_id);
+    return [{ building, image: image ?? ({ id: cover.media_asset_id, storage_key: cover.storage_key, alt_text: cover.alt_text } as MediaRow) }];
   }))).flat();
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
   const candidates = unique(eligible);
-  const slots: FeaturedSlot[] = ['home:0', 'home:1', 'home:2'];
-  const featured = slots.map(slot => rotateFeatured(candidates.map(item => ({...item, property_slug:item.building.slug})), slot, visit))
-    .filter((item): item is Feature & {property_slug:string} => !!item);
-  const byAsset = new Map(eligible.map(item => [item.image.id, item]));
-  const curatedShowcase = assignments.filter(item => item.slot === 'supporting').map(item => {
-    const match = byAsset.get(item.id);
-    return match && { building: match.building, image: item };
-  }).filter((item): item is Feature => !!item);
-  const showcaseImages = new Map(unique([...curatedShowcase, ...eligible]).map(item => [item.building.slug, item.image]));
-  const showcase = buildings.map(building => {
+  const candidateBySlug = new Map(candidates.map(item => [item.building.slug, item]));
+  const featured = (['home:0', 'home:1', 'home:2'] as const)
+    .map(slot => service.select(slot))
+    .map(item => item && candidateBySlug.get(item.property_slug))
+    .filter((item): item is Feature => !!item);
+  const showcaseImages = new Map(candidates.map(item => [item.building.slug, item.image]));
+  const showcase = buildings.flatMap(building => {
     const image = showcaseImages.get(building.slug);
-    const fallback = previewPortfolioEnabled && building.slug === '609-golden-gate-pt-unit-402' ? sarasotaUnitPhotos[0] : undefined;
-    return { slug: building.slug, name: building.name, location: location(building), href: previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`, src: image ? publicMediaSrc(image) : fallback?.src, alt: image?.alt_text || fallback?.alt || `Approved photo of ${building.name}` };
+    if (!image) return [];
+    return [{ slug: building.slug, name: building.name, location: location(building), href: previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`, src: publicMediaSrc(image), alt: image.alt_text || `Approved cover photo of ${building.name}` }];
   });
   const hero = assignments.find(item => item.slot === 'hero') || featured[0]?.image;
   const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || eligible[0]?.image;
@@ -80,7 +79,7 @@ export default async function Home() {
     <section className="home-featured border-b border-[#e6dfd2] py-20 sm:py-28" aria-labelledby="featured-title"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
       <div className="mb-11 flex flex-wrap items-end justify-between gap-5"><div><p className="home-eyebrow">The portfolio</p><h2 id="featured-title" className="font-serif text-4xl font-normal sm:text-6xl">Featured properties</h2></div><p className="mb-0 max-w-xs text-sm text-teams-secondary">A closer look at selected addresses in our portfolio.</p></div>
       {featured.length > 0 ? <div className="space-y-14 sm:space-y-20">{featured.map(({building,image},index) => <article key={building.slug} className={`grid gap-5 lg:grid-cols-12 lg:items-center lg:gap-12 ${index % 2 ? 'lg:[&>div:first-child]:order-2' : ''}`}>
-        {building.slug === '61-gold-st' ? <FeaturedPropertyCarousel name={building.name} href={`/properties/${building.slug}`} images={eligible.filter(item => item.building.slug === building.slug).map(item => ({src: publicMediaSrc(item.image), alt: item.image.alt_text || `Approved photo of ${building.name}`}))} /> : <Link href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`} className="home-image-link block aspect-[4/3] overflow-hidden bg-stone-200 sm:aspect-[16/10] lg:col-span-8" aria-label={`View ${building.name}`}>{photo(image, `Approved photo of ${building.name}`)}</Link>}
+        <Link href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`} className="home-image-link block aspect-[4/3] overflow-hidden bg-stone-200 sm:aspect-[16/10] lg:col-span-8" aria-label={`View ${building.name}`}>{photo(image, `Approved cover photo of ${building.name}`)}</Link>
         <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3>{previewPortfolioEnabled && <p className="mb-2 text-sm font-semibold text-teams-ink">{building.slug === '61-gold-st' ? 'Premier property · Coming soon' : 'Retail space'}</p>}<p className="mb-6 text-sm text-teams-secondary">{building.address.street} · {building.address.city}, {building.address.state}</p><Link className="home-text-link" href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`}>{previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? 'View Commercial Property' : 'View Property'} <span aria-hidden="true">↗</span></Link></div>
       </article>)}</div> : <div className="border-t border-stone-300 py-14"><p className="mb-5">Explore the properties currently available to view.</p><Link className="home-text-link" href="/properties">View All Properties ↗</Link></div>}
       <div className="pt-16 text-center sm:pt-20"><Link className="home-button border border-teams-ink text-teams-ink hover:bg-teams-ink hover:text-white" href="/properties">View All Properties <span aria-hidden="true">↗</span></Link></div>

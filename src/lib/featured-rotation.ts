@@ -27,3 +27,23 @@ export function featuredOrder<T extends { property_slug: string }>(items: T[], s
   const index = pool.findIndex(item => item.property_slug === first.property_slug);
   return [...pool.slice(index), ...pool.slice(0, index)];
 }
+
+/** One deterministic, visit-wide allocation for every public featured-property slot. */
+export function allocateFeatured<T extends { property_slug: string; property_id: string }>(
+  candidates: T[], retailIds: ReadonlySet<string>, visit: number,
+): { slots: Map<FeaturedSlot, T | null>; dining: T[] } {
+  const unique = [...new Map(candidates.map(item => [item.property_slug, item])).values()];
+  const slots = new Map<FeaturedSlot, T | null>();
+  const occupied = new Set<string>();
+  for (const slot of featuredSlots) {
+    const pool = slot === 'retail' ? unique.filter(item => retailIds.has(item.property_id)) : unique;
+    const ordered = featuredOrder(pool, slot, visit);
+    const selected = ordered.find(item => !occupied.has(item.property_slug)) ?? ordered[0] ?? null;
+    slots.set(slot, selected);
+    if (selected) occupied.add(selected.property_slug);
+  }
+  const diningOrder = featuredOrder(unique, 'dining', visit);
+  const dining = [...diningOrder.filter(item => ![...slots.entries()].some(([slot, chosen]) => slot !== 'dining' && chosen?.property_slug === item.property_slug)),
+    ...diningOrder.filter(item => [...slots.entries()].some(([slot, chosen]) => slot !== 'dining' && chosen?.property_slug === item.property_slug))];
+  return { slots, dining };
+}
