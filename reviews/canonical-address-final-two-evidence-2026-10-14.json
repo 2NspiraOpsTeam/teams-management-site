@@ -1,0 +1,73 @@
+[
+  {
+    "slug": "61-gold-st",
+    "source": "NYC DOB Job Application Filings",
+    "url": "https://data.cityofnewyork.us/resource/ic3t-wcy2.json?%24where=house__%3D%2761%27+AND+street_name%3D%27GOLD+STREET%27+AND+borough%3D%27MANHATTAN%27&%24select=distinct+house__%2Cstreet_name%2Cborough%2Czip%2Cbin__&%24limit=100",
+    "rows": []
+  },
+  {
+    "slug": "3425-east-tremont-bronx",
+    "source": "NYC DOB Job Application Filings",
+    "url": "https://data.cityofnewyork.us/resource/ic3t-wcy2.json?%24where=house__%3D%273425%27+AND+street_name%3D%27EAST+TREMONT+AVENUE%27+AND+borough%3D%27BRONX%27&%24select=distinct+house__%2Cstreet_name%2Cborough%2Czip%2Cbin__&%24limit=100",
+    "rows": [
+      {
+        "house__": "3425",
+        "street_name": "EAST TREMONT AVENUE",
+        "borough": "BRONX",
+        "bin__": "2076429"
+      }
+    ]
+  },
+  {
+    "label": "61-gold-range",
+    "url": "https://data.cityofnewyork.us/resource/ic3t-wcy2.json?%24where=upper%28street_name%29%3D%27GOLD+STREET%27+AND+borough%3D%27MANHATTAN%27+AND+house__+like+%2761%25%27&%24select=distinct+house__%2Cstreet_name%2Cborough%2Czip%2Cbin__%2Cblock%2Clot&%24limit=100",
+    "rows": []
+  },
+  {
+    "label": "3425-parcel",
+    "url": "https://data.cityofnewyork.us/resource/ic3t-wcy2.json?%24where=house__%3D%273425%27+AND+street_name%3D%27EAST+TREMONT+AVENUE%27+AND+borough%3D%27BRONX%27&%24select=distinct+house__%2Cstreet_name%2Cborough%2Czip%2Cbin__%2Cblock%2Clot&%24limit=100",
+    "rows": [
+      {
+        "house__": "3425",
+        "street_name": "EAST TREMONT AVENUE",
+        "borough": "BRONX",
+        "bin__": "2076429",
+        "block": "05419",
+        "lot": "00114"
+      }
+    ]
+  },
+  {
+    "slug": "3425-east-tremont-bronx",
+    "source": "PLUTO parcel linked by exact-address DOB filing",
+    "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D2054190114&%24select=address%2Cbbl%2Czipcode%2Cborough",
+    "rows": [
+      {
+        "address": "2900 BRUCKNER BOULEVARD",
+        "bbl": "2054190114.00000000",
+        "zipcode": "10465",
+        "borough": "BX"
+      }
+    ]
+  },
+  {
+    "slug": "61-gold-st",
+    "source": "PLUTO69Gold parcel corroborated by exact61/69 project address",
+    "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1000930034&%24select=address%2Cbbl%2Czipcode%2Cborough",
+    "rows": [
+      {
+        "address": "57 BEEKMAN STREET",
+        "bbl": "1000930034.00000000",
+        "zipcode": "10038",
+        "borough": "MN"
+      }
+    ]
+  },
+  {
+    "slug": "61-gold-st",
+    "source": "BLDUP project mailing address",
+    "url": "https://www.bldup.com/projects/61-gold-street",
+    "observed": "61 Gold Street New York, NY10038; project snapshot identifies61/69Gold Street",
+    "checked_date": "2026-10-14"
+  }
+]
