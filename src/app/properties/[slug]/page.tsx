@@ -9,7 +9,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, propertyUnitMedia, publicMediaSrc } from '@/lib/media-management';
 import { canonicalPreviewBuildings, getPublicBuilding } from '@/lib/public-buildings';
 import { listPublicDining } from '@/lib/public-dining';
-import { previewPortfolio, previewPortfolioEnabled, previewStaticCover, sarasotaUnitPhotos, sarasotaUnitMapLocation, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos, sarasotaUnitMapLocation, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
@@ -49,7 +49,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const unitMedia = await propertyUnitMedia(adminDb(),slug);
   const unitGroups = unitMedia.reduce<Record<string,typeof unitMedia>>((groups,item)=>{(groups[item.unit_identifier]??=[]).push(item);return groups;},{});
   const images = [...media.filter(item=>item.is_cover),...media.filter(item=>!item.is_cover)].map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
-  if (!images.length && previewStaticCover(slug)) images.push({src:previewStaticCover(slug)!,alt:`Approved exterior of ${building.name}`,caption:null});
+
   if (previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402') images.unshift(...sarasotaUnitPhotos);
   if (previewPortfolioEnabled && slug === '71-e-110th-st') images.push(...east110UnitPhotos, ...east110PenthousePhotos);
 
