@@ -35,12 +35,11 @@ export function Footer() {
               <li><Link href="/dining" className="text-slate-300 hover:text-white text-sm">Dining</Link></li>
               <li><Link href="/rent-with-us" className="text-slate-300 hover:text-white text-sm">Rent with Us</Link></li>
               <li><Link href="/about" className="text-slate-300 hover:text-white text-sm">About</Link></li>
-              <li><Link href="/contact" className="text-slate-300 hover:text-white text-sm">Contact</Link></li>
               <li><Link href="/tenant-services" className="text-slate-300 hover:text-white text-sm">Tenant Services</Link></li>
             </ul>
           </div>
 
-          <div><h4 className="text-sm font-semibold uppercase tracking-[.16em] text-[#D8BD86] mb-4">Get in touch</h4><ContactDetails dark /><Link href="/contact" className="mt-4 inline-block text-sm text-white underline decoration-[#B49355] underline-offset-4 hover:text-[#D8BD86]">Contact page</Link></div>
+          <div><h4 className="text-sm font-semibold uppercase tracking-[.16em] text-[#D8BD86] mb-4">Get in touch</h4><ContactDetails dark /></div>
 
         </div>
 
@@ -49,12 +48,9 @@ export function Footer() {
             <Link href="/privacy-policy" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Privacy Policy</Link>
             <Link href="/terms-of-use" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Terms of Use</Link>
             <Link href="/accessibility" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Accessibility</Link>
-            <Link href="/fair-housing" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Fair Housing</Link>
-            <Link href="/contact" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Contact</Link>
+            <Link href="/fair-housing" className="inline-flex min-h-11 items-center gap-2 hover:text-white focus-visible:underline"><span aria-hidden="true" className="text-base text-[#D8BD86]">⌂</span>Fair Housing &amp; Equal Housing Opportunity</Link>
             <Link href="/copyright" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Copyright</Link>
-            <a href="https://2nspira.com/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Designed by 2Nspira</a>
           </nav>
-          <Link href="/fair-housing" className="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-[#D8BD86] hover:text-white focus-visible:underline"><span aria-hidden="true" className="text-lg">⌂</span> Equal Housing Opportunity</Link>
         </div>
       </div>
     </footer>
