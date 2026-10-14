@@ -65,3 +65,9 @@ Public-facing maintenance notices removed: missing ZIPs remain flagged only in t
 ## Scoped canonical completion (verified, preview D1 only)
 
 After independent fresh-source verification, parent applied only the 12 exact parcel/address ZIP matches to the existing canonical `address_json` where ZIP was missing and the entire before-address still matched. Twelve audit records preserve source URLs and the before/after ZIP. Stored city/borough and all other address fields were preserved. Readback confirmed all 12 values. No schema or production database migration, no publication changes. 61 Gold St and 3425 East Tremont Ave remain flagged and unguessed. Earlier missing list is the pre-completion baseline, not the current gap count.
+
+## Final two addresses completed from corroborated sources
+
+Parent verified the remaining two without copying neighboring ZIP guesses. 3425 East Tremont Avenue matches an exact NYC DOB Job Application Filings row (BIN2076429, Bronx block5419lot114); current official PLUTO for linked BBL2054190114 gives10465. 61 Gold Street is explicitly listed as61/69Gold at BLDUP with mailing ZIP10038; NYC DOB69Gold (BIN1001288, Manhattan block93lot34) links to official PLUTO BBL1000930034 ZIP10038. PLUTO primary parcel addresses differ (2900Bruckner Boulevard /57Beekman Street), so the exact-address/DOB linkage and independent project mailing address are essential, not an unqualified address-match claim.
+
+Both canonical missing ZIPs were filled only with before-address concurrency guards and audit source records; readback confirmed city naming unchanged. Final non-archived canonical property ZIP audit has zero gaps. Sarasota remains its separately approved unit-specific preview fixture. Evidence accompanies this review.
