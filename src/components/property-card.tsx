@@ -36,10 +36,10 @@ export function PropertyCard({ building, anchorId, coverOverride, images = [], s
           </ul>
         )}
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link href={`/properties/${building.slug}`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-teams-gold px-5 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
+        <Link prefetch={false} href={`/properties/${building.slug}`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-teams-gold px-5 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">
           View Residential Property <span aria-hidden="true">→</span>
         </Link>
-        {hasRetail && <Link href={`/retail/${building.slug}`} className="inline-flex min-h-11 items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-teams-ink hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">View Retail Property <span aria-hidden="true">→</span></Link>}
+        {hasRetail && <Link prefetch={false} href={`/retail/${building.slug}`} className="inline-flex min-h-11 items-center gap-2 border-b border-slate-400 pb-1 text-sm font-semibold text-teams-ink hover:text-slate-700 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-gold">View Retail Property <span aria-hidden="true">→</span></Link>}
         <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">View on Map ↗</a>
         <a href={streetViewExploreUrl(building.address, building)} target="_blank" rel="noopener noreferrer" aria-label={`Explore Street View for ${building.name} in Google Maps, where available`} className="inline-flex min-h-11 items-center border-b border-slate-400 text-sm font-semibold text-teams-ink hover:text-slate-700">Explore Street View ↗</a>
         </div>

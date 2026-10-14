@@ -5,6 +5,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { BuildingPublic } from '@/lib/database.types';
 import { addressLabel, mapLocationUrl } from '@/lib/map-location';
+import { mapTileFallback } from '@/lib/map-tile-fallback';
 
 type VerifiedBuilding = BuildingPublic & { latitude: number; longitude: number };
 
@@ -12,21 +13,26 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
   const container = useRef<HTMLDivElement>(null);
   const layers = useRef<{ streets: L.TileLayer; aerial: L.TileLayer; labels: L.TileLayer; map: L.Map } | null>(null);
   const [view, setView] = useState<'aerial' | 'streets'>('aerial');
+  const [tilesFailed, setTilesFailed] = useState(false);
   useEffect(() => {
     if (!container.current || buildings.length === 0) return;
+    setTilesFailed(false);
     const map = L.map(container.current, { scrollWheelZoom: false, zoomControl: true });
     const streets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
+      errorTileUrl: mapTileFallback,
       attribution: 'Tiles &copy; Esri and its data providers',
-    }).addTo(map);
+    }).on('tileerror', () => setTilesFailed(true)).addTo(map);
     const aerial = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
+      errorTileUrl: mapTileFallback,
       attribution: 'Imagery &copy; Esri and its data providers',
-    }).addTo(map);
+    }).on('tileerror', () => setTilesFailed(true)).addTo(map);
     const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
+      errorTileUrl: mapTileFallback,
       attribution: 'Labels &copy; Esri and its data providers',
-    }).addTo(map);
+    }).on('tileerror', () => setTilesFailed(true)).addTo(map);
     layers.current = { streets, aerial, labels, map };
     const points: L.LatLngExpression[] = [];
     for (const building of buildings) {
@@ -68,5 +74,6 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
       <button type="button" onClick={() => setView('streets')} aria-pressed={view === 'streets'} className={`min-h-11 px-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-teams-ink ${view === 'streets' ? 'bg-teams-ink text-white' : 'text-teams-ink'}`}>Streets</button>
     </div>
     {view === 'aerial' && <p className="absolute bottom-20 left-3 z-[1000] rounded-sm bg-white/95 px-2 py-1 text-xs text-teams-ink shadow">Satellite imagery · Esri</p>}
+    {tilesFailed && <p role="status" className="mt-2 text-sm text-slate-600">Some map details are unavailable. Use the property map links to view locations in Google Maps.</p>}
   </div>;
 }

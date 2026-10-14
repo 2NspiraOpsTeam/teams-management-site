@@ -76,3 +76,13 @@ it('keeps multiple CVS branches distinct and suppresses the reported closed Gris
  expect(cvs.map(x=>x.destinationAddress)).toContain('305 East 86th Street, New York, NY 10028');
  expect(items.some(x=>x.source==='https://www.openstreetmap.org/node/2620513862')).toBe(false);
 });
+
+it('keeps A Matter of Health website and named First Avenue branch directions separate', () => {
+ const item=highlights['1374-1st-ave'].find(x=>x.name==='A Matter of Health') as NearbyPlace;
+ const property={street:'1374 1st Ave',city:'New York',state:'NY',zip:'10021'};
+ const links=nearbyPlaceLinks(item,property);
+ expect(links.nameUrl).toBe('https://amatterofhealthmarket.com/');
+ const route=new URL(links.directionsUrl!);
+ expect(route.searchParams.get('origin')).toBe('1374 1st Ave, New York, NY 10021');
+ expect(route.searchParams.get('destination')).toBe('A Matter of Health, 1347 1st Avenue, New York, NY 10021');
+});

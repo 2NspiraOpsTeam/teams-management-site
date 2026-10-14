@@ -69,7 +69,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
           <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Map &amp; Directions ↗</a>
           <a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Explore Street View ↗</a>
-          <Link href="/contact" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Contact Teams Management</Link>
+          <Link prefetch={false} href="/contact" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Contact Teams Management</Link>
         </nav>
         <div className="mx-auto max-w-5xl px-4 sm:px-8">
         {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-8 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
@@ -114,7 +114,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               <h2 id="retail-frontage-title" className="mt-4 max-w-xl font-serif text-3xl font-semibold sm:text-4xl">{retail.retail_status === 'planned' ? 'Planned retail' : 'Retail frontage'}</h2>
               <p className="mt-4 max-w-xl leading-relaxed text-slate-200">{retail.retail_status === 'planned' ? 'Explore the planned commercial component of this property.' : 'Discover the commercial side of this address, including property details and listed storefronts.'}</p>
             </div>
-            <Link href={`/retail/${slug}`} className="inline-flex min-h-12 w-fit items-center gap-5 rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none">Explore retail <span aria-hidden="true">↗</span></Link>
+            <Link prefetch={false} href={`/retail/${slug}`} className="inline-flex min-h-12 w-fit items-center gap-5 rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none">Explore retail <span aria-hidden="true">↗</span></Link>
           </div>
         </section>}
 
