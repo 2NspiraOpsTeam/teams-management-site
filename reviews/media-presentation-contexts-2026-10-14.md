@@ -16,7 +16,7 @@
 - A source-assignment restore snapshot was saved outside the repository with owner-only permissions. No credentials were added to source.
 
 ## Verification
-- 55 automated tests passed, including 9 SQLite-backed context tests for migration idempotence, cover and order isolation, reuse, explicit fallback, revoked approval filtering, atomic rollback and stale writes.
+- 56 automated tests passed, including 10 SQLite-backed context tests for migration idempotence, cover and order isolation, reuse, explicit fallback, revoked approval filtering, atomic rollback and stale writes.
 - Typecheck and Pages build passed.
 - Local Pages rendered QA: desktop 1440px, tablet 768px, mobile 390px; no overflow or page errors.
 - Authenticated isolated fixture: independent Retail cover/gallery/order, same asset reuse, refresh, cancel, failure preserving draft, safe retry, double-click protection, malformed/unapproved selection rejection, anonymous and origin guards.
@@ -28,3 +28,5 @@
 - Old Retail gallery write endpoint rejects stale clients with a reload instruction, rather than silently modifying an unused legacy gallery.
 - Prior Times Square anchor and fixed East Tremont Retail feature are preserved.
 - No auth/mail/DNS configuration changes and no production/custom-domain rollout.
+
+Residential detail pages preserve stored gallery membership/order independently of the cover. A different cover is displayed separately; a cover already first in the gallery retains the existing compact single-gallery layout.

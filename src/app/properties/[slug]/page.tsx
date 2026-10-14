@@ -48,7 +48,9 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const media = await propertyMedia(adminDb(),slug);
   const unitMedia = await propertyUnitMedia(adminDb(),slug);
   const unitGroups = unitMedia.reduce<Record<string,typeof unitMedia>>((groups,item)=>{(groups[item.unit_identifier]??=[]).push(item);return groups;},{});
-  const images = [...media.filter(item=>item.is_cover),...media.filter(item=>!item.is_cover)].map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
+  const coverItem = media.find(item=>item.is_cover);
+  const residentialCover = coverItem ? {src:publicMediaSrc(coverItem),alt:coverItem.alt_text||`Approved property image for ${building.name}`} : null;
+  const images = media.filter(item=>item.in_gallery!==0).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
 
   if (previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402') images.unshift(...sarasotaUnitPhotos);
   if (previewPortfolioEnabled && slug === '71-e-110th-st') images.push(...east110UnitPhotos, ...east110PenthousePhotos);
@@ -69,7 +71,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <div className="mb-2 flex flex-wrap gap-3"><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">View on Map ↗</a><a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Explore Street View ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
         <p className="mb-10 text-xs text-slate-600">Opens Google Maps; Street View availability and imagery date vary by address.</p>
         {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-3 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
-        <section aria-label={`${building.name} photo gallery`} className="mb-12"><PropertyGallery images={images} name={building.name} /></section>
+        {residentialCover&&residentialCover.src!==images[0]?.src&&<section aria-label={`${building.name} Residential cover`} className="mb-12"><img src={residentialCover.src} alt={residentialCover.alt} className="aspect-[16/9] w-full border border-slate-200 object-cover"/></section>}
+        {(images.length>0||!residentialCover)&&<section aria-label={`${building.name} photo gallery`} className="mb-12">{residentialCover&&residentialCover.src!==images[0]?.src&&<h2 className="mb-4 font-serif text-2xl text-teams-ink">Residential gallery</h2>}<PropertyGallery images={images} name={building.name} /></section>}
         {Object.entries(unitGroups).map(([unit,items])=><section key={unit} aria-label={`Apartment ${unit} photos`} className="mb-12"><h2 className="mb-3 text-2xl font-serif font-semibold text-teams-ink">Apartment {unit} photos</h2><p className="mb-4 text-sm text-slate-600">These photos show this apartment only. Contact Teams Management for current availability.</p><PropertyGallery images={(items||[]).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Apartment ${unit} interior`,caption:item.caption}))} name={`Apartment ${unit}`} /></section>)}
         {previewPortfolioEnabled && <div className="mb-10"><PreviewBuildingDetails slug={building.slug} /></div>}
         {previewPortfolioEnabled && slug === '61-gold-st' && <section className="mb-10 rounded-lg border border-stone-200 bg-[#f7f4ee] p-6 sm:p-8" aria-labelledby="gold-street-plans">
