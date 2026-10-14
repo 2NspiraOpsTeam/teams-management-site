@@ -52,7 +52,7 @@ it('allocates filtered retail slots without collisions and avoids immediate repe
 
 it('covers the real-sized cover pool and handles period boundaries with filtered retail', () => {
   const candidates=pool.slice(0,17).map((item,index)=>({...item,property_id:`id-${index}`}));
-  for(const count of [1,7,16,17]){
+  for(const count of [1,7,15,16,17]){
     const retail=new Set(candidates.slice(0,count).map(item=>item.property_id));
     const period=candidates.length*count;
     const exposure=new Map(featuredSlots.map(slot=>[slot,new Set<string>()]));
