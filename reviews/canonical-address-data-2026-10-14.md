@@ -61,3 +61,7 @@ Missing ZIP codes are flagged in this review audit, not visitor-facing product f
 Not verified by this endpoint: `3425-east-tremont-bronx` (exact `3425 EAST TREMONT AVENUE` returned no row; broader Bronx `3425%` rows are unrelated addresses) and `61-gold-st` (exact `61 GOLD STREET` and limited nearby Gold Street address checks returned no rows). Keep those two candidates unapplied until a precise official address/parcel source match is obtained. The existing candidate ZIPs `10465` / `10038` are not fresh-verified here. No conflicting ZIP occurred among the twelve exact matches, no source city/borough naming is imported, and no database writes were performed.
 
 Public-facing maintenance notices removed: missing ZIPs remain flagged only in this audit report.
+
+## Scoped canonical completion (verified, preview D1 only)
+
+After independent fresh-source verification, parent applied only the 12 exact parcel/address ZIP matches to the existing canonical `address_json` where ZIP was missing and the entire before-address still matched. Twelve audit records preserve source URLs and the before/after ZIP. Stored city/borough and all other address fields were preserved. Readback confirmed all 12 values. No schema or production database migration, no publication changes. 61 Gold St and 3425 East Tremont Ave remain flagged and unguessed. Earlier missing list is the pre-completion baseline, not the current gap count.
