@@ -29,6 +29,7 @@ export function MaintenanceForm({
     locked = useRef(false);
   const [rows, setRows] = useState<Order[]>([]),
     [loading, setLoading] = useState(true),
+    [ready, setReady] = useState(false),
     [hasMore, setHasMore] = useState(false),
     [error, setError] = useState(""),
     [open, setOpen] = useState(false),
@@ -62,6 +63,7 @@ export function MaintenanceForm({
     }
   }
   useEffect(() => {
+    setReady(true);
     void refresh();
   }, []);
   async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -109,7 +111,7 @@ export function MaintenanceForm({
     <>
       <button
         type="button"
-        disabled={!assignments.length}
+        disabled={!assignments.length || !ready}
         className="mt-6 min-h-12 rounded bg-teams-gold px-5 py-3 font-semibold disabled:opacity-50"
         onClick={() => {
           setOpen(true);
