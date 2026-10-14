@@ -10,7 +10,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { homeMedia, propertyMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
 import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 import type { BuildingPublic } from '@/lib/database.types';
-import { rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
+import { currentVisit, rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
 
 export const runtime = 'edge';
 export const metadata: Metadata = {
@@ -23,6 +23,7 @@ const photo = (image: MediaRow, label: string, eager = false) => <img src={publi
 const location = (building: BuildingPublic) => [building.address.neighborhood, building.address.city, building.address.state].filter(Boolean).join(' · ');
 
 export default async function Home() {
+  const visit = await currentVisit();
   const db = adminDb();
   const [buildings, assignments] = await Promise.all([previewPortfolioEnabled ? Promise.resolve(previewPortfolio) : listPublicBuildings(), homeMedia(db)]);
   const eligible = (await Promise.all(buildings.map(async building => {
@@ -32,7 +33,7 @@ export default async function Home() {
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
   const candidates = unique(eligible);
   const slots: FeaturedSlot[] = ['home:0', 'home:1', 'home:2'];
-  const featured = slots.map(slot => rotateFeatured(candidates.map(item => ({...item, property_slug:item.building.slug})), slot))
+  const featured = slots.map(slot => rotateFeatured(candidates.map(item => ({...item, property_slug:item.building.slug})), slot, visit))
     .filter((item): item is Feature & {property_slug:string} => !!item);
   const byAsset = new Map(eligible.map(item => [item.image.id, item]));
   const curatedShowcase = assignments.filter(item => item.slot === 'supporting').map(item => {

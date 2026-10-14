@@ -3,17 +3,17 @@ import { featuredSlots, rotateFeatured } from './featured-rotation';
 
 const pool = Array.from({length: 18}, (_, index) => ({property_slug: `property-${String(index).padStart(2, '0')}`}));
 
-describe('weekly featured schedule', () => {
+describe('visit-based featured schedule', () => {
   it('covers every eligible property over one cycle', () => {
     for (const slot of featuredSlots) {
-      const shown = new Set(Array.from({length: pool.length}, (_, week) => rotateFeatured(pool, slot, week)?.property_slug));
+      const shown = new Set(Array.from({length: pool.length}, (_, visit) => rotateFeatured(pool, slot, visit)?.property_slug));
       expect(shown.size).toBe(pool.length);
     }
   });
 
   it('assigns distinct properties across page slots when enough are eligible', () => {
-    for (let week = 0; week < pool.length; week++) {
-      const shown = featuredSlots.map(slot => rotateFeatured(pool, slot, week)?.property_slug);
+    for (let visit = 0; visit < pool.length; visit++) {
+      const shown = featuredSlots.map(slot => rotateFeatured(pool, slot, visit)?.property_slug);
       expect(new Set(shown).size).toBe(featuredSlots.length);
     }
   });

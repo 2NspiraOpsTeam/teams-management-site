@@ -1,6 +1,6 @@
 import type { D1Database } from '@cloudflare/workers-types';
 import { publicMediaSrc } from './media-management';
-import { featuredSlots, rotateFeatured } from './featured-rotation';
+import { currentVisit, featuredSlots, rotateFeatured } from './featured-rotation';
 import { goldStreetGallery, previewPortfolio, previewPortfolioEnabled } from './preview-portfolio';
 
 export const showcasePages = ['home','about','properties','retail','rent-with-us','gallery','contact','tenant-services'] as const;
@@ -18,14 +18,15 @@ export async function eligibleShowcases(db:D1Database):Promise<Showcase[]> {
 }
 
 export async function pageShowcase(db:D1Database,page:ShowcasePage,retailIds?:string[]):Promise<Showcase|null> {
+ const visit=await currentVisit();
  const eligible=await eligibleShowcases(db);
  const unique=eligible.filter((row,index)=>eligible.findIndex(other=>other.property_id===row.property_id)===index);
  const pool=page==='retail' ? unique.filter(row=>retailIds?.includes(row.property_id)) : unique;
  if(!pool.length)return null;
  if (page === 'retail') {
-  const occupied = new Set(featuredSlots.filter(slot => slot !== 'retail').map(slot => rotateFeatured(unique, slot)?.property_slug).filter(Boolean));
+  const occupied = new Set(featuredSlots.filter(slot => slot !== 'retail').map(slot => rotateFeatured(unique, slot, visit)?.property_slug).filter(Boolean));
   const available = pool.filter(item => !occupied.has(item.property_slug));
-  return rotateFeatured(available.length ? available : pool, 'retail');
+  return rotateFeatured(available.length ? available : pool, 'retail', visit);
  }
- return rotateFeatured(pool, page==='home'?'home:showcase':page);
+ return rotateFeatured(pool, page==='home'?'home:showcase':page, visit);
 }

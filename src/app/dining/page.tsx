@@ -8,7 +8,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { eligibleShowcases, pageShowcase, showcasePages } from '@/lib/page-showcase';
 import { listPublicRetail } from '@/lib/public-retail';
 import { previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
-import { featuredOrder, rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
+import { currentVisit, featuredOrder, rotateFeatured, type FeaturedSlot } from '@/lib/featured-rotation';
 
 export const runtime = 'edge';
 export const metadata = {
@@ -47,6 +47,7 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
 }
 
 export default async function DiningPage() {
+  const visit = await currentVisit();
   const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
   const db = adminDb();
   const eligible = await eligibleShowcases(db);
@@ -58,10 +59,10 @@ export default async function DiningPage() {
   const selections = await Promise.all(showcasePages.map(page => pageShowcase(db, page, page === 'retail' ? retailIds : undefined)));
   const occupied = new Set(selections.map(item => item?.property_slug).filter(Boolean));
   for (const slot of ['home:0', 'home:1', 'home:2'] as FeaturedSlot[]) {
-    const selected = rotateFeatured(eligible, slot);
+    const selected = rotateFeatured(eligible, slot, visit);
     if (selected) occupied.add(selected.property_slug);
   }
-  const ordered = featuredOrder(candidates, 'dining');
+  const ordered = featuredOrder(candidates, 'dining', visit);
   const available = ordered.filter(item => !occupied.has(item.property_slug));
   const unique = available.length ? available : ordered;
   const properties: DiningProperty[] = unique.map(item => ({
