@@ -55,26 +55,32 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   if (previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402') images.unshift(...sarasotaUnitPhotos);
   if (previewPortfolioEnabled && slug === '71-e-110th-st') images.push(...east110UnitPhotos, ...east110PenthousePhotos);
 
+  const heroImages = residentialCover ? [{ ...images.find(image => image.src === residentialCover.src), ...residentialCover }, ...images.filter(image => image.src !== residentialCover.src)] : images;
+
   return <>
     <Header />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Place", name: building.name, address: postalAddressMetadata(building.address) }).replace(/</g, "\\u003c") }} /><main id="main-content" className="min-h-screen bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <nav aria-label="Breadcrumb" className="text-sm mb-10">
-          <Link href="/" className="text-slate-600 hover:underline">Home</Link>
-          <span className="mx-2" aria-hidden="true">/</span>
-          <Link href="/properties" className="text-slate-600 hover:underline">Properties</Link>
-          <span className="mx-2" aria-hidden="true">/</span>
-          <span aria-current="page">{building.name}</span>
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-8 pb-16">
+        <header className="mb-8 sm:mb-10 lg:mb-12">
+          <h1 className="font-serif text-4xl font-semibold leading-tight tracking-tight text-teams-ink sm:text-5xl lg:text-6xl">{building.name}</h1>
+          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{addressLabel(building.address)}</p>
+        </header>
+        <section aria-label={`${building.name} photo gallery`} data-residential-hero>
+          <PropertyGallery images={heroImages} name={building.name} hero />
+        </section>
+        <nav aria-label="Property actions" className="mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
+          <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
+          <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Map &amp; Directions ↗</a>
+          <a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Explore Street View ↗</a>
+          <Link href="/contact" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Contact Teams Management</Link>
         </nav>
-        <h1 className="text-4xl font-serif font-semibold text-teams-ink mb-4">{building.name}</h1>
-        <p className="text-lg text-slate-600 mb-10">{addressLabel(building.address)}</p>
-        <div className="mb-2 flex flex-wrap gap-3"><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">View on Map ↗</a><a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Explore Street View ↗</a><Link href="/contact" className="inline-flex min-h-11 items-center rounded-sm border border-stone-300 px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-stone-100">Contact Teams Management</Link></div>
-        <p className="mb-10 text-xs text-slate-600">Opens Google Maps; Street View availability and imagery date vary by address.</p>
-        {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-3 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
-        {residentialCover&&residentialCover.src!==images[0]?.src&&<section aria-label={`${building.name} Residential cover`} className="mb-12"><img src={residentialCover.src} alt={residentialCover.alt} className="aspect-[16/9] w-full border border-slate-200 object-cover"/></section>}
-        {(images.length>0||!residentialCover)&&<section aria-label={`${building.name} photo gallery`} className="mb-12">{residentialCover&&residentialCover.src!==images[0]?.src&&<h2 className="mb-4 font-serif text-2xl text-teams-ink">Residential gallery</h2>}<PropertyGallery images={images} name={building.name} /></section>}
+        <div className="mx-auto max-w-5xl">
+        {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-8 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
+
+        {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
+        {previewPortfolioEnabled && <div className="mb-10"><h2 className="mb-5 font-serif text-2xl font-semibold text-teams-ink">Property details</h2><PreviewBuildingDetails slug={building.slug} /></div>}
+        {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
         {Object.entries(unitGroups).map(([unit,items])=><section key={unit} aria-label={`Apartment ${unit} photos`} className="mb-12"><h2 className="mb-3 text-2xl font-serif font-semibold text-teams-ink">Apartment {unit} photos</h2><p className="mb-4 text-sm text-slate-600">These photos show this apartment only. Contact Teams Management for current availability.</p><PropertyGallery images={(items||[]).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Apartment ${unit} interior`,caption:item.caption}))} name={`Apartment ${unit}`} /></section>)}
-        {previewPortfolioEnabled && <div className="mb-10"><PreviewBuildingDetails slug={building.slug} /></div>}
         {previewPortfolioEnabled && slug === '61-gold-st' && <section className="mb-10 rounded-lg border border-stone-200 bg-[#f7f4ee] p-6 sm:p-8" aria-labelledby="gold-street-plans">
           <p className="text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">Coming soon</p>
           <h2 id="gold-street-plans" className="mt-2 font-serif text-3xl text-teams-ink">Planned residences at 61 Gold Street</h2>
@@ -85,8 +91,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           </div>
           <p className="mt-5 text-sm text-slate-600">Details are planned and may change. Contact Teams Management for current information.</p>
         </section>}
-        {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
-        {previewPortfolioEnabled && <NeighborhoodPreview slug={slug} residence />}
+
         {(building.address.state === 'NY' || slug === '609-golden-gate-pt-unit-402') && <section className="mb-10 rounded-2xl border border-stone-200 bg-[#f7f5ef] p-5 shadow-sm sm:p-8 lg:p-10" aria-labelledby="living-nearby-title">
           <p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-[#8b681f]">The neighborhood at a glance</p>
           <h2 id="living-nearby-title" className="text-3xl font-serif font-semibold text-teams-ink sm:text-4xl">Living nearby</h2>
@@ -102,6 +107,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             {zip && <p className="mt-2 text-xs text-slate-600">A ZIP code does not determine school eligibility; confirm options with {building.address.state === 'NY' ? 'NYC Public Schools' : 'Sarasota County Schools'}.</p>}
           </div>
         </section>}
+        {previewPortfolioEnabled && <NeighborhoodPreview slug={slug} residence />}
         {retail && <section aria-labelledby="retail-frontage-title" className="group relative mb-10 overflow-hidden rounded-xl bg-teams-charcoal text-white shadow-lg">
           <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full border border-white/15 sm:h-96 sm:w-96" />
           <div aria-hidden="true" className="pointer-events-none absolute -right-10 top-4 h-52 w-52 rounded-full border border-teams-gold/30 sm:h-72 sm:w-72" />
@@ -114,7 +120,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             <Link href={`/retail/${slug}`} className="inline-flex min-h-12 w-fit items-center gap-5 rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none">Explore retail <span aria-hidden="true">↗</span></Link>
           </div>
         </section>}
-        {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
+
         {previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402' && <section className="mb-10 text-sm text-slate-700" aria-label="Leasing information"><h2 className="text-2xl font-serif font-semibold text-teams-ink mb-3">Contact</h2><p>For current availability, rent, lease terms, pet policies, parking, and amenity access, please contact Teams Management.</p></section>}
 
         {dining.length > 0 && <section className="mb-12 border-t border-stone-200 pt-10" aria-labelledby="dining-at-property"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#8b681f]">A neighborhood address</p><h2 id="dining-at-property" className="mt-3 font-serif text-3xl text-teams-ink">Dining at this property</h2><div className="mt-6 grid gap-5 sm:grid-cols-2">{dining.map(venue => <article key={venue.id} className="border border-stone-200 bg-[#f7f4ee] p-6"><h3 className="font-serif text-2xl text-teams-ink"><a href={venue.website_url || mapLocationUrl(venue.address)} target="_blank" rel="noopener noreferrer" aria-label={`${venue.website_url ? `Visit ${venue.name} official website` : `Locate ${venue.name} in Google Maps`} (opens in a new tab)`} className="inline-block min-h-11 underline decoration-teams-ink/40 underline-offset-4 hover:decoration-teams-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{venue.name} <span aria-hidden="true">↗</span></a></h3><p className="mt-2 text-sm font-medium text-slate-600">{venue.category}</p><p className="mt-4 leading-relaxed text-slate-700">{venue.summary}</p><a href={directionsFromPropertyUrl(building.address, `${venue.name}, ${addressLabel(venue.address)}`)} target="_blank" rel="noopener noreferrer" aria-label={`Get directions from ${navigationAddressLabel(building.address)} to ${venue.name} (opens in a new tab)`} className="mt-5 inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Get Directions <span aria-hidden="true" className="ml-1">↗</span></a></article>)}</div></section>}
@@ -135,6 +141,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           </div>
         </section>
 
+        </div>
       </div>
     </main>
     <Footer />
