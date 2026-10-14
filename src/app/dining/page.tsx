@@ -1,4 +1,4 @@
-import { addressLabel } from '@/lib/map-location';
+import { addressLabel, directionsFromPropertyUrl, mapLocationUrl, navigationAddressLabel } from '@/lib/map-location';
 import Image from 'next/image';
 import { Header } from '@/components/header';
 import { DiningFeatureVideo } from '@/components/dining-feature-video';
@@ -21,21 +21,20 @@ function ExternalAction({ href, children, primary = false }: { href: string | nu
 }
 
 function VenueDetails({ venue }: { venue: DiningVenue }) {
-  const directions = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLabel(venue.address))}`;
+  const directions = directionsFromPropertyUrl(venue.address, `${venue.name}, ${addressLabel(venue.address)}`);
   return <article id={venue.slug} className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
     <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(220px,320px)] md:gap-12">
       <div>
         <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8b681f]">Featured dining destination</p>
-        <h2 className="mt-4 font-serif text-4xl leading-tight text-teams-ink sm:text-5xl">{venue.name}</h2>
+        <h2 className="mt-4 font-serif text-4xl leading-tight text-teams-ink sm:text-5xl"><a href={venue.website_url || mapLocationUrl(venue.address)} target="_blank" rel="noopener noreferrer" aria-label={`${venue.website_url ? `Visit ${venue.name} official website` : `Locate ${venue.name} in Google Maps`} (opens in a new tab)`} className="inline-block underline decoration-teams-ink/40 underline-offset-4 hover:decoration-teams-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{venue.name} <span aria-hidden="true">↗</span></a></h2>
         <p className="mt-3 text-sm font-semibold uppercase tracking-[.12em] text-slate-600">{venue.category}{venue.neighborhood ? ` · ${venue.neighborhood}` : ''}</p>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-700">{venue.summary}</p>
         <address className="mt-6 not-italic text-slate-700">{addressLabel(venue.address)}</address>
         <div className="mt-8 flex flex-wrap gap-3">
-          <ExternalAction href={venue.website_url} primary>Visit Website</ExternalAction>
           <ExternalAction href={venue.menu_url}>View Menu</ExternalAction>
           <ExternalAction href={venue.reservation_url}>Reservations</ExternalAction>
           <ExternalAction href={venue.ordering_url}>Order Online</ExternalAction>
-          <ExternalAction href={directions}>Map &amp; Directions</ExternalAction>
+          <a href={directions} target="_blank" rel="noopener noreferrer" aria-label={`Get directions from ${navigationAddressLabel(venue.address)} to ${venue.name} (opens in a new tab)`} className="inline-flex min-h-11 items-center px-5 py-3 text-sm font-semibold underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Get Directions <span aria-hidden="true" className="ml-1">↗</span></a>
         </div>
       </div>
       <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-sm bg-white p-3 shadow-sm md:max-w-[320px]" aria-label="Delizia logo">

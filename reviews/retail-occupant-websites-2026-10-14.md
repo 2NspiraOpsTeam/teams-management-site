@@ -60,4 +60,4 @@ Directory card photo/placeholder links to the same /retail/:slug as its yellow C
 
 ## Validation / release
 
-Pending final candidate and stable browser verification. Typecheck and all 56 existing tests passed. Preview build passed before final semantic image-wrapper refinement; rebuilt final artifact is required for release. No D1 mutations or external business communication.
+Final typecheck, all 56 existing tests and Pages preview build passed. Candidate https://60b595ec.teams-management-preview.pages.dev and stable https://3439650d.teams-management-preview.pages.dev (primary branch preview, source 0b8e718) verified. Stable https://teams-management-preview.pages.dev: 16 card image hrefs equal their CTA; all 16 detail routes return 200; all 30 directory entries/17 links match source. Featured and Sang Yuan image clicks passed at 1440/768/390, keyboard Enter passed, refresh retains Sang Yuan link, no overflow/page errors. Rendered screenshots reviewed at all three widths. Existing Admin session passed; no fresh OTP or production rollout claimed. No D1 mutations or external business communication.

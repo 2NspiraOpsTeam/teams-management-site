@@ -7,7 +7,18 @@
       "source": "https://www.openstreetmap.org/relation/3623587",
       "mapQuery": "40.7982765,-73.9517524",
       "destinationQuery": "Park View Hotel, 55 West 110th Street, New York, NY 10026",
-      "addressDetail": "55 West 110th Street, New York, NY 10026"
+      "addressDetail": "55 West 110th Street, New York, NY 10026",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "55 West 110th Street, New York, NY 10026",
+      "destinationCoordinates": {
+        "latitude": 40.7982765,
+        "longitude": -73.9517524
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Park View Hotel, 55 West 110th Street, New York, NY 10026"
     }
   ],
   "173-e-91st-st": [
@@ -18,7 +29,18 @@
       "source": "https://www.openstreetmap.org/node/7868765654",
       "mapQuery": "40.7795881,-73.9539993",
       "destinationQuery": "The Franklin, 164 East 87th Street, New York, NY 10128",
-      "addressDetail": "164 East 87th Street, New York, NY 10128"
+      "addressDetail": "164 East 87th Street, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.ihg.com/voco/hotels/us/en/new-york/nycvo/hoteldetail",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.ihg.com/voco/hotels/us/en/new-york/nycvo/hoteldetail",
+      "destinationAddress": "164 East 87th Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7795881,
+        "longitude": -73.9539993
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Franklin, 164 East 87th Street, New York, NY 10128"
     },
     {
       "category": "parking",
@@ -27,7 +49,18 @@
       "source": "https://www.openstreetmap.org/way/651661740",
       "mapQuery": "40.7817347,-73.9496106",
       "destinationQuery": "Knickerbocker Plaza Car Park, 240 East 92nd Street, New York, NY 10128",
-      "addressDetail": "240 East 92nd Street, New York, NY 10128"
+      "addressDetail": "240 East 92nd Street, New York, NY 10128",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "240 East 92nd Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7817347,
+        "longitude": -73.9496106
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Knickerbocker Plaza Car Park, 240 East 92nd Street, New York, NY 10128"
     }
   ],
   "1626-2nd-ave": [
@@ -38,7 +71,18 @@
       "source": "https://www.openstreetmap.org/node/7868765654",
       "mapQuery": "40.7795881,-73.9539993",
       "destinationQuery": "The Franklin, 164 East 87th Street, New York, NY 10128",
-      "addressDetail": "164 East 87th Street, New York, NY 10128"
+      "addressDetail": "164 East 87th Street, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.ihg.com/voco/hotels/us/en/new-york/nycvo/hoteldetail",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.ihg.com/voco/hotels/us/en/new-york/nycvo/hoteldetail",
+      "destinationAddress": "164 East 87th Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7795881,
+        "longitude": -73.9539993
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Franklin, 164 East 87th Street, New York, NY 10128"
     },
     {
       "category": "theatre",
@@ -47,7 +91,18 @@
       "source": "https://www.openstreetmap.org/node/5794935823",
       "mapQuery": "40.7748581,-73.9536956",
       "destinationQuery": "Comic Strip Live, 1568 2nd Avenue, New York, NY 10028",
-      "addressDetail": "1568 2nd Avenue, New York, NY 10028"
+      "addressDetail": "1568 2nd Avenue, New York, NY 10028",
+      "officialWebsiteUrl": "https://comicstriplive.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://comicstriplive.com/",
+      "destinationAddress": "1568 2nd Avenue, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7748581,
+        "longitude": -73.9536956
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Comic Strip Live, 1568 2nd Avenue, New York, NY 10028"
     }
   ],
   "225-e-83rd-st": [
@@ -58,7 +113,18 @@
       "source": "https://www.openstreetmap.org/node/7868765654",
       "mapQuery": "40.7795881,-73.9539993",
       "destinationQuery": "The Franklin, 164 East 87th Street, New York, NY 10128",
-      "addressDetail": "164 East 87th Street, New York, NY 10128"
+      "addressDetail": "164 East 87th Street, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.ihg.com/voco/hotels/us/en/new-york/nycvo/hoteldetail",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.ihg.com/voco/hotels/us/en/new-york/nycvo/hoteldetail",
+      "destinationAddress": "164 East 87th Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7795881,
+        "longitude": -73.9539993
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Franklin, 164 East 87th Street, New York, NY 10128"
     },
     {
       "category": "theatre",
@@ -67,7 +133,18 @@
       "source": "https://www.openstreetmap.org/node/5794935823",
       "mapQuery": "40.7748581,-73.9536956",
       "destinationQuery": "Comic Strip Live, 1568 2nd Avenue, New York, NY 10028",
-      "addressDetail": "1568 2nd Avenue, New York, NY 10028"
+      "addressDetail": "1568 2nd Avenue, New York, NY 10028",
+      "officialWebsiteUrl": "https://comicstriplive.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://comicstriplive.com/",
+      "destinationAddress": "1568 2nd Avenue, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7748581,
+        "longitude": -73.9536956
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Comic Strip Live, 1568 2nd Avenue, New York, NY 10028"
     }
   ],
   "171-e-74th-st": [
@@ -78,7 +155,18 @@
       "source": "https://www.openstreetmap.org/way/266898264",
       "mapQuery": "40.7743810,-73.9629902",
       "destinationQuery": "The Carlyle, 35 East 76th Street, New York, NY 10021",
-      "addressDetail": "35 East 76th Street, New York, NY 10021"
+      "addressDetail": "35 East 76th Street, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "35 East 76th Street, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.774381,
+        "longitude": -73.9629902
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Carlyle, 35 East 76th Street, New York, NY 10021"
     },
     {
       "category": "theatre",
@@ -87,7 +175,18 @@
       "source": "https://www.openstreetmap.org/node/14096143302",
       "mapQuery": "40.7683492,-73.9644685",
       "destinationQuery": "The Kaye Playhouse, 695 Park Avenue, New York, NY 10065",
-      "addressDetail": "695 Park Avenue, New York, NY 10065"
+      "addressDetail": "695 Park Avenue, New York, NY 10065",
+      "officialWebsiteUrl": "https://www.hunter.cuny.edu/the-kaye-playhouse/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.hunter.cuny.edu/the-kaye-playhouse/",
+      "destinationAddress": "695 Park Avenue, New York, NY 10065",
+      "destinationCoordinates": {
+        "latitude": 40.7683492,
+        "longitude": -73.9644685
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Kaye Playhouse, 695 Park Avenue, New York, NY 10065"
     }
   ],
   "1374-1st-ave": [
@@ -96,7 +195,18 @@
       "label": "Theater & culture",
       "name": "Caspary Auditorium",
       "source": "https://www.openstreetmap.org/node/368051495",
-      "mapQuery": "40.7631571,-73.9559715"
+      "mapQuery": "40.7631571,-73.9559715",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7631571,
+        "longitude": -73.9559715
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7631571,-73.9559715"
     }
   ],
   "1365-1st-ave": [
@@ -105,7 +215,18 @@
       "label": "Theater & culture",
       "name": "Caspary Auditorium",
       "source": "https://www.openstreetmap.org/node/368051495",
-      "mapQuery": "40.7631571,-73.9559715"
+      "mapQuery": "40.7631571,-73.9559715",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7631571,
+        "longitude": -73.9559715
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7631571,-73.9559715"
     }
   ],
   "41-w-46th-st": [
@@ -116,7 +237,18 @@
       "source": "https://www.openstreetmap.org/way/282065776",
       "mapQuery": "40.7564654,-73.9806388",
       "destinationQuery": "Hilton Garden Inn, 30 West 46th Street, New York, NY 10036",
-      "addressDetail": "30 West 46th Street, New York, NY 10036"
+      "addressDetail": "30 West 46th Street, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "30 West 46th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7564654,
+        "longitude": -73.9806388
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Hilton Garden Inn, 30 West 46th Street, New York, NY 10036"
     },
     {
       "category": "theatre",
@@ -125,7 +257,18 @@
       "source": "https://www.openstreetmap.org/way/266170541",
       "mapQuery": "40.7591035,-73.9830898",
       "destinationQuery": "James Earl Jones Theatre, 138 West 48th Street, New York, NY 10036",
-      "addressDetail": "138 West 48th Street, New York, NY 10036"
+      "addressDetail": "138 West 48th Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://shubert.nyc/theatres/james-earl-jones/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://shubert.nyc/theatres/james-earl-jones/",
+      "destinationAddress": "138 West 48th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7591035,
+        "longitude": -73.9830898
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "James Earl Jones Theatre, 138 West 48th Street, New York, NY 10036"
     },
     {
       "category": "landmark",
@@ -134,7 +277,15 @@
       "source": "https://www.timessquarenyc.org/",
       "mapQuery": "Times Square, Manhattan, New York, NY",
       "destinationQuery": "Times Square, Manhattan, New York, NY",
-      "addressDetail": "Broadway & Seventh Avenue, Midtown Manhattan"
+      "addressDetail": "Broadway & Seventh Avenue, Midtown Manhattan",
+      "officialWebsiteUrl": "https://www.timessquarenyc.org/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.timessquarenyc.org/",
+      "destinationAddress": "Manhattan, New York, NY",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Times Square, Manhattan, New York, NY"
     }
   ],
   "349-w-46th-st": [
@@ -145,7 +296,18 @@
       "source": "https://www.openstreetmap.org/way/266034045",
       "mapQuery": "40.7586056,-73.9896109",
       "destinationQuery": "InterContinental New York Times Square, 300 West 44th Street, New York, NY 10036",
-      "addressDetail": "300 West 44th Street, New York, NY 10036"
+      "addressDetail": "300 West 44th Street, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "300 West 44th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7586056,
+        "longitude": -73.9896109
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "InterContinental New York Times Square, 300 West 44th Street, New York, NY 10036"
     },
     {
       "category": "theatre",
@@ -154,7 +316,18 @@
       "source": "https://www.openstreetmap.org/way/265320169",
       "mapQuery": "40.7592532,-73.9892108",
       "destinationQuery": "Al Hirschfeld Theatre, 302 West 45th Street, New York, NY 10036",
-      "addressDetail": "302 West 45th Street, New York, NY 10036"
+      "addressDetail": "302 West 45th Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://us.atgtickets.com/venues/al-hirschfeld-theatre/venue-info/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://us.atgtickets.com/venues/al-hirschfeld-theatre/venue-info/",
+      "destinationAddress": "302 West 45th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7592532,
+        "longitude": -73.9892108
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Al Hirschfeld Theatre, 302 West 45th Street, New York, NY 10036"
     }
   ],
   "351-w-46th-st": [
@@ -165,7 +338,18 @@
       "source": "https://www.openstreetmap.org/node/13991571083",
       "mapQuery": "40.7604181,-73.9897070",
       "destinationQuery": "Hotel Scherman, 346 West 46th Street, New York, NY 10036",
-      "addressDetail": "346 West 46th Street, New York, NY 10036"
+      "addressDetail": "346 West 46th Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://www.hotelscherman.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.hotelscherman.com/",
+      "destinationAddress": "346 West 46th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7604181,
+        "longitude": -73.989707
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Hotel Scherman, 346 West 46th Street, New York, NY 10036"
     },
     {
       "category": "theatre",
@@ -174,7 +358,18 @@
       "source": "https://www.openstreetmap.org/way/266149297",
       "mapQuery": "40.7601222,-73.9861351",
       "destinationQuery": "Barrymore Theatre, 243 West 47th Street, New York, NY 10036",
-      "addressDetail": "243 West 47th Street, New York, NY 10036"
+      "addressDetail": "243 West 47th Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://shubert.nyc/theatres/barrymore/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://shubert.nyc/theatres/barrymore/",
+      "destinationAddress": "243 West 47th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7601222,
+        "longitude": -73.9861351
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Barrymore Theatre, 243 West 47th Street, New York, NY 10036"
     }
   ],
   "307-w-39th-st": [
@@ -185,7 +380,18 @@
       "source": "https://www.openstreetmap.org/way/265296137",
       "mapQuery": "40.7558033,-73.9918123",
       "destinationQuery": "Element, 311 West 39th Street, New York, NY 10018",
-      "addressDetail": "311 West 39th Street, New York, NY 10018"
+      "addressDetail": "311 West 39th Street, New York, NY 10018",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "311 West 39th Street, New York, NY 10018",
+      "destinationCoordinates": {
+        "latitude": 40.7558033,
+        "longitude": -73.9918123
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Element, 311 West 39th Street, New York, NY 10018"
     },
     {
       "category": "theatre",
@@ -194,7 +400,18 @@
       "source": "https://www.openstreetmap.org/way/266143337",
       "mapQuery": "40.7554837,-73.9883023",
       "destinationQuery": "Nederlander Theatre, 208 West 41st Street, New York, NY 10018",
-      "addressDetail": "208 West 41st Street, New York, NY 10018"
+      "addressDetail": "208 West 41st Street, New York, NY 10018",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "208 West 41st Street, New York, NY 10018",
+      "destinationCoordinates": {
+        "latitude": 40.7554837,
+        "longitude": -73.9883023
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Nederlander Theatre, 208 West 41st Street, New York, NY 10018"
     }
   ],
   "235-w-18th-st": [
@@ -205,7 +422,18 @@
       "source": "https://www.openstreetmap.org/node/2325990473",
       "mapQuery": "40.7443742,-73.9968175",
       "destinationQuery": "Hotel Chelsea, 222 West 23rd Street, New York, NY 10011",
-      "addressDetail": "222 West 23rd Street, New York, NY 10011"
+      "addressDetail": "222 West 23rd Street, New York, NY 10011",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "222 West 23rd Street, New York, NY 10011",
+      "destinationCoordinates": {
+        "latitude": 40.7443742,
+        "longitude": -73.9968175
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Hotel Chelsea, 222 West 23rd Street, New York, NY 10011"
     },
     {
       "category": "theatre",
@@ -214,7 +442,18 @@
       "source": "https://www.openstreetmap.org/way/264629134",
       "mapQuery": "40.7428177,-74.0007108",
       "destinationQuery": "The Joyce Theater, 175 8th Avenue, New York, NY 10011",
-      "addressDetail": "175 8th Avenue, New York, NY 10011"
+      "addressDetail": "175 8th Avenue, New York, NY 10011",
+      "officialWebsiteUrl": "https://www.joyce.org/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.joyce.org/",
+      "destinationAddress": "175 8th Avenue, New York, NY 10011",
+      "destinationCoordinates": {
+        "latitude": 40.7428177,
+        "longitude": -74.0007108
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Joyce Theater, 175 8th Avenue, New York, NY 10011"
     }
   ],
   "61-gold-st": [
@@ -225,14 +464,36 @@
       "source": "https://www.openstreetmap.org/node/9095733851",
       "mapQuery": "40.7110329,-74.0069365",
       "destinationQuery": "The Beekman, A Thompson Hotel, 123 Nassau Street, New York, NY 10038",
-      "addressDetail": "123 Nassau Street, New York, NY 10038"
+      "addressDetail": "123 Nassau Street, New York, NY 10038",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "123 Nassau Street, New York, NY 10038",
+      "destinationCoordinates": {
+        "latitude": 40.7110329,
+        "longitude": -74.0069365
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Beekman, A Thompson Hotel, 123 Nassau Street, New York, NY 10038"
     },
     {
       "category": "parking",
       "label": "Parking",
       "name": "Edison ParkFast",
       "source": "https://www.openstreetmap.org/way/274853189",
-      "mapQuery": "40.7061741,-74.0046266"
+      "mapQuery": "40.7061741,-74.0046266",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7061741,
+        "longitude": -74.0046266
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7061741,-74.0046266"
     }
   ]
 }

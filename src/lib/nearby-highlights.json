@@ -5,7 +5,15 @@
       "label": "Bus access",
       "name": "Sanford Ave / 158th St · Q65 bus",
       "source": "https://data.ny.gov/resource/2ucp-7wg5.json?stop_id=500925&in_effect=true",
-      "destinationQuery": "Sanford Ave & 158th St, Flushing, NY 11355"
+      "destinationQuery": "Sanford Ave & 158th St, Flushing, NY 11355",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Sanford Ave & 158th St, Flushing, NY 11355",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Sanford Ave & 158th St, Flushing, NY 11355"
     },
     {
       "category": "supermarket",
@@ -14,7 +22,18 @@
       "source": "https://www.openstreetmap.org/node/7270879430",
       "mapQuery": "40.7629334,-73.8089358",
       "destinationQuery": "H Mart, 156-40 Northern Boulevard, Flushing, NY 11354",
-      "addressDetail": "156-40 Northern Boulevard, Flushing, NY 11354"
+      "addressDetail": "156-40 Northern Boulevard, Flushing, NY 11354",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "156-40 Northern Boulevard, Flushing, NY 11354",
+      "destinationCoordinates": {
+        "latitude": 40.7629334,
+        "longitude": -73.8089358
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "H Mart, 156-40 Northern Boulevard, Flushing, NY 11354"
     },
     {
       "category": "cafe",
@@ -23,14 +42,36 @@
       "source": "https://www.openstreetmap.org/node/10937301892",
       "mapQuery": "40.7577913,-73.8042020",
       "destinationQuery": "The Well Coffee, 43-29 162nd Street, Flushing, NY 11358",
-      "addressDetail": "43-29 162nd Street, Flushing, NY 11358"
+      "addressDetail": "43-29 162nd Street, Flushing, NY 11358",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "43-29 162nd Street, Flushing, NY 11358",
+      "destinationCoordinates": {
+        "latitude": 40.7577913,
+        "longitude": -73.804202
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Well Coffee, 43-29 162nd Street, Flushing, NY 11358"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Murray Hill Playground",
       "source": "https://www.openstreetmap.org/way/425627322",
-      "mapQuery": "40.7617363,-73.8118126"
+      "mapQuery": "40.7617363,-73.8118126",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/murray-hill-playground/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/murray-hill-playground/",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7617363,
+        "longitude": -73.8118126
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7617363,-73.8118126"
     },
     {
       "category": "library",
@@ -38,7 +79,18 @@
       "name": "Mcgoldrick",
       "source": "https://www.openstreetmap.org/way/284526634",
       "mapQuery": "40.7638004,-73.8098265",
-      "destinationQuery": "Mcgoldrick, 155-06 Roosevelt Avenue, Flushing, NY 11354"
+      "destinationQuery": "Mcgoldrick, 155-06 Roosevelt Avenue, Flushing, NY 11354",
+      "officialWebsiteUrl": "https://www.queenslibrary.org/about-us/locations/mcgoldrick",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.queenslibrary.org/about-us/locations/mcgoldrick",
+      "destinationAddress": "155-06 Roosevelt Avenue, Flushing, NY 11354",
+      "destinationCoordinates": {
+        "latitude": 40.7638004,
+        "longitude": -73.8098265
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Mcgoldrick, 155-06 Roosevelt Avenue, Flushing, NY 11354"
     }
   ],
   "3425-east-tremont-bronx": [
@@ -47,7 +99,15 @@
       "label": "Bus access",
       "name": "E Tremont Ave / Bruckner Blvd · Bx40, Bx42 buses",
       "source": "https://data.ny.gov/resource/2ucp-7wg5.json?stop_id=102666&in_effect=true",
-      "destinationQuery": "E Tremont Ave & Bruckner Blvd, Bronx, NY 10465"
+      "destinationQuery": "E Tremont Ave & Bruckner Blvd, Bronx, NY 10465",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "E Tremont Ave & Bruckner Blvd, Bronx, NY 10465",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "E Tremont Ave & Bruckner Blvd, Bronx, NY 10465"
     },
     {
       "category": "supermarket",
@@ -56,7 +116,18 @@
       "source": "https://www.openstreetmap.org/node/13044783545",
       "mapQuery": "40.8344463,-73.8267448",
       "destinationQuery": "Super Foodtown, 2945-65 Bruckner Boulevard, Bronx, NY 10461",
-      "addressDetail": "2945-65 Bruckner Boulevard, Bronx, NY 10461"
+      "addressDetail": "2945-65 Bruckner Boulevard, Bronx, NY 10461",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2945-65 Bruckner Boulevard, Bronx, NY 10461",
+      "destinationCoordinates": {
+        "latitude": 40.8344463,
+        "longitude": -73.8267448
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Super Foodtown, 2945-65 Bruckner Boulevard, Bronx, NY 10461"
     },
     {
       "category": "pharmacy",
@@ -65,14 +136,36 @@
       "source": "https://www.openstreetmap.org/node/13044613343",
       "mapQuery": "40.8292671,-73.8252566",
       "destinationQuery": "Walgreens, 3590 East Tremont Avenue, Bronx, NY 10465",
-      "addressDetail": "3590 East Tremont Avenue, Bronx, NY 10465"
+      "addressDetail": "3590 East Tremont Avenue, Bronx, NY 10465",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "3590 East Tremont Avenue, Bronx, NY 10465",
+      "destinationCoordinates": {
+        "latitude": 40.8292671,
+        "longitude": -73.8252566
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Walgreens, 3590 East Tremont Avenue, Bronx, NY 10465"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Miele Park",
       "source": "https://www.openstreetmap.org/way/723090342",
-      "mapQuery": "40.8347574,-73.8260794"
+      "mapQuery": "40.8347574,-73.8260794",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.8347574,
+        "longitude": -73.8260794
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.8347574,-73.8260794"
     },
     {
       "category": "clinic",
@@ -81,7 +174,18 @@
       "source": "https://www.openstreetmap.org/node/9696646760",
       "mapQuery": "40.8289109,-73.8248108",
       "destinationQuery": "Throgs Neck Urgent Medical Care, 3594 East Tremont Avenue, Bronx, NY 10465",
-      "addressDetail": "3594 East Tremont Avenue, Bronx, NY 10465"
+      "addressDetail": "3594 East Tremont Avenue, Bronx, NY 10465",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "3594 East Tremont Avenue, Bronx, NY 10465",
+      "destinationCoordinates": {
+        "latitude": 40.8289109,
+        "longitude": -73.8248108
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Throgs Neck Urgent Medical Care, 3594 East Tremont Avenue, Bronx, NY 10465"
     }
   ],
   "166-e-118th-st": [
@@ -90,7 +194,15 @@
       "label": "Subway access",
       "name": "116 St (6)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=393",
-      "destinationQuery": "Lexington Ave & E 116th St, New York, NY 10029"
+      "destinationQuery": "Lexington Ave & E 116th St, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Lexington Ave & E 116th St, New York, NY 10029",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Lexington Ave & E 116th St, New York, NY 10029"
     },
     {
       "category": "supermarket",
@@ -99,7 +211,18 @@
       "source": "https://www.openstreetmap.org/way/265796841",
       "mapQuery": "40.7990377,-73.9417802",
       "destinationQuery": "City Fresh Market, 125 Luis Munoz Marin Boulevard, New York, NY 10035",
-      "addressDetail": "125 Luis Munoz Marin Boulevard, New York, NY 10035"
+      "addressDetail": "125 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "125 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "destinationCoordinates": {
+        "latitude": 40.7990377,
+        "longitude": -73.9417802
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "City Fresh Market, 125 Luis Munoz Marin Boulevard, New York, NY 10035"
     },
     {
       "category": "pharmacy",
@@ -108,7 +231,18 @@
       "source": "https://www.openstreetmap.org/node/2765399934",
       "mapQuery": "40.7964933,-73.9383659",
       "destinationQuery": "Second Avenue Pharmacy, 2243 México-Tenochtitlan Avenue, New York, NY 10029",
-      "addressDetail": "2243 México-Tenochtitlan Avenue, New York, NY 10029"
+      "addressDetail": "2243 México-Tenochtitlan Avenue, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2243 México-Tenochtitlan Avenue, New York, NY 10029",
+      "destinationCoordinates": {
+        "latitude": 40.7964933,
+        "longitude": -73.9383659
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Second Avenue Pharmacy, 2243 México-Tenochtitlan Avenue, New York, NY 10029"
     },
     {
       "category": "cafe",
@@ -117,14 +251,36 @@
       "source": "https://www.openstreetmap.org/node/5269095866",
       "mapQuery": "40.7971288,-73.9384911",
       "destinationQuery": "Capy, 242 Luis Munoz Marin Boulevard, New York, NY 10035",
-      "addressDetail": "242 Luis Munoz Marin Boulevard, New York, NY 10035"
+      "addressDetail": "242 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "242 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "destinationCoordinates": {
+        "latitude": 40.7971288,
+        "longitude": -73.9384911
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Capy, 242 Luis Munoz Marin Boulevard, New York, NY 10035"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Harlem Art Park",
       "source": "https://www.openstreetmap.org/way/225134049",
-      "mapQuery": "40.8010459,-73.9388053"
+      "mapQuery": "40.8010459,-73.9388053",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.8010459,
+        "longitude": -73.9388053
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.8010459,-73.9388053"
     },
     {
       "category": "library",
@@ -132,7 +288,18 @@
       "name": "125th Street Library",
       "source": "https://www.openstreetmap.org/way/271605663",
       "mapQuery": "40.8030184,-73.9348516",
-      "destinationQuery": "125th Street Library, 224 East 125th Street, New York, NY 10035"
+      "destinationQuery": "125th Street Library, 224 East 125th Street, New York, NY 10035",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/125th-street",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/125th-street",
+      "destinationAddress": "224 East 125th Street, New York, NY 10035",
+      "destinationCoordinates": {
+        "latitude": 40.8030184,
+        "longitude": -73.9348516
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "125th Street Library, 224 East 125th Street, New York, NY 10035"
     }
   ],
   "170-e-118th-st": [
@@ -141,7 +308,15 @@
       "label": "Subway access",
       "name": "116 St (6)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=393",
-      "destinationQuery": "Lexington Ave & E 116th St, New York, NY 10029"
+      "destinationQuery": "Lexington Ave & E 116th St, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Lexington Ave & E 116th St, New York, NY 10029",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Lexington Ave & E 116th St, New York, NY 10029"
     },
     {
       "category": "supermarket",
@@ -150,7 +325,18 @@
       "source": "https://www.openstreetmap.org/node/5952881385",
       "mapQuery": "40.7980295,-73.9406496",
       "destinationQuery": "Shop Fair, 178 Luis Munoz Marin Boulevard, New York, NY 10035",
-      "addressDetail": "178 Luis Munoz Marin Boulevard, New York, NY 10035"
+      "addressDetail": "178 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "178 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "destinationCoordinates": {
+        "latitude": 40.7980295,
+        "longitude": -73.9406496
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Shop Fair, 178 Luis Munoz Marin Boulevard, New York, NY 10035"
     },
     {
       "category": "pharmacy",
@@ -159,7 +345,18 @@
       "source": "https://www.openstreetmap.org/node/2765399934",
       "mapQuery": "40.7964933,-73.9383659",
       "destinationQuery": "Second Avenue Pharmacy, 2243 México-Tenochtitlan Avenue, New York, NY 10029",
-      "addressDetail": "2243 México-Tenochtitlan Avenue, New York, NY 10029"
+      "addressDetail": "2243 México-Tenochtitlan Avenue, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2243 México-Tenochtitlan Avenue, New York, NY 10029",
+      "destinationCoordinates": {
+        "latitude": 40.7964933,
+        "longitude": -73.9383659
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Second Avenue Pharmacy, 2243 México-Tenochtitlan Avenue, New York, NY 10029"
     },
     {
       "category": "cafe",
@@ -168,14 +365,36 @@
       "source": "https://www.openstreetmap.org/node/5269095866",
       "mapQuery": "40.7971288,-73.9384911",
       "destinationQuery": "Capy, 242 Luis Munoz Marin Boulevard, New York, NY 10035",
-      "addressDetail": "242 Luis Munoz Marin Boulevard, New York, NY 10035"
+      "addressDetail": "242 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "242 Luis Munoz Marin Boulevard, New York, NY 10035",
+      "destinationCoordinates": {
+        "latitude": 40.7971288,
+        "longitude": -73.9384911
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Capy, 242 Luis Munoz Marin Boulevard, New York, NY 10035"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Harlem Art Park",
       "source": "https://www.openstreetmap.org/way/225134049",
-      "mapQuery": "40.8010459,-73.9388053"
+      "mapQuery": "40.8010459,-73.9388053",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.8010459,
+        "longitude": -73.9388053
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.8010459,-73.9388053"
     },
     {
       "category": "library",
@@ -183,7 +402,18 @@
       "name": "125th Street Library",
       "source": "https://www.openstreetmap.org/way/271605663",
       "mapQuery": "40.8030184,-73.9348516",
-      "destinationQuery": "125th Street Library, 224 East 125th Street, New York, NY 10035"
+      "destinationQuery": "125th Street Library, 224 East 125th Street, New York, NY 10035",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/125th-street",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/125th-street",
+      "destinationAddress": "224 East 125th Street, New York, NY 10035",
+      "destinationCoordinates": {
+        "latitude": 40.8030184,
+        "longitude": -73.9348516
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "125th Street Library, 224 East 125th Street, New York, NY 10035"
     }
   ],
   "71-e-110th-st": [
@@ -192,7 +422,15 @@
       "label": "Subway access",
       "name": "110 St (6)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=394",
-      "destinationQuery": "Lexington Ave & E 110th St, New York, NY 10029"
+      "destinationQuery": "Lexington Ave & E 110th St, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Lexington Ave & E 110th St, New York, NY 10029",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Lexington Ave & E 110th St, New York, NY 10029"
     },
     {
       "category": "supermarket",
@@ -201,7 +439,18 @@
       "source": "https://www.openstreetmap.org/node/6001375861",
       "mapQuery": "40.7966947,-73.9474859",
       "destinationQuery": "C-Town, 1660 Madison Avenue, New York, NY 10029",
-      "addressDetail": "1660 Madison Avenue, New York, NY 10029"
+      "addressDetail": "1660 Madison Avenue, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "1660 Madison Avenue, New York, NY 10029",
+      "destinationCoordinates": {
+        "latitude": 40.7966947,
+        "longitude": -73.9474859
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "C-Town, 1660 Madison Avenue, New York, NY 10029"
     },
     {
       "category": "pharmacy",
@@ -210,7 +459,18 @@
       "source": "https://www.openstreetmap.org/node/6270572929",
       "mapQuery": "40.7948220,-73.9488029",
       "destinationQuery": "Eco Green Pharmacy, 1608 Madison Avenue, New York, NY 10029",
-      "addressDetail": "1608 Madison Avenue, New York, NY 10029"
+      "addressDetail": "1608 Madison Avenue, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "1608 Madison Avenue, New York, NY 10029",
+      "destinationCoordinates": {
+        "latitude": 40.794822,
+        "longitude": -73.9488029
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Eco Green Pharmacy, 1608 Madison Avenue, New York, NY 10029"
     },
     {
       "category": "cafe",
@@ -219,14 +479,36 @@
       "source": "https://www.openstreetmap.org/node/5876977173",
       "mapQuery": "40.7922821,-73.9406837",
       "destinationQuery": "Dear Mama Coffee, 308 East 109th Street, New York, NY 10029",
-      "addressDetail": "308 East 109th Street, New York, NY 10029"
+      "addressDetail": "308 East 109th Street, New York, NY 10029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "308 East 109th Street, New York, NY 10029",
+      "destinationCoordinates": {
+        "latitude": 40.7922821,
+        "longitude": -73.9406837
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Dear Mama Coffee, 308 East 109th Street, New York, NY 10029"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Peter Minuit Playground",
       "source": "https://www.openstreetmap.org/way/225171034",
-      "mapQuery": "40.7947258,-73.9472646"
+      "mapQuery": "40.7947258,-73.9472646",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/peter-minuit-playground/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/peter-minuit-playground/",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7947258,
+        "longitude": -73.9472646
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7947258,-73.9472646"
     },
     {
       "category": "library",
@@ -234,7 +516,18 @@
       "name": "Aguilar Library",
       "source": "https://www.openstreetmap.org/way/271277515",
       "mapQuery": "40.7942030,-73.9434561",
-      "destinationQuery": "Aguilar Library, 174 East 110th Street, New York, NY 10029"
+      "destinationQuery": "Aguilar Library, 174 East 110th Street, New York, NY 10029",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/aguilar",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/aguilar",
+      "destinationAddress": "174 East 110th Street, New York, NY 10029",
+      "destinationCoordinates": {
+        "latitude": 40.794203,
+        "longitude": -73.9434561
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Aguilar Library, 174 East 110th Street, New York, NY 10029"
     }
   ],
   "173-e-91st-st": [
@@ -243,7 +536,15 @@
       "label": "Subway access",
       "name": "96 St (6)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=396",
-      "destinationQuery": "Lexington Ave & E 96th St, New York, NY 10128"
+      "destinationQuery": "Lexington Ave & E 96th St, New York, NY 10128",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Lexington Ave & E 96th St, New York, NY 10128",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Lexington Ave & E 96th St, New York, NY 10128"
     },
     {
       "category": "supermarket",
@@ -252,7 +553,18 @@
       "source": "https://www.openstreetmap.org/node/6055243196",
       "mapQuery": "40.7834237,-73.9525136",
       "destinationQuery": "Westside Market, 1407 Lexington Avenue, New York, NY 10128",
-      "addressDetail": "1407 Lexington Avenue, New York, NY 10128"
+      "addressDetail": "1407 Lexington Avenue, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.wmarketnyc.com/location/1407-lexington-avenue/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.wmarketnyc.com/location/1407-lexington-avenue/",
+      "destinationAddress": "1407 Lexington Avenue, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7834237,
+        "longitude": -73.9525136
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Westside Market, 1407 Lexington Avenue, New York, NY 10128"
     },
     {
       "category": "pharmacy",
@@ -261,7 +573,18 @@
       "source": "https://www.openstreetmap.org/node/3590689284",
       "mapQuery": "40.7822254,-73.9517811",
       "destinationQuery": "CVS Pharmacy, 1622 3rd Avenue, New York, NY 10128",
-      "addressDetail": "1622 3rd Avenue, New York, NY 10128"
+      "addressDetail": "1622 3rd Avenue, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.cvs.com/store-locator/new-york-ny-pharmacies/1622-third-ave-borough-of-manhattan-new-york-ny-10128/storeid=2036",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.cvs.com/store-locator/new-york-ny-pharmacies/1622-third-ave-borough-of-manhattan-new-york-ny-10128/storeid=2036",
+      "destinationAddress": "1622 3rd Avenue, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7822254,
+        "longitude": -73.9517811
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "CVS Pharmacy, 1622 3rd Avenue, New York, NY 10128"
     },
     {
       "category": "cafe",
@@ -270,14 +593,36 @@
       "source": "https://www.openstreetmap.org/node/10179234747",
       "mapQuery": "40.7830092,-73.9518190",
       "destinationQuery": "La Librairie des Enfants Café, 163 East 92nd Street, New York, NY 10128",
-      "addressDetail": "163 East 92nd Street, New York, NY 10128"
+      "addressDetail": "163 East 92nd Street, New York, NY 10128",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "163 East 92nd Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7830092,
+        "longitude": -73.951819
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "La Librairie des Enfants Café, 163 East 92nd Street, New York, NY 10128"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Ruppert Park",
       "source": "https://www.openstreetmap.org/way/353000933",
-      "mapQuery": "40.7809560,-73.9501485"
+      "mapQuery": "40.7809560,-73.9501485",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/ruppert-park",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/ruppert-park",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.780956,
+        "longitude": -73.9501485
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7809560,-73.9501485"
     },
     {
       "category": "library",
@@ -285,7 +630,18 @@
       "name": "96th Street Library",
       "source": "https://www.openstreetmap.org/way/266924969",
       "mapQuery": "40.7859845,-73.9517887",
-      "destinationQuery": "96th Street Library, 112 East 96th Street, New York, NY 10128"
+      "destinationQuery": "96th Street Library, 112 East 96th Street, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/96th-street",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/96th-street",
+      "destinationAddress": "112 East 96th Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7859845,
+        "longitude": -73.9517887
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "96th Street Library, 112 East 96th Street, New York, NY 10128"
     }
   ],
   "1626-2nd-ave": [
@@ -294,7 +650,15 @@
       "label": "Subway access",
       "name": "86 St (Q)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=476",
-      "destinationQuery": "2nd Ave & E 86th St, New York, NY 10028"
+      "destinationQuery": "2nd Ave & E 86th St, New York, NY 10028",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2nd Ave & E 86th St, New York, NY 10028",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "2nd Ave & E 86th St, New York, NY 10028"
     },
     {
       "category": "supermarket",
@@ -303,7 +667,18 @@
       "source": "https://www.openstreetmap.org/node/12920325700",
       "mapQuery": "40.7779915,-73.9524939",
       "destinationQuery": "Fairway Market, 240 East 86th Street, New York, NY 10028",
-      "addressDetail": "240 East 86th Street, New York, NY 10028"
+      "addressDetail": "240 East 86th Street, New York, NY 10028",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "240 East 86th Street, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7779915,
+        "longitude": -73.9524939
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Fairway Market, 240 East 86th Street, New York, NY 10028"
     },
     {
       "category": "pharmacy",
@@ -312,7 +687,18 @@
       "source": "https://www.openstreetmap.org/node/5599203463",
       "mapQuery": "40.7781479,-73.9512383",
       "destinationQuery": "CVS Pharmacy, 305 East 86th Street, New York, NY 10128",
-      "addressDetail": "305 East 86th Street, New York, NY 10128"
+      "addressDetail": "305 East 86th Street, New York, NY 10128",
+      "officialWebsiteUrl": "https://www.cvs.com/store-locator/new-york-ny-pharmacies/305-east-86th-st-new-york-ny-10028/storeid=10970",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.cvs.com/store-locator/new-york-ny-pharmacies/305-east-86th-st-new-york-ny-10028/storeid=10970",
+      "destinationAddress": "305 East 86th Street, New York, NY 10128",
+      "destinationCoordinates": {
+        "latitude": 40.7781479,
+        "longitude": -73.9512383
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "CVS Pharmacy, 305 East 86th Street, New York, NY 10128"
     },
     {
       "category": "cafe",
@@ -321,14 +707,36 @@
       "mapQuery": "40.7772229,-73.9519990",
       "source": "https://www.openstreetmap.org/node/9683499914",
       "addressDetail": "1640 2nd Ave, New York, NY",
-      "destinationQuery": "Café Maud, 1640 2nd Ave, New York, NY 10028"
+      "destinationQuery": "Café Maud, 1640 2nd Ave, New York, NY 10028",
+      "officialWebsiteUrl": "https://www.cafemaud.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.cafemaud.com/",
+      "destinationAddress": "1640 2nd Ave, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7772229,
+        "longitude": -73.951999
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Café Maud, 1640 2nd Ave, New York, NY 10028"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Ruppert Park",
       "source": "https://www.openstreetmap.org/way/353000933",
-      "mapQuery": "40.7809560,-73.9501485"
+      "mapQuery": "40.7809560,-73.9501485",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/ruppert-park",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/ruppert-park",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.780956,
+        "longitude": -73.9501485
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7809560,-73.9501485"
     },
     {
       "category": "library",
@@ -336,7 +744,18 @@
       "name": "Yorkville Library",
       "source": "https://www.openstreetmap.org/way/266899958",
       "mapQuery": "40.7736354,-73.9563849",
-      "destinationQuery": "Yorkville Library, 222 East 79th Street, New York, NY 10021"
+      "destinationQuery": "Yorkville Library, 222 East 79th Street, New York, NY 10021",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/yorkville",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/yorkville",
+      "destinationAddress": "222 East 79th Street, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7736354,
+        "longitude": -73.9563849
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Yorkville Library, 222 East 79th Street, New York, NY 10021"
     }
   ],
   "225-e-83rd-st": [
@@ -345,7 +764,15 @@
       "label": "Subway access",
       "name": "86 St (Q)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=476",
-      "destinationQuery": "2nd Ave & E 86th St, New York, NY 10028"
+      "destinationQuery": "2nd Ave & E 86th St, New York, NY 10028",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2nd Ave & E 86th St, New York, NY 10028",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "2nd Ave & E 86th St, New York, NY 10028"
     },
     {
       "category": "supermarket",
@@ -354,7 +781,18 @@
       "source": "https://www.openstreetmap.org/node/2620513862",
       "mapQuery": "40.7764703,-73.9559474",
       "destinationQuery": "Gristedes, 1450 3rd Avenue, New York, NY 10028",
-      "addressDetail": "1450 3rd Avenue, New York, NY 10028"
+      "addressDetail": "1450 3rd Avenue, New York, NY 10028",
+      "officialWebsiteUrl": "https://gristedes.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://gristedes.com/",
+      "destinationAddress": "1450 3rd Avenue, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7764703,
+        "longitude": -73.9559474
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Gristedes, 1450 3rd Avenue, New York, NY 10028"
     },
     {
       "category": "pharmacy",
@@ -363,7 +801,18 @@
       "source": "https://www.openstreetmap.org/node/9233658444",
       "mapQuery": "40.7774348,-73.9572738",
       "destinationQuery": "Caligor Pharmacy, 1226 Lexington Avenue, New York, NY 10028",
-      "addressDetail": "1226 Lexington Avenue, New York, NY 10028"
+      "addressDetail": "1226 Lexington Avenue, New York, NY 10028",
+      "officialWebsiteUrl": "https://www.caligorpharmacy.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.caligorpharmacy.com/",
+      "destinationAddress": "1226 Lexington Avenue, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7774348,
+        "longitude": -73.9572738
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Caligor Pharmacy, 1226 Lexington Avenue, New York, NY 10028"
     },
     {
       "category": "cafe",
@@ -372,14 +821,36 @@
       "source": "https://www.openstreetmap.org/node/9497036165",
       "mapQuery": "40.7761004,-73.9518782",
       "destinationQuery": "Madame Bontè Café, 318 East 84th Street, New York, NY 10028",
-      "addressDetail": "318 East 84th Street, New York, NY 10028"
+      "addressDetail": "318 East 84th Street, New York, NY 10028",
+      "officialWebsiteUrl": "https://www.madamebonte.com/locations",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.madamebonte.com/locations",
+      "destinationAddress": "318 East 84th Street, New York, NY 10028",
+      "destinationCoordinates": {
+        "latitude": 40.7761004,
+        "longitude": -73.9518782
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Madame Bontè Café, 318 East 84th Street, New York, NY 10028"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Ruppert Park",
       "source": "https://www.openstreetmap.org/way/353000933",
-      "mapQuery": "40.7809560,-73.9501485"
+      "mapQuery": "40.7809560,-73.9501485",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/ruppert-park",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/ruppert-park",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.780956,
+        "longitude": -73.9501485
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7809560,-73.9501485"
     },
     {
       "category": "library",
@@ -387,7 +858,18 @@
       "name": "Yorkville Library",
       "source": "https://www.openstreetmap.org/way/266899958",
       "mapQuery": "40.7736354,-73.9563849",
-      "destinationQuery": "Yorkville Library, 222 East 79th Street, New York, NY 10021"
+      "destinationQuery": "Yorkville Library, 222 East 79th Street, New York, NY 10021",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/yorkville",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/yorkville",
+      "destinationAddress": "222 East 79th Street, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7736354,
+        "longitude": -73.9563849
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Yorkville Library, 222 East 79th Street, New York, NY 10021"
     }
   ],
   "171-e-74th-st": [
@@ -396,14 +878,33 @@
       "label": "Subway access",
       "name": "77 St (6)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=398",
-      "destinationQuery": "Lexington Ave & E 77th St, New York, NY 10075"
+      "destinationQuery": "Lexington Ave & E 77th St, New York, NY 10075",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Lexington Ave & E 77th St, New York, NY 10075",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Lexington Ave & E 77th St, New York, NY 10075"
     },
     {
       "category": "supermarket",
       "label": "Groceries",
       "name": "D'Agostino",
       "source": "https://www.openstreetmap.org/node/7322799428",
-      "mapQuery": "40.7728495,-73.9606178"
+      "mapQuery": "40.7728495,-73.9606178",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7728495,
+        "longitude": -73.9606178
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7728495,-73.9606178"
     },
     {
       "category": "pharmacy",
@@ -412,7 +913,18 @@
       "source": "https://www.openstreetmap.org/node/9233618003",
       "mapQuery": "40.7697062,-73.9573848",
       "destinationQuery": "New Drug Loft, 1410 2nd Avenue, New York, NY 10021",
-      "addressDetail": "1410 2nd Avenue, New York, NY 10021"
+      "addressDetail": "1410 2nd Avenue, New York, NY 10021",
+      "officialWebsiteUrl": "https://newdrugloft.com/contact/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://newdrugloft.com/contact/",
+      "destinationAddress": "1410 2nd Avenue, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7697062,
+        "longitude": -73.9573848
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "New Drug Loft, 1410 2nd Avenue, New York, NY 10021"
     },
     {
       "category": "cafe",
@@ -421,14 +933,36 @@
       "source": "https://www.openstreetmap.org/node/5859940717",
       "mapQuery": "40.7720548,-73.9608314",
       "destinationQuery": "Joe Coffee Company, 1045 Lexington Avenue, New York, NY 10021",
-      "addressDetail": "1045 Lexington Avenue, New York, NY 10021"
+      "addressDetail": "1045 Lexington Avenue, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "1045 Lexington Avenue, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7720548,
+        "longitude": -73.9608314
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Joe Coffee Company, 1045 Lexington Avenue, New York, NY 10021"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Poses Park",
       "source": "https://www.openstreetmap.org/way/334715965",
-      "mapQuery": "40.7674474,-73.9635003"
+      "mapQuery": "40.7674474,-73.9635003",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7674474,
+        "longitude": -73.9635003
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7674474,-73.9635003"
     },
     {
       "category": "library",
@@ -436,7 +970,18 @@
       "name": "The New York Society Library",
       "source": "https://www.openstreetmap.org/way/266928744",
       "mapQuery": "40.7763303,-73.9614771",
-      "destinationQuery": "The New York Society Library, 53 East 79th Street, New York, NY 10075"
+      "destinationQuery": "The New York Society Library, 53 East 79th Street, New York, NY 10075",
+      "officialWebsiteUrl": "https://www.nysoclib.org/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nysoclib.org/",
+      "destinationAddress": "53 East 79th Street, New York, NY 10075",
+      "destinationCoordinates": {
+        "latitude": 40.7763303,
+        "longitude": -73.9614771
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The New York Society Library, 53 East 79th Street, New York, NY 10075"
     }
   ],
   "1374-1st-ave": [
@@ -445,7 +990,15 @@
       "label": "Subway access",
       "name": "72 St (Q)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=477",
-      "destinationQuery": "2nd Ave & E 72nd St, New York, NY 10021"
+      "destinationQuery": "2nd Ave & E 72nd St, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2nd Ave & E 72nd St, New York, NY 10021",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "2nd Ave & E 72nd St, New York, NY 10021"
     },
     {
       "category": "supermarket",
@@ -454,7 +1007,18 @@
       "source": "https://www.openstreetmap.org/node/8617534012",
       "mapQuery": "40.7681384,-73.9559953",
       "destinationQuery": "A Matter of Health, 1347 1st Avenue, New York, NY 10021",
-      "addressDetail": "1347 1st Avenue, New York, NY 10021"
+      "addressDetail": "1347 1st Avenue, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "1347 1st Avenue, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7681384,
+        "longitude": -73.9559953
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "A Matter of Health, 1347 1st Avenue, New York, NY 10021"
     },
     {
       "category": "pharmacy",
@@ -463,7 +1027,18 @@
       "source": "https://www.openstreetmap.org/node/2629371822",
       "mapQuery": "40.7678873,-73.9556728",
       "addressDetail": "399 E 72nd St, New York, NY 10021",
-      "destinationQuery": "Duane Reade, 399 E 72nd St, New York, NY 10021"
+      "destinationQuery": "Duane Reade, 399 E 72nd St, New York, NY 10021",
+      "officialWebsiteUrl": "https://www.walgreens.com/locator/walgreens-1352+1st+ave-new+york-ny-10021/id=14398",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.walgreens.com/locator/walgreens-1352+1st+ave-new+york-ny-10021/id=14398",
+      "destinationAddress": "399 E 72nd St, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7678873,
+        "longitude": -73.9556728
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Duane Reade, 399 E 72nd St, New York, NY 10021"
     },
     {
       "category": "cafe",
@@ -472,14 +1047,36 @@
       "source": "https://www.openstreetmap.org/node/12070920014",
       "mapQuery": "40.7674269,-73.9547221",
       "destinationQuery": "Alex Cafe & Deli, 421 East 72nd Street, New York, NY 10162",
-      "addressDetail": "421 East 72nd Street, New York, NY 10162"
+      "addressDetail": "421 East 72nd Street, New York, NY 10162",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "421 East 72nd Street, New York, NY 10162",
+      "destinationCoordinates": {
+        "latitude": 40.7674269,
+        "longitude": -73.9547221
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Alex Cafe & Deli, 421 East 72nd Street, New York, NY 10162"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "John Jay Park",
       "source": "https://www.openstreetmap.org/relation/1751075",
-      "mapQuery": "40.7692629,-73.9495403"
+      "mapQuery": "40.7692629,-73.9495403",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7692629,
+        "longitude": -73.9495403
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7692629,-73.9495403"
     },
     {
       "category": "library",
@@ -487,7 +1084,18 @@
       "name": "Webster Library",
       "source": "https://www.openstreetmap.org/way/266900751",
       "mapQuery": "40.7706762,-73.9513689",
-      "destinationQuery": "Webster Library, 1465 York Avenue, New York, NY 10021"
+      "destinationQuery": "Webster Library, 1465 York Avenue, New York, NY 10021",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/webster",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/webster",
+      "destinationAddress": "1465 York Avenue, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7706762,
+        "longitude": -73.9513689
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Webster Library, 1465 York Avenue, New York, NY 10021"
     }
   ],
   "1365-1st-ave": [
@@ -496,7 +1104,15 @@
       "label": "Subway access",
       "name": "72 St (Q)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=477",
-      "destinationQuery": "2nd Ave & E 72nd St, New York, NY 10021"
+      "destinationQuery": "2nd Ave & E 72nd St, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "2nd Ave & E 72nd St, New York, NY 10021",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "2nd Ave & E 72nd St, New York, NY 10021"
     },
     {
       "category": "supermarket",
@@ -505,7 +1121,18 @@
       "source": "https://www.openstreetmap.org/node/8617534012",
       "mapQuery": "40.7681384,-73.9559953",
       "destinationQuery": "A Matter of Health, 1347 1st Avenue, New York, NY 10021",
-      "addressDetail": "1347 1st Avenue, New York, NY 10021"
+      "addressDetail": "1347 1st Avenue, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "1347 1st Avenue, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7681384,
+        "longitude": -73.9559953
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "A Matter of Health, 1347 1st Avenue, New York, NY 10021"
     },
     {
       "category": "pharmacy",
@@ -514,7 +1141,18 @@
       "source": "https://www.openstreetmap.org/node/2629371822",
       "mapQuery": "40.7678873,-73.9556728",
       "addressDetail": "399 E 72nd St, New York, NY 10021",
-      "destinationQuery": "Duane Reade, 399 E 72nd St, New York, NY 10021"
+      "destinationQuery": "Duane Reade, 399 E 72nd St, New York, NY 10021",
+      "officialWebsiteUrl": "https://www.walgreens.com/locator/walgreens-1352+1st+ave-new+york-ny-10021/id=14398",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.walgreens.com/locator/walgreens-1352+1st+ave-new+york-ny-10021/id=14398",
+      "destinationAddress": "399 E 72nd St, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7678873,
+        "longitude": -73.9556728
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Duane Reade, 399 E 72nd St, New York, NY 10021"
     },
     {
       "category": "cafe",
@@ -523,14 +1161,36 @@
       "source": "https://www.openstreetmap.org/node/7013006319",
       "mapQuery": "40.7694430,-73.9581370",
       "addressDetail": "1399 2nd Ave, New York, NY",
-      "destinationQuery": "Krave Cafe & Deli, 1399 2nd Ave, New York, NY 10021"
+      "destinationQuery": "Krave Cafe & Deli, 1399 2nd Ave, New York, NY 10021",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "1399 2nd Ave, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.769443,
+        "longitude": -73.958137
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Krave Cafe & Deli, 1399 2nd Ave, New York, NY 10021"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "John Jay Park",
       "source": "https://www.openstreetmap.org/relation/1751075",
-      "mapQuery": "40.7692629,-73.9495403"
+      "mapQuery": "40.7692629,-73.9495403",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7692629,
+        "longitude": -73.9495403
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7692629,-73.9495403"
     },
     {
       "category": "library",
@@ -538,7 +1198,18 @@
       "name": "Webster Library",
       "source": "https://www.openstreetmap.org/way/266900751",
       "mapQuery": "40.7706762,-73.9513689",
-      "destinationQuery": "Webster Library, 1465 York Avenue, New York, NY 10021"
+      "destinationQuery": "Webster Library, 1465 York Avenue, New York, NY 10021",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/webster",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/webster",
+      "destinationAddress": "1465 York Avenue, New York, NY 10021",
+      "destinationCoordinates": {
+        "latitude": 40.7706762,
+        "longitude": -73.9513689
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Webster Library, 1465 York Avenue, New York, NY 10021"
     }
   ],
   "41-w-46th-st": [
@@ -547,7 +1218,15 @@
       "label": "Subway access",
       "name": "47-50 Sts-Rockefeller Ctr (B,D,F,M)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=225",
-      "destinationQuery": "6th Ave & W 47th St, New York, NY 10036"
+      "destinationQuery": "6th Ave & W 47th St, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "6th Ave & W 47th St, New York, NY 10036",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "6th Ave & W 47th St, New York, NY 10036"
     },
     {
       "category": "supermarket",
@@ -556,7 +1235,18 @@
       "source": "https://www.openstreetmap.org/node/4665840837",
       "mapQuery": "40.7546279,-73.9845292",
       "destinationQuery": "Whole Foods Market, 1095 6th Avenue, New York, NY 10036",
-      "addressDetail": "1095 6th Avenue, New York, NY 10036"
+      "addressDetail": "1095 6th Avenue, New York, NY 10036",
+      "officialWebsiteUrl": "https://www.wholefoodsmarket.com/stores/bryantpark",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.wholefoodsmarket.com/stores/bryantpark",
+      "destinationAddress": "1095 6th Avenue, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7546279,
+        "longitude": -73.9845292
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Whole Foods Market, 1095 6th Avenue, New York, NY 10036"
     },
     {
       "category": "pharmacy",
@@ -565,7 +1255,18 @@
       "source": "https://www.openstreetmap.org/node/12968777478",
       "mapQuery": "40.7574988,-73.9848314",
       "destinationQuery": "Duane Reade, 158 West 45th Street, New York, NY 10036",
-      "addressDetail": "158 West 45th Street, New York, NY 10036"
+      "addressDetail": "158 West 45th Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://www.walgreens.com/locator/walgreens-158+w.+45th+st.-new+york-ny-10036/id=21263",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.walgreens.com/locator/walgreens-158+w.+45th+st.-new+york-ny-10036/id=21263",
+      "destinationAddress": "158 West 45th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7574988,
+        "longitude": -73.9848314
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Duane Reade, 158 West 45th Street, New York, NY 10036"
     },
     {
       "category": "cafe",
@@ -574,14 +1275,36 @@
       "source": "https://www.openstreetmap.org/node/6615272821",
       "mapQuery": "40.7578879,-73.9831141",
       "destinationQuery": "For five coffee roasters, 114 West 47th Street, New York, NY 10036",
-      "addressDetail": "114 West 47th Street, New York, NY 10036"
+      "addressDetail": "114 West 47th Street, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "114 West 47th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7578879,
+        "longitude": -73.9831141
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "For five coffee roasters, 114 West 47th Street, New York, NY 10036"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Channel Gardens",
       "source": "https://www.openstreetmap.org/way/159028631",
-      "mapQuery": "40.7584269,-73.9779114"
+      "mapQuery": "40.7584269,-73.9779114",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7584269,
+        "longitude": -73.9779114
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7584269,-73.9779114"
     },
     {
       "category": "library",
@@ -589,7 +1312,18 @@
       "name": "Stephen A. Schwarzman Building",
       "source": "https://www.openstreetmap.org/way/265302076",
       "mapQuery": "40.7533445,-73.9821524",
-      "destinationQuery": "Stephen A. Schwarzman Building, 476 5th Avenue, New York, NY 10018"
+      "destinationQuery": "Stephen A. Schwarzman Building, 476 5th Avenue, New York, NY 10018",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/schwarzman",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/schwarzman",
+      "destinationAddress": "476 5th Avenue, New York, NY 10018",
+      "destinationCoordinates": {
+        "latitude": 40.7533445,
+        "longitude": -73.9821524
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Stephen A. Schwarzman Building, 476 5th Avenue, New York, NY 10018"
     }
   ],
   "349-w-46th-st": [
@@ -598,7 +1332,15 @@
       "label": "Subway access",
       "name": "50 St (C,E)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=162",
-      "destinationQuery": "8th Ave & W 50th St, New York, NY 10019"
+      "destinationQuery": "8th Ave & W 50th St, New York, NY 10019",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "8th Ave & W 50th St, New York, NY 10019",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "8th Ave & W 50th St, New York, NY 10019"
     },
     {
       "category": "supermarket",
@@ -607,7 +1349,18 @@
       "source": "https://www.openstreetmap.org/node/1000798085",
       "mapQuery": "40.7617166,-73.9862921",
       "destinationQuery": "The Food Emporium, 810 8th Avenue, New York, NY 10019",
-      "addressDetail": "810 8th Avenue, New York, NY 10019"
+      "addressDetail": "810 8th Avenue, New York, NY 10019",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "810 8th Avenue, New York, NY 10019",
+      "destinationCoordinates": {
+        "latitude": 40.7617166,
+        "longitude": -73.9862921
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Food Emporium, 810 8th Avenue, New York, NY 10019"
     },
     {
       "category": "pharmacy",
@@ -616,21 +1369,54 @@
       "source": "https://www.openstreetmap.org/node/14205796401",
       "mapQuery": "40.7618959,-73.9903481",
       "destinationQuery": "Esco Pharmacy, 687 9th Avenue, New York, NY 10036",
-      "addressDetail": "687 9th Avenue, New York, NY 10036"
+      "addressDetail": "687 9th Avenue, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "687 9th Avenue, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7618959,
+        "longitude": -73.9903481
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Esco Pharmacy, 687 9th Avenue, New York, NY 10036"
     },
     {
       "category": "cafe",
       "label": "Coffee & dining",
       "name": "Frisson Espresso",
       "source": "https://www.openstreetmap.org/node/4330787300",
-      "mapQuery": "40.7608908,-73.9889333"
+      "mapQuery": "40.7608908,-73.9889333",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7608908,
+        "longitude": -73.9889333
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7608908,-73.9889333"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Ramone Aponte Park",
       "source": "https://www.openstreetmap.org/way/266113539",
-      "mapQuery": "40.7614792,-73.9893222"
+      "mapQuery": "40.7614792,-73.9893222",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7614792,
+        "longitude": -73.9893222
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7614792,-73.9893222"
     },
     {
       "category": "library",
@@ -638,7 +1424,18 @@
       "name": "Columbus Library",
       "source": "https://www.openstreetmap.org/way/265325033",
       "mapQuery": "40.7649388,-73.9912222",
-      "destinationQuery": "Columbus Library, 742 10th Avenue, New York, NY 10019"
+      "destinationQuery": "Columbus Library, 742 10th Avenue, New York, NY 10019",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/columbus",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/columbus",
+      "destinationAddress": "742 10th Avenue, New York, NY 10019",
+      "destinationCoordinates": {
+        "latitude": 40.7649388,
+        "longitude": -73.9912222
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Columbus Library, 742 10th Avenue, New York, NY 10019"
     }
   ],
   "351-w-46th-st": [
@@ -647,7 +1444,15 @@
       "label": "Subway access",
       "name": "50 St (C,E)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=162",
-      "destinationQuery": "8th Ave & W 50th St, New York, NY 10019"
+      "destinationQuery": "8th Ave & W 50th St, New York, NY 10019",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "8th Ave & W 50th St, New York, NY 10019",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "8th Ave & W 50th St, New York, NY 10019"
     },
     {
       "category": "supermarket",
@@ -656,7 +1461,18 @@
       "source": "https://www.openstreetmap.org/node/1000798085",
       "mapQuery": "40.7617166,-73.9862921",
       "destinationQuery": "The Food Emporium, 810 8th Avenue, New York, NY 10019",
-      "addressDetail": "810 8th Avenue, New York, NY 10019"
+      "addressDetail": "810 8th Avenue, New York, NY 10019",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "810 8th Avenue, New York, NY 10019",
+      "destinationCoordinates": {
+        "latitude": 40.7617166,
+        "longitude": -73.9862921
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "The Food Emporium, 810 8th Avenue, New York, NY 10019"
     },
     {
       "category": "pharmacy",
@@ -665,7 +1481,18 @@
       "source": "https://www.openstreetmap.org/node/14205796401",
       "mapQuery": "40.7618959,-73.9903481",
       "destinationQuery": "Esco Pharmacy, 687 9th Avenue, New York, NY 10036",
-      "addressDetail": "687 9th Avenue, New York, NY 10036"
+      "addressDetail": "687 9th Avenue, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "687 9th Avenue, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7618959,
+        "longitude": -73.9903481
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Esco Pharmacy, 687 9th Avenue, New York, NY 10036"
     },
     {
       "category": "cafe",
@@ -674,14 +1501,36 @@
       "source": "https://www.openstreetmap.org/node/9699175979",
       "mapQuery": "40.7591032,-73.9918725",
       "destinationQuery": "Rind, 602 9th Avenue, New York, NY 10036",
-      "addressDetail": "602 9th Avenue, New York, NY 10036"
+      "addressDetail": "602 9th Avenue, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "602 9th Avenue, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7591032,
+        "longitude": -73.9918725
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Rind, 602 9th Avenue, New York, NY 10036"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Ramone Aponte Park",
       "source": "https://www.openstreetmap.org/way/266113539",
-      "mapQuery": "40.7614792,-73.9893222"
+      "mapQuery": "40.7614792,-73.9893222",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7614792,
+        "longitude": -73.9893222
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7614792,-73.9893222"
     },
     {
       "category": "library",
@@ -689,7 +1538,18 @@
       "name": "Columbus Library",
       "source": "https://www.openstreetmap.org/way/265325033",
       "mapQuery": "40.7649388,-73.9912222",
-      "destinationQuery": "Columbus Library, 742 10th Avenue, New York, NY 10019"
+      "destinationQuery": "Columbus Library, 742 10th Avenue, New York, NY 10019",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/columbus",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/columbus",
+      "destinationAddress": "742 10th Avenue, New York, NY 10019",
+      "destinationCoordinates": {
+        "latitude": 40.7649388,
+        "longitude": -73.9912222
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Columbus Library, 742 10th Avenue, New York, NY 10019"
     }
   ],
   "307-w-39th-st": [
@@ -698,14 +1558,33 @@
       "label": "Subway access",
       "name": "Times Sq-42 St/Port Authority Bus Terminal (1,2,3,7,A,C,E,N,Q,R,W,S)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=611",
-      "destinationQuery": "8th Ave & W 42nd St, New York, NY 10036"
+      "destinationQuery": "8th Ave & W 42nd St, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "8th Ave & W 42nd St, New York, NY 10036",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "8th Ave & W 42nd St, New York, NY 10036"
     },
     {
       "category": "supermarket",
       "label": "Groceries",
       "name": "Aldi",
       "source": "https://www.openstreetmap.org/node/13731188444",
-      "mapQuery": "40.7576749,-73.9904029"
+      "mapQuery": "40.7576749,-73.9904029",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7576749,
+        "longitude": -73.9904029
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7576749,-73.9904029"
     },
     {
       "category": "pharmacy",
@@ -714,7 +1593,18 @@
       "source": "https://www.openstreetmap.org/node/2649092003",
       "mapQuery": "40.7561307,-73.9908411",
       "destinationQuery": "Duane Reade, 625 8th Avenue, New York, NY 10018",
-      "addressDetail": "625 8th Avenue, New York, NY 10018"
+      "addressDetail": "625 8th Avenue, New York, NY 10018",
+      "officialWebsiteUrl": "https://www.walgreens.com/locator/walgreens-625+8th+ave-new+york-ny-10018/id=14217",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.walgreens.com/locator/walgreens-625+8th+ave-new+york-ny-10018/id=14217",
+      "destinationAddress": "625 8th Avenue, New York, NY 10018",
+      "destinationCoordinates": {
+        "latitude": 40.7561307,
+        "longitude": -73.9908411
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Duane Reade, 625 8th Avenue, New York, NY 10018"
     },
     {
       "category": "cafe",
@@ -723,14 +1613,36 @@
       "source": "https://www.openstreetmap.org/node/2709629969",
       "mapQuery": "40.7547832,-73.9913539",
       "destinationQuery": "Grace Cafe, 572 8th Avenue, New York, NY 10018",
-      "addressDetail": "572 8th Avenue, New York, NY 10018"
+      "addressDetail": "572 8th Avenue, New York, NY 10018",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "572 8th Avenue, New York, NY 10018",
+      "destinationCoordinates": {
+        "latitude": 40.7547832,
+        "longitude": -73.9913539
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Grace Cafe, 572 8th Avenue, New York, NY 10018"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "McCaffrey Playground",
       "source": "https://www.openstreetmap.org/way/266077861",
-      "mapQuery": "40.7589645,-73.9912428"
+      "mapQuery": "40.7589645,-73.9912428",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/mccaffrey-playground",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/mccaffrey-playground",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7589645,
+        "longitude": -73.9912428
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7589645,-73.9912428"
     },
     {
       "category": "clinic",
@@ -739,7 +1651,18 @@
       "source": "https://www.openstreetmap.org/node/5855965350",
       "mapQuery": "40.7581875,-73.9916334",
       "destinationQuery": "CityMD, 345 West 42nd Street, New York, NY 10036",
-      "addressDetail": "345 West 42nd Street, New York, NY 10036"
+      "addressDetail": "345 West 42nd Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://www.citymd.com/urgent-care-locations/ny/west-42nd",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.citymd.com/urgent-care-locations/ny/west-42nd",
+      "destinationAddress": "345 West 42nd Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7581875,
+        "longitude": -73.9916334
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "CityMD, 345 West 42nd Street, New York, NY 10036"
     }
   ],
   "235-w-18th-st": [
@@ -748,7 +1671,15 @@
       "label": "Subway access",
       "name": "18 St (1)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=321",
-      "destinationQuery": "7th Ave & W 18th St, New York, NY 10011"
+      "destinationQuery": "7th Ave & W 18th St, New York, NY 10011",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "7th Ave & W 18th St, New York, NY 10011",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "7th Ave & W 18th St, New York, NY 10011"
     },
     {
       "category": "supermarket",
@@ -757,7 +1688,18 @@
       "source": "https://www.openstreetmap.org/node/2377128155",
       "mapQuery": "40.7444176,-73.9994014",
       "destinationQuery": "Gristedes, 225 8th Avenue, New York, NY 10011",
-      "addressDetail": "225 8th Avenue, New York, NY 10011"
+      "addressDetail": "225 8th Avenue, New York, NY 10011",
+      "officialWebsiteUrl": "https://gristedes.com/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://gristedes.com/",
+      "destinationAddress": "225 8th Avenue, New York, NY 10011",
+      "destinationCoordinates": {
+        "latitude": 40.7444176,
+        "longitude": -73.9994014
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Gristedes, 225 8th Avenue, New York, NY 10011"
     },
     {
       "category": "pharmacy",
@@ -766,7 +1708,18 @@
       "source": "https://www.openstreetmap.org/node/2377128145",
       "mapQuery": "40.7414350,-74.0015697",
       "destinationQuery": "Duane Reade, 131 8th Avenue, New York, NY 10011",
-      "addressDetail": "131 8th Avenue, New York, NY 10011"
+      "addressDetail": "131 8th Avenue, New York, NY 10011",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "131 8th Avenue, New York, NY 10011",
+      "destinationCoordinates": {
+        "latitude": 40.741435,
+        "longitude": -74.0015697
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Duane Reade, 131 8th Avenue, New York, NY 10011"
     },
     {
       "category": "cafe",
@@ -775,14 +1728,36 @@
       "source": "https://www.openstreetmap.org/node/2826407083",
       "mapQuery": "40.7426583,-73.9983133",
       "destinationQuery": "Café Grumpy, 224 West 20th Street, New York, NY 10011",
-      "addressDetail": "224 West 20th Street, New York, NY 10011"
+      "addressDetail": "224 West 20th Street, New York, NY 10011",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "224 West 20th Street, New York, NY 10011",
+      "destinationCoordinates": {
+        "latitude": 40.7426583,
+        "longitude": -73.9983133
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Café Grumpy, 224 West 20th Street, New York, NY 10011"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Chelsea Green",
       "source": "https://www.openstreetmap.org/way/371120098",
-      "mapQuery": "40.7416001,-73.9960586"
+      "mapQuery": "40.7416001,-73.9960586",
+      "officialWebsiteUrl": "https://www.nycgovparks.org/parks/chelsea-green-park",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nycgovparks.org/parks/chelsea-green-park",
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.7416001,
+        "longitude": -73.9960586
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7416001,-73.9960586"
     },
     {
       "category": "library",
@@ -790,7 +1765,18 @@
       "name": "Muhlenberg Library",
       "source": "https://www.openstreetmap.org/way/264650639",
       "mapQuery": "40.7445321,-73.9959450",
-      "destinationQuery": "Muhlenberg Library, 209 West 23rd Street, New York, NY 10011"
+      "destinationQuery": "Muhlenberg Library, 209 West 23rd Street, New York, NY 10011",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/muhlenberg",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/muhlenberg",
+      "destinationAddress": "209 West 23rd Street, New York, NY 10011",
+      "destinationCoordinates": {
+        "latitude": 40.7445321,
+        "longitude": -73.995945
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Muhlenberg Library, 209 West 23rd Street, New York, NY 10011"
     }
   ],
   "61-gold-st": [
@@ -799,7 +1785,15 @@
       "label": "Subway access",
       "name": "Fulton St (2,3,4,5,A,C,J,Z)",
       "source": "https://data.ny.gov/resource/5f5g-n3cz.json?complex_id=628",
-      "destinationQuery": "Broadway & Fulton St, New York, NY 10038"
+      "destinationQuery": "Broadway & Fulton St, New York, NY 10038",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "Broadway & Fulton St, New York, NY 10038",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Broadway & Fulton St, New York, NY 10038"
     },
     {
       "category": "supermarket",
@@ -808,7 +1802,18 @@
       "source": "https://www.openstreetmap.org/node/3094612698",
       "mapQuery": "40.7087325,-74.0046656",
       "destinationQuery": "55 Fulton Market, 55 Fulton Street, New York, NY 10038",
-      "addressDetail": "55 Fulton Street, New York, NY 10038"
+      "addressDetail": "55 Fulton Street, New York, NY 10038",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "55 Fulton Street, New York, NY 10038",
+      "destinationCoordinates": {
+        "latitude": 40.7087325,
+        "longitude": -74.0046656
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "55 Fulton Market, 55 Fulton Street, New York, NY 10038"
     },
     {
       "category": "pharmacy",
@@ -817,7 +1822,18 @@
       "source": "https://www.openstreetmap.org/node/12919871439",
       "mapQuery": "40.7092448,-74.0040746",
       "destinationQuery": "Southbridge Pharmacy, 80 Beekman Street, New York, NY 10038",
-      "addressDetail": "80 Beekman Street, New York, NY 10038"
+      "addressDetail": "80 Beekman Street, New York, NY 10038",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "80 Beekman Street, New York, NY 10038",
+      "destinationCoordinates": {
+        "latitude": 40.7092448,
+        "longitude": -74.0040746
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Southbridge Pharmacy, 80 Beekman Street, New York, NY 10038"
     },
     {
       "category": "cafe",
@@ -826,14 +1842,36 @@
       "source": "https://www.openstreetmap.org/node/6074315900",
       "mapQuery": "40.7108654,-74.0059234",
       "destinationQuery": "Birch Coffee, 8 Spruce Street, New York, NY 10038",
-      "addressDetail": "8 Spruce Street, New York, NY 10038"
+      "addressDetail": "8 Spruce Street, New York, NY 10038",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "8 Spruce Street, New York, NY 10038",
+      "destinationCoordinates": {
+        "latitude": 40.7108654,
+        "longitude": -74.0059234
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Birch Coffee, 8 Spruce Street, New York, NY 10038"
     },
     {
       "category": "park",
       "label": "Parks & recreation",
       "name": "Titanic Memorial Park",
       "source": "https://www.openstreetmap.org/way/109441961",
-      "mapQuery": "40.7075120,-74.0036785"
+      "mapQuery": "40.7075120,-74.0036785",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": null,
+      "destinationCoordinates": {
+        "latitude": 40.707512,
+        "longitude": -74.0036785
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "40.7075120,-74.0036785"
     },
     {
       "category": "library",
@@ -841,7 +1879,18 @@
       "name": "New Amsterdam Library",
       "source": "https://www.openstreetmap.org/node/2632446787",
       "mapQuery": "40.7134916,-74.0079247",
-      "destinationQuery": "New Amsterdam Library, 9 Murray Street, New York, NY 10007"
+      "destinationQuery": "New Amsterdam Library, 9 Murray Street, New York, NY 10007",
+      "officialWebsiteUrl": "https://www.nypl.org/locations/new-amsterdam",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.nypl.org/locations/new-amsterdam",
+      "destinationAddress": "9 Murray Street, New York, NY 10007",
+      "destinationCoordinates": {
+        "latitude": 40.7134916,
+        "longitude": -74.0079247
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "New Amsterdam Library, 9 Murray Street, New York, NY 10007"
     }
   ],
   "609-golden-gate-pt-unit-402": [
@@ -851,7 +1900,15 @@
       "name": "Selby Library",
       "source": "https://scgovlibrary.librarymarket.com/branch/selby-library",
       "destinationQuery": "1331 First Street, Sarasota, FL 34236",
-      "addressDetail": "1331 First Street · Sarasota"
+      "addressDetail": "1331 First Street · Sarasota",
+      "officialWebsiteUrl": "https://scgovlibrary.librarymarket.com/branch/selby-library",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://scgovlibrary.librarymarket.com/branch/selby-library",
+      "destinationAddress": "1331 First Street, Sarasota, FL 34236",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "1331 First Street, Sarasota, FL 34236"
     },
     {
       "category": "supermarket",
@@ -859,7 +1916,15 @@
       "name": "Whole Foods Market — Sarasota",
       "source": "https://www.wholefoodsmarket.com/stores/sarasota",
       "destinationQuery": "1451 1st Street, Sarasota, FL 34236",
-      "addressDetail": "1451 1st Street · Sarasota"
+      "addressDetail": "1451 1st Street · Sarasota",
+      "officialWebsiteUrl": "https://www.wholefoodsmarket.com/stores/sarasota",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.wholefoodsmarket.com/stores/sarasota",
+      "destinationAddress": "1451 1st Street, Sarasota, FL 34236",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "1451 1st Street, Sarasota, FL 34236"
     },
     {
       "category": "park",
@@ -867,7 +1932,15 @@
       "name": "Marie Selby Botanical Gardens — Downtown Sarasota",
       "source": "https://selby.org/visit/",
       "destinationQuery": "1534 Mound Street, Sarasota, FL 34236",
-      "addressDetail": "1534 Mound Street · Sarasota"
+      "addressDetail": "1534 Mound Street · Sarasota",
+      "officialWebsiteUrl": "https://selby.org/visit/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://selby.org/visit/",
+      "destinationAddress": "1534 Mound Street, Sarasota, FL 34236",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "1534 Mound Street, Sarasota, FL 34236"
     },
     {
       "category": "theatre",
@@ -875,7 +1948,15 @@
       "name": "Sarasota Opera House",
       "source": "https://www.sarasotaopera.org/directions",
       "destinationQuery": "61 North Pineapple Avenue, Sarasota, FL 34236",
-      "addressDetail": "61 North Pineapple Avenue · Sarasota"
+      "addressDetail": "61 North Pineapple Avenue · Sarasota",
+      "officialWebsiteUrl": "https://www.sarasotaopera.org/directions",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.sarasotaopera.org/directions",
+      "destinationAddress": "61 North Pineapple Avenue, Sarasota, FL 34236",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "61 North Pineapple Avenue, Sarasota, FL 34236"
     },
     {
       "category": "cafe",
@@ -883,7 +1964,15 @@
       "name": "Marina Jack",
       "source": "https://www.marinajacks.com/contact.html",
       "destinationQuery": "2 Marina Plaza, Sarasota, FL 34236",
-      "addressDetail": "2 Marina Plaza · Sarasota"
+      "addressDetail": "2 Marina Plaza · Sarasota",
+      "officialWebsiteUrl": "https://www.marinajacks.com/contact.html",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.marinajacks.com/contact.html",
+      "destinationAddress": "2 Marina Plaza, Sarasota, FL 34236",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "2 Marina Plaza, Sarasota, FL 34236"
     }
   ]
 }

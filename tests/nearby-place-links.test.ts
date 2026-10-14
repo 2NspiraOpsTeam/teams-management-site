@@ -1,0 +1,55 @@
+import { describe, expect, it } from 'vitest';
+import highlights from '../src/lib/nearby-highlights.json';
+import anchors from '../src/lib/retail-nearby-anchors.json';
+import { nearbyPlaceLinks, type NearbyPlace } from '../src/lib/nearby-place';
+
+const origin = { street: '225 E 83rd St', city: 'New York', state: 'NY', zip: '10028' };
+const datasets = [highlights, anchors] as Record<string, NearbyPlace[]>[];
+
+describe('Separate nearby place actions', () => {
+  it('routes every place from the property address to its separately stored destination', () => {
+    for (const dataset of datasets) for (const [slug, items] of Object.entries(dataset)) for (const item of items) {
+      const links = nearbyPlaceLinks(item, origin);
+      const route = new URL(links.directionsUrl);
+      expect(route.pathname, `${slug}: ${item.name}`).toBe('/maps/dir/');
+      expect(route.searchParams.get('origin')).toBe('225 E 83rd St, New York, NY 10028');
+      expect(route.searchParams.get('destination')).toBe(item.directionsDestination);
+      expect(item.directionsDestination).not.toBe('');
+      expect(route.searchParams.get('travelmode')).toBe('walking');
+      expect(links.nameUrl).not.toBe(links.directionsUrl);
+      if (item.officialWebsiteUrl) {
+        expect(item.websiteVerifiedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(item.websiteEvidenceUrl).toMatch(/^https:\/\//);
+        expect(item.officialWebsiteUrl).toMatch(/^https:\/\//);
+        expect(item.officialWebsiteUrl).not.toMatch(/google\.com\/maps|openstreetmap\.org|data\.ny\.gov/);
+        expect(links.nameUrl).toBe(item.officialWebsiteUrl);
+      } else {
+        expect(new URL(links.nameUrl).pathname).toBe('/maps/search/');
+        expect(links.nameIsWebsite).toBe(false);
+      }
+      expect(item).toHaveProperty('distanceLabel');
+      expect(item).toHaveProperty('walkTimeLabel');
+      expect(item.destinationAddress || item.destinationCoordinates).toBeTruthy();
+    }
+  });
+
+  it('locates an unverified place without inventing a website or substituting a source link', () => {
+    const item = highlights['225-e-83rd-st'][1] as NearbyPlace;
+    const unverified = { ...item, officialWebsiteUrl: 'https://example.com/', websiteVerifiedAt: null };
+    const links = nearbyPlaceLinks(unverified, origin);
+    expect(links.nameIsWebsite).toBe(false);
+    expect(links.nameUrl).not.toBe(unverified.officialWebsiteUrl);
+    expect(links.nameUrl).not.toBe(item.source);
+    expect(new URL(links.nameUrl).searchParams.get('query')).toBe(`${item.destinationCoordinates!.latitude},${item.destinationCoordinates!.longitude}`);
+    expect(nearbyPlaceLinks({ ...item, officialWebsiteUrl: 'javascript:alert(1)' }, origin).nameIsWebsite).toBe(false);
+  });
+
+  it('keeps Sarasota origins at the building entrance without an apartment identifier', () => {
+    const sarasota = { street: '609 Golden Gate Point, Unit 402', city: 'Sarasota', state: 'FL', zip: '34236' };
+    const item = highlights['609-golden-gate-pt-unit-402'][4] as NearbyPlace;
+    const route = new URL(nearbyPlaceLinks(item, sarasota).directionsUrl);
+    expect(route.searchParams.get('origin')).toBe('609 Golden Gate Point, Sarasota, FL 34236');
+    expect(route.searchParams.get('destination')).toBe('2 Marina Plaza, Sarasota, FL 34236');
+    expect(nearbyPlaceLinks(item, sarasota).nameUrl).toBe('https://www.marinajacks.com/contact.html');
+  });
+});

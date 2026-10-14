@@ -1,5 +1,7 @@
 import type { BuildingPublic } from './database.types';
 
+type NavigationAddress = { street: string; city: string; state: string; zip?: string };
+
 export function addressLabel(address: { street: string; city: string; state: string; zip?: string }) {
   return [address.street?.trim(), address.city?.trim(), [address.state?.trim(), address.zip?.trim()].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 }
@@ -12,22 +14,22 @@ export function postalAddressMetadata(address: { street: string; city: string; s
 }
 
 /** Navigation routes to a building address, not an apartment identifier. Display copy remains unit-specific. */
-export function navigationAddressLabel(address: BuildingPublic['address']) {
+export function navigationAddressLabel(address: NavigationAddress) {
   if (address.state.toUpperCase() === 'FL' && address.city.toLowerCase() === 'sarasota' && /^609 Golden Gate Point,? Unit 402$/i.test(address.street.trim())) {
     return addressLabel({ ...address, street: address.street.trim().replace(/,? Unit 402$/i, '') });
   }
   return addressLabel(address);
 }
 
-export function mapLocationUrl(address: BuildingPublic['address']) {
+export function mapLocationUrl(address: NavigationAddress) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(navigationAddressLabel(address))}`;
 }
 
-export function directionsToPropertyUrl(address: BuildingPublic['address']) {
+export function directionsToPropertyUrl(address: NavigationAddress) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(navigationAddressLabel(address))}`;
 }
 
-export function directionsFromPropertyUrl(address: BuildingPublic['address'], destination: string) {
+export function directionsFromPropertyUrl(address: NavigationAddress, destination: string) {
   return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(navigationAddressLabel(address))}&destination=${encodeURIComponent(destination)}&travelmode=walking`;
 }
 
