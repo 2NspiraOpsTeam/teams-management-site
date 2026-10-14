@@ -29,8 +29,8 @@ export function directionsToPropertyUrl(address: NavigationAddress) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(navigationAddressLabel(address))}`;
 }
 
-export function directionsFromPropertyUrl(address: NavigationAddress, destination: string) {
-  return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(navigationAddressLabel(address))}&destination=${encodeURIComponent(destination)}&travelmode=walking`;
+export function directionsFromPropertyUrl(address: NavigationAddress, destination: string, destinationPlaceId?: string | null) {
+  return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(navigationAddressLabel(address))}&destination=${encodeURIComponent(destination)}${destinationPlaceId ? `&destination_place_id=${encodeURIComponent(destinationPlaceId)}` : ''}&travelmode=walking`;
 }
 
 export function satelliteMapUrl(latitude: number, longitude: number) {

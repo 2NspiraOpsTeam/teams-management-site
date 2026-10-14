@@ -1,3 +1,4 @@
+import { OfficialPlaceName } from './official-place-name';
 import type { BuildingPublic } from '@/lib/database.types';
 import { mapLocationUrl, navigationAddressLabel } from '@/lib/map-location';
 import { nearbyPlaceLinks, type NearbyPlace } from '@/lib/nearby-place';
@@ -13,16 +14,15 @@ const icons: Record<string, string> = {
 
 function FactCard({ item, address, slug, retail = false }: { item: Highlight; address: BuildingPublic['address']; slug: string; retail?: boolean }) {
   const links = nearbyPlaceLinks(item, address);
-  const nameLabel = links.nameIsWebsite ? `Visit ${item.name} official website` : `Locate ${item.name} in Google Maps`;
   const category = retail && item.category === 'supermarket' ? 'Nearby retail' : item.label;
-  const detail = [category, item.distanceLabel, item.walkTimeLabel].filter(Boolean).join(' · ');
+  const detail = [category, item.locationVerifiedAt ? 'Verified location' : null, item.distanceLabel, item.walkTimeLabel].filter(Boolean).join(' · ');
   return <li data-place-name={item.name} data-property-slug={slug} className="nearby-fact group min-w-0 rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
     <span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl font-semibold text-teams-ink">{icons[item.category] || '•'}</span>
     <div className="min-w-0">
-      <a href={links.nameUrl} target="_blank" rel="noopener noreferrer" aria-label={`${nameLabel} (opens in a new tab)`} className="nearby-place-name inline-flex min-h-11 items-center gap-2 break-words text-lg font-semibold leading-snug text-teams-ink underline decoration-teams-ink/40 underline-offset-4 transition-colors hover:decoration-teams-ink focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{item.name} <span aria-hidden="true" className="text-sm text-[#9b7420]">↗</span></a>
+      <OfficialPlaceName name={item.name} website={links.nameUrl} className="nearby-place-name inline-flex min-h-11 items-center gap-2 break-words text-lg font-semibold leading-snug text-teams-ink" />
       <p className="mt-1 text-sm text-teams-secondary">{detail}</p>
       {item.addressDetail && <p className="mt-1 text-sm text-slate-600">{item.addressDetail}</p>}
-      <a href={links.directionsUrl} target="_blank" rel="noopener noreferrer" aria-label={`Get directions from ${navigationAddressLabel(address)} to ${item.name} (opens in a new tab)`} className="nearby-place-directions mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-teams-ink underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Get Directions <span aria-hidden="true" className="ml-1">↗</span></a>
+      {links.directionsUrl && <a href={links.directionsUrl} target="_blank" rel="noopener noreferrer" aria-label={`Get directions from ${navigationAddressLabel(address)} to ${item.name} (opens in a new tab)`} className="nearby-place-directions mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-teams-ink underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Get Directions <span aria-hidden="true" className="ml-1">→</span></a>}
     </div>
   </li>;
 }

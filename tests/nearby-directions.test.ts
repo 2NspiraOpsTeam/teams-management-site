@@ -28,7 +28,7 @@ describe('Neighborhood directions', () => {
         checked++;
       }
     }
-    expect(checked).toBe(106);
+    expect(checked).toBe(103);
     expect(transitChecked).toBe(17);
   });
 });

@@ -1,3 +1,4 @@
+import { OfficialPlaceName } from '@/components/official-place-name';
 import { addressLabel, directionsFromPropertyUrl, mapLocationUrl, navigationAddressLabel } from '@/lib/map-location';
 import Image from 'next/image';
 import { Header } from '@/components/header';
@@ -26,7 +27,7 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
     <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(220px,320px)] md:gap-12">
       <div>
         <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8b681f]">Featured dining destination</p>
-        <h2 className="mt-4 font-serif text-4xl leading-tight text-teams-ink sm:text-5xl"><a href={venue.website_url || mapLocationUrl(venue.address)} target="_blank" rel="noopener noreferrer" aria-label={`${venue.website_url ? `Visit ${venue.name} official website` : `Locate ${venue.name} in Google Maps`} (opens in a new tab)`} className="inline-block underline decoration-teams-ink/40 underline-offset-4 hover:decoration-teams-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{venue.name} <span aria-hidden="true">↗</span></a></h2>
+        <h2 className="mt-4 font-serif text-4xl leading-tight text-teams-ink sm:text-5xl"><OfficialPlaceName name={venue.name} website={venue.website_url} className="inline-block min-h-11" /></h2>
         <p className="mt-3 text-sm font-semibold uppercase tracking-[.12em] text-slate-600">{venue.category}{venue.neighborhood ? ` · ${venue.neighborhood}` : ''}</p>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-700">{venue.summary}</p>
         <address className="mt-6 not-italic text-slate-700">{addressLabel(venue.address)}</address>
