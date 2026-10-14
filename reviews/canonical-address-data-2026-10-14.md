@@ -52,4 +52,12 @@ Evidence location: `src/lib/nyc-living-facts.ts:1`; source annotation: “NYC Pl
 | 235 W 18th St | New York | 10011 | 1007680017 |
 | 61 Gold St | New York | 10038 | not recorded |
 
-Public property/retail directories and detail headers explicitly flag missing canonical ZIP as pending verification; no page silently substitutes PLUTO values.
+Missing ZIP codes are flagged in this review audit, not visitor-facing product flows; no page silently substitutes PLUTO values.
+
+## Fresh official verification (2026-10-14)
+
+`canonical-address-pluto-evidence-2026-10-14.json` records exact HTTPS queries and raw official NYC Open Data PLUTO dataset `64uk-42ks` responses. Twelve stored exact BBLs each returned one row, with address matching the canonical street after normalizing street abbreviations; all twelve ZIPs agree with existing candidates.
+
+Not verified by this endpoint: `3425-east-tremont-bronx` (exact `3425 EAST TREMONT AVENUE` returned no row; broader Bronx `3425%` rows are unrelated addresses) and `61-gold-st` (exact `61 GOLD STREET` and limited nearby Gold Street address checks returned no rows). Keep those two candidates unapplied until a precise official address/parcel source match is obtained. The existing candidate ZIPs `10465` / `10038` are not fresh-verified here. No conflicting ZIP occurred among the twelve exact matches, no source city/borough naming is imported, and no database writes were performed.
+
+Public-facing maintenance notices removed: missing ZIPs remain flagged only in this audit report.
