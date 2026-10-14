@@ -33,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-slate-50 text-teams-ink">
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Organization',

@@ -36,3 +36,36 @@ describe('shared featured-property allocation', () => {
     expect(allocateFeatured([...candidates].reverse(), retail, 0).slots).toEqual(first.slots);
   });
 });
+
+it('allocates filtered retail slots without collisions and avoids immediate repeats', () => {
+  const candidates = pool.slice(0,17).map((item,index)=>({...item,property_id:`id-${index}`}));
+  const retail = new Set(['id-1','id-2','id-4','id-6','id-8','id-10','id-12']);
+  let prior = allocateFeatured(candidates, retail, 0);
+  for (let visit=1; visit<100; visit++) {
+    const current=allocateFeatured(candidates,retail,visit);
+    expect(new Set([...current.slots.values()].map(item=>item?.property_slug)).size).toBe(featuredSlots.length);
+    for(const slot of featuredSlots) expect(current.slots.get(slot)?.property_slug, `${slot} at visit ${visit}`).not.toBe(prior.slots.get(slot)?.property_slug);
+    expect(retail.has(current.slots.get('retail')!.property_id)).toBe(true);
+    prior=current;
+  }
+});
+
+it('covers the real-sized cover pool and handles period boundaries with filtered retail', () => {
+  const candidates=pool.slice(0,17).map((item,index)=>({...item,property_id:`id-${index}`}));
+  for(const count of [1,7,16,17]){
+    const retail=new Set(candidates.slice(0,count).map(item=>item.property_id));
+    const period=candidates.length*count;
+    const exposure=new Map(featuredSlots.map(slot=>[slot,new Set<string>()]));
+    let previous=allocateFeatured(candidates,retail,0);
+    for(let visit=1;visit<=period*2;visit++){
+      const current=allocateFeatured(candidates,retail,visit);
+      expect(new Set([...current.slots.values()].map(item=>item?.property_slug)).size).toBe(featuredSlots.length);
+      for(const slot of featuredSlots){
+        exposure.get(slot)!.add(current.slots.get(slot)!.property_slug);
+        if(slot!=='retail'||count>1)expect(current.slots.get(slot)?.property_slug,`${slot}, retail pool ${count}, visit ${visit}`).not.toBe(previous.slots.get(slot)?.property_slug);
+      }
+      previous=current;
+    }
+    for(const slot of featuredSlots)expect(exposure.get(slot)!.size,`${slot}, retail pool ${count}`).toBe(slot==='retail'?count:candidates.length-(count===1?1:0));
+  }
+});

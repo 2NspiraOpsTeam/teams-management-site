@@ -1,4 +1,3 @@
-import { PageShowcase } from '@/components/page-showcase';
 import type { Metadata } from 'next';
 import { AcrossCityRail } from '@/components/across-city-rail';
 import Link from 'next/link';
@@ -6,8 +5,8 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
-import { homeMedia, propertyMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
+import { homeMedia, publicMediaSrc, type MediaRow } from '@/lib/media-management';
+import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
 import type { BuildingPublic } from '@/lib/database.types';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 
@@ -28,9 +27,7 @@ export default async function Home() {
   const eligible = (await Promise.all(buildings.map(async building => {
     const cover = service.eligible.find(item => item.property_slug === building.slug);
     if (!cover) return [];
-    const images = await propertyMedia(db, building.slug);
-    const image = images.find(item => item.id === cover.media_asset_id);
-    return [{ building, image: image ?? ({ id: cover.media_asset_id, storage_key: cover.storage_key, alt_text: cover.alt_text } as MediaRow) }];
+    return [{ building, image: { id: cover.media_asset_id, storage_key: cover.storage_key, alt_text: cover.alt_text } as MediaRow }];
   }))).flat();
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
   const candidates = unique(eligible);
@@ -40,7 +37,11 @@ export default async function Home() {
     .map(item => item && candidateBySlug.get(item.property_slug))
     .filter((item): item is Feature => !!item);
   const showcaseImages = new Map(candidates.map(item => [item.building.slug, item.image]));
-  const showcase = buildings.flatMap(building => {
+  const featuredSlugs = new Set([...service.slots.entries()].filter(([slot]) => slot !== 'home:showcase').map(([,item]) => item?.property_slug));
+  const railStart = service.select('home:showcase')?.property_slug;
+  const showcasePool = buildings.filter(building => !featuredSlugs.has(building.slug));
+  const start = Math.max(0, showcasePool.findIndex(building => building.slug === railStart));
+  const showcase = [...showcasePool.slice(start), ...showcasePool.slice(0, start)].flatMap(building => {
     const image = showcaseImages.get(building.slug);
     if (!image) return [];
     return [{ slug: building.slug, name: building.name, location: location(building), href: previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`, src: publicMediaSrc(image), alt: image.alt_text || `Approved cover photo of ${building.name}` }];
@@ -48,7 +49,7 @@ export default async function Home() {
   const hero = assignments.find(item => item.slot === 'hero') || featured[0]?.image;
   const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || eligible[0]?.image;
 
-  return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
+  return <><Header /><main id="main-content" className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative isolate flex min-h-[min(720px,78svh)] items-end overflow-hidden bg-teams-charcoal text-white sm:min-h-[680px]">
       {hero && <div className="absolute inset-0 -z-20">{photo(hero, 'Teams Management property', true)}</div>}
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#1d2022]/90 via-[#1d2022]/35 to-[#1d2022]/15" />
@@ -80,7 +81,7 @@ export default async function Home() {
       <div className="mb-11 flex flex-wrap items-end justify-between gap-5"><div><p className="home-eyebrow">The portfolio</p><h2 id="featured-title" className="font-serif text-4xl font-normal sm:text-6xl">Featured properties</h2></div><p className="mb-0 max-w-xs text-sm text-teams-secondary">A closer look at selected addresses in our portfolio.</p></div>
       {featured.length > 0 ? <div className="space-y-14 sm:space-y-20">{featured.map(({building,image},index) => <article key={building.slug} className={`grid gap-5 lg:grid-cols-12 lg:items-center lg:gap-12 ${index % 2 ? 'lg:[&>div:first-child]:order-2' : ''}`}>
         <Link href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`} className="home-image-link block aspect-[4/3] overflow-hidden bg-stone-200 sm:aspect-[16/10] lg:col-span-8" aria-label={`View ${building.name}`}>{photo(image, `Approved cover photo of ${building.name}`)}</Link>
-        <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3>{previewPortfolioEnabled && <p className="mb-2 text-sm font-semibold text-teams-ink">{building.slug === '61-gold-st' ? 'Premier property · Coming soon' : 'Retail space'}</p>}<p className="mb-6 text-sm text-teams-secondary">{building.address.street} · {building.address.city}, {building.address.state}</p><Link className="home-text-link" href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`}>{previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? 'View Commercial Property' : 'View Property'} <span aria-hidden="true">↗</span></Link></div>
+        <div className="lg:col-span-4"><p className="home-eyebrow">{String(index + 1).padStart(2, '0')} / {location(building)}</p><h3 className="mb-3 font-serif text-3xl font-normal sm:text-4xl">{building.name}</h3><p className="mb-6 text-sm text-teams-secondary">{building.address.street} · {building.address.city}, {building.address.state}</p><Link className="home-text-link" href={previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`}>{previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? 'View Commercial Property' : 'View Property'} <span aria-hidden="true">↗</span></Link></div>
       </article>)}</div> : <div className="border-t border-stone-300 py-14"><p className="mb-5">Explore the properties currently available to view.</p><Link className="home-text-link" href="/properties">View All Properties ↗</Link></div>}
       <div className="pt-16 text-center sm:pt-20"><Link className="home-button border border-teams-ink text-teams-ink hover:bg-teams-ink hover:text-white" href="/properties">View All Properties <span aria-hidden="true">↗</span></Link></div>
     </div></section>
@@ -95,6 +96,6 @@ export default async function Home() {
         <Link className="home-resident-link inline-flex min-h-12 items-center justify-between gap-8 border-b-2 border-teams-gold py-3 font-semibold text-teams-ink" href="/tenant-services">Explore Tenant Services <span aria-hidden="true">↗</span></Link>
       </div>
     </section>
-<PageShowcase page="home" variant="wide"/>    <section className="texture-graphite bg-teams-charcoal px-5 py-20 text-center text-white sm:py-28"><p className="home-eyebrow text-[#e5d5b2]">Get in touch</p><h2 className="mx-auto mb-7 max-w-xl font-serif text-4xl font-normal sm:text-6xl">Let’s start a conversation.</h2><Link className="home-button bg-teams-gold text-[#111]" href="/contact">Contact Teams ↗</Link></section>
+    <section className="texture-graphite bg-teams-charcoal px-5 py-20 text-center text-white sm:py-28"><p className="home-eyebrow text-[#e5d5b2]">Get in touch</p><h2 className="mx-auto mb-7 max-w-xl font-serif text-4xl font-normal sm:text-6xl">Let’s start a conversation.</h2><Link className="home-button bg-teams-gold text-[#111]" href="/contact">Contact Teams ↗</Link></section>
   </main><Footer /></>;
 }
