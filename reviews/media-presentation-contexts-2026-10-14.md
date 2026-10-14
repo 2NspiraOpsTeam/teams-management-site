@@ -16,7 +16,7 @@
 - A source-assignment restore snapshot was saved outside the repository with owner-only permissions. No credentials were added to source.
 
 ## Verification
-- 54 automated tests passed, including 8 SQLite-backed context tests for migration idempotence, cover and order isolation, reuse, explicit fallback, revoked approval filtering, atomic rollback and stale writes.
+- 55 automated tests passed, including 9 SQLite-backed context tests for migration idempotence, cover and order isolation, reuse, explicit fallback, revoked approval filtering, atomic rollback and stale writes.
 - Typecheck and Pages build passed.
 - Local Pages rendered QA: desktop 1440px, tablet 768px, mobile 390px; no overflow or page errors.
 - Authenticated isolated fixture: independent Retail cover/gallery/order, same asset reuse, refresh, cancel, failure preserving draft, safe retry, double-click protection, malformed/unapproved selection rejection, anonymous and origin guards.
