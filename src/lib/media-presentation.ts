@@ -1,10 +1,12 @@
+import { propertyPhotoNumbers } from './property-photo-numbers';
 import type { D1Database } from '@cloudflare/workers-types';
 import { isDeliverablePublicMedia, type MediaRow } from './media-management';
 import { type MediaContext,type PresentationInput,type PresentationSettings,type GallerySelection } from './media-presentation-input';
 export * from './media-presentation-input';
 export async function presentationCandidates(db:D1Database,buildingId:string):Promise<MediaRow[]> {
  const rows=await db.prepare(`SELECT a.*,m.id AS assignment_id,m.is_cover,m.order_index,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(m.caption,''),a.caption) AS caption FROM media_assignments m JOIN media_assets a ON a.id=m.asset_id JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 WHERE m.building_id=? AND m.unit_id IS NULL AND a.visibility='public' AND a.file_type LIKE 'image/%' ORDER BY m.order_index,m.created_at`).bind(buildingId).all<MediaRow>();
- return [...new Map(rows.results.filter(isDeliverablePublicMedia).map(r=>[r.id,r])).values()];
+ const numbers=await propertyPhotoNumbers(db,buildingId);
+ return [...new Map(rows.results.filter(isDeliverablePublicMedia).map(r=>[r.id,{...r,photo_number:numbers.get(r.id)}])).values()];
 }
 export async function presentationState(db:D1Database,id:string){
  const [candidates,settings,gallery]=await Promise.all([presentationCandidates(db,id),db.prepare('SELECT context,cover_asset_id,fallback_to_property_cover,revision FROM media_presentation_settings WHERE building_id=?').bind(id).all<PresentationSettings&{context:MediaContext}>(),db.prepare('SELECT context,asset_id,kind FROM media_presentation_gallery WHERE building_id=? ORDER BY order_index,asset_id').bind(id).all<GallerySelection&{context:MediaContext}>()]);

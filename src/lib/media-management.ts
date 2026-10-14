@@ -1,7 +1,7 @@
 import type { D1Database } from '@cloudflare/workers-types';
 import { goldStreetGallery } from './preview-portfolio';
 
-export type MediaRow = { id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; in_gallery?:number; slot?:string; property_name?:string|null; property_slug?:string|null; unit_identifier?:string|null };
+export type MediaRow = { photo_number?:number; id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; in_gallery?:number; slot?:string; property_name?:string|null; property_slug?:string|null; unit_identifier?:string|null };
 const numberedPreviewMedia = (slug:string,count:number) => Array.from({ length: count }, (_,index) => `/preview-properties/${slug}/image-${String(index + 1).padStart(2,'0')}.jpg`);
 const deliverableStaticMedia = new Set([
   '/preview-properties/42-70-156th-street.jpg',
