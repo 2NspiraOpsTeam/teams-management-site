@@ -1,10 +1,10 @@
-export type MailEnv = { GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; TENANT_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; INQUIRY_NOTIFICATION_EMAIL?: string; INQUIRY_FROM_EMAIL?: string; MAIL_PROVIDER?: string };
+export type MailEnv = { GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; TENANT_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; INQUIRY_FROM?: string; INQUIRY_NOTIFY_TO?: string; INQUIRY_QA_TO?: string; INQUIRY_QA_ID?: string; MAIL_PROVIDER?: string };
 
 import { gmailConfigured, sendGmail } from './gmail-provider';
 
 export interface TeamsMailService {
   sendAdminOtp(to: string, code: string): Promise<string>;
-  sendInquiryNotification(to: string, inquiryId: string): Promise<string>;
+  sendInquiryNotification(to: string, inquiryId: string, qa?: boolean): Promise<string>;
   sendApplicationConfirmation(to: string, text: string): Promise<string>;
 }
 
@@ -29,9 +29,9 @@ export class MailService implements TeamsMailService {
   async sendApplicationConfirmation(_to: string, _text: string): Promise<string> {
     throw new Error('application_confirmation_not_enabled');
   }
-  async sendInquiryNotification(to: string, inquiryId: string) {
-    const from = this.env.INQUIRY_FROM_EMAIL;
+  async sendInquiryNotification(to: string, inquiryId: string, qa = false) {
+    const from = this.env.INQUIRY_FROM;
     if (!from) throw new Error('inquiry_sender_not_configured');
-    return sendGmail(this.env, from, to, 'New Teams Management inquiry', `A new inquiry (${inquiryId}) is stored in the Teams Management admin inbox. Sign in to review it. No private inquiry content is included in this email.`);
+    return sendGmail(this.env, from, to, qa ? '[QA] Teams Management Website Inquiry Test' : 'New Teams Management inquiry', `${qa ? 'Approved preview QA test. No action is required. ' : ''}A new inquiry (${inquiryId}) is stored in the Teams Management admin inbox. Sign in to review it. No private inquiry content is included in this email.`);
   }
 }

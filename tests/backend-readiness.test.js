@@ -8,7 +8,7 @@ vi.mock('../src/lib/mail-service', () => ({ MailService: class {
   configured(){return true;}
   async sendAdminOtp(email,code){if(state.failMail)throw Error('mail');state.mail.push({email,code});return 'local-mail';}
   async sendTenantOtp(email,code){if(state.failMail)throw Error('mail');state.mail.push({email,code});return 'local-mail';}
-  async sendInquiryNotification(){return 'local-mail';}
+  async sendInquiryNotification(to,id,qa){state.mail.push({to,id,qa,persisted:Boolean(await state.env.DB.prepare('SELECT id FROM inquiries WHERE id=?').bind(id).first())});if(state.failMail)throw Error('gmail_send_http_403');return 'local-mail';}
 } }));
 import * as admin from '../src/app/api/admin/session/route';
 import * as tenant from '../src/app/api/tenant/session/route';
@@ -43,6 +43,27 @@ describe('local SQLite-backed auth, isolation and persistence (mail stubbed)',()
  it('denies diagnostic reports and uploads without a verified Admin',async()=>{expect((await reports.GET()).status).toBe(401);expect((await uploads.POST(post('/upload',{}))).status).toBe(401);state.cookies.set('teams_admin_session','0'.repeat(64));expect((await reports.GET()).status).toBe(401);});
  it('maintenance persists once across retries, is audited, hides staff notes and rejects cross-tenant assignment',async()=>{await signIn(tenant,'one@example.test','teams_tenant_session');const input={idempotencyKey:crypto.randomUUID(),assignmentId:'a1',category:'plumbing',description:'QA only: leaking faucet',urgency:'routine',preferredContact:'email'};expect((await maintenance.POST(post('/maintenance',input))).status).toBe(201);expect((await maintenance.POST(post('/maintenance',input))).status).toBe(200);expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_maintenance_requests').get().n).toBe(1);expect(sql.prepare("SELECT COUNT(*) AS n FROM audit_log WHERE action='submitted'").get().n).toBe(1);expect((await maintenance.POST(post('/maintenance',{...input,description:'Changed body cannot reuse receipt'}))).status).toBe(409);expect((await maintenance.POST(post('/maintenance',{...input,idempotencyKey:crypto.randomUUID(),assignmentId:'a2'}))).status).toBe(403);const history=await (await maintenance.GET()).json();expect(history.requests).toHaveLength(1);expect(history.requests[0]).not.toHaveProperty('staff_notes');await signIn(tenant,'two@example.test','teams_tenant_session');expect((await (await maintenance.GET()).json()).requests).toEqual([]);});
  it('contact validates malformed/oversized requests; saves atomically and suppresses duplicate retries',async()=>{expect((await contact.POST(new Request(origin+'/contact',{method:'POST',headers:{origin,'content-type':'application/json'},body:'{'}))).status).toBe(400);expect((await contact.POST(post('/contact',{message:'x'.repeat(13000)}))).status).toBe(413);const input={idempotencyKey:crypto.randomUUID(),category:'property',name:'QA Test',email:'qa@example.test',phone:'2125550100',propertyInterest:'QA One',message:'QA integration inquiry only'};expect((await contact.POST(post('/contact',input))).status).toBe(201);expect((await contact.POST(post('/contact',input))).status).toBe(200);await Promise.all(state.jobs);expect(sql.prepare('SELECT COUNT(*) AS n FROM inquiry_details').get().n).toBe(1);expect(sql.prepare('SELECT state,error_code FROM inquiry_notifications').get()).toMatchObject({state:'pending',error_code:'configuration_pending'});expect((await contact.POST(post('/contact',{...input,building:'qa-two',idempotencyKey:crypto.randomUUID()}))).status).toBe(400);});
+ it('D1-first notification records Gmail outcome and suppresses retry/concurrent duplication',async()=>{
+  state.env.INQUIRY_FROM='sender@example.test';state.env.INQUIRY_NOTIFY_TO='destination@example.test';state.env.INQUIRY_QA_TO='qa@example.test';
+  const id=crypto.randomUUID();state.env.INQUIRY_QA_ID=id;
+  const input={idempotencyKey:id,category:'general',name:'QA Test',email:'qa@example.test',message:'Approved preview QA test only'};
+  const response=await contact.POST(post('/contact',input));expect(response.status).toBe(201);
+  expect(sql.prepare('SELECT id FROM inquiries WHERE id=?').get(id).id).toBe(id);
+  await Promise.all(state.jobs);
+  expect(state.mail).toEqual([{to:'destination@example.test, qa@example.test',id,qa:true,persisted:true}]);
+  expect(sql.prepare('SELECT state,attempts,provider_id,destination FROM inquiry_notifications').get()).toMatchObject({state:'sent',attempts:1,provider_id:'local-mail',destination:'destination@example.test, qa@example.test'});
+  expect((await contact.POST(post('/contact',input))).status).toBe(200);
+  const {attemptInquiryNotification}=await import('../src/lib/inquiry-notifications');
+  await Promise.all([attemptInquiryNotification(db,state.env,id),attemptInquiryNotification(db,state.env,id)]);
+  expect(state.mail).toHaveLength(1);
+ });
+ it('Gmail failure cannot reverse visitor success and does not resend on retry',async()=>{
+  state.env.INQUIRY_FROM='sender@example.test';state.env.INQUIRY_NOTIFY_TO='destination@example.test';state.failMail=true;
+  const input={idempotencyKey:crypto.randomUUID(),category:'general',name:'QA Test',email:'qa@example.test',message:'Approved failure injection test'};
+  expect((await contact.POST(post('/contact',input))).status).toBe(201);await Promise.all(state.jobs);
+  expect(sql.prepare('SELECT state,attempts,error_code FROM inquiry_notifications').get()).toMatchObject({state:'failed',attempts:1,error_code:'gmail_send_http_403'});
+  expect((await contact.POST(post('/contact',input))).status).toBe(200);expect(state.mail).toHaveLength(1);expect(state.mail[0].qa).toBe(false);
+ });
  it('private/unpublished media returns 404 and static redirects stay same-origin',async()=>{sql.exec("INSERT INTO media_assets(id,storage_key,file_type,visibility) VALUES ('private','preview-d1/private','image/jpeg','internal'),('static','/preview-properties/approved.jpg','image/jpeg','public'); INSERT INTO media_assignments(id,asset_id,building_id) VALUES ('m1','static','b1'); INSERT INTO media_publications(assignment_id,published) VALUES ('m1',1)");expect((await mediaResponse(db,'private',false)).status).toBe(404);const response=await mediaResponse(db,'static',false);expect(response.headers.get('location')).toBe('/preview-properties/approved.jpg');sql.exec('UPDATE media_publications SET published=0');expect((await mediaResponse(db,'static',false)).status).toBe(404);});
  it('bounds streamed bodies even without Content-Length',async()=>{const request=new Request(origin,{method:'POST',body:new ReadableStream({start(c){c.enqueue(new Uint8Array(9));c.enqueue(new Uint8Array(9));c.close()}}),duplex:'half'});await expect(boundedBody(request,12)).rejects.toBeInstanceOf(BodyTooLarge);});
 });
