@@ -49,7 +49,7 @@ export default async function PropertiesPage() {
               </div>
             </nav>
             <div className="min-w-0 space-y-12 sm:space-y-16">
-              {buildings.map(building => <PropertyCard key={building.id} anchorId={`property-${building.slug}`} building={building} images={galleryMap.get(building.slug)} showPreviewFacts={previewPortfolioEnabled} hasRetail={retailSlugs.has(building.slug)} />)}
+              {buildings.map(building => <PropertyCard key={building.id} anchorId={`property-${building.slug}`} building={building} images={galleryMap.get(building.slug)} hasRetail={retailSlugs.has(building.slug)} />)}
             </div>
           </div> : <p className="text-slate-600">Contact our team to ask about a property.</p>}
           <div className="mt-12 text-center p-8 bg-slate-50 rounded-lg">

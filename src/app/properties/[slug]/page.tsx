@@ -11,7 +11,6 @@ import { propertyMedia, propertyUnitMedia, publicMediaSrc } from '@/lib/media-ma
 import { canonicalPreviewBuildings, getPublicBuilding } from '@/lib/public-buildings';
 import { listPublicDining } from '@/lib/public-dining';
 import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos, sarasotaUnitMapLocation, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
-import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
 import { greatSchoolsZipUrl, nycLivingFacts } from '@/lib/nyc-living-facts';
@@ -75,7 +74,6 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-8 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
 
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
-        {previewPortfolioEnabled && <div className="mb-10"><h2 className="mb-5 font-serif text-2xl font-semibold text-teams-ink">Property details</h2><PreviewBuildingDetails slug={building.slug} /></div>}
         {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
         {Object.entries(unitGroups).map(([unit,items])=><section key={unit} aria-label={`Apartment ${unit} photos`} className="mb-12"><h2 className="mb-3 text-2xl font-serif font-semibold text-teams-ink">Apartment {unit} photos</h2><p className="mb-4 text-sm text-slate-600">These photos show this apartment only. Contact Teams Management for current availability.</p><PropertyGallery images={(items||[]).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Apartment ${unit} interior`,caption:item.caption}))} name={`Apartment ${unit}`} /></section>)}
         {previewPortfolioEnabled && slug === '61-gold-st' && <section className="mb-10 rounded-lg border border-stone-200 bg-[#f7f4ee] p-6 sm:p-8" aria-labelledby="gold-street-plans">

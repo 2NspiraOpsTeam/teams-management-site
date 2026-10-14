@@ -2,7 +2,6 @@ import { addressLabel } from '@/lib/map-location';
 import Link from 'next/link';
 import type { BuildingPublic } from '@/lib/database.types';
 import { mapLocationUrl, streetViewExploreUrl } from '@/lib/map-location';
-import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery, type GalleryImage } from '@/components/property-gallery';
 
 interface PropertyCardProps {
@@ -10,11 +9,10 @@ interface PropertyCardProps {
   anchorId?: string;
   coverOverride?: {src:string;alt:string}|null;
   images?: GalleryImage[];
-  showPreviewFacts?: boolean;
   hasRetail?: boolean;
 }
 
-export function PropertyCard({ building, anchorId, coverOverride, images = [], showPreviewFacts = false, hasRetail = false }: PropertyCardProps) {
+export function PropertyCard({ building, anchorId, coverOverride, images = [], hasRetail = false }: PropertyCardProps) {
   const address = addressLabel(building.address);
   const location = building.address.neighborhood || building.address.city;
   const photos = images.length ? images : coverOverride ? [coverOverride] : [];
@@ -29,7 +27,6 @@ export function PropertyCard({ building, anchorId, coverOverride, images = [], s
         <p className="mt-2 mb-0 text-sm font-semibold uppercase tracking-[0.08em] text-slate-700">{location}</p>
         <p className="mt-5 mb-0 text-sm text-slate-600 break-words">{address}</p>
         {building.description_public && <p className="mt-5 mb-0 text-base leading-relaxed text-slate-700">{building.description_public}</p>}
-        {showPreviewFacts && <PreviewBuildingDetails slug={building.slug} />}
         {building.amenities_public.length > 0 && (
           <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-x-5 gap-y-2 text-sm leading-snug text-slate-700" aria-label="Verified property features">
             {building.amenities_public.map(amenity => <li key={amenity.id}>{amenity.name}</li>)}
