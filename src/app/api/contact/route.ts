@@ -68,7 +68,13 @@ export async function POST(request: Request) {
     }
     // D1 commit is authoritative; delivery is asynchronous and cannot turn success into failure.
     const context = getRequestContext();
-    context.ctx.waitUntil(attemptInquiryNotification(db, context.env as NotificationEnv, id));
+    try {
+      context.ctx.waitUntil(attemptInquiryNotification(db, context.env as NotificationEnv, id));
+    } catch {
+      // An unavailable scheduler must not reverse an already committed receipt.
+      // The persisted notification remains pending for explicit Admin review.
+      console.error('Inquiry saved; notification scheduler unavailable');
+    }
     return reply({ received: true, id }, 201);
   } catch (error) {
     if (error instanceof BodyTooLarge) return reply({ error: 'Message is too long' }, 413);
