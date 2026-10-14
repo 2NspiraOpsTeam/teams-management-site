@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
 export const runtime = 'edge';
-const statuses = new Set(['available_internal','occupied','under_construction','maintenance']);
+const statuses = new Set(['unverified','available_internal','occupied','under_construction','maintenance']);
 export async function GET(request: Request) {
   const admin = await requireAdmin(); if (!admin) return unauthorized();
   const q = new URL(request.url).searchParams.get('q')?.trim().slice(0,100) || '';
+  const buildingId = new URL(request.url).searchParams.get('buildingId');
+  if (buildingId) { const rows=await admin.db.prepare('SELECT id,unit_identifier FROM units WHERE building_id=? ORDER BY unit_identifier LIMIT 100').bind(buildingId).all();return NextResponse.json(rows.results,{headers:{'Cache-Control':'no-store'}}); }
   const rows = await admin.db.prepare('SELECT u.id,u.building_id,b.name AS building_name,u.unit_identifier,u.floor_number,u.layout_id,u.status,u.created_at FROM units u JOIN buildings b ON b.id=u.building_id WHERE u.unit_identifier LIKE ? OR b.name LIKE ? ORDER BY b.name,u.unit_identifier LIMIT 100').bind(`%${q}%`,`%${q}%`).all();
   return NextResponse.json(rows.results,{headers:{'Cache-Control':'no-store'}});
 }

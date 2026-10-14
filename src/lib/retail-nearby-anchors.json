@@ -1,0 +1,229 @@
+{
+  "71-e-110th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Park View Hotel",
+      "source": "https://www.openstreetmap.org/relation/3623587",
+      "mapQuery": "40.7982765,-73.9517524",
+      "destinationQuery": "Park View Hotel, 55 West 110th Street, New York, NY 10026",
+      "addressDetail": "55 West 110th Street, New York, NY 10026"
+    }
+  ],
+  "173-e-91st-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Franklin",
+      "source": "https://www.openstreetmap.org/node/7868765654",
+      "mapQuery": "40.7795881,-73.9539993",
+      "destinationQuery": "The Franklin, 164 East 87th Street, New York, NY 10128",
+      "addressDetail": "164 East 87th Street, New York, NY 10128"
+    },
+    {
+      "category": "parking",
+      "label": "Parking",
+      "name": "Knickerbocker Plaza Car Park",
+      "source": "https://www.openstreetmap.org/way/651661740",
+      "mapQuery": "40.7817347,-73.9496106",
+      "destinationQuery": "Knickerbocker Plaza Car Park, 240 East 92nd Street, New York, NY 10128",
+      "addressDetail": "240 East 92nd Street, New York, NY 10128"
+    }
+  ],
+  "1626-2nd-ave": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Franklin",
+      "source": "https://www.openstreetmap.org/node/7868765654",
+      "mapQuery": "40.7795881,-73.9539993",
+      "destinationQuery": "The Franklin, 164 East 87th Street, New York, NY 10128",
+      "addressDetail": "164 East 87th Street, New York, NY 10128"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Comic Strip Live",
+      "source": "https://www.openstreetmap.org/node/5794935823",
+      "mapQuery": "40.7748581,-73.9536956",
+      "destinationQuery": "Comic Strip Live, 1568 2nd Avenue, New York, NY 10028",
+      "addressDetail": "1568 2nd Avenue, New York, NY 10028"
+    }
+  ],
+  "225-e-83rd-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Franklin",
+      "source": "https://www.openstreetmap.org/node/7868765654",
+      "mapQuery": "40.7795881,-73.9539993",
+      "destinationQuery": "The Franklin, 164 East 87th Street, New York, NY 10128",
+      "addressDetail": "164 East 87th Street, New York, NY 10128"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Comic Strip Live",
+      "source": "https://www.openstreetmap.org/node/5794935823",
+      "mapQuery": "40.7748581,-73.9536956",
+      "destinationQuery": "Comic Strip Live, 1568 2nd Avenue, New York, NY 10028",
+      "addressDetail": "1568 2nd Avenue, New York, NY 10028"
+    }
+  ],
+  "171-e-74th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Carlyle",
+      "source": "https://www.openstreetmap.org/way/266898264",
+      "mapQuery": "40.7743810,-73.9629902",
+      "destinationQuery": "The Carlyle, 35 East 76th Street, New York, NY 10021",
+      "addressDetail": "35 East 76th Street, New York, NY 10021"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "The Kaye Playhouse",
+      "source": "https://www.openstreetmap.org/node/14096143302",
+      "mapQuery": "40.7683492,-73.9644685",
+      "destinationQuery": "The Kaye Playhouse, 695 Park Avenue, New York, NY 10065",
+      "addressDetail": "695 Park Avenue, New York, NY 10065"
+    }
+  ],
+  "1374-1st-ave": [
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Caspary Auditorium",
+      "source": "https://www.openstreetmap.org/node/368051495",
+      "mapQuery": "40.7631571,-73.9559715"
+    }
+  ],
+  "1365-1st-ave": [
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Caspary Auditorium",
+      "source": "https://www.openstreetmap.org/node/368051495",
+      "mapQuery": "40.7631571,-73.9559715"
+    }
+  ],
+  "41-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Hilton Garden Inn",
+      "source": "https://www.openstreetmap.org/way/282065776",
+      "mapQuery": "40.7564654,-73.9806388",
+      "destinationQuery": "Hilton Garden Inn, 30 West 46th Street, New York, NY 10036",
+      "addressDetail": "30 West 46th Street, New York, NY 10036"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "James Earl Jones Theatre",
+      "source": "https://www.openstreetmap.org/way/266170541",
+      "mapQuery": "40.7591035,-73.9830898",
+      "destinationQuery": "James Earl Jones Theatre, 138 West 48th Street, New York, NY 10036",
+      "addressDetail": "138 West 48th Street, New York, NY 10036"
+    }
+  ],
+  "349-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "InterContinental New York Times Square",
+      "source": "https://www.openstreetmap.org/way/266034045",
+      "mapQuery": "40.7586056,-73.9896109",
+      "destinationQuery": "InterContinental New York Times Square, 300 West 44th Street, New York, NY 10036",
+      "addressDetail": "300 West 44th Street, New York, NY 10036"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Al Hirschfeld Theatre",
+      "source": "https://www.openstreetmap.org/way/265320169",
+      "mapQuery": "40.7592532,-73.9892108",
+      "destinationQuery": "Al Hirschfeld Theatre, 302 West 45th Street, New York, NY 10036",
+      "addressDetail": "302 West 45th Street, New York, NY 10036"
+    }
+  ],
+  "351-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Hotel Scherman",
+      "source": "https://www.openstreetmap.org/node/13991571083",
+      "mapQuery": "40.7604181,-73.9897070",
+      "destinationQuery": "Hotel Scherman, 346 West 46th Street, New York, NY 10036",
+      "addressDetail": "346 West 46th Street, New York, NY 10036"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Barrymore Theatre",
+      "source": "https://www.openstreetmap.org/way/266149297",
+      "mapQuery": "40.7601222,-73.9861351",
+      "destinationQuery": "Barrymore Theatre, 243 West 47th Street, New York, NY 10036",
+      "addressDetail": "243 West 47th Street, New York, NY 10036"
+    }
+  ],
+  "307-w-39th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Element",
+      "source": "https://www.openstreetmap.org/way/265296137",
+      "mapQuery": "40.7558033,-73.9918123",
+      "destinationQuery": "Element, 311 West 39th Street, New York, NY 10018",
+      "addressDetail": "311 West 39th Street, New York, NY 10018"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Nederlander Theatre",
+      "source": "https://www.openstreetmap.org/way/266143337",
+      "mapQuery": "40.7554837,-73.9883023",
+      "destinationQuery": "Nederlander Theatre, 208 West 41st Street, New York, NY 10018",
+      "addressDetail": "208 West 41st Street, New York, NY 10018"
+    }
+  ],
+  "235-w-18th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "Hotel Chelsea",
+      "source": "https://www.openstreetmap.org/node/2325990473",
+      "mapQuery": "40.7443742,-73.9968175",
+      "destinationQuery": "Hotel Chelsea, 222 West 23rd Street, New York, NY 10011",
+      "addressDetail": "222 West 23rd Street, New York, NY 10011"
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "The Joyce Theater",
+      "source": "https://www.openstreetmap.org/way/264629134",
+      "mapQuery": "40.7428177,-74.0007108",
+      "destinationQuery": "The Joyce Theater, 175 8th Avenue, New York, NY 10011",
+      "addressDetail": "175 8th Avenue, New York, NY 10011"
+    }
+  ],
+  "61-gold-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "The Beekman, A Thompson Hotel",
+      "source": "https://www.openstreetmap.org/node/9095733851",
+      "mapQuery": "40.7110329,-74.0069365",
+      "destinationQuery": "The Beekman, A Thompson Hotel, 123 Nassau Street, New York, NY 10038",
+      "addressDetail": "123 Nassau Street, New York, NY 10038"
+    },
+    {
+      "category": "parking",
+      "label": "Parking",
+      "name": "Edison ParkFast",
+      "source": "https://www.openstreetmap.org/way/274853189",
+      "mapQuery": "40.7061741,-74.0046266"
+    }
+  ]
+}

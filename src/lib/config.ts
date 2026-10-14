@@ -9,8 +9,8 @@ import { realBuildings } from './seed-data-real-buildings';
 export const config = {
   app: {
     name: 'Teams Management',
-    tagline: 'The Property Steward',
-    description: 'Premium property management and portfolio services in New York City'
+    tagline: 'Where New York feels like home.',
+    description: 'Residential and retail properties across New York City'
   },
   
   // Development: use provided building addresses (15 properties from client)

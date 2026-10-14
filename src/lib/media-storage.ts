@@ -8,7 +8,7 @@ export interface MediaStorage {
 export function previewD1MediaStorage(db:D1Database):MediaStorage {
   return {
     async put(key,bytes){let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));await db.prepare('INSERT INTO media_objects(storage_key,body_base64) VALUES (?,?)').bind(key,btoa(binary)).run();},
-    async get(key){const row=await db.prepare('SELECT body_base64 FROM media_objects WHERE storage_key=?').bind(key).first<{body_base64:string}>();return row?Uint8Array.from(atob(row.body_base64),c=>c.charCodeAt(0)):null;},
+    async get(key){const row=await db.prepare('SELECT body_base64 FROM media_objects WHERE storage_key=?').bind(key).first<{body_base64:string}>();if(!row)return null;const binary=atob(row.body_base64);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return bytes;},
     async delete(key){await db.prepare('DELETE FROM media_objects WHERE storage_key=?').bind(key).run();}
   };
 }

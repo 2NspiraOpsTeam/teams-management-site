@@ -12,13 +12,14 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "deploy:preview": "npm run build:preview:pages && wrangler pages deploy .vercel/output/static --project-name teams-management-preview --branch preview"
+    "deploy:preview": "npm run build:preview:pages && wrangler pages deploy .vercel/output/static --project-name teams-management-preview --branch preview",
+    "qa:d1:local": "bash scripts/setup-local-qa-d1.sh"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
     "@types/leaflet": "^1.9.22",
-    "jose": "^6.2.12",
     "leaflet": "^1.9.4",
+    "maplibre-gl": "^6.14.0",
     "next": "^15.4.11",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
