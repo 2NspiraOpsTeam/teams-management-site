@@ -32,7 +32,7 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
   const current = images[index % images.length];
   const photo = <img key={current.src} src={current.src} alt={current.alt} fetchPriority={hero ? 'high' : undefined} onLoad={() => setLoadedSrc(current.src)} onError={() => setLoadedSrc(current.src)} className={`property-image w-full ${imageAspect} object-cover`} />;
   const move = (delta: number) => setIndex(value => (value + delta + images.length) % images.length);
-  return <figure className="min-w-0" onMouseEnter={() => { if (!hero) setPaused(true); }} onMouseLeave={() => { if (!hero) setPaused(false); }} onFocusCapture={() => setPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}>
+  return <figure className="min-w-0" onMouseEnter={() => { if (!hero) setPaused(true); }} onMouseLeave={() => { if (!hero) setPaused(false); }} onFocusCapture={event => setPaused(!hero || event.target.matches(':focus-visible'))} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}>
     <div className={`relative overflow-hidden ${hero ? "" : "border border-slate-200"} bg-slate-100`}>
       {href ? <a href={href} aria-label={`View Residential Property: ${name}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-teams-gold">{photo}</a> : photo}
       {hero && address && <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent px-4 pb-20 pt-6 text-white sm:px-8 sm:pt-10 lg:px-12">
