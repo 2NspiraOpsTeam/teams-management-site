@@ -1,5 +1,5 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { reply } from "./server";
+import { reply, decodePhoto } from "./server";
 export async function photoResponse(
   db: D1Database,
   id: string,
@@ -12,16 +12,13 @@ export async function photoResponse(
     .bind(...(tenantId ? [id, tenantId] : [id]))
     .first<{ mime: string; content_base64: string }>();
   if (!p) return reply({ error: "Photo not found." }, 404);
-  return new Response(
-    Uint8Array.from(atob(p.content_base64), (c) => c.charCodeAt(0)),
-    {
-      headers: {
-        "Content-Type": p.mime,
-        "Cache-Control": "private, no-store",
-        "X-Content-Type-Options": "nosniff",
-        "Content-Disposition": 'inline; filename="maintenance-photo"',
-        "Content-Security-Policy": "default-src 'none'; sandbox",
-      },
+  return new Response(decodePhoto(p.content_base64), {
+    headers: {
+      "Content-Type": p.mime,
+      "Cache-Control": "private, no-store",
+      "X-Content-Type-Options": "nosniff",
+      "Content-Disposition": 'inline; filename="maintenance-photo"',
+      "Content-Security-Policy": "default-src 'none'; sandbox",
     },
-  );
+  });
 }

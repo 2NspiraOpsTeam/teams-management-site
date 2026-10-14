@@ -1,3 +1,4 @@
+import { imageDimensions } from "@/lib/media-management";
 import type { D1Database } from "@cloudflare/workers-types";
 import { NextResponse } from "next/server";
 import { boundedBody } from "@/lib/request-body";
@@ -30,6 +31,13 @@ export function category(value: unknown) {
     throw Error("Select a maintenance category.");
   return value;
 }
+/** Avoid per-byte callback/string allocations on bounded edge-runtime photo reads. */
+export function decodePhoto(data: string) {
+  const raw = atob(data),
+    bytes = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+  return bytes;
+}
 export function photos(value: unknown): PhotoInput[] {
   if (value === undefined) return [];
   if (!Array.isArray(value) || value.length > 4)
@@ -43,24 +51,25 @@ export function photos(value: unknown): PhotoInput[] {
       !/^[A-Za-z0-9+/]+={0,2}$/.test(p.data)
     )
       throw Error("Invalid photo.");
-    let b: string;
+    let bytes: Uint8Array;
     try {
-      b = atob(p.data);
+      bytes = decodePhoto(p.data);
     } catch {
       throw Error("Invalid photo.");
     }
-    if (b.length < 12 || b.length > 650000)
+    if (bytes.length < 12 || bytes.length > 650000)
       throw Error("Each photo must be no larger than 650 KB.");
-    const bytes = Uint8Array.from(b, (c) => c.charCodeAt(0));
-    const ok =
-      p.mime === "image/jpeg"
-        ? bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255
-        : p.mime === "image/png"
-          ? bytes.slice(0, 8).join(",") === "137,80,78,71,13,10,26,10"
-          : p.mime === "image/webp"
-            ? b.slice(0, 4) === "RIFF" && b.slice(8, 12) === "WEBP"
-            : false;
-    if (!ok) throw Error("Only JPEG, PNG and WebP photos are supported.");
+    const size = imageDimensions(bytes, p.mime);
+    if (
+      !size ||
+      size.width < 1 ||
+      size.height < 1 ||
+      size.width > 12000 ||
+      size.height > 12000
+    )
+      throw Error(
+        "Use a valid JPEG, PNG or WebP photo no larger than 12000 pixels per side.",
+      );
     return { mime: p.mime, data: p.data };
   });
 }
@@ -130,7 +139,8 @@ export function photoStatements(
         id,
         eventId,
         p.mime,
-        atob(p.data).length,
+        Math.floor((p.data.length * 3) / 4) -
+          (p.data.endsWith("==") ? 2 : p.data.endsWith("=") ? 1 : 0),
         p.data,
       ),
   );

@@ -80,6 +80,7 @@ export default function MaintenanceAdmin() {
     e.preventDefault();
     if (!data || lock.current) return;
     lock.current = true;
+    setMessage("");
     setBusy(true);
     const v = Object.fromEntries(new FormData(e.currentTarget));
     try {
@@ -107,6 +108,7 @@ export default function MaintenanceAdmin() {
   async function retry(id: string) {
     if (!data || lock.current) return;
     lock.current = true;
+    setMessage("");
     setBusy(true);
     try {
       const r = await fetch(
