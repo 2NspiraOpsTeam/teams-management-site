@@ -121,3 +121,13 @@ export const east110PenthousePhotos = [
   { src: '/preview-properties/71-e-110th-st/penthouse-bathroom.jpg', alt: 'Bathroom with tub and laundry appliance in Penthouse A', caption: 'Penthouse A · Bathroom' },
   { src: '/preview-properties/71-e-110th-st/penthouse-terrace.jpg', alt: 'Private terrace photographed from Penthouse A', caption: 'Penthouse A · Terrace' },
 ];
+
+// County parcel 2010098006 verifies Unit 402's situs address. Google Maps' exact
+// 609 Golden Gate Point result identifies The Pearl at this building point (2026-10-13).
+// This is a building-address pin for the managed unit, not management of the condominium.
+export const sarasotaUnitMapLocation = {
+  latitude: 27.33404,
+  longitude: -82.5499352,
+  geocode_status: 'verified',
+  map_verified: 1,
+} as const;

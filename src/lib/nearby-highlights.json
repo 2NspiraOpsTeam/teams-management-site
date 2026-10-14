@@ -850,7 +850,7 @@
       "label": "Library",
       "name": "Selby Library",
       "source": "https://scgovlibrary.librarymarket.com/branch/selby-library",
-      "destinationQuery": "Selby Library, 1331 First Street, Sarasota, FL 34236",
+      "destinationQuery": "1331 First Street, Sarasota, FL 34236",
       "addressDetail": "1331 First Street · Sarasota"
     },
     {
@@ -858,7 +858,7 @@
       "label": "Groceries",
       "name": "Whole Foods Market — Sarasota",
       "source": "https://www.wholefoodsmarket.com/stores/sarasota",
-      "destinationQuery": "Whole Foods Market — Sarasota, 1451 1st Street, Sarasota, FL 34236",
+      "destinationQuery": "1451 1st Street, Sarasota, FL 34236",
       "addressDetail": "1451 1st Street · Sarasota"
     },
     {
@@ -866,7 +866,7 @@
       "label": "Bayfront gardens",
       "name": "Marie Selby Botanical Gardens — Downtown Sarasota",
       "source": "https://selby.org/visit/",
-      "destinationQuery": "Marie Selby Botanical Gardens — Downtown Sarasota, 1534 Mound Street, Sarasota, FL 34236",
+      "destinationQuery": "1534 Mound Street, Sarasota, FL 34236",
       "addressDetail": "1534 Mound Street · Sarasota"
     },
     {
@@ -874,7 +874,7 @@
       "label": "Arts & culture",
       "name": "Sarasota Opera House",
       "source": "https://www.sarasotaopera.org/directions",
-      "destinationQuery": "Sarasota Opera House, 61 North Pineapple Avenue, Sarasota, FL 34236",
+      "destinationQuery": "61 North Pineapple Avenue, Sarasota, FL 34236",
       "addressDetail": "61 North Pineapple Avenue · Sarasota"
     },
     {
@@ -882,7 +882,7 @@
       "label": "Waterfront dining",
       "name": "Marina Jack",
       "source": "https://www.marinajacks.com/contact.html",
-      "destinationQuery": "Marina Jack, 2 Marina Plaza, Sarasota, FL 34236",
+      "destinationQuery": "2 Marina Plaza, Sarasota, FL 34236",
       "addressDetail": "2 Marina Plaza · Sarasota"
     }
   ]

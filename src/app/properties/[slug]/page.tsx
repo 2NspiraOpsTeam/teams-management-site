@@ -8,7 +8,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, propertyUnitMedia, publicMediaSrc } from '@/lib/media-management';
 import { getPublicBuilding } from '@/lib/public-buildings';
 import { listPublicDining } from '@/lib/public-dining';
-import { previewPortfolio, previewPortfolioEnabled, previewStaticCover, sarasotaUnitPhotos, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, previewStaticCover, sarasotaUnitPhotos, sarasotaUnitMapLocation, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
 import { PreviewBuildingDetails } from '@/components/preview-building-details';
 import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
@@ -37,7 +37,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   if (!building) notFound();
   const retail = await getPublicRetail(slug);
   const dining = await listPublicDining(slug);
-  const location = await adminDb().prepare('SELECT latitude, longitude, geocode_status, map_verified FROM buildings WHERE slug = ?').bind(slug).first<{ latitude: number | null; longitude: number | null; geocode_status: string | null; map_verified: number | null }>();
+  const dbLocation = await adminDb().prepare('SELECT latitude, longitude, geocode_status, map_verified FROM buildings WHERE slug = ?').bind(slug).first<{ latitude: number | null; longitude: number | null; geocode_status: string | null; map_verified: number | null }>();
+  const location = previewPortfolioEnabled && slug === '609-golden-gate-pt-unit-402' ? sarasotaUnitMapLocation : dbLocation;
   const hasMap = location?.map_verified === 1 && location.geocode_status === 'verified' && typeof location.latitude === 'number' && Number.isFinite(location.latitude) && Math.abs(location.latitude) <= 90 && typeof location.longitude === 'number' && Number.isFinite(location.longitude) && Math.abs(location.longitude) <= 180;
   const streetViewUrl = streetViewExploreUrl(building.address, hasMap ? { latitude: location!.latitude, longitude: location!.longitude, map_verified: true, geocode_status: 'verified' } : building);
   const streetAreaCenter = previewPortfolioEnabled && !hasMap ? nearbyStreetMapCenter(building.address) : null;
@@ -127,7 +128,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               </div>
               <p className="mt-2 text-xs text-slate-600">Opens Google Maps; Street View coverage varies.</p>
             </div>
-            {previewPortfolioEnabled && hasMap && building.address.state === 'NY' ? <GoldStreetAerial name={building.name} latitude={location!.latitude!} longitude={location!.longitude!} showFootprint={slug === '61-gold-st'} /> : hasMap || streetAreaCenter ? <div><PropertyLocationPanel name={building.name} latitude={hasMap ? location.latitude! : streetAreaCenter!.latitude} longitude={hasMap ? location.longitude! : streetAreaCenter!.longitude} showPin={!!hasMap} />{!hasMap && <p className="mt-2 text-xs text-slate-600">Nearby streets only; exact property pin not yet verified.</p>}<a href={hasMap ? satelliteMapUrl(location.latitude!, location.longitude!) : satelliteMapUrl(streetAreaCenter!.latitude, streetAreaCenter!.longitude)} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center border-b border-teams-ink text-sm font-semibold text-teams-ink">Open satellite view ↗</a></div> : <div className="flex min-h-[380px] flex-col items-center justify-center bg-stone-100 p-8 text-center"><p className="font-serif text-2xl text-teams-ink">Visit this address</p><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on map ↗</a></div>}
+            {previewPortfolioEnabled && hasMap && building.address.state === 'NY' ? <GoldStreetAerial name={building.name} latitude={location!.latitude!} longitude={location!.longitude!} showFootprint={slug === '61-gold-st'} /> : hasMap || streetAreaCenter ? <div><PropertyLocationPanel name={building.name} mapQuery={slug === '609-golden-gate-pt-unit-402' ? '609 Golden Gate Point, Sarasota, FL 34236' : undefined} latitude={hasMap ? location.latitude! : streetAreaCenter!.latitude} longitude={hasMap ? location.longitude! : streetAreaCenter!.longitude} showPin={!!hasMap} />{!hasMap && <p className="mt-2 text-xs text-slate-600">Nearby streets only; exact property pin not yet verified.</p>}{hasMap && slug === '609-golden-gate-pt-unit-402' && <p className="mt-2 text-xs text-slate-600">Pin shows The Pearl’s building address. Teams Management manages Unit 402 only.</p>}<a href={hasMap ? satelliteMapUrl(location.latitude!, location.longitude!) : satelliteMapUrl(streetAreaCenter!.latitude, streetAreaCenter!.longitude)} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center border-b border-teams-ink text-sm font-semibold text-teams-ink">Open satellite view ↗</a></div> : <div className="flex min-h-[380px] flex-col items-center justify-center bg-stone-100 p-8 text-center"><p className="font-serif text-2xl text-teams-ink">Visit this address</p><a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">View on map ↗</a></div>}
           </div>
         </section>
 

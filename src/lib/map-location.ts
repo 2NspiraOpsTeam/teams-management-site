@@ -4,16 +4,24 @@ export function addressLabel(address: BuildingPublic['address']) {
   return [address.street, address.city, address.state, address.zip].filter(Boolean).join(', ');
 }
 
+/** Navigation routes to a building address, not an apartment identifier. Display copy remains unit-specific. */
+export function navigationAddressLabel(address: BuildingPublic['address']) {
+  if (address.state.toUpperCase() === 'FL' && address.city.toLowerCase() === 'sarasota' && /^609 Golden Gate Point,? Unit 402$/i.test(address.street.trim())) {
+    return '609 Golden Gate Point, Sarasota, FL 34236';
+  }
+  return addressLabel(address);
+}
+
 export function mapLocationUrl(address: BuildingPublic['address']) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLabel(address))}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(navigationAddressLabel(address))}`;
 }
 
 export function directionsToPropertyUrl(address: BuildingPublic['address']) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addressLabel(address))}`;
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(navigationAddressLabel(address))}`;
 }
 
 export function directionsFromPropertyUrl(address: BuildingPublic['address'], destination: string) {
-  return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(addressLabel(address))}&destination=${encodeURIComponent(destination)}&travelmode=walking`;
+  return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(navigationAddressLabel(address))}&destination=${encodeURIComponent(destination)}&travelmode=walking`;
 }
 
 export function satelliteMapUrl(latitude: number, longitude: number) {
@@ -43,7 +51,7 @@ export function streetViewExploreUrl(address: BuildingPublic['address'], locatio
   if (location?.map_verified && location.geocode_status === 'verified' && typeof location.latitude === 'number' && typeof location.longitude === 'number' && Number.isFinite(location.latitude) && Number.isFinite(location.longitude) && location.latitude >= -90 && location.latitude <= 90 && location.longitude >= -180 && location.longitude <= 180) {
     return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${location.latitude},${location.longitude}`;
   }
-  return `https://www.google.com/maps?q=${encodeURIComponent(addressLabel(address))}&layer=c`;
+  return `https://www.google.com/maps?q=${encodeURIComponent(navigationAddressLabel(address))}&layer=c`;
 }
 
 export function verifiedLocation(building: BuildingPublic) {

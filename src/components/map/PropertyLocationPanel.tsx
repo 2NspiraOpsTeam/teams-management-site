@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-type Props = { name: string; latitude: number; longitude: number; showPin: boolean; fullHeight?: boolean };
+type Props = { name: string; latitude: number; longitude: number; showPin: boolean; mapQuery?: string; fullHeight?: boolean };
 type MapComponent = typeof import('./PropertyLocationMap').default;
 
 export function PropertyLocationPanel(props: Props) {

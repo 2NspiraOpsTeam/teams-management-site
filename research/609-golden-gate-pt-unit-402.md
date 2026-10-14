@@ -24,3 +24,11 @@ The Sarasota page was missing the “Living nearby” card section because the r
 | Marina Jack | 2 Marina Plaza, Sarasota FL 34236 | https://www.marinajacks.com/contact.html |
 
 All five official source pages returned 200 and supplied the destination street address during this check. They establish places/addresses, not current availability, walkability, tenancy affiliation, or amenity rights for Unit 402.
+
+## Directions correction and building pin — 2026-10-13
+
+- Reproduced Jeffrey's Selby Gardens report: the branded destination string produced Google's “Did you mean” picker instead of a resolved route. Using `1534 Mound Street, Sarasota, FL 34236` as destination and `609 Golden Gate Point, Sarasota, FL 34236` as origin resolved a route in Google Maps. Apartment suffix remains in the property title and management scope, not navigation geocoding.
+- Normalize all five Sarasota directions to their verified street addresses (no display-only brand qualifiers in geocoding).
+- Sarasota County Property Appraiser parcel `2010098006` confirms `609 GOLDEN GATE PT #402`, Sarasota FL 34236, subdivision THE PEARL; https://www.sarasotapropertyappraiser.gov/propertysearch/parcel/details/2010098006.
+- Exact-address Google Maps lookup resolved `609 Golden Gate Point`, identified “The Pearl Sarasota” at that place, and returned destination coordinates `27.33404,-82.5499352`: https://www.google.com/maps/search/?api=1&query=609%20Golden%20Gate%20Point%2C%20Sarasota%2C%20FL%2034236.
+- The preview pin uses that verified building-address point and exact address query. Its caption explicitly states Teams manages Unit 402 only; it is not a unit-level interior position, an entrance claim, or a claim to manage the full condominium.

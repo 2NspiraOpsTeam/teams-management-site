@@ -69,3 +69,9 @@ it('every Admin API handler enforces session authorization and mutations reject 
   }
  }
 });
+
+
+it('preview media allowances cannot override an archived property',async()=>{
+ sql.exec("UPDATE buildings SET slug='61-gold-st',publication_state='archived' WHERE id='b1'; INSERT INTO media_assets(id,storage_key,file_type,visibility) VALUES ('archived-property-photo','/preview-properties/approved.jpg','image/jpeg','public'); INSERT INTO media_assignments(id,asset_id,building_id) VALUES ('archived-photo','archived-property-photo','b1'); INSERT INTO media_publications(assignment_id,published) VALUES ('archived-photo',1)");
+ expect((await mediaResponse(db,'archived-property-photo',false,true)).status).toBe(404);
+});

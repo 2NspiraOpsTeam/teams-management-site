@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { directionsToPropertyUrl, mapLocationUrl, nearbyStreetMapCenter, satelliteMapUrl, streetViewExploreUrl, verifiedLocation } from '../src/lib/map-location';
+import { directionsToPropertyUrl, directionsFromPropertyUrl, mapLocationUrl, nearbyStreetMapCenter, satelliteMapUrl, streetViewExploreUrl, verifiedLocation } from '../src/lib/map-location';
 import type { BuildingPublic } from '../src/lib/database.types';
 
 const building = { address: { street: '61 Gold St', city: 'New York', state: 'NY', zip: '' }, latitude: 40.7, longitude: -74, geocode_status: 'pending', map_verified: false } as BuildingPublic;
@@ -46,4 +46,13 @@ describe('public map eligibility', () => {
     expect(verifiedLocation({ ...building, geocode_status: 'verified', map_verified: true })).toBe(true);
     expect(verifiedLocation({ ...building, geocode_status: 'verified', map_verified: true, latitude: 200 })).toBe(false);
   });
+});
+
+
+it('routes Sarasota destinations by street address and omits the apartment from the route origin',()=>{
+ const address={street:'609 Golden Gate Point, Unit 402',city:'Sarasota',state:'FL',zip:'34236'};
+ const route=new URL(directionsFromPropertyUrl(address,'1534 Mound Street, Sarasota, FL 34236'));
+ expect(route.searchParams.get('origin')).toBe('609 Golden Gate Point, Sarasota, FL 34236');
+ expect(route.searchParams.get('destination')).toBe('1534 Mound Street, Sarasota, FL 34236');
+ expect(new URL(mapLocationUrl(address)).searchParams.get('query')).toBe('609 Golden Gate Point, Sarasota, FL 34236');
 });
