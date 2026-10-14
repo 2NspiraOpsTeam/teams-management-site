@@ -1,9 +1,12 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import { Header } from '@/components/header';
 import { DiningFeatureVideo } from '@/components/dining-feature-video';
 import { Footer } from '@/components/footer';
 import { listPublicDining, type DiningVenue } from '@/lib/public-dining';
+import { DiningPropertyRotation, type DiningProperty } from '@/components/dining-property-rotation';
+import { adminDb } from '@/lib/admin-auth';
+import { eligibleShowcases } from '@/lib/page-showcase';
+import { previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
 
 export const runtime = 'edge';
 export const metadata = {
@@ -43,6 +46,26 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
 
 export default async function DiningPage() {
   const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
+  const db = adminDb();
+  const eligible = await eligibleShowcases(db);
+  const alreadyFeatured = new Set(['61-gold-st', '3425-east-tremont-bronx', ...venues.map(venue => venue.property_slug)]);
+  try {
+    const assignments = await db.prepare("SELECT DISTINCT b.slug FROM page_showcase_assignments s JOIN buildings b ON b.id=s.property_id WHERE s.published=1").all<{slug:string}>();
+    for (const row of assignments.results) alreadyFeatured.add(row.slug);
+  } catch (error) {
+    if (!(error instanceof Error) || !/no such table/i.test(error.message)) throw error;
+  }
+  const unique = eligible.filter((item, index) => eligible.findIndex(other => other.property_id === item.property_id) === index);
+  const properties: DiningProperty[] = unique.sort((a, b) => Number(alreadyFeatured.has(a.property_slug)) - Number(alreadyFeatured.has(b.property_slug))).map(item => ({
+    slug: item.property_slug,
+    name: item.property_name,
+    image: item.image,
+    alt: item.alt_text || `Photograph of ${item.property_name}`,
+    href: previewPortfolioEnabled && item.property_slug === '3425-east-tremont-bronx' ? `/retail/${item.property_slug}` : `/properties/${item.property_slug}`,
+  }));
+  if (previewPortfolioEnabled && !properties.some(item => item.slug === '609-golden-gate-pt-unit-402')) {
+    properties.push({ slug: '609-golden-gate-pt-unit-402', name: '609 Golden Gate Point, Unit 402', image: sarasotaUnitPhotos[0].src, alt: sarasotaUnitPhotos[0].alt, href: '/properties/609-golden-gate-pt-unit-402' });
+  }
   return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative h-[calc(100svh-89px)] min-h-[360px] w-full overflow-hidden bg-teams-charcoal" aria-label="Delizia 73 film">
       <DiningFeatureVideo />
@@ -54,6 +77,6 @@ export default async function DiningPage() {
     <section className="texture-paper" aria-label="Dining destination details">
       {venues.map(venue => <VenueDetails key={venue.id} venue={venue} />)}
     </section>
-    {venues.length > 0 && <section className="border-t border-stone-200 bg-white px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="featured-property"><div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-2 md:gap-12"><Link href={`/properties/${venues[0].property_slug}`} className="group block overflow-hidden rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B49355]" aria-label={`View ${venues[0].property_name} property`}><Image src="/preview-properties/retail-delizia-hero.jpg" alt="Delizia storefront at 1374 1st Ave" width={855} height={543} sizes="(max-width: 768px) 100vw, 50vw" className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" /></Link><div><p className="text-xs font-bold uppercase tracking-[.2em] text-[#8b681f]">Featured property</p><h2 id="featured-property" className="mt-3 font-serif text-3xl sm:text-4xl">1374 1st Ave</h2><p className="mt-3 max-w-lg leading-relaxed text-slate-700">Explore the Teams Management property that is home to {venues[0].name}.</p><Link href={`/properties/${venues[0].property_slug}`} className="mt-6 inline-flex min-h-11 items-center justify-center rounded-sm bg-teams-gold px-6 py-3 font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight">View {venues[0].property_name} →</Link></div></div></section>}
+    <DiningPropertyRotation properties={properties} />
   </main><Footer /></>;
 }
