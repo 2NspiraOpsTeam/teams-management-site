@@ -28,22 +28,46 @@ export function featuredOrder<T extends { property_slug: string }>(items: T[], s
   return [...pool.slice(index), ...pool.slice(0, index)];
 }
 
-/** One deterministic, visit-wide allocation for every public featured-property slot. */
+// Cache only numeric slot indexes, never imagery or publication state. Bounded per isolate.
+const schedules = new Map<string, Map<FeaturedSlot, number>[]>();
+/** Reserve constrained retail first, then allocate a collision-free, non-repeating visit plan. */
 export function allocateFeatured<T extends { property_slug: string; property_id: string }>(
   candidates: T[], retailIds: ReadonlySet<string>, visit: number,
 ): { slots: Map<FeaturedSlot, T | null>; dining: T[] } {
-  const unique = [...new Map(candidates.map(item => [item.property_slug, item])).values()];
-  const slots = new Map<FeaturedSlot, T | null>();
-  const occupied = new Set<string>();
-  for (const slot of featuredSlots) {
-    const pool = slot === 'retail' ? unique.filter(item => retailIds.has(item.property_id)) : unique;
-    const ordered = featuredOrder(pool, slot, visit);
-    const selected = ordered.find(item => !occupied.has(item.property_slug)) ?? ordered[0] ?? null;
-    slots.set(slot, selected);
-    if (selected) occupied.add(selected.property_slug);
+  const pool = [...new Map(candidates.map(item => [item.property_slug, item])).values()]
+    .sort((a,b) => a.property_slug.localeCompare(b.property_slug));
+  const retail = pool.map((item,index)=>retailIds.has(item.property_id)?index:-1).filter(index=>index>=0);
+  const period = Math.max(1, pool.length * Math.max(1,retail.length));
+  const key = JSON.stringify([pool.map(item=>[item.property_slug,item.property_id]),retail]);
+  let schedule = schedules.get(key);
+  if (!schedule) {
+    schedule = [];
+    for (let cursor=0;cursor<period;cursor++) {
+      const plan = new Map<FeaturedSlot, number>();
+      const used = new Set<number>();
+      const previous = schedule[cursor-1];
+      const next = cursor === period-1 ? schedule[0] : undefined;
+      // Restricted slots cannot be starved by unconstrained pages consuming their candidates.
+      for (const slot of ['retail', ...featuredSlots.filter(slot=>slot!=='retail')] as FeaturedSlot[]) {
+        const indexes = slot === 'retail' ? retail : pool.map((_,index)=>index);
+        const offset = (cursor + featuredSlots.indexOf(slot)) % Math.max(1,indexes.length);
+        const ordered = [...indexes.slice(offset),...indexes.slice(0,offset)];
+        const fresh = (index:number) => index !== previous?.get(slot) && index !== next?.get(slot);
+        const selected = ordered.find(index=>!used.has(index)&&fresh(index))
+          ?? ordered.find(index=>!used.has(index))
+          ?? ordered.find(fresh) ?? ordered[0];
+        if(selected!==undefined){plan.set(slot,selected);used.add(selected);}
+      }
+      schedule.push(plan);
+    }
+    if(schedules.size>=8)schedules.delete(schedules.keys().next().value!);
+    schedules.set(key,schedule);
   }
-  const diningOrder = featuredOrder(unique, 'dining', visit);
-  const dining = [...diningOrder.filter(item => ![...slots.entries()].some(([slot, chosen]) => slot !== 'dining' && chosen?.property_slug === item.property_slug)),
-    ...diningOrder.filter(item => [...slots.entries()].some(([slot, chosen]) => slot !== 'dining' && chosen?.property_slug === item.property_slug))];
-  return { slots, dining };
+  const selected = schedule[((visit%period)+period)%period];
+  const slots = new Map(featuredSlots.map(slot=>[slot, pool[selected.get(slot) ?? -1] ?? null] as const));
+  const chosen = slots.get('dining');
+  const usedElsewhere = new Set([...slots.entries()].filter(([slot])=>slot!=='dining').map(([,item])=>item?.property_slug));
+  const ordered = featuredOrder(pool,'dining',visit);
+  const rest = ordered.filter(item=>item.property_slug!==chosen?.property_slug);
+  return {slots,dining:[...(chosen?[chosen]:[]),...rest.filter(item=>!usedElsewhere.has(item.property_slug)),...rest.filter(item=>usedElsewhere.has(item.property_slug))]};
 }

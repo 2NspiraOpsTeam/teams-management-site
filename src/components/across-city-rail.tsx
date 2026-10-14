@@ -8,9 +8,6 @@ type CityCard = { slug: string; name: string; location: string; href: string; sr
 export function AcrossCityRail({ items }: { items: CityCard[] }) {
   const rail = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
-  const [hovered, setHovered] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(true);
 
   useEffect(() => {
@@ -31,16 +28,10 @@ export function AcrossCityRail({ items }: { items: CityCard[] }) {
     setIndex(target);
   }, [items.length, reducedMotion]);
 
-  useEffect(() => {
-    if (items.length < 2 || hovered || focused || paused || reducedMotion) return;
-    const timer = window.setInterval(() => show(index + 1), 6000);
-    return () => window.clearInterval(timer);
-  }, [items.length, hovered, focused, paused, reducedMotion, index, show]);
-
-  return <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}>
-    <div ref={rail} className="home-rail flex snap-x snap-mandatory gap-4 overflow-x-auto pb-5 sm:gap-6" aria-label="Across the city properties" onTouchStart={() => setPaused(true)}>
+  return <div>
+    <div ref={rail} className="home-rail flex snap-x snap-mandatory gap-4 overflow-x-auto pb-5 sm:gap-6" aria-label="Across the city properties">
       {items.map(item => <Link key={item.slug} href={item.href} className="home-image-link group w-[78vw] shrink-0 snap-start overflow-hidden bg-white sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-6rem)/5)]"><div className="aspect-[4/3] overflow-hidden">{item.src ? <img src={item.src} alt={item.alt} loading="lazy" className="home-photo h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center bg-[#ded8ca] p-4 text-center text-sm font-medium uppercase tracking-[.18em] text-teams-ink" role="img" aria-label={`No photo available for ${item.name}`}>Teams Management</div>}</div><div className="flex items-center justify-between gap-2 p-4"><div className="min-w-0"><h3 className="font-serif text-base font-normal leading-snug">{item.name}</h3><p className="mb-0 mt-1 text-xs text-teams-secondary">{item.location}</p></div><span aria-hidden="true">↗</span></div></Link>)}
     </div>
-    {items.length > 1 && <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-teams-ink"><button type="button" onClick={() => show(index - 1)} aria-label="Previous property" className="min-h-11 min-w-11 rounded-full border border-teams-ink text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">‹</button><span aria-live="polite">{index + 1} / {items.length}</span><button type="button" onClick={() => show(index + 1)} aria-label="Next property" className="min-h-11 min-w-11 rounded-full border border-teams-ink text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">›</button>{!reducedMotion && <button type="button" onClick={() => setPaused(value => !value)} className="min-h-11 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">{paused ? 'Play rotation' : 'Pause rotation'}</button>}</div>}
+    {items.length > 1 && <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-teams-ink"><button type="button" onClick={() => show(index - 1)} aria-label="Previous property" className="min-h-11 min-w-11 rounded-full border border-teams-ink text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">‹</button><span aria-live="polite">{index + 1} / {items.length}</span><button type="button" onClick={() => show(index + 1)} aria-label="Next property" className="min-h-11 min-w-11 rounded-full border border-teams-ink text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">›</button></div>}
   </div>;
 }

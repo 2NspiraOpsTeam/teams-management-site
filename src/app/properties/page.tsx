@@ -26,7 +26,7 @@ export default async function PropertiesPage() {
   if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt-unit-402', sarasotaUnitPhotos);
   return <>
     <Header />
-    <main>
+    <main id="main-content">
       <section className="gold-street-hero gold-street-hero--properties text-white py-14 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-white mb-4">Our Portfolio</h1>

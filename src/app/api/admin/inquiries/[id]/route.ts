@@ -6,6 +6,7 @@ export async function PATCH(request:Request,{params}:{params:Promise<{id:string}
   const {id}=await params;const before=await admin.db.prepare('SELECT id,status,notes FROM inquiries WHERE id=?').bind(id).first<Record<string,unknown>>();
   if(!before)return NextResponse.json({error:'Not found'},{status:404});
   let input:Record<string,unknown>;try{input=await request.json();}catch{return NextResponse.json({error:'Invalid request'},{status:400});}
+  if(!input||typeof input!=='object'||Array.isArray(input))return NextResponse.json({error:'Invalid request'},{status:400});
   const status=String(input.status ?? before.status),notes=String(input.notes ?? before.notes ?? '').trim();
   if(!['submitted','routing_followup','resolved'].includes(status)||notes.length>2000)return NextResponse.json({error:'Invalid request'},{status:400});
   await admin.db.prepare("UPDATE inquiries SET status=?,notes=? WHERE id=?").bind(status,notes,id).run();
