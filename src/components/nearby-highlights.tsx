@@ -7,7 +7,7 @@ import { previewRetailNeighborhood } from '@/lib/retail-neighborhood-preview';
 
 type Highlight = { category: string; label: string; name: string; source: string; mapQuery?: string; destinationQuery?: string; addressDetail?: string };
 const icons: Record<string, string> = {
-  transit: '▥', supermarket: '◫', pharmacy: '+', cafe: '☕', park: '♧', library: '▤', clinic: '✚', street: '↗', pedestrian: '◉', hotel: '⌂', theatre: '✦', parking: 'P',
+  transit: '▥', supermarket: '◫', pharmacy: '+', cafe: '☕', park: '♧', library: '▤', clinic: '✚', street: '↗', pedestrian: '◉', hotel: '⌂', theatre: '✦', parking: 'P', landmark: '✦',
 };
 
 function FactCard({ item, address, slug, retail = false }: { item: Highlight; address: BuildingPublic['address']; slug: string; retail?: boolean }) {

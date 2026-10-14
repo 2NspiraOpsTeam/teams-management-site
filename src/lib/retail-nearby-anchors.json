@@ -128,12 +128,13 @@
       "addressDetail": "138 West 48th Street, New York, NY 10036"
     },
     {
-      "category": "attraction",
+      "category": "landmark",
       "label": "Landmark",
       "name": "Times Square",
       "source": "https://www.timessquarenyc.org/",
       "mapQuery": "Times Square, Manhattan, New York, NY",
-      "destinationQuery": "Times Square, Manhattan, New York, NY"
+      "destinationQuery": "Times Square, Manhattan, New York, NY",
+      "addressDetail": "Broadway & Seventh Avenue, Midtown Manhattan"
     }
   ],
   "349-w-46th-st": [
