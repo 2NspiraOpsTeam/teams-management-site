@@ -88,7 +88,6 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           <p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-[#8b681f]">The neighborhood at a glance</p>
           <h2 id="living-nearby-title" className="text-3xl font-serif font-semibold text-teams-ink sm:text-4xl">Living nearby</h2>
           {previewPortfolioEnabled && <ResidentialNearby slug={slug} address={building.address} />}
-          {livingFacts?.yearBuilt && <p className="mb-0 mt-7 text-sm text-slate-600">Property record · Built <strong className="text-teams-ink">{livingFacts.yearBuilt}</strong> · <a href="https://data.cityofnewyork.us/resource/64uk-42ks" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-teams-ink">NYC Planning ↗</a></p>}
           <div className="mt-7 rounded-xl border border-stone-200 bg-white/70 p-5 sm:p-6">
             <h3 className="mb-1 font-serif text-xl font-semibold text-teams-ink">Plan your visit</h3>
             <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">

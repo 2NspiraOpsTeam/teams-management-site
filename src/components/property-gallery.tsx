@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 export interface GalleryImage { src: string; alt: string; caption?: string | null }
 
-export function PropertyGallery({ images, name, compact = false }: { images: GalleryImage[]; name: string; compact?: boolean }) {
+export function PropertyGallery({ images, name, compact = false, href }: { images: GalleryImage[]; name: string; compact?: boolean; href?: string }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [manuallyPaused, setManuallyPaused] = useState(false);
@@ -27,10 +27,11 @@ export function PropertyGallery({ images, name, compact = false }: { images: Gal
   if (!images.length) return <div className={`${compact ? 'aspect-[4/3]' : 'aspect-[16/9]'} bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center`} aria-label="Branded placeholder; no property photograph available"><span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property image unavailable</span></div>;
 
   const current = images[index % images.length];
+  const photo = <img key={current.src} src={current.src} alt={current.alt} onLoad={() => setLoadedSrc(current.src)} onError={() => setLoadedSrc(current.src)} className={`property-image w-full ${compact ? 'aspect-[4/3]' : 'aspect-[16/9]'} object-cover`} />;
   const move = (delta: number) => setIndex(value => (value + delta + images.length) % images.length);
   return <figure className="min-w-0" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}>
     <div className="relative overflow-hidden border border-slate-200 bg-slate-100">
-      <img key={current.src} src={current.src} alt={current.alt} onLoad={() => setLoadedSrc(current.src)} onError={() => setLoadedSrc(current.src)} className={`property-image w-full ${compact ? 'aspect-[4/3]' : 'aspect-[16/9]'} object-cover`} />
+      {href ? <a href={href} aria-label={`View Residential Property: ${name}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-teams-gold">{photo}</a> : photo}
       {images.length > 1 && <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-3">
         <button type="button" onClick={() => move(-1)} aria-label={`Previous photo of ${name}`} className="min-h-11 min-w-11 rounded-full bg-white/95 text-2xl text-teams-ink shadow hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold">‹</button>
         <span className="rounded-full bg-teams-charcoal/90 px-3 py-1 text-xs font-semibold text-white" aria-label={`Photo ${index + 1} of ${images.length}`}>{index + 1} / {images.length}</span>
