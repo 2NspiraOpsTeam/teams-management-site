@@ -14,11 +14,7 @@ export function Footer() {
               Teams Management property portfolio in New York City.
             </p>
             <Link href="/contact" className="mt-5 inline-flex min-h-11 items-center border-b border-[#B49355] text-sm font-semibold text-white transition-colors hover:text-[#D8BD86] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D8BD86]">Connect with our team ↗</Link>
-            <div className="mt-4 flex items-center space-x-2 text-sm text-slate-300">
-              <span>&copy; {new Date().getFullYear()} Teams Management</span>
-              <span aria-hidden="true">•</span>
-              <span>All rights reserved</span>
-            </div>
+            <p className="mt-4 text-sm text-slate-300">&copy; 2026 Teams Management. All rights reserved.</p>
           </div>
 
           {/* Navigation */}
@@ -48,11 +44,17 @@ export function Footer() {
 
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/20 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-300">
-          <Link href="/privacy-policy" className="hover:text-white focus-visible:underline">Privacy Policy</Link>
-          <Link href="/terms-and-conditions" className="hover:text-white focus-visible:underline">Terms &amp; Conditions</Link>
-          <Link href="/copyright" className="hover:text-white focus-visible:underline">Copyright</Link>
-          <a href="https://2nspira.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white focus-visible:underline">Designed by 2Nspira</a>
+        <div className="mt-12 border-t border-white/20 pt-8 text-sm">
+          <nav aria-label="Legal and accessibility" className="flex flex-wrap gap-x-6 gap-y-1 text-slate-200">
+            <Link href="/privacy-policy" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Privacy Policy</Link>
+            <Link href="/terms-of-use" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Terms of Use</Link>
+            <Link href="/accessibility" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Accessibility</Link>
+            <Link href="/fair-housing" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Fair Housing</Link>
+            <Link href="/contact" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Contact</Link>
+            <Link href="/copyright" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Copyright</Link>
+            <a href="https://2nspira.com/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center hover:text-white focus-visible:underline">Designed by 2Nspira</a>
+          </nav>
+          <Link href="/fair-housing" className="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-[#D8BD86] hover:text-white focus-visible:underline"><span aria-hidden="true" className="text-lg">⌂</span> Equal Housing Opportunity</Link>
         </div>
       </div>
     </footer>
