@@ -121,7 +121,7 @@ export const seedLayouts: Layout[] = [
   {
     id: generateUUID(),
     name: 'Two Bedroom Standard',
-    description: 'Spacious two-bedroom layout for families.',
+    description: 'Spacious two-bedroom layout with flexible living space.',
     specifications: {},
     dimensions: { width_feet: 58, depth_feet: 36 },
     asset_version: 1,
