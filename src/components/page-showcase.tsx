@@ -1,12 +1,14 @@
 import { addressLabel } from '@/lib/map-location';
 import Link from 'next/link';
 import { adminDb } from '@/lib/admin-auth';
-import type { ShowcasePage } from '@/lib/page-showcase';
+import { eligibleShowcases, type ShowcasePage } from '@/lib/page-showcase';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 import { mapLocationUrl } from '@/lib/map-location';
 
-export async function PageShowcase({page,variant='split'}:{page:ShowcasePage;variant?:'split'|'wide'|'offset'}) {
- const item=(await featuredPropertyService(adminDb())).select(page==='home'?'home:showcase':page);
+export async function PageShowcase({page,variant='split',propertySlug}:{page:ShowcasePage;variant?:'split'|'wide'|'offset';propertySlug?:string}) {
+ const item=propertySlug
+  ? (await eligibleShowcases(adminDb())).find(item=>item.property_slug===propertySlug)
+  : (await featuredPropertyService(adminDb())).select(page==='home'?'home:showcase':page);
  if(!item)return null;
  let address: {street:string;city:string;state:string;zip:string;neighborhood?:string}={street:'',city:'',state:'',zip:''};
  try {address=JSON.parse(item.address_json||'{}');}catch{}

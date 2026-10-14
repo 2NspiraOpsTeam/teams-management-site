@@ -126,6 +126,14 @@
       "mapQuery": "40.7591035,-73.9830898",
       "destinationQuery": "James Earl Jones Theatre, 138 West 48th Street, New York, NY 10036",
       "addressDetail": "138 West 48th Street, New York, NY 10036"
+    },
+    {
+      "category": "attraction",
+      "label": "Landmark",
+      "name": "Times Square",
+      "source": "https://www.timessquarenyc.org/",
+      "mapQuery": "Times Square, Manhattan, New York, NY",
+      "destinationQuery": "Times Square, Manhattan, New York, NY"
     }
   ],
   "349-w-46th-st": [
