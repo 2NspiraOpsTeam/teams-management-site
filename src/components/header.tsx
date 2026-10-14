@@ -39,7 +39,7 @@ export function Header() {
                 className={`text-sm font-medium border-b py-2 transition-colors ${
                   pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/'))
                     ? 'text-[#252525] border-[#B49355]'
-                    : 'text-[#252525] border-transparent hover:text-[#B49355]'
+                    : 'text-[#252525] border-transparent hover:text-[#8b681f]'
                 }`}
               >
                 {item.label}
@@ -51,7 +51,7 @@ export function Header() {
           {/* Mobile menu button */}
           <button ref={menuButton}
             type="button"
-            className="xl:hidden flex h-11 w-11 items-center justify-center rounded text-[#252525] hover:text-[#B49355] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]"
+            className="xl:hidden flex h-11 w-11 items-center justify-center rounded text-[#252525] hover:text-[#8b681f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
@@ -63,7 +63,7 @@ export function Header() {
           </button>
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-[#E8E5DF] py-3 flex flex-col gap-1">
-          {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#B49355] aria-[current=page]:border-[#B49355]">{item.label}</Link>)}
+          {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#8b681f] aria-[current=page]:border-[#B49355]">{item.label}</Link>)}
           <Link href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
         </div>}
       </nav>

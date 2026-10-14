@@ -48,7 +48,7 @@ p {
 
 /* Focus styles */
 :focus-visible {
-  outline: 3px solid var(--teams-ink);
+  outline: 3px solid var(--teams-ink) !important;
   outline-offset: 2px;
   box-shadow: 0 0 0 6px var(--teams-white);
 }
