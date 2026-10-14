@@ -55,7 +55,7 @@ export default async function DiningPage() {
     alt: item.alt_text || `Photograph of ${item.property_name}`,
     href: previewPortfolioEnabled && item.property_slug === '3425-east-tremont-bronx' ? `/retail/${item.property_slug}` : `/properties/${item.property_slug}`,
   }));
-  return <><Header /><main className="bg-[#f7f4ee] text-teams-ink">
+  return <><Header /><main id="main-content" className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative h-[calc(100svh-89px)] min-h-[360px] w-full overflow-hidden bg-teams-charcoal" aria-label="Delizia 73 film">
       <DiningFeatureVideo />
       <div className="pointer-events-none absolute left-0 right-0 top-0 bg-gradient-to-b from-black/55 to-transparent px-4 pb-16 pt-6 text-white sm:px-8 sm:pt-10">

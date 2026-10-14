@@ -1,3 +1,4 @@
+import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import type { D1Database } from '@cloudflare/workers-types';
 import { NextResponse } from 'next/server';
@@ -13,9 +14,11 @@ export async function POST(request: Request) {
   if (request.headers.get('origin') !== new URL(request.url).origin) return reply({ error: 'Invalid request origin' }, 403);
   if (!request.headers.get('content-type')?.startsWith('application/json')) return reply({ error: 'Expected JSON' }, 415);
   try {
-    const raw = await request.text();
+    const raw = new TextDecoder().decode(await boundedBody(request, 12000));
     if (raw.length > 12000) return reply({ error: 'Message is too long' }, 413);
-    const input = JSON.parse(raw) as Record<string, unknown>;
+    let input: Record<string, unknown>;
+    try { input = JSON.parse(raw); } catch { return reply({ error: 'Invalid JSON' }, 400); }
+    if (!input || Array.isArray(input) || typeof input !== 'object') return reply({ error: 'Invalid request' }, 400);
     const name = typeof input.name === 'string' ? input.name.trim() : '';
     const email = typeof input.email === 'string' ? input.email.trim().toLowerCase() : '';
     const phone = typeof input.phone === 'string' ? input.phone.trim() : '';
@@ -68,6 +71,7 @@ export async function POST(request: Request) {
     context.ctx.waitUntil(attemptInquiryNotification(db, context.env as NotificationEnv, id));
     return reply({ received: true, id }, 201);
   } catch (error) {
+    if (error instanceof BodyTooLarge) return reply({ error: 'Message is too long' }, 413);
     console.error('Inquiry submission failed:', error);
     return reply({ error: 'We could not save your inquiry. Please retry or use the email address on this page.' }, 503);
   }

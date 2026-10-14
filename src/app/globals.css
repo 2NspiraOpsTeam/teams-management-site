@@ -166,3 +166,8 @@ main details > div { animation: detail-open 240ms ease both; }
   .retail-card, .retail-card-image, .retail-primary-link, .retail-toc-link { transition: none; }
   .retail-card:hover, .retail-card:hover .retail-card-image, .retail-primary-link:hover { transform: none; }
 }
+
+.skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 100; transform: translateY(-200%); padding: .75rem 1rem; color: #fff; background: #2d3032; }
+.skip-link:focus { transform: none; }
+html { scroll-padding-top: 110px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto !important; } }

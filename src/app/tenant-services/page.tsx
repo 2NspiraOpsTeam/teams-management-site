@@ -7,7 +7,7 @@ import { ContactDetails } from '@/components/contact-details';
 export default async function TenantServicesPage() {
   return <>
     <Header />
-    <main className="min-h-[70vh] bg-slate-50">
+    <main id="main-content" className="min-h-[70vh] bg-slate-50">
       <section className="gold-street-hero gold-street-hero--tenant-services text-white py-16 sm:py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="h-px w-14 bg-white/50 mb-6" />

@@ -53,7 +53,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
   return <>
     <Header />
-    <main className="min-h-screen bg-white">
+    <main id="main-content" className="min-h-screen bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <nav aria-label="Breadcrumb" className="text-sm mb-10">
           <Link href="/" className="text-slate-600 hover:underline">Home</Link>
@@ -82,7 +82,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </section>}
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {previewPortfolioEnabled && <NeighborhoodPreview slug={slug} residence />}
-        {building.address.state === 'NY' && <section className="mb-10 rounded-2xl border border-stone-200 bg-[#f7f5ef] p-5 shadow-sm sm:p-8 lg:p-10" aria-labelledby="living-nearby-title">
+        {(building.address.state === 'NY' || slug === '609-golden-gate-pt-unit-402') && <section className="mb-10 rounded-2xl border border-stone-200 bg-[#f7f5ef] p-5 shadow-sm sm:p-8 lg:p-10" aria-labelledby="living-nearby-title">
           <p className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-[#8b681f]">The neighborhood at a glance</p>
           <h2 id="living-nearby-title" className="text-3xl font-serif font-semibold text-teams-ink sm:text-4xl">Living nearby</h2>
           {previewPortfolioEnabled && <ResidentialNearby slug={slug} address={building.address} />}
@@ -91,11 +91,11 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             <h3 className="mb-1 font-serif text-xl font-semibold text-teams-ink">Plan your visit</h3>
             <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">
               {zip && <a href={greatSchoolsZipUrl(zip)} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Schools near {zip} ↗</a>}
-              <a href="https://schoolsearch.schools.nyc/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC school search ↗</a>
+              {building.address.state === 'NY' ? <><a href="https://schoolsearch.schools.nyc/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC school search ↗</a>
               <a href="https://new.mta.info/maps" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">MTA maps ↗</a>
-              <a href="https://portal.311.nyc.gov/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC 311 ↗</a>
+              <a href="https://portal.311.nyc.gov/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NYC 311 ↗</a></> : <><a href="https://www.sarasotacountyschools.net/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Sarasota County Schools ↗</a><a href="https://www.visitsarasota.com/communities/downtown-sarasota" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Downtown Sarasota guide ↗</a></>}
             </div>
-            {zip && <p className="mt-2 text-xs text-slate-600">A ZIP code does not determine school eligibility; confirm options with NYC Public Schools.</p>}
+            {zip && <p className="mt-2 text-xs text-slate-600">A ZIP code does not determine school eligibility; confirm options with {building.address.state === 'NY' ? 'NYC Public Schools' : 'Sarasota County Schools'}.</p>}
           </div>
         </section>}
         {retail && <section aria-labelledby="retail-frontage-title" className="group relative mb-10 overflow-hidden rounded-xl bg-teams-charcoal text-white shadow-lg">
