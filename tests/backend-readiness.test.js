@@ -137,6 +137,7 @@ beforeEach(() => {
     "admin-otp.sql",
     "tenant-portal.sql",
     "work-orders-mvp.sql",
+    "property-operations.sql",
     "add-inquiry-details.sql",
     "rental-inquiry-handoff.sql",
   ])
@@ -1073,4 +1074,15 @@ it("labeled QA accounts produce unmistakable QA emails without changing normal n
       ),
     ),
   ).toBe(true);
+});
+
+it('supports distinct scheduled/in-progress/cancelled states without rebuilding legacy requests or losing history', async()=>{
+ const o=await createOrder();await drain();await signIn(admin,'qa-admin@example.test','teams_admin_session');
+ for(const [index,status] of ['in_review','scheduled','in_progress','completed','cancelled'].entries()){
+  const response=await adminOrderDetail.PATCH(new Request(origin+'/order',{method:'PATCH',headers:{origin,'content-type':'application/json'},body:JSON.stringify({status,revision:index+1})}),ctx(o.id));
+  expect(response.status).toBe(200);await drain();const d=await (await adminOrderDetail.GET(new Request(origin+'/order'),ctx(o.id))).json();expect(d.request.status).toBe(status);
+ }
+ expect(sql.prepare('SELECT status FROM tenant_maintenance_requests WHERE id=?').get(o.id).status).toBe('closed');
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_maintenance_requests WHERE id=?').get(o.id).n).toBe(1);
+ expect(sql.prepare('SELECT status FROM work_order_events WHERE request_id=? AND status IS NOT NULL ORDER BY rowid').all(o.id).map(x=>x.status)).toEqual(['submitted','in_review','scheduled','in_progress','completed','cancelled']);
 });

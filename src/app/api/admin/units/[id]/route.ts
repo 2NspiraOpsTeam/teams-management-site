@@ -1,9 +1,11 @@
+import { enabled } from '@/lib/operations/database';
 import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
 export const runtime = 'nodejs';
 const statuses=new Set(['unverified','available_internal','occupied','under_construction','maintenance']);
 export async function PATCH(request: Request,{params}:{params:Promise<{id:string}>}) {
   const admin=await requireAdmin(); if(!admin)return unauthorized(); if(!sameOrigin(request))return unauthorized();
+  if(enabled())return NextResponse.json({error:'Use the property operations unit editor to preserve operational metadata.'},{status:409});
   const {id}=await params;
   const before=await admin.db.prepare('SELECT id,building_id,unit_identifier,floor_number,layout_id,status FROM units WHERE id=?').bind(id).first<Record<string,unknown>>();
   if(!before)return NextResponse.json({error:'Not found'},{status:404});
