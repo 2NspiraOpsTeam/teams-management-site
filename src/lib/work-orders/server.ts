@@ -73,7 +73,7 @@ export function photos(value: unknown): PhotoInput[] {
     return { mime: p.mime, data: p.data };
   });
 }
-export const orderSelect = `SELECT r.id,d.number,d.revision,r.category,r.description,r.status,r.preferred_contact,r.submitted_at,r.updated_at,d.completed_at,d.permission_to_enter,d.access_instructions,b.name AS property_name,b.address_json,u.unit_identifier,a.building_id,t.email,t.display_name FROM tenant_maintenance_requests r JOIN work_order_details d ON d.request_id=r.id JOIN tenant_assignments a ON a.id=r.assignment_id AND a.tenant_id=r.tenant_id JOIN tenant_accounts t ON t.id=r.tenant_id JOIN buildings b ON b.id=a.building_id JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id`;
+export const orderSelect = `SELECT r.id,d.number,d.revision,r.category,r.description,r.urgency,COALESCE(op.workflow_status,CASE WHEN r.status='scheduled' THEN 'in_progress' ELSE r.status END) AS status,r.preferred_contact,r.submitted_at,r.updated_at,d.completed_at,d.permission_to_enter,d.access_instructions,b.name AS property_name,b.address_json,u.unit_identifier,a.building_id,t.email,t.display_name FROM tenant_maintenance_requests r JOIN work_order_details d ON d.request_id=r.id JOIN tenant_assignments a ON a.id=r.assignment_id AND a.tenant_id=r.tenant_id JOIN tenant_accounts t ON t.id=r.tenant_id JOIN buildings b ON b.id=a.building_id JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id LEFT JOIN operations_work_order_profiles op ON op.request_id=r.id`;
 export async function authorized(db: D1Database, id: string, tenantId: string) {
   return db
     .prepare(
@@ -107,9 +107,9 @@ export async function detail(
   if (!admin)
     return { request: row, events: events.results, photos: photos.results };
   const notes = await db
-    .prepare("SELECT staff_notes FROM tenant_maintenance_requests WHERE id=?")
+    .prepare("SELECT r.staff_notes,op.superintendent_id,op.staff_email FROM tenant_maintenance_requests r LEFT JOIN operations_work_order_profiles op ON op.request_id=r.id WHERE r.id=?")
     .bind(id)
-    .first<{ staff_notes: string }>();
+    .first<{ staff_notes: string; superintendent_id:string|null; staff_email:string|null }>();
   const notifications = await db
     .prepare(
       "SELECT id,state,audience,error_code,attempts FROM work_order_notifications WHERE request_id=? ORDER BY created_at",
@@ -117,7 +117,7 @@ export async function detail(
     .bind(id)
     .all<NonNullable<Detail["notifications"]>[number]>();
   return {
-    request: { ...row, staff_notes: notes?.staff_notes },
+    request: { ...row, staff_notes: notes?.staff_notes, superintendent_id:notes?.superintendent_id, staff_email:notes?.staff_email },
     events: events.results,
     photos: photos.results,
     notifications: notifications.results,

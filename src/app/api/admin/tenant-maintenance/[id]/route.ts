@@ -59,14 +59,15 @@ export async function PATCH(request: Request, { params }: Context) {
     const statements = [
       db
         .prepare(
-          "UPDATE work_order_details SET revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END,completed_at=CASE WHEN ?='completed' AND ?!='completed' THEN datetime('now') WHEN ? IN ('submitted','in_review','scheduled') THEN NULL ELSE completed_at END WHERE request_id=?",
+          "UPDATE work_order_details SET revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END,completed_at=CASE WHEN ?='completed' AND ?!='completed' THEN datetime('now') WHEN ? IN ('submitted','in_review','scheduled','in_progress') THEN NULL ELSE completed_at END WHERE request_id=?",
         )
         .bind(v.revision, v.status, before.request.status, v.status, id),
       db
         .prepare(
           "UPDATE tenant_maintenance_requests SET status=?,updated_at=datetime('now') WHERE id=?",
         )
-        .bind(v.status, id),
+        .bind(v.status === "in_progress" ? "scheduled" : v.status === "cancelled" ? "closed" : v.status, id),
+      db.prepare("INSERT INTO operations_work_order_profiles(request_id,workflow_status) VALUES(?,?) ON CONFLICT(request_id) DO UPDATE SET workflow_status=excluded.workflow_status,revision=revision+1").bind(id,v.status),
     ];
     if (changed || update) {
       statements.push(

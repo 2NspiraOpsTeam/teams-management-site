@@ -8,6 +8,7 @@ import {
   label,
   date,
 } from "@/lib/work-orders/shared";
+import { RequestAssignment } from "@/components/operations/RequestAssignment";
 import { WorkOrderActivity } from "@/components/WorkOrderActivity";
 const field = "w-full rounded border border-slate-300 bg-white p-3";
 export default function MaintenanceAdmin() {
@@ -71,6 +72,8 @@ export default function MaintenanceAdmin() {
   }
   useEffect(() => {
     void list();
+    const selected=new URL(location.href).searchParams.get("requestId");
+    if(selected)void open(selected);
     void fetch("/api/admin/buildings", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => setBuildings(Array.isArray(d) ? d : []))
@@ -284,6 +287,7 @@ export default function MaintenanceAdmin() {
           </p>
           <p role="status">{message}</p>
           <WorkOrderActivity data={data} admin />
+          <RequestAssignment request={data.request} onSaved={()=>void open(data.request.id)}/>
           <form
             ref={form}
             key={data.request.revision}

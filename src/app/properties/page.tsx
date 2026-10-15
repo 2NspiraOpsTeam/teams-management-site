@@ -7,7 +7,7 @@ import { Footer } from '@/components/footer';
 import { canonicalPreviewBuildings, listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled, sarasotaUnitPhotos } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaBuildingPhotos } from '@/lib/preview-portfolio';
 import { listPublicRetail } from '@/lib/public-retail';
 
 export const runtime = 'nodejs';
@@ -23,7 +23,7 @@ export default async function PropertiesPage() {
   const retailSlugs = new Set((await listPublicRetail()).map(property => property.slug));
   const galleries = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];const images=ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));return [building.slug,images] as const;}));
   const galleryMap = new Map(galleries);
-  if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt-unit-402', sarasotaUnitPhotos);
+  if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt', sarasotaBuildingPhotos);
   return <>
     <Header />
     <main id="main-content">

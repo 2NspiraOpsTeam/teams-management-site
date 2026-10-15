@@ -35,7 +35,7 @@ describe('Neighborhood directions', () => {
 
 
 it('Sarasota neighborhood cards use specific Florida destinations, not NYC routes', () => {
- const places=highlights['609-golden-gate-pt-unit-402'];
+ const places=highlights['609-golden-gate-pt'];
  expect(places).toHaveLength(5);
  for(const place of places){expect(place.destinationQuery).toMatch(/^\d+ .+, Sarasota, FL 34236$/);expect(place.source).toMatch(/^https:\/\//);expect(place.source).not.toContain('new.mta.info');}
 });

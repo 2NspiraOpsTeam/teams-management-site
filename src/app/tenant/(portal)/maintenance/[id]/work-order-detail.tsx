@@ -88,7 +88,7 @@ export function WorkOrderDetail({ id }: { id: string }) {
       {data && (
         <>
           <WorkOrderActivity data={data} />
-          {data.request.status !== "closed" ? (
+          {!["closed","cancelled"].includes(data.request.status) ? (
             <form
               onSubmit={submit}
               className="mt-8 max-w-2xl space-y-4 rounded border bg-white p-5"

@@ -11,14 +11,18 @@ export const categories = {
 export const statuses = {
   submitted: "Submitted",
   in_review: "Under Review",
-  scheduled: "In Progress",
+  scheduled: "Scheduled",
+  in_progress: "In Progress",
+  cancelled: "Cancelled",
   completed: "Completed",
   closed: "Closed",
 } as const;
 export const statusDescriptions: Record<string, string> = {
   submitted: "Your request has been received.",
   in_review: "Management is reviewing your request.",
-  scheduled: "Your maintenance request is being addressed.",
+  scheduled: "Your maintenance request has been scheduled.",
+  in_progress: "Your maintenance request is being addressed.",
+  cancelled: "This maintenance request has been cancelled.",
   completed: "The reported work has been completed.",
   closed: "Your request has been finalized.",
 };
@@ -28,6 +32,7 @@ export type Order = {
   number: number;
   revision: number;
   category: string;
+  urgency?: string;
   description: string;
   status: string;
   submitted_at: string;
@@ -42,6 +47,8 @@ export type Order = {
   access_instructions: string;
   preferred_contact: string;
   staff_notes?: string;
+  superintendent_id?: string | null;
+  staff_email?: string | null;
   building_id?: string;
 };
 export type Activity = {

@@ -26,6 +26,7 @@ export function WorkOrderActivity({
         </h2>
         <p>{statusDescriptions[r.status]}</p>
         <p>{label(r.category, categories)}</p>
+        <p>Priority: {r.urgency === "urgent" ? "Urgent" : "Routine"}</p>
         {address(r.address_json) && <p>{address(r.address_json)}</p>}
         <p>
           {r.property_name} · Apartment {r.unit_identifier}

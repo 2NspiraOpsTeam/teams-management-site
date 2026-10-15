@@ -13,9 +13,9 @@ export function postalAddressMetadata(address: { street: string; city: string; s
   };
 }
 
-/** Navigation routes to a building address, not an apartment identifier. Display copy remains unit-specific. */
+/** Navigation routes to a building address, not an apartment identifier. Historical unit addresses remain supported. */
 export function navigationAddressLabel(address: NavigationAddress) {
-  if (address.state.toUpperCase() === 'FL' && address.city.toLowerCase() === 'sarasota' && /^609 Golden Gate Point,? Unit 402$/i.test(address.street.trim())) {
+  if (address.state.toUpperCase() === 'FL' && address.city.toLowerCase() === 'sarasota' && /^609 Golden Gate (?:Point|Pt)(?:,? Unit 402)?$/i.test(address.street.trim())) {
     return addressLabel({ ...address, street: address.street.trim().replace(/,? Unit 402$/i, '') });
   }
   return addressLabel(address);
@@ -40,7 +40,7 @@ export function satelliteMapUrl(latitude: number, longitude: number) {
 // Show street context for preview addresses without a verified property pin.
 export function nearbyStreetMapCenter(address: BuildingPublic['address']) {
   if (/^(349|351) W(?:est)?\.? 46th St(?:reet)?\.?$/i.test(address.street.trim()) && address.city.toLowerCase() === 'new york' && address.state.toLowerCase() === 'ny') return { latitude: 40.76057, longitude: -73.98977 };
-  if (/^609 Golden Gate Point,? Unit 402$/i.test(address.street.trim()) && address.city.toLowerCase() === 'sarasota' && address.state.toLowerCase() === 'fl') return { latitude: 27.33446, longitude: -82.55054 };
+  if (/^609 Golden Gate (?:Point|Pt)(?:,? Unit 402)?$/i.test(address.street.trim()) && address.city.toLowerCase() === 'sarasota' && address.state.toLowerCase() === 'fl') return { latitude: 27.33446, longitude: -82.55054 };
   return null;
 }
 
@@ -56,7 +56,7 @@ export function streetViewExploreUrl(address: BuildingPublic['address'], locatio
     if (/^307 W(?:est)?\.? 39th St(?:reet)?\.?$/i.test(street)) return 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=40.75540,-73.99137';
     if (/^171 E(?:ast)?\.? 74th St(?:reet)?\.?$/i.test(street)) return 'https://www.google.com/maps/@?api=1&map_action=pano&pano=ZiOOKuOkIWeXulzY465m_w&heading=322';
   }
-  if (/^609 Golden Gate Point,? Unit 402$/i.test(address.street.trim()) && address.city.toLowerCase() === 'sarasota' && address.state.toLowerCase() === 'fl') return 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=27.33446,-82.55054';
+  if (/^609 Golden Gate (?:Point|Pt)(?:,? Unit 402)?$/i.test(address.street.trim()) && address.city.toLowerCase() === 'sarasota' && address.state.toLowerCase() === 'fl') return 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=27.33446,-82.55054';
   if (location?.map_verified && location.geocode_status === 'verified' && typeof location.latitude === 'number' && typeof location.longitude === 'number' && Number.isFinite(location.latitude) && Number.isFinite(location.longitude) && location.latitude >= -90 && location.latitude <= 90 && location.longitude >= -180 && location.longitude <= 180) {
     return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${location.latitude},${location.longitude}`;
   }
