@@ -24,7 +24,7 @@ moves stay held until review. Missing tenants are review-only. New apartments ne
 an exact existing property and explicitly reviewed unit/floor. The complete source
 row, review reason, authenticated actor and before/after changes remain private.
 
-Plans are server-generated and immutable once import starts. Each bounded record
+Plans are server-generated and each stage is immutable once import starts. After a stage completes, held exceptions can be reviewed and imported in a later stage of the same upload; imported records remain locked. Each bounded record
 atomically checks current actor, upload revision, entity snapshots, apartment
 occupant set and identity collision guards alongside entity changes/audit/source
 receipts. Requests process at most eight records; reopen the saved upload and

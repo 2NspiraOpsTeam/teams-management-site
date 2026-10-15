@@ -19,6 +19,8 @@ export async function buildUploadPlan(a:Actor,source:string,rows:UploadRow[],res
  const tables=['buildings','units','operations_units','tenant_accounts','operations_tenants','tenant_contacts','tenant_assignments','operations_assignment_profiles','tenant_upload_identity_links'];
  const data:Record<string,Row[]>={};
  for(const table of tables){data[table]=await all(a.db,`SELECT * FROM ${table} LIMIT 10001`);if(data[table].length>10000)fail('Directory exceeds the safe single-upload planning limit.');}
+ const previousItems=await all(a.db,"SELECT record_id FROM tenant_import_items WHERE source_sha256=? AND source_cell='@row' AND outcome!='hold'",source);
+ const importedRecords=new Set(previousItems.map(i=>i.record_id));
  const changes:Row[]=[],preconditions:Row[]=[],items:Row[]=[],collision_guards:Row[]=[],assignment_guards:Row[]=[],preview:Row[]=[];
  const planned=new Map<string,Row>();
  const effective=rows.map(r=>({...r,...resolutions[r.id]}));
@@ -60,7 +62,7 @@ export async function buildUploadPlan(a:Actor,source:string,rows:UploadRow[],res
   if(tenant&&contactRows.some(c=>!oldContactValues.some(v=>v.type===c.type&&v.value===c.value)))outcome='contact_update';
   if(tenant?.email&&contactRows.some(c=>c.type==='email'&&text(c.value).toLowerCase()!==text(tenant!.email).toLowerCase())&&!resolution)reasons.push('Contact differs from login email: review contact-only update; login will not change');
   const entry:Row={...original,lineage,name:r.name,property:property?.id||r.property,property_name:property?.name||r.property,unit:r.unit,tenantId:tenant?.id||'',contacts:proposedContacts,reasons:[...new Set(reasons)],outcome:reasons.length?'hold':outcome,current:!reasons.length,review_reason:resolution?.reason||''};
-  preview.push(entry);if(reasons.length)continue;
+  preview.push(entry);if(importedRecords.has(r.id)){entry.outcome='imported';entry.current=true;entry.reasons=[];continue;}if(reasons.length)continue;
   const ownChanges:Row[]=[],ownReads:Row[]=[];
   function read(table:string,id:string){const row=data[table].find(v=>v[pk(table)]===id)||null;ownReads.push({table,id,row,record_ids:[r.id]});return row;}
   function add(table:string,id:string,values:Row){const before=read(table,id),after=before?{...before,...values}:values;const key=table+':'+id;if(planned.has(key)){if(canonical(planned.get(key)!.after)!==canonical(after))fail('Conflicting changes in upload. Resolve the shared record.');return;}if(canonical(before)===canonical(after))return;const c={table,id,record_id:r.id,before,after};planned.set(key,c);ownChanges.push(c);}
@@ -117,20 +119,21 @@ export async function saveUpload(a:Actor,id:string,fileName:string,rows:UploadRo
 }
 export async function getUpload(a:Actor,id:string){
  const saved=await one(a.db,'SELECT * FROM tenant_uploads WHERE id=?',id);if(!saved)fail('Upload not found.',404);
- const imported=await all(a.db,"SELECT record_id,tenant_id,unit_id,outcome FROM tenant_import_items WHERE batch_id=? AND source_cell='@row'",'manual:'+id);
- const batch=await one(a.db,'SELECT status FROM tenant_import_batches WHERE id=?','manual:'+id);
- const result=await one(a.db,"SELECT COUNT(DISTINCT i.record_id) AS records,COUNT(DISTINCT i.tenant_id) AS occupants,COUNT(DISTINCT u.building_id) AS properties,COUNT(DISTINCT i.unit_id) AS apartments,(SELECT count(*) FROM tenant_import_changes c WHERE c.batch_id=? AND c.entity_type='units' AND c.operation='create') AS apartmentsCreated FROM tenant_import_items i JOIN units u ON u.id=i.unit_id WHERE i.batch_id=? AND i.source_cell='@row'",'manual:'+id,'manual:'+id);
+ const imported=await all(a.db,"SELECT record_id,tenant_id,unit_id,outcome FROM tenant_import_items WHERE source_sha256=? AND source_cell='@row'",id);
+ const batch=await one(a.db,'SELECT status FROM tenant_import_batches WHERE id=?','manual:'+id+':'+saved!.revision);
+ const result=await one(a.db,"SELECT COUNT(DISTINCT i.record_id) AS records,COUNT(DISTINCT i.tenant_id) AS occupants,COUNT(DISTINCT u.building_id) AS properties,COUNT(DISTINCT i.unit_id) AS apartments,(SELECT count(*) FROM tenant_import_changes c WHERE c.batch_id IN(SELECT id FROM tenant_import_batches WHERE source_sha256=?) AND c.entity_type='units' AND c.operation='create') AS apartmentsCreated FROM tenant_import_items i JOIN units u ON u.id=i.unit_id WHERE i.source_sha256=? AND i.source_cell='@row'",id,id);
  return {results:result,id,revision:saved!.revision,fileName:saved!.file_name,createdAt:saved!.created_at,preview:JSON.parse(saved!.preview_json),resolutions:JSON.parse(saved!.resolutions_json),imported,batchStatus:batch?.status||'preview'};
 }
 export async function resolveUpload(a:Actor,id:string,revision:number,key:string,value:Resolution){
  const saved=await one(a.db,'SELECT * FROM tenant_uploads WHERE id=?',id);if(!saved)fail('Upload not found.',404);
- if(await one(a.db,'SELECT id FROM tenant_import_batches WHERE id=?','manual:'+id))fail('Import has started. Finish this batch; review remaining exceptions in a later upload.',409);
+ if(await one(a.db,"SELECT id FROM tenant_import_batches WHERE source_sha256=? AND status IN('validated','committing','failed')",id))fail('Import has started. Finish this batch before reviewing remaining exceptions.',409);
+ if(await one(a.db,"SELECT id FROM tenant_import_items WHERE source_sha256=? AND record_id=? AND source_cell='@row'",id,key))fail('This record has already been imported. Use a newer workbook for contact changes.',409);
  if(saved!.revision!==revision)fail('This upload changed. Reload before saving.',409);
  const rows:UploadRow[]=JSON.parse(saved!.rows_json);if(!rows.some(r=>r.id===key))fail('Unknown source record.');
  if(!value||typeof value.name!=='string'||typeof value.property!=='string'||typeof value.unit!=='string'||typeof value.tenantId!=='string'||typeof value.distinct!=='boolean'||typeof value.reason!=='string'||!Array.isArray(value.contacts)||value.contacts.some(c=>!c||!['phone','email'].includes(c.type)||typeof c.value!=='string'||typeof c.cell!=='string')||!(value.floor===null||Number.isInteger(value.floor)))fail('Enter a complete review resolution.');
  const resolutions={...JSON.parse(saved!.resolutions_json),[key]:value};
  const built=await buildUploadPlan(a,id,rows,resolutions);
- const results=await a.db.batch([stmt(a.db,'INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM tenant_uploads WHERE id=? AND revision=?) AND NOT EXISTS(SELECT 1 FROM tenant_import_batches WHERE id=?) THEN 1 ELSE 0 END','resolve:'+crypto.randomUUID(),id,revision,'manual:'+id),stmt(a.db,"UPDATE tenant_uploads SET resolutions_json=?,preview_json=?,plan_json=?,revision=revision+1,updated_at=datetime('now') WHERE id=? AND revision=?",JSON.stringify(resolutions),JSON.stringify(built.preview),JSON.stringify(built.plan),id,revision),auditStatement(a,'tenant_manual_upload',id,{record:key,resolution:JSON.parse(saved!.resolutions_json)[key]||null},{record:key,resolution:value},'reviewed'),stmt(a.db,"DELETE FROM tenant_import_guards WHERE id LIKE 'resolve:%'")]);
+ const results=await a.db.batch([stmt(a.db,"INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM tenant_uploads WHERE id=? AND revision=?) AND NOT EXISTS(SELECT 1 FROM tenant_import_batches WHERE source_sha256=? AND status IN('validated','committing','failed')) THEN 1 ELSE 0 END",'resolve:'+crypto.randomUUID(),id,revision,id),stmt(a.db,"UPDATE tenant_uploads SET resolutions_json=?,preview_json=?,plan_json=?,revision=revision+1,updated_at=datetime('now') WHERE id=? AND revision=?",JSON.stringify(resolutions),JSON.stringify(built.preview),JSON.stringify(built.plan),id,revision),auditStatement(a,'tenant_manual_upload',id,{record:key,resolution:JSON.parse(saved!.resolutions_json)[key]||null},{record:key,resolution:value},'reviewed'),stmt(a.db,"DELETE FROM tenant_import_guards WHERE id LIKE 'resolve:%'")]);
  if(!results[1].meta.changes)fail('Another reviewer saved first. Reload.',409);return getUpload(a,id);
 }
 export async function importUpload(a:Actor,id:string,revision:number){
@@ -140,8 +143,8 @@ export async function importUpload(a:Actor,id:string,revision:number){
  const plan=JSON.parse(saved!.plan_json);if(!plan.items.length)fail('No validated records are ready. Review exceptions first.');
  // The existing runner attributes the approval to the importing Admin, not the uploader.
  const execution={...plan,upload_revision:revision,items:plan.items.map((i:Row)=>({...i,reviewed_by:a.email}))};delete execution.manifest_sha256;execution.manifest_sha256=await sha(execution);
- const batch=await one(a.db,'SELECT approved_by FROM tenant_import_batches WHERE id=?','manual:'+id);
+ const batch=await one(a.db,'SELECT approved_by FROM tenant_import_batches WHERE id=?','manual:'+id+':'+revision);
  if(batch&&batch.approved_by!==a.email)fail('The Admin who started this batch must resume it.',409);
- await commitTenantImport(a,execution,{backup_sha256:config!.backup_sha256,approved_by:a.email,manifest_sha256:execution.manifest_sha256,approved_package_sha256:execution.approved_package_sha256},{environment:'teams-preview-manual',binding:'DB',batchId:'manual:'+id,maxRecords:8});
+ await commitTenantImport(a,execution,{backup_sha256:config!.backup_sha256,approved_by:a.email,manifest_sha256:execution.manifest_sha256,approved_package_sha256:execution.approved_package_sha256},{environment:'teams-preview-manual',binding:'DB',batchId:'manual:'+id+':'+revision,maxRecords:8});
  return getUpload(a,id);
 }

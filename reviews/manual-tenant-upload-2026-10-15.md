@@ -16,7 +16,7 @@ reused. No Graph, external authentication, scheduler, webhook or paid integratio
 - Current occupant names and contacts appear in apartment detail; tenant list
   displays contact email separately from login email.
 
-Initial verification: 130 tests pass; canonical OpenNext build and typecheck pass.
+Initial verification: 131 tests pass; canonical OpenNext build and typecheck pass.
 Fresh preview SQL backup is independently restored to two isolated local D1 stores.
 49 application tables / 1,924 rows preserved through failed/successful nullable
 migration and directory/manual-upload additive schema. Composite tenant-name index,
