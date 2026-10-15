@@ -1,5 +1,9 @@
 # Authorized occupancy import — source verification gate
 
+> **Superseded status:** Original received and first 41 real tenants imported into six
+> stable-preview buildings. See [actual import results](actual-tenant-import-2026-10-15.md).
+> Earlier missing-file and zero-import statements below are historical.
+
 Jeffrey authorized staged preview import of confidently identified occupants from
 `2026 TENANT PHONE LIST.xlsx`, designated that workbook authoritative, and approved
 Current occupancy. Missing contact information is not a blocker. Portal access,

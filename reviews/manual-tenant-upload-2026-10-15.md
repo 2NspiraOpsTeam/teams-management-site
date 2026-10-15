@@ -1,5 +1,9 @@
 # Manual tenant Excel upload
 
+> **Superseded status:** Original received and first 41 real tenants imported into six
+> stable-preview buildings. See [actual import results](actual-tenant-import-2026-10-15.md).
+> Earlier missing-file and zero-import statements below are historical.
+
 Authorized scope: manual Admin uploads only. Existing importer/reconciliation is
 reused. No Graph, external authentication, scheduler, webhook or paid integration.
 
