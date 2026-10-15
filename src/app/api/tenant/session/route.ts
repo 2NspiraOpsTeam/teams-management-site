@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { adminEnv, hash, sameOrigin } from '@/lib/admin-auth';
 import { tenantCookie, tenantDb, currentTenant, randomHex, tenantCodeHash } from '@/lib/tenant-auth';
 import { MailService } from '@/lib/mail-service';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const reply = (body: object, status=200) => NextResponse.json(body,{status,headers:{'Cache-Control':'no-store'}});
 const generic={message:'If this address has tenant access, a sign-in code has been sent.'};
 export async function GET(){const tenant=await currentTenant();return tenant?reply({tenant}):reply({error:'Unauthorized'},401);}

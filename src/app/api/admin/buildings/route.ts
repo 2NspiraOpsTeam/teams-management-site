@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const states = ['draft','internal_review','published','archived'];
 const fail = (status = 400) => NextResponse.json({ error: status === 409 ? 'Conflict' : 'Invalid request' }, { status });
 export async function GET(request: Request) {

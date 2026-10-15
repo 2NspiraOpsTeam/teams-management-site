@@ -1,6 +1,6 @@
 import { requireAdmin, unauthorized } from "@/lib/admin-auth";
 import { reply, orderSelect } from "@/lib/work-orders/server";
-export const runtime = "edge";
+export const runtime = "nodejs";
 export async function GET(request: Request) {
   const a = await requireAdmin();
   if (!a) return unauthorized();

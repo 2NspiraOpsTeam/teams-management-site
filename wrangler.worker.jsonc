@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "teams-management-security-review",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+  "vars": { "NEXT_PUBLIC_ENVIRONMENT": "development" },
+  "d1_databases": [{ "binding": "DB", "database_name": "teams-security-local", "database_id": "00000000-0000-0000-0000-000000000001" }]
+}

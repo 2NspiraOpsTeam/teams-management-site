@@ -1,6 +1,6 @@
 import { currentTenant, tenantDb } from "@/lib/tenant-auth";
 import { MaintenanceForm } from "./maintenance-form";
-export const runtime = "edge";
+export const runtime = "nodejs";
 export default async function MaintenancePage() {
   const tenant = await currentTenant();
   if (!tenant) return null;

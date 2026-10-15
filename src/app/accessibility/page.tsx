@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/legal-page';
 import { siteContact, contactPhoneHref } from '@/lib/site-contact';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const metadata: Metadata = { title: 'Accessibility | Teams Management' };
 
 export default function AccessibilityPage() {

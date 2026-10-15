@@ -8,8 +8,8 @@ const state = vi.hoisted(() => ({
   failMail: false,
   jobs: [],
 }));
-vi.mock("@cloudflare/next-on-pages", () => ({
-  getRequestContext: () => ({
+vi.mock("@opennextjs/cloudflare", () => ({
+  getCloudflareContext: () => ({
     env: state.env,
     ctx: { waitUntil: (p) => state.jobs.push(p) },
   }),

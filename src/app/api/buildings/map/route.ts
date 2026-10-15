@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import { previewPortfolioEnabled, previewPortfolio } from '@/lib/preview-portfolio';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export async function GET() {
-  const db = (getRequestContext().env as { DB?: D1Database }).DB;
+  const db = (getCloudflareContext().env as { DB?: D1Database }).DB;
   if (!db) return NextResponse.json({ error: 'Map temporarily unavailable' }, { status: 503 });
   const where = previewPortfolioEnabled ? `AND slug IN (${previewPortfolio.map(() => '?').join(',')}) AND publication_state != 'archived'` : "AND publication_state = 'published'";
   const result = await db.prepare(`SELECT slug, latitude, longitude FROM buildings WHERE map_verified = 1 AND geocode_status = 'verified' AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180 ${where}`).bind(...(previewPortfolioEnabled ? previewPortfolio.map(item => item.slug) : [])).all<{slug:string;latitude:number;longitude:number}>();

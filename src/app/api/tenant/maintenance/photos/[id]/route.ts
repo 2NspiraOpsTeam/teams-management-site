@@ -1,7 +1,7 @@
 import { currentTenant, tenantDb } from "@/lib/tenant-auth";
 import { reply } from "@/lib/work-orders/server";
 import { photoResponse } from "@/lib/work-orders/photo-response";
-export const runtime = "edge";
+export const runtime = "nodejs";
 export async function GET(
   _r: Request,
   { params }: { params: Promise<{ id: string }> },

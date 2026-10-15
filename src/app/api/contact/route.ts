@@ -1,10 +1,10 @@
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import { NextResponse } from 'next/server';
 import { attemptInquiryNotification, type NotificationEnv } from '@/lib/inquiry-notifications';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 const reply = (body: object, status: number) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const idPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     }
     if (input.website) return reply({ received: true, id }, 202);
 
-    const db = (getRequestContext().env as { DB?: D1Database }).DB;
+    const db = (getCloudflareContext().env as { DB?: D1Database }).DB;
     if (!db) throw new Error('Teams D1 binding unavailable');
     const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email));
     const emailHash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       throw error;
     }
     // D1 commit is authoritative; delivery is asynchronous and cannot turn success into failure.
-    const context = getRequestContext();
+    const context = getCloudflareContext();
     try {
       context.ctx.waitUntil(attemptInquiryNotification(db, context.env as NotificationEnv, id));
     } catch {

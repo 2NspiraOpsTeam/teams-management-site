@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const reply = (body: object, status: number) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 export async function GET() {
   const admin = await requireAdmin();

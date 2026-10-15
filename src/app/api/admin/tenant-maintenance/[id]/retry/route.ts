@@ -7,7 +7,7 @@ import {
 } from "@/lib/admin-auth";
 import { reply, input } from "@/lib/work-orders/server";
 import { deliver } from "@/lib/work-orders/notifications";
-export const runtime = "edge";
+export const runtime = "nodejs";
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

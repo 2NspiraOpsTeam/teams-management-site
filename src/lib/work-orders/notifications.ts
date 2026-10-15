@@ -1,5 +1,5 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { adminEnv } from "@/lib/admin-auth";
 import { gmailConfigured, sendGmail } from "@/lib/gmail-provider";
 import type { MailEnv } from "@/lib/mail-service";
@@ -106,7 +106,7 @@ export function schedule(db: D1Database, eventId: string) {
       await deliver(db, adminEnv() as Env, row.id);
   })();
   try {
-    getRequestContext().ctx.waitUntil(work.catch(() => undefined));
+    getCloudflareContext().ctx.waitUntil(work.catch(() => undefined));
   } catch {
     void work.catch(() => undefined);
   }

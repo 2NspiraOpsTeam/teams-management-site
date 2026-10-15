@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/legal-page';
 import { siteContact } from '@/lib/site-contact';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const metadata: Metadata = { title: 'Terms of Use | Teams Management' };
 
 export default function TermsOfUse() {

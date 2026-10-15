@@ -1,15 +1,15 @@
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const cookieName = 'teams_admin_session';
 const unauthorized = () => NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: { 'Cache-Control': 'no-store' } });
 export { unauthorized };
 
 export function adminEnv() {
-  return getRequestContext().env as { DB?: D1Database; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; MAIL_PROVIDER?: string; ADMIN_OTP_PEPPER?: string; TENANT_OTP_PEPPER?: string; TENANT_AUTH_FROM?: string };
+  return getCloudflareContext().env as { DB?: D1Database; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REFRESH_TOKEN?: string; ADMIN_AUTH_FROM?: string; ADMIN_AUTH_REPLY_TO?: string; MAIL_PROVIDER?: string; ADMIN_OTP_PEPPER?: string; TENANT_OTP_PEPPER?: string; TENANT_AUTH_FROM?: string };
 }
 export function adminDb(): D1Database {
   const db = adminEnv().DB;

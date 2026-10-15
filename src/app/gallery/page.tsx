@@ -2,15 +2,15 @@ import { PageShowcase } from '@/components/page-showcase';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 type GalleryRow = { storage_key: string; alt_text: string; caption: string | null; name: string; slug: string };
 
 export default async function GalleryPage() {
-  const env = getRequestContext().env as { DB?: D1Database; PUBLIC_MEDIA_BASE_URL?: string };
+  const env = getCloudflareContext().env as { DB?: D1Database; PUBLIC_MEDIA_BASE_URL?: string };
   // No URL is inferred from R2 keys. Delivery is disabled until a reviewed public origin exists.
   const base = env.PUBLIC_MEDIA_BASE_URL && /^https:\/\/[^/]+$/.test(env.PUBLIC_MEDIA_BASE_URL) ? env.PUBLIC_MEDIA_BASE_URL : null;
   const images = base && env.DB ? (await env.DB.prepare(`SELECT a.storage_key, m.alt_text, m.caption, b.name, b.slug FROM media_assignments m JOIN media_assets a ON a.id = m.asset_id JOIN buildings b ON b.id = m.building_id WHERE b.publication_state = 'published' AND a.visibility = 'public' AND m.unit_id IS NULL AND m.alt_text IS NOT NULL AND trim(m.alt_text) <> '' AND a.file_type LIKE 'image/%' ORDER BY b.name, m.order_index, m.id`).all<GalleryRow>()).results.filter(row => /^[a-zA-Z0-9/_-]+\.[a-zA-Z0-9]+$/.test(row.storage_key)) : [];

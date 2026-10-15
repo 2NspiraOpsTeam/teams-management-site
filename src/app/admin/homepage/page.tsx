@@ -1,3 +1,3 @@
 import { MediaManager } from '@/components/admin/MediaManager';
-export const runtime='edge';
+export const runtime='nodejs';
 export default function HomepageAdmin(){return <main id="main-content" className="mx-auto max-w-7xl p-4 sm:p-6"><h1 className="mb-2 text-3xl font-semibold">Homepage images</h1><p className="mb-7 text-slate-600">Choose approved property images for the homepage hero and supporting visuals. Featured properties and page showcases rotate each visit from eligible published property covers.</p><MediaManager mode="home"/><p className="mt-10 rounded border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">Featured property placement is automatic. Approved public property images become eligible when their properties are published; no page-by-page assignment is needed.</p></main>}
