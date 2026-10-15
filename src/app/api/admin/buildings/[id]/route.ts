@@ -8,6 +8,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const before = await admin.db.prepare('SELECT id,name,slug,address_json,publication_state FROM buildings WHERE id = ?').bind(id).first<Record<string,unknown>>();
   if (!before) return NextResponse.json({error:'Not found'},{status:404});
   let input: Record<string,unknown>; try { input = await request.json(); } catch { return NextResponse.json({error:'Invalid request'},{status:400}); }
+  if (input.publication_state === 'archived') return NextResponse.json({error:'Archiving properties is disabled.'},{status:409});
   const name = input.name === undefined ? String(before.name) : String(input.name).trim();
   const state = input.publication_state === undefined ? String(before.publication_state) : String(input.publication_state);
   let address = before.address_json as string;
