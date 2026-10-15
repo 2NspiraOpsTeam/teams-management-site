@@ -19,3 +19,7 @@ yarn-error.log*
 .open-next/
 
 .wrangler/tmp/
+
+# Private importer artifacts never belong in source control.
+__pycache__/
+*.pyc
