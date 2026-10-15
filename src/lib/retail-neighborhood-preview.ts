@@ -15,7 +15,7 @@ const areas = {
 
 const bySlug: Record<string, Neighborhood> = {
   '3425-east-tremont-bronx': areas.throggsNeck,
-  '609-golden-gate-pt-unit-402': areas.sarasota,
+  '609-golden-gate-pt': areas.sarasota,
   '42-70-156th-st-flushing': areas.flushing,
   '71-e-110th-st': areas.eastHarlem,
   '166-e-118th-st': areas.eastHarlem,

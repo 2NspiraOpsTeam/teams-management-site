@@ -12,6 +12,11 @@ function secured(response: NextResponse, privateRoute = false) {
 // Cookie presence is only an early rejection. Pages and APIs validate the D1 session independently.
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  if (path === '/properties/609-golden-gate-pt-unit-402') {
+    const destination = request.nextUrl.clone();
+    destination.pathname = '/properties/609-golden-gate-pt';
+    return secured(NextResponse.redirect(destination, 308));
+  }
   const adminRoute = path === '/admin' || path.startsWith('/admin/') || path.startsWith('/api/admin/');
   if (!adminRoute) {
     if (visitPages.has(path) && ['GET', 'HEAD'].includes(request.method) && !request.cookies.get(visitCookie)?.value) {

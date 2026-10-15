@@ -51,7 +51,7 @@ describe('Separate nearby place actions', () => {
 
   it('keeps Sarasota origins at the building entrance without an apartment identifier', () => {
     const sarasota = { street: '609 Golden Gate Point, Unit 402', city: 'Sarasota', state: 'FL', zip: '34236' };
-    const item = highlights['609-golden-gate-pt-unit-402'][4] as NearbyPlace;
+    const item = highlights['609-golden-gate-pt'][4] as NearbyPlace;
     const route = new URL(nearbyPlaceLinks(item, sarasota).directionsUrl!);
     expect(route.searchParams.get('origin')).toBe('609 Golden Gate Point, Sarasota, FL 34236');
     expect(route.searchParams.get('destination')).toBe('Marina Jack, 2 Marina Plaza, Sarasota, FL 34236');
