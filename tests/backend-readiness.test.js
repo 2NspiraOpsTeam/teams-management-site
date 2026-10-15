@@ -1086,3 +1086,9 @@ it('supports distinct scheduled/in-progress/cancelled states without rebuilding 
  expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_maintenance_requests WHERE id=?').get(o.id).n).toBe(1);
  expect(sql.prepare('SELECT status FROM work_order_events WHERE request_id=? AND status IS NOT NULL ORDER BY rowid').all(o.id).map(x=>x.status)).toEqual(['submitted','in_review','scheduled','in_progress','completed','cancelled']);
 });
+it('disables property archiving even for a stale Admin page while allowing an audited restoration',async()=>{
+ const {PATCH}=await import('../src/app/api/admin/buildings/[id]/route');await signIn(admin,'qa-admin@example.test','teams_admin_session');sql.exec("UPDATE buildings SET publication_state='draft' WHERE id='b1'");
+ const update=state=>PATCH(new Request(origin+'/api/admin/buildings/b1',{method:'PATCH',headers:{origin,'content-type':'application/json'},body:JSON.stringify({publication_state:state})}),ctx('b1'));
+ expect((await update('archived')).status).toBe(409);expect(sql.prepare("SELECT publication_state FROM buildings WHERE id='b1'").get().publication_state).toBe('draft');
+ sql.exec("UPDATE buildings SET publication_state='archived' WHERE id='b1'");expect((await update('draft')).status).toBe(200);expect(sql.prepare("SELECT publication_state FROM buildings WHERE id='b1'").get().publication_state).toBe('draft');expect(sql.prepare("SELECT building_id FROM units WHERE id='u1'").get().building_id).toBe('b1');
+});
