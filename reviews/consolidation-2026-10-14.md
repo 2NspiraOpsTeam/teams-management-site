@@ -1,6 +1,87 @@
+# Current integrated preview — final consolidation
+
+## Serving release
+
+- **Application commit:** `d60293ec72a3664761c93b3774ac398ffd852589`.
+- **Canonical preview source branch:** `feature/property-operations-2026-10-14`. Repository `main` has not been merged or publicly launched. A report-only commit follows the deployed application commit.
+- **Stable:** https://teams-management-preview.pages.dev/
+- **Deployment:** https://cd4be0fe.teams-management-preview.pages.dev/ (`cd4be0fe-89a6-4162-9b4f-4174f6c97346`).
+- **Isolated verified candidate:** https://f9cb3697.teams-management-preview.pages.dev/
+- **Frozen private runtime:** `teams-preview-runtime-d60293e`, version `983a4ec5-8687-44cc-922e-058decc9759a`.
+- **Immediate rollback:** https://15699233.teams-management-preview.pages.dev/ (`15699233-8032-441c-91a8-51e466b5ceb0`), source `7f17cc0dad3a13ff037e3b778787e93c9ffc8b5c`, frozen Worker `teams-preview-runtime-7f17cc0`. For rollback, restore that service binding and Pages deployment together; do not restore/reset D1. Earlier security and self-contained Pages rollback points remain retained below.
+- Pages branch `preview` / Cloudflare Production environment belongs to the **preview project**, not the public company site. Public-company deployment `b3b6e676-f5d4-41fc-bd3f-48dad4260d1d` is unchanged; public production was not deployed or included in application QA.
+- Existing Pages secrets/variables and D1 bindings were fingerprinted and preserved. Only the named runtime service binding changed. No masked/write-only secret values were overwritten.
+
+## Admin entry points and features live on stable preview
+
+- `/admin`: actual-record Operations Overview, not illustrative portfolio numbers.
+- `/admin/properties`: searchable, sortable private property directory, building/superintendent/open-request filters. All **18 non-archived properties** are present.
+- `/admin/properties/[id]`: Overview | Apartments | Tenants | Leases | Superintendent | Maintenance. Existing `/admin/buildings/[id]` dashboard alias remains compatible.
+- `/admin/operations/units`, `/admin/tenants`: paginated unit and tenant directories; bedrooms/bathrooms/area where supplied, private notes, contact/preferences, access state, multiple tenants per unit, audited assignment history and session revocation. Identity email cannot be silently changed through an unverified edit.
+- `/admin/operations/leases`: dates, monetary metadata, multiple leaseholders, status/renewal history. Renewals create a distinct agreement and preserve prior dates, terms and associations.
+- `/admin/superintendents`: contact/language records and many-building assignments. Tenant contact disclosure is opt-in and authorized per property, not automatic.
+- `/admin/maintenance`: existing requests remain the single source of truth; property/unit views link the same IDs. Scheduled, In Progress, Cancelled and completion states, staff assignment, audited activity and private notes are integrated. Assignment does not automatically dispatch or email staff.
+- `/admin/media`: Property Media (`/admin/buildings`), Homepage Media (`/admin/homepage`), Media Assets (`/admin/media/assets`), Public Content (`/admin/media/content`). Existing assets, assignments, publication gates, Residential/Retail galleries and reuse contexts were preserved; no media library was deleted or replaced.
+- Primary navigation: Dashboard | Properties | Tenants | Maintenance | Media | Settings. **Inquiries is removed from primary navigation and dashboard shortcuts**, but review remains under Media → Public Content → Rental inquiries (`/admin/inquiries`), because the current public Rent with Us form still writes inquiry records and sends notifications. Eight website submissions are QA-marked; one older `web` record also exists. Genuine customer use was not confirmed. No inquiry data, public form or routing was deleted.
+- Public website, Dining, Featured Property rotation, galleries, Gmail-backed authentication and Tenant Services remain intact. Portal URLs are included in the existing transactional email templates.
+
+## Building-list corrections and latest Golden Gate reconciliation
+
+- Exactly the two user-identified accidental archives (1374 1st Ave and 1626 2nd Ave) were restored to their prior Draft state through audited Admin updates. Other archived legacy/QA records were not restored.
+- Edit, Mark for review, Archive and Draft badges were removed from the legacy list. Server-side archive attempts return409, protecting stale Admin pages too. Publication states/gates remain intact.
+- Confusing row-number badges were removed; the media property list retains an actual database total.
+- Sarasota had existed only in the approved preview portfolio, not in D1 Admin. An audited new record was added without replacing an identity; stable ID is `7a0d4a54-1fcc-4470-a557-00e077040d1a`.
+- The newer separately released Golden Gate title/URL changes were reconciled from `fix/golden-gate-building`, not overwritten: current title `609 Golden Gate Pt`, canonical `/properties/609-golden-gate-pt`, permanent query-preserving legacy redirect from `/properties/609-golden-gate-pt-unit-402`. No unit number remains in its title. Property identity is not a claim about verified occupancy, leases or management of every condominium unit.
+
+## QA, security and deployment verification
+
+- **100 automated tests pass**, typecheck and supported OpenNext build pass. Local D1 tests exercise the additive schema twice, uniqueness/retries, atomic audit rollback, stale revisions, household assignments, renewal history, document authorization and 400-unit pagination/index plans.
+- **Local rendered workflows:** property selection; add/edit unit and reload; multiple tenants in one unit; reassignment/deactivation with retained historical IDs; superintendent contacts/languages and two buildings; lease creation/edit/renewal; server-error draft retention/retry/cancel; same-request property/unit maintenance views; private staff assignment, full status lifecycle and tenant-visible synchronization.
+- Local browser stale-edit protection returned409, retained the draft and did not overwrite the saved record. Revoked tenant session returned401 and redirected to login.
+- **54 local responsive Admin views** at1440/768/390 passed. Final candidate: **27 hosted Admin views**,18 properties and every property-linked resource API; existing Admin/tenant sessions200, role isolation denied unauthorized endpoints, hosted lease uploads disabled and tenant My Lease hidden.
+- **Final candidate public sweep:52 routes /156 responsive views**, no page errors, overflow or broken loaded images. `/rent-with-us/apply` remains intentionally404. Golden Gate redirect/metadata have dedicated automated coverage.
+- **Stable preview:**27 hosted Admin views and12 targeted public/gallery/Dining responsive checks passed, with release header matching the exact application SHA. Public-company deployment metadata remained unchanged.
+- Browser Media Assets upload exposed an existing bug: `Array.map(prepareMediaUpload)` passed its array index as the byte limit, preventing uploads. Fixed with an explicit callback. Real browser upload returned201; Admin file200, tenant/public access denied; the synthetic QA asset was archived and never published. Identical corrected upload/operations code is retained in the final reconciled release.
+- Fresh Admin/tenant OTP login, replay denial, cookie security and Gmail acceptance/inbox evidence were established in the accepted security upgrade. This operations promotion reverified existing sessions and authorization; it did **not** claim a new OTP exchange or send duplicate QA maintenance emails. Jeffrey confirmed management/tenant notices for QA requests7/8, including the linked tenant receipt. Current mail implementation and secret bindings were preserved.
+- D1 backup/export was preserved before operations migration. Hash guard protects1,118 original rows across15 tables: **zero unexpected changes**; exactly two user-authorized building restorations are explicitly accounted for. New Sarasota/QA media rows are additions, not baseline replacements. No tenants, lease history or maintenance records were reset, and no rent-roll/schema seed was replayed.
+- Featured rotation intentionally establishes first-visit cookies by redirect; non-browser verification must preserve those cookies. Cookie-aware verification returned200. No rotation behavior was changed to accommodate a cookie-less diagnostic client.
+
+## Framework/runtime and remaining concerns
+
+Next15.5.28; OpenNext Cloudflare1.20.11; Wrangler4.151.0; Tailwind4.3.3; Vitest5.0.4. Cloudflare `nodejs_compat`, compatibility date2026-10-14. Full dependency audit: **0 findings**, down from39 (4critical/25high/8moderate/2low). This is dependency evidence, not a guarantee against all application vulnerabilities.
+
+Hosted `PROPERTY_OPERATIONS_ENABLED=1`, `TENANT_LEASES_ENABLED=0`, **no lease-document bucket binding**. No R2 or other paid storage/service was activated. The account already reports Workers Standard; strict $0 usage is not independently proven and requires billing/quota visibility and operating controls before production.
+
+## Complete but intentionally not activated / incomplete work
+
+- Lease metadata/history/permissions are live. Private PDF adapter and tenant My Lease architecture passed local-only private-store/authorization tests, but **hosted uploads/downloads and tenant My Lease remain disabled** until a private backend, access/retention policy and any spend are explicitly approved. PDF bytes never enter D1 or `/public`, and documents are not automatically emailed.
+- Real operational onboarding remains management-owned: verified tenancy/occupancy, lease terms, staff contacts/assignments and property-specific emergency information are not invented from website content or QA records. Missing verified unit metadata must not be fabricated.
+- Granular staff roles remain future work; this release enforces the existing authorized-Admin model. Detail-history views currently cap certain sections at100 entries (tenant document list20); underlying records remain retained. Further pagination is needed before those per-record limits are exceeded.
+- Unrestricted public-description editing is not enabled; approved descriptions continue through the existing content source. Media/Public Content links preserve existing presentation controls rather than presenting a nonworking editor.
+- Optional earlier Tenant Services benefit cards remain a UX backlog. Older MapLibre/3D prototypes remain experimental and are not merged just because branches exist.
+- Final work-order inbox/coverage, approved emergency contacts, management routing, legal/content/publication approval, private storage and billing/quota confirmation remain production decisions. See detailed business gates below.
+
+## Current open PR dispositions
+
+These are review recommendations, **not claims that PRs were merged or closed**. No main merge or public launch occurred.
+
+| PR | Current disposition |
+|---|---|
+| [#1](https://github.com/2NspiraOpsTeam/teams-management-site/pull/1) | Media self-service changes patch-equivalent/live; close duplicate after repository reconciliation, do not merge an older whole branch. |
+| [#5](https://github.com/2NspiraOpsTeam/teams-management-site/pull/5) | Legal/accessibility implementation is already in serving ancestry; duplicate integration, separate legal/business approval remains. |
+| [#6](https://github.com/2NspiraOpsTeam/teams-management-site/pull/6) | Readiness fixes integrated in preview; retain for canonical-main reconciliation, not authorization to launch/merge main. |
+| [#7](https://github.com/2NspiraOpsTeam/teams-management-site/pull/7) | Original platform branch superseded by reconciled#8; do not deploy its older application wholesale. |
+| [#8](https://github.com/2NspiraOpsTeam/teams-management-site/pull/8) | Accepted security release, now ancestor of integrated preview; retain release/review evidence. |
+| [#9](https://github.com/2NspiraOpsTeam/teams-management-site/pull/9) | Golden Gate release was already deployed separately and is now merged into operations source; do not reapply its D1 identity update blindly. |
+| [#10](https://github.com/2NspiraOpsTeam/teams-management-site/pull/10) | Active consolidated operations review, code deployed/verified on stable preview; draft review is not a main merge. |
+
+New branches `fix/property-archive-safety-2026-10-14` and `fix/golden-gate-building` are integrated into the canonical preview source. Detailed older branch/functionality/regression inventory follows; those historical recommendations remain applicable.
+
+---
+
 # Teams Management consolidated review — 2026-10-14
 
-## Verified serving release
+## Historical security-upgrade baseline (superseded by the integrated release above)
 
 - Application commit: `65a8a56463bad38094121bd22d038439f2aeb7ea`.
 - Canonical deployed source branch: `review/security-consolidation-2026-10-14` (not `main`).
