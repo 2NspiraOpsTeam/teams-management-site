@@ -19,6 +19,8 @@ export async function buildUploadPlan(a:Actor,source:string,rows:UploadRow[],res
  const tables=['buildings','units','operations_units','tenant_accounts','operations_tenants','tenant_contacts','tenant_assignments','operations_assignment_profiles','tenant_upload_identity_links'];
  const data:Record<string,Row[]>={};
  for(const table of tables){data[table]=await all(a.db,`SELECT * FROM ${table} LIMIT 10001`);if(data[table].length>10000)fail('Directory exceeds the safe single-upload planning limit.');}
+ const contactSources=await all(a.db,"SELECT DISTINCT contact_id,source_sheet,source_row,source_cell FROM tenant_import_items WHERE contact_id IS NOT NULL LIMIT 10001");
+ if(contactSources.length>10000)fail('Contact provenance exceeds the safe single-upload planning limit.');
  const previousItems=await all(a.db,"SELECT record_id FROM tenant_import_items WHERE source_sha256=? AND source_cell='@row' AND outcome!='hold'",source);
  const importedRecords=new Set(previousItems.map(i=>i.record_id));
  const changes:Row[]=[],preconditions:Row[]=[],items:Row[]=[],collision_guards:Row[]=[],assignment_guards:Row[]=[],preview:Row[]=[];
@@ -56,7 +58,7 @@ export async function buildUploadPlan(a:Actor,source:string,rows:UploadRow[],res
   if(!tenantId)tenantId='upload_tenant_'+await sha([r.sheet,r.row,property?.id||'',unitId,text(r.name)]);
   const contactRows=r.contacts.filter(c=>text(c.value));
   if(contactRows.length>15||contactRows.some(c=>!['email','phone'].includes(c.type)||c.value.length>500||!c.cell))reasons.push('Review contact values/roles');
-  const proposedContacts=contactRows.map(c=>({type:c.type,value:c.value}));
+  const proposedContacts=contactRows.map(c=>({type:c.type,value:c.value,cell:c.cell}));
   const oldContactValues=tenant?data.tenant_contacts.filter(c=>c.tenant_id===tenantId&&!c.archived).map(c=>({type:c.contact_type,value:c.value_raw})):[];
   let outcome=tenant?'unchanged':'new';
   if(tenant&&contactRows.some(c=>!oldContactValues.some(v=>v.type===c.type&&v.value===c.value)))outcome='contact_update';
@@ -89,7 +91,7 @@ export async function buildUploadPlan(a:Actor,source:string,rows:UploadRow[],res
   // Retire only contacts created by earlier uploads at the same stable source lineage.
   // Existing staff contacts and blanks never clear existing values.
   if(link&&tenant&&outcome==='contact_update')for(const c of data.tenant_contacts.filter(c=>c.tenant_id===tenantId&&!c.archived&&c.id.startsWith('upload_contact_'))){
-   if(contactRows.some(v=>v.type===c.contact_type)&&!contactRows.some(v=>v.type===c.contact_type&&text(v.value)===c.value_raw))add('tenant_contacts',c.id,{archived:1,revision:c.revision+1,updated_at:new Date().toISOString()});
+   if(contactRows.some(v=>v.type===c.contact_type&&text(v.value)!==c.value_raw&&contactSources.some(p=>p.contact_id===c.id&&p.source_sheet===r.sheet&&p.source_row===r.row&&p.source_cell===v.cell))&&!contactRows.some(v=>v.type===c.contact_type&&text(v.value)===c.value_raw))add('tenant_contacts',c.id,{archived:1,revision:c.revision+1,updated_at:new Date().toISOString()});
   }
   if(tenant&&outcome==='contact_update'){const profile=data.operations_tenants.find(p=>p.tenant_id===tenantId);if(profile)add('operations_tenants',tenantId,{revision:profile.revision+1});}
   assignment_guards.push({record_id:r.id,unit_id:unitId,expected:data.tenant_assignments.filter(v=>v.unit_id===unitId&&v.active).map(v=>v.id)});
