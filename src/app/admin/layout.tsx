@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { currentAdmin } from '@/lib/admin-auth';
 import LogoutButton from '@/components/admin/LogoutButton';
 import type { Metadata } from 'next';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 const links=[['Dashboard','/admin'],['Properties','/admin/buildings'],['Dining','/admin/dining'],['Homepage','/admin/homepage'],['Media Library','/admin/media'],['Inquiries','/admin/inquiries'],['Tenants','/admin/tenants'],['Maintenance','/admin/maintenance']];
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

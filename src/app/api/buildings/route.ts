@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { listPublicBuildings } from '@/lib/public-buildings';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 /**
  * GET /api/buildings - Public endpoint for building listings

@@ -13,7 +13,7 @@ import {
   auditStatement,
 } from "@/lib/work-orders/server";
 import { schedule } from "@/lib/work-orders/notifications";
-export const runtime = "edge";
+export const runtime = "nodejs";
 export async function GET(request: Request) {
   const tenant = await currentTenant();
   if (!tenant) return reply({ error: "Unauthorized" }, 401);

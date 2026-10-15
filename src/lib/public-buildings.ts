@@ -1,10 +1,10 @@
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import type { BuildingPublic } from './database.types';
 import { parsePublicBuildingRow, type PublicBuildingRow } from './public-building-projection';
 
 function database() {
-  const db = (getRequestContext().env as { DB?: D1Database }).DB;
+  const db = (getCloudflareContext().env as { DB?: D1Database }).DB;
   if (!db) throw new Error('Teams D1 binding is unavailable');
   return db;
 }

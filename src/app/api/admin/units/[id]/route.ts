@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const statuses=new Set(['unverified','available_internal','occupied','under_construction','maintenance']);
 export async function PATCH(request: Request,{params}:{params:Promise<{id:string}>}) {
   const admin=await requireAdmin(); if(!admin)return unauthorized(); if(!sameOrigin(request))return unauthorized();

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin, unauthorized } from '@/lib/admin-auth';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 /** Internal inventory diagnostics are available only to an authenticated Admin. */
 export async function GET() {

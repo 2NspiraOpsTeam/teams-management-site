@@ -14,7 +14,7 @@ import {
   auditStatement,
 } from "@/lib/work-orders/server";
 import { schedule } from "@/lib/work-orders/notifications";
-export const runtime = "edge";
+export const runtime = "nodejs";
 type Context = { params: Promise<{ id: string }> };
 export async function GET(_request: Request, { params }: Context) {
   const t = await currentTenant();

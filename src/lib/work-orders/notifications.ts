@@ -1,5 +1,6 @@
+import { portalUrl } from '../portal-links';
 import type { D1Database } from "@cloudflare/workers-types";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { adminEnv } from "@/lib/admin-auth";
 import { gmailConfigured, sendGmail } from "@/lib/gmail-provider";
 import type { MailEnv } from "@/lib/mail-service";
@@ -68,7 +69,7 @@ export async function deliver(db: D1Database, env: Env, id: string) {
       to,
       `${qa ? "[QA] " : ""}Teams Management — Maintenance request #${n.number}`,
       (qa ? "QA validation only; no maintenance action is required.\n\n" : "") +
-        message,
+        message + `\n\n${n.audience === "management" ? "Admin portal" : "Tenant portal"}: ${portalUrl(n.audience === "management" ? "admin" : "tenant", "maintenance")}`,
     );
     await db
       .prepare(
@@ -106,7 +107,7 @@ export function schedule(db: D1Database, eventId: string) {
       await deliver(db, adminEnv() as Env, row.id);
   })();
   try {
-    getRequestContext().ctx.waitUntil(work.catch(() => undefined));
+    getCloudflareContext().ctx.waitUntil(work.catch(() => undefined));
   } catch {
     void work.catch(() => undefined);
   }

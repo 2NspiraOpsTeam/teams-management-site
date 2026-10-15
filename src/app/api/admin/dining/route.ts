@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
 import { isDeliverablePublicMedia } from '@/lib/media-management';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 type VenueInput = {
   id?: string; name: string; slug: string; property_id: string; summary: string;

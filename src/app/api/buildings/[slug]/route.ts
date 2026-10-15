@@ -8,7 +8,7 @@
 import { NextResponse } from 'next/server';
 import { getPublicBuilding } from '@/lib/public-buildings';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export async function GET(
   _request: Request,

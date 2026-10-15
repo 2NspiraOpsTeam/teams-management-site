@@ -10,7 +10,7 @@ import {
 } from "@/lib/work-orders/server";
 import { statuses } from "@/lib/work-orders/shared";
 import { schedule } from "@/lib/work-orders/notifications";
-export const runtime = "edge";
+export const runtime = "nodejs";
 type Context = { params: Promise<{ id: string }> };
 export async function GET(_r: Request, { params }: Context) {
   const a = await requireAdmin();

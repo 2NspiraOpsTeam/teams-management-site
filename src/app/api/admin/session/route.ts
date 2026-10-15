@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { activeAdmin, adminDb, adminEnv, cookieName, currentAdmin, hash, sameOrigin, unauthorized } from '@/lib/admin-auth';
 import { MailService } from '@/lib/mail-service';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const generic = { message: 'If this email is authorized, a sign-in code has been sent.' };
 const randomHex = (n: number) => Array.from(crypto.getRandomValues(new Uint8Array(n)), b => b.toString(16).padStart(2, '0')).join('');

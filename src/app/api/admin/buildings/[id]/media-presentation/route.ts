@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { audit,requireAdmin,sameOrigin,unauthorized } from '@/lib/admin-auth';
 import { presentationCandidates,presentationState,savePresentation,validPresentation } from '@/lib/media-presentation';
-export const runtime='edge';
+export const runtime='nodejs';
 export async function GET(_:Request,{params}:{params:Promise<{id:string}>}){const admin=await requireAdmin();if(!admin)return unauthorized();const {id}=await params;const building=await admin.db.prepare('SELECT id FROM buildings WHERE id=?').bind(id).first();if(!building)return NextResponse.json({error:'Property not found'},{status:404});return NextResponse.json(await presentationState(admin.db,id),{headers:{'Cache-Control':'no-store'}});}
 export async function PUT(request:Request,{params}:{params:Promise<{id:string}>}){
  const admin=await requireAdmin();if(!admin||!sameOrigin(request))return unauthorized();const {id}=await params;
