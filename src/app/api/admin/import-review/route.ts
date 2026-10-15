@@ -8,12 +8,12 @@ async function load(db:any){
  const chunks=await db.prepare("SELECT record_after_json FROM audit_log WHERE entity_type=? AND action='bundle_chunk' ORDER BY entity_id").bind(entity).all();
  if(!chunks.results.length)throw Error('Review data is not available yet.');
  const bundle=await validateBundle(JSON.parse(chunks.results.map((r:any)=>JSON.parse(r.record_after_json).text).join('')));
- const rows=await db.prepare("SELECT record_after_json FROM audit_log WHERE entity_type=? AND action='review_decision' AND entity_id LIKE ? ORDER BY entity_id").bind(entity,bundle.bundle_sha256+':%').all();
+ const rows=await db.prepare("SELECT record_after_json FROM audit_log WHERE entity_type=? AND action='review_decision' AND entity_id >= ? AND entity_id < ? ORDER BY entity_id").bind(entity,bundle.bundle_sha256+':',bundle.bundle_sha256+';').all();
  const events=rows.results.map((r:any)=>JSON.parse(r.record_after_json));
  const draft=validateDraft(bundle,{format:'teams-review-draft-1',bundle_sha256:bundle.bundle_sha256,events});
  return {bundle,draft};
 }
-export async function GET(){const a=await requireAdmin();if(!a)return unauthorized();try{return NextResponse.json({...await load(a.db),reviewer:a.email},{headers});}catch{return NextResponse.json({error:'Review data could not be loaded. Please retry.'},{status:503,headers});}}
+export async function GET(){const a=await requireAdmin();if(!a)return unauthorized();try{return NextResponse.json({...await load(a.db),reviewer:a.email},{headers});}catch(e){console.error('Review loading failed', e instanceof Error?e.message:'Unknown');return NextResponse.json({error:'Review data could not be loaded. Please retry.'},{status:503,headers});}}
 export async function POST(request:Request){const a=await requireAdmin();if(!a)return unauthorized();if(!sameOrigin(request))return unauthorized();
  try{
  if(Number(request.headers.get('content-length')||0)>12000)return NextResponse.json({error:'Request too large'},{status:413,headers});
