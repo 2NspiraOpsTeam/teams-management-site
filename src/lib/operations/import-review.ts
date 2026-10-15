@@ -39,3 +39,23 @@ export function validateDraft(bundle:ReviewBundle,v:any):ReviewDraft{
  for(const e of v.events){check(e.sequence===replay.events.length+1&&Number.isFinite(Date.parse(e.at)),'Invalid audit sequence.');check(canonical(e.before)===canonical(current(replay,e.key)),'Review history was changed.');replay=appendEvent(bundle,replay,e.key,e.after,e.at);}
  check(replay.events.length===v.events.length,'Duplicate audit event.');return replay;
 }
+
+// Conservative triage, never an import eligibility or authorization decision.
+export function readiness(bundle:ReviewBundle,draft:ReviewDraft,r:ReviewRow){
+ const mapping=current(draft,'alias:'+r.property_map_key);
+ const property=mapping?.outcome==='mapping_approved' ? bundle.properties.find(p=>p.id===mapping.property_id&&p.publication_state!=='archived'&&!p.name.startsWith('[QA]')) : null;
+ const units=(r.unit_proposals||[]).filter((u:ReviewRow)=>u.building_id===property?.id);
+ const repeated=bundle.repeat_groups.some(g=>g.record_ids.includes(r.record_id));
+ const labelConflict=(bundle as ReviewBundle & {label_conflicts?:string[][]}).label_conflicts?.some(g=>g.includes(r.record_id));
+ const resolution=current(draft,'record:'+r.record_id);
+ const blockers:string[]=[];
+ if(!property)blockers.push('Property mapping not verified');
+ if(units.length!==1)blockers.push('Exact unit not verified');
+ if(!String(r.tenant_name_proposed||'').trim()||/unknown|unresolved|unnamed/i.test(r.tenant_name_proposed))blockers.push('Tenant name needs confirmation');
+ if(repeated||labelConflict||(r.flags||[]).some((f:string)=>/identity|different_contacts|name_|household|business|repeat|duplicate/.test(f)))blockers.push('Identity / repeat review required');
+ if((r.existing_assignments||[]).length)blockers.push('Existing assignment requires review');
+ if((r.flags||[]).some((f:string)=>/separation|unconfirmed|unresolved/.test(f)))blockers.push('Source ambiguity requires review');
+ if(resolution&&resolution.outcome!=='review')blockers.push('Staff resolution requires reconciliation');
+ return {ready:blockers.length===0,label:blockers.length?'On Hold':'Ready for Review',blockers};
+}
+export function mappingPriority(a:ReviewRow){return /NOVITA|349.*351|TREMONT|BRUCKNER/i.test(a.source_property_alias)?0:1;}
