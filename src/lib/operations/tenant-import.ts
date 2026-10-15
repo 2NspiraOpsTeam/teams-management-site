@@ -1,10 +1,11 @@
-/** Private one-time runner; intentionally not routed from any application API.
- * All preview/production execution is hard-disabled. Authenticated Actor and
- * synthetic DB marker are mandatory even for local QA. No mail/access mutations.
+/** Existing bounded, audited importer. Manual writes are enabled only on the
+ * explicitly configured Teams preview after backup/migration verification.
+ * Generic preview/production and hosted undo remain disabled. No access grants.
  */
 import type { D1Database,D1PreparedStatement } from '@cloudflare/workers-types';
 import type { Actor,Row } from './database';
-const writable=new Set(['tenant_accounts','operations_tenants','units','operations_units','tenant_contacts','tenant_assignments','operations_assignment_profiles']);
+import { adminEnv } from '@/lib/admin-auth';
+const writable=new Set(['tenant_accounts','operations_tenants','units','operations_units','tenant_contacts','tenant_assignments','operations_assignment_profiles','tenant_upload_identity_links']);
 const keys:Row={operations_tenants:'tenant_id',operations_units:'unit_id',operations_assignment_profiles:'assignment_id'};
 const key=(table:string)=>keys[table]||'id';
 const check=(ok:unknown,message:string)=>{if(!ok)throw Error(message);};
@@ -13,30 +14,46 @@ const encode=(v:any)=>JSON.stringify(canonical(v));
 async function digest(v:any){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(encode(v)))),b=>b.toString(16).padStart(2,'0')).join('');}
 const statement=(db:D1Database,sql:string,...values:any[])=>db.prepare(sql).bind(...values);
 async function all(db:D1Database,sql:string,...values:any[]){return (await statement(db,sql,...values).all<Row>()).results;}
-async function gate(a:Actor,environment:string,binding:string){check(environment==='local-synthetic'&&binding==='DB','Preview/production import writes are disabled');check(a.email&&await statement(a.db,'SELECT email FROM admin_identities WHERE email=? AND active=1',a.email).first(),'Active authenticated staff actor required');check(await statement(a.db,"SELECT name FROM sqlite_master WHERE name='tenant_import_synthetic_only'").first(),'Synthetic-only DB marker missing');}
+async function gate(a:Actor,environment:string,binding:string,manual=false){
+ if(manual&&environment==='teams-preview-manual'&&binding==='DB'){
+  const env=adminEnv() as unknown as Record<string,string>;
+  check(env.TENANT_MANUAL_IMPORT_DATABASE_ID==='2d04fbea-8af6-4d6d-b5bf-cf758666d55e','Manual import is not enabled on this database');
+  check(await statement(a.db,"SELECT id FROM tenant_upload_configuration WHERE id='teams-preview' AND enabled=1 AND database_id=? AND length(backup_sha256)=64",env.TENANT_MANUAL_IMPORT_DATABASE_ID).first(),'Verified backup and migration release required');
+  check(a.email&&await statement(a.db,'SELECT email FROM admin_identities WHERE email=? AND active=1',a.email).first(),'Active authenticated staff actor required');return;
+ }
+check(environment==='local-synthetic'&&binding==='DB','Preview/production import writes are disabled');check(a.email&&await statement(a.db,'SELECT email FROM admin_identities WHERE email=? AND active=1',a.email).first(),'Active authenticated staff actor required');check(await statement(a.db,"SELECT name FROM sqlite_master WHERE name='tenant_import_synthetic_only'").first(),'Synthetic-only DB marker missing');}
 function tableCheck(table:string,read=false){check(writable.has(table)||(read&&table==='buildings'),'Unsupported import entity');}
 function identifiers(data:Row){for(const name of Object.keys(data))check(/^[a-z_]+$/.test(name),'Invalid field');}
 function guard(db:D1Database,token:string,table:string,entity:string,expected:Row|null){tableCheck(table,true);if(expected)identifiers(expected);const columns=expected?Object.keys(expected):[];const where=columns.map(c=>`${c} IS ?`).join(' AND ');return statement(db,`INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN ${expected?'EXISTS':'NOT EXISTS'}(SELECT 1 FROM ${table} WHERE ${key(table)}=?${where?' AND '+where:''}) THEN 1 ELSE 0 END`,token,entity,...columns.map(c=>expected![c]));}
 function write(db:D1Database,c:Row){tableCheck(c.table);identifiers(c.after);const columns=Object.keys(c.after);if(c.before===null)return statement(db,`INSERT INTO ${c.table}(${columns.join(',')}) VALUES(${columns.map(()=>'?').join(',')})`,...columns.map(k=>c.after[k]));const fields=columns.filter(k=>k!==key(c.table));return statement(db,`UPDATE ${c.table} SET ${fields.map(k=>k+'=?').join(',')} WHERE ${key(c.table)}=?`,...fields.map(k=>c.after[k]),c.id);}
 async function assertManifest(plan:Row){const {manifest_sha256,...body}=plan;check(await digest(body)===manifest_sha256,'Manifest changed after validation');check(plan.ready_for_approval,'Unresolved manifest');}
-export async function commitTenantImport(a:Actor,plan:Row,approval:Row,options:{environment:string;binding:string;batchId:string;interruptAfterRecord?:number}){
- await gate(a,options.environment,options.binding);await assertManifest(plan);
+export async function commitTenantImport(a:Actor,plan:Row,approval:Row,options:{environment:string;binding:string;batchId:string;interruptAfterRecord?:number;maxRecords?:number}){
+ await gate(a,options.environment,options.binding,true);await assertManifest(plan);
  check(typeof approval.backup_sha256==='string'&&/^[0-9a-f]{64}$/.test(approval.backup_sha256),'Approved backup hash required');
+ if(options.environment==='teams-preview-manual')check(await statement(a.db,"SELECT id FROM tenant_upload_configuration WHERE id='teams-preview' AND enabled=1 AND backup_sha256=?",approval.backup_sha256).first(),'Approved backup changed');
  check(approval.approved_by===a.email&&approval.manifest_sha256===plan.manifest_sha256&&approval.approved_package_sha256===plan.approved_package_sha256,'Authenticated matching approval required');
  const db=a.db,batch=options.batchId;check(/^[a-zA-Z0-9:_-]{1,100}$/.test(batch),'Explicit valid batch ID required');
  check(!await statement(db,'SELECT record_id FROM tenant_import_undo_records WHERE batch_id=? LIMIT 1',batch).first(),'Batch undo has started; commit cannot resume');
  let old=await statement(db,'SELECT * FROM tenant_import_batches WHERE id=?',batch).first<Row>();
- if(old){check(old.source_sha256===plan.source_sha256&&old.approved_package_sha256===plan.approved_package_sha256&&old.parser_version===plan.parser_version,'Batch/package mismatch');if(old.status==='committed')return {duplicate:true,created:0};check(['validated','committing','failed'].includes(old.status),'Batch cannot resume');}
- else{await statement(db,'INSERT INTO tenant_import_batches(id,source_sha256,approved_package_sha256,parser_version,status,requested_by,approved_by,counts_json) VALUES(?,?,?,?,?,?,?,?)',batch,plan.source_sha256,plan.approved_package_sha256,plan.parser_version,'validated',a.email,a.email,JSON.stringify({changes:plan.changes.length,items:plan.items.length})).run();}
+ if(old){check(old.source_sha256===plan.source_sha256&&old.approved_package_sha256===plan.approved_package_sha256&&old.parser_version===plan.parser_version,'Batch/package mismatch');check(!JSON.parse(old.counts_json).manifest_sha256||JSON.parse(old.counts_json).manifest_sha256===plan.manifest_sha256,'Resumed manifest changed');if(old.status==='committed')return {duplicate:true,created:0};check(['validated','committing','failed'].includes(old.status),'Batch cannot resume');}
+ else{await statement(db,'INSERT INTO tenant_import_batches(id,source_sha256,approved_package_sha256,parser_version,status,requested_by,approved_by,counts_json) VALUES(?,?,?,?,?,?,?,?)',batch,plan.source_sha256,plan.approved_package_sha256,plan.parser_version,'validated',a.email,a.email,JSON.stringify({changes:plan.changes.length,items:plan.items.length,manifest_sha256:plan.manifest_sha256})).run();}
  await statement(db,"UPDATE tenant_import_batches SET status='committing' WHERE id=?",batch).run();let finished=0;
  try{
  for(const record of new Set<string>(plan.items.map((i:Row)=>i.record_id))){
   const items:Row[]=plan.items.filter((i:Row)=>i.record_id===record),existing=await all(db,'SELECT * FROM tenant_import_items WHERE batch_id=? AND record_id=?',batch,record);
   if(existing.length){check(existing.length===items.length&&items.every(i=>existing.some(old=>Object.entries(i).every(([k,v])=>old[k]===v))),'Persisted source mappings need reconciliation');continue;}
+  if(options.maxRecords&&finished>=options.maxRecords)return {pending:true,finished};
   const prior=await all(db,'SELECT entity_type,entity_id,after_json FROM tenant_import_changes WHERE batch_id=?',batch);
   const applied=new Map(prior.map(c=>[c.entity_type+':'+c.entity_id,JSON.parse(c.after_json)]));
+  const assignmentSnapshots=prior.filter(c=>c.entity_type==='tenant_assignments').map(c=>JSON.parse(c.after_json));
   const statements:D1PreparedStatement[]=[];let n=0;const token=batch+':'+record;
   statements.push(statement(db,'INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM admin_identities WHERE email=? AND active=1) THEN 1 ELSE 0 END',token+':actor',a.email));
+  if(plan.upload_revision)statements.push(statement(db,"INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM tenant_uploads WHERE id=? AND revision=?) THEN 1 ELSE 0 END",token+':upload',plan.source_sha256,plan.upload_revision));
+  for(const c of plan.collision_guards||[])if(c.record_id===record)statements.push(statement(db,"INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN NOT EXISTS(SELECT 1 FROM tenant_accounts WHERE lower(trim(display_name))=?) THEN 1 ELSE 0 END",token+':collision:'+n++,c.name));
+  for(const g of plan.assignment_guards||[])if(g.record_id===record){
+   const ids=[...new Set<string>([...g.expected,...assignmentSnapshots.filter(v=>v.unit_id===g.unit_id&&v.active).map(v=>v.id)])];
+   statements.push(statement(db,`INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN (SELECT count(*) FROM tenant_assignments WHERE unit_id=? AND active=1)=? AND NOT EXISTS(SELECT 1 FROM tenant_assignments WHERE unit_id=? AND active=1${ids.length?' AND id NOT IN('+ids.map(()=>'?').join(',')+')':''}) THEN 1 ELSE 0 END`,token+':occupancy:'+n++,g.unit_id,ids.length,g.unit_id,...ids));
+  }
   for(const p of plan.preconditions.filter((p:Row)=>p.record_ids.includes(record)))statements.push(guard(db,token+':'+n++,p.table,p.id,applied.get(p.table+':'+p.id)??p.row));
   for(const [index,c] of plan.changes.entries())if(c.record_id===record){
    statements.push(guard(db,token+':'+n++,c.table,c.id,c.before),write(db,c));

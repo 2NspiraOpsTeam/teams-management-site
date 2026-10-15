@@ -1,3 +1,44 @@
+# Manual Admin uploads — current authorized scope (2026-10-15)
+
+Admin → Tenants → Import / Upload (`/admin/tenants/import`) extends the existing
+bounded D1 runner with authenticated XLSX intake, exception review, exact source
+lineage, contact-only updates and resumable validated-subset imports. The private
+API is `/api/admin/tenant-uploads`; every call independently validates Admin auth,
+and writes require same origin. Excel parsing uses maintained MIT-licensed
+`read-excel-file` and `fflate`; no paid service is added.
+
+Only the explicitly configured `teams-database-dev` preview can execute manual
+imports after its verified-backup configuration is enabled. Other preview and
+production execution, hosted undo and generic CLI remote writes remain disabled.
+The nullable-login prerequisite is explicitly authorized after backup/restore and
+preservation checks. It does not enable directory-only tenants' portal access.
+Current occupancy is authorized; move-in dates remain unknown. Blank contacts do
+not clear values. Only earlier importer-owned contacts are archived for a reviewed
+replacement; login email, sessions, leases, notes and permissions are untouched.
+
+Same-file SHA opens the original upload/results; cross-version reuse requires an
+exact previously imported source lineage (sheet, row, property, unit and name) or
+explicit existing tenant ID plus unchanged occupancy. Never infer merges from
+names/contact values. Uncertain matches, shared/repeated identities and uncertain
+moves stay held until review. Missing tenants are review-only. New apartments need
+an exact existing property and explicitly reviewed unit/floor. The complete source
+row, review reason, authenticated actor and before/after changes remain private.
+
+Plans are server-generated and immutable once import starts. Each bounded record
+atomically checks current actor, upload revision, entity snapshots, apartment
+occupant set and identity collision guards alongside entity changes/audit/source
+receipts. Requests process at most eight records; reopen the saved upload and
+resume after interruption. Completed receipts are skipped without duplicate writes.
+
+No Microsoft Graph, OAuth integration, scheduled import, polling, webhooks or
+external automation is configured. Prior research below is retained only as history.
+The original authoritative workbook is still required before a real occupancy
+batch; a derived review workbook is not a substitute for that upload.
+
+---
+
+## Historical preparation procedure (superseded gates as noted above)
+
 # One-time tenant import — private preparation only
 
 This extends existing Teams/D1 entities. It is not Excel sync and never provisions login access. The application exposes no import endpoint. Preview/production commit and undo are hard-disabled in both runners, not merely hidden in the UI.
