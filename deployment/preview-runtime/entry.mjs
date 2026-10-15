@@ -16,11 +16,17 @@ export class TeamsPreviewRuntime extends WorkerEntrypoint {
     for (const key of allowed) {
       if (typeof configuration?.[key] === 'string') runtime[key] = configuration[key];
     }
+    const identify = response => {
+      const result = new Response(response.body, response);
+      result.headers.set('X-Teams-Release', this.env.TEAMS_RELEASE_SHA || 'local');
+      result.headers.set('X-Teams-Runtime', 'OpenNext');
+      return result;
+    };
     if (request.method === 'GET' || request.method === 'HEAD') {
       const asset = await this.env.ASSETS.fetch(request);
-      if (asset.status !== 404) return asset;
+      if (asset.status !== 404) return identify(asset);
     }
-    return application.fetch(request, { ...this.env, ...runtime }, this.ctx);
+    return identify(await application.fetch(request, { ...this.env, ...runtime }, this.ctx));
   }
 }
 export default { fetch() { return new Response('Not found', { status: 404 }); } };
