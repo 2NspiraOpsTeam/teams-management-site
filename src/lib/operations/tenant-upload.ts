@@ -114,7 +114,9 @@ export async function buildUploadPlan(a:Actor,source:string,rows:UploadRow[],res
 }
 export async function saveUpload(a:Actor,id:string,fileName:string,rows:UploadRow[]){
  const old=await one(a.db,'SELECT id FROM tenant_uploads WHERE id=?',id);if(old)return getUpload(a,id);
+ if(JSON.stringify(rows).length>500000)fail('Workbook contains too much data for one upload. Split it into smaller reviewed workbooks.');
  const built=await buildUploadPlan(a,id,rows);
+ if(JSON.stringify(built).length>1400000)fail('Validated upload exceeds the safe storage limit. Split it into smaller reviewed workbooks.');
  await a.db.batch([stmt(a.db,'INSERT OR IGNORE INTO tenant_uploads(id,file_name,parser_version,rows_json,preview_json,plan_json,created_by) VALUES(?,?,?,?,?,?,?)',id,fileName,UPLOAD_PARSER,JSON.stringify(rows),JSON.stringify(built.preview),JSON.stringify(built.plan),a.email),auditStatement(a,'tenant_manual_upload',id,null,{action:'validated',candidates:rows.length},'validated')]);return getUpload(a,id);
 }
 export async function getUpload(a:Actor,id:string){
@@ -133,6 +135,7 @@ export async function resolveUpload(a:Actor,id:string,revision:number,key:string
  if(!value||typeof value.name!=='string'||typeof value.property!=='string'||typeof value.unit!=='string'||typeof value.tenantId!=='string'||typeof value.distinct!=='boolean'||typeof value.reason!=='string'||!Array.isArray(value.contacts)||value.contacts.some(c=>!c||!['phone','email'].includes(c.type)||typeof c.value!=='string'||typeof c.cell!=='string')||!(value.floor===null||Number.isInteger(value.floor)))fail('Enter a complete review resolution.');
  const resolutions={...JSON.parse(saved!.resolutions_json),[key]:value};
  const built=await buildUploadPlan(a,id,rows,resolutions);
+ if(JSON.stringify(built).length>1400000)fail('Validated upload exceeds the safe storage limit. Split it into smaller reviewed workbooks.');
  const results=await a.db.batch([stmt(a.db,"INSERT INTO tenant_import_guards(id,ok) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM tenant_uploads WHERE id=? AND revision=?) AND NOT EXISTS(SELECT 1 FROM tenant_import_batches WHERE source_sha256=? AND status IN('validated','committing','failed')) THEN 1 ELSE 0 END",'resolve:'+crypto.randomUUID(),id,revision,id),stmt(a.db,"UPDATE tenant_uploads SET resolutions_json=?,preview_json=?,plan_json=?,revision=revision+1,updated_at=datetime('now') WHERE id=? AND revision=?",JSON.stringify(resolutions),JSON.stringify(built.preview),JSON.stringify(built.plan),id,revision),auditStatement(a,'tenant_manual_upload',id,{record:key,resolution:JSON.parse(saved!.resolutions_json)[key]||null},{record:key,resolution:value},'reviewed'),stmt(a.db,"DELETE FROM tenant_import_guards WHERE id LIKE 'resolve:%'")]);
  if(!results[1].meta.changes)fail('Another reviewer saved first. Reload.',409);return getUpload(a,id);
 }
