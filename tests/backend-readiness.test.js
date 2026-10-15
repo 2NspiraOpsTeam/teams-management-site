@@ -1063,6 +1063,8 @@ it("labeled QA accounts produce unmistakable QA emails without changing normal n
   await drain();
   const messages = state.mail.filter((m) => m.workOrder);
   expect(messages).toHaveLength(2);
+  expect(messages.find(m => m.to === "office@example.test").body).toContain("Admin portal: https://teams-management-preview.pages.dev/admin/maintenance");
+  expect(messages.find(m => m.to !== "office@example.test").body).toContain("Tenant portal: https://teams-management-preview.pages.dev/tenant/maintenance");
   expect(messages.every((m) => m.subject.startsWith("[QA] "))).toBe(true);
   expect(
     messages.every((m) =>

@@ -1,3 +1,4 @@
+import { portalUrl } from '../portal-links';
 import type { D1Database } from "@cloudflare/workers-types";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { adminEnv } from "@/lib/admin-auth";
@@ -68,7 +69,7 @@ export async function deliver(db: D1Database, env: Env, id: string) {
       to,
       `${qa ? "[QA] " : ""}Teams Management — Maintenance request #${n.number}`,
       (qa ? "QA validation only; no maintenance action is required.\n\n" : "") +
-        message,
+        message + `\n\n${n.audience === "management" ? "Admin portal" : "Tenant portal"}: ${portalUrl(n.audience === "management" ? "admin" : "tenant", "maintenance")}`,
     );
     await db
       .prepare(
