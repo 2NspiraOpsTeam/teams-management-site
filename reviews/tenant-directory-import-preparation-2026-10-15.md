@@ -1,5 +1,9 @@
 # Teams tenant directory / one-time import preparation
 
+## Continuation
+
+Jeffrey subsequently accepted this local milestone and approved contact/login identity separation as the target architecture. Shared migration and real import remain gated. See [reconciliation](tenant-import-reconciliation-2026-10-15.md) and the separate [release/rollback plan](tenant-import-release-plan-2026-10-15.md) for current scope and evidence. The original results below are retained as preparation history.
+
 ## Status
 
 **Implemented and tested locally; not deployed or imported remotely.** Real data remains in restricted local staging. No Microsoft Graph, OAuth, scheduled sync, paid service or storage plan was added. No invitations, mail, SMS or notifications were sent. Production and the stable preview are unchanged.
