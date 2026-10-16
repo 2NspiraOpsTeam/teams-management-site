@@ -342,3 +342,13 @@ html { scroll-padding-top: 110px; }
  .admin-dashboard .renewal-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
  .admin-dashboard .renewal-overview h2 { font-size:18px; }
 }
+@media(max-width:1023px) {
+ .admin-dashboard .metric-grid { margin-top:14px; }
+ .admin-dashboard .metric-grid > section { margin-top:14px; }
+ .admin-dashboard .metric-group-title { margin-bottom:6px; font-size:11px; }
+ .admin-dashboard .metric-grid dl { grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+ .admin-dashboard .metric-card { padding:10px 12px; }
+ .admin-dashboard .metric-card dt { font-size:12px; line-height:17px; }
+ .admin-dashboard .metric-card dd { margin-top:5px; font-size:24px; line-height:28px; }
+ .admin-dashboard .metric-card dd span { margin-left:6px; font-size:14px; }
+}
