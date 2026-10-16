@@ -1,5 +1,6 @@
 import {phoneList} from './phone-list';
-import {zipSync,strToU8} from 'fflate';
+import {xlsx} from './spreadsheet';
+export {xlsx} from './spreadsheet';
 import {all,auditStatement,type Actor,type Row} from './database';
 import {list} from './queries';
 import {rentRoll} from './rent-roll';
@@ -23,18 +24,6 @@ const columns:Record<string,Column[]>={
 };
 export const safeCell=(value:unknown)=>{const text=value==null?'':String(value);return /^[\s\u0000-\u001f]*[=+@-]/u.test(text)?"'"+text:text;};
 export function csv(table:unknown[][]){return '\ufeff'+table.map(row=>row.map(v=>'"'+safeCell(v).replaceAll('"','""')+'"').join(',')).join('\r\n')+'\r\n';}
-const xml=(v:unknown)=>String(v??'').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&apos;');
-// User-entered text is always an explicit string, never a formula; identifiers retain leading zeros.
-// Trusted numeric amounts and counts remain numeric for staff Excel calculations.
-export function xlsx(table:unknown[][]){const files:Record<string,Uint8Array>={};const put=(path:string,value:string)=>{files[path]=strToU8(value);};
- put('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>');
- put('_rels/.rels','<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');
- put('xl/workbook.xml','<?xml version="1.0"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Teams export" sheetId="1" r:id="rId1"/></sheets></workbook>');
- put('xl/_rels/workbook.xml.rels','<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>');
- const letter=(n:number)=>{let s='';for(n++;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;};
- put('xl/worksheets/sheet1.xml','<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetData>'+table.map((row,i)=>`<row r="${i+1}">`+row.map((v,j)=>typeof v==='number'&&Number.isFinite(v)?`<c r="${letter(j)}${i+1}" t="n"><v>${v}</v></c>`:`<c r="${letter(j)}${i+1}" t="inlineStr"><is><t xml:space="preserve">${xml(v)}</t></is></c>`).join('')+'</row>').join('')+`</sheetData><autoFilter ref="A1:${letter(table[0].length-1)}${table.length}"/></worksheet>`);
- return zipSync(files,{level:6});
-}
 export async function exportRecords(a:Actor,entity:string,url:URL){
  if(!columns[entity])fail('Export is not available for this list.',404);const format=choice(url.searchParams.get('format')||'csv',['csv','xlsx']);let rows:Row[]=[];
  // Ignore the visible page: export every matching row up to a hard budget, never silently truncate.

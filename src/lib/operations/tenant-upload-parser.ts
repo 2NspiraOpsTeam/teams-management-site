@@ -3,7 +3,7 @@ import {unzipSync,strFromU8} from 'fflate';
 import type {ReviewBundle} from './import-review';
 export type UploadContact={type:'phone'|'email';value:string;cell:string};
 export type UploadRow={id:string;sheet:string;row:number;name:string;property:string;unit:string;tenantId:string;floor:number|null;contacts:UploadContact[];reasons:string[];raw:string};
-export const UPLOAD_PARSER='teams-manual-1';
+export const UPLOAD_PARSER='teams-manual-2';
 const text=(v:unknown)=>v==null?'':String(v).trim();
 function column(n:number){let s='';for(n++;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;}
 export function inspectArchive(bytes:Uint8Array){
@@ -29,7 +29,7 @@ export async function parseUpload(bytes:Uint8Array,bundle:ReviewBundle|null):Pro
  for(const sheet of sheets){
   const first=sheet.data.findIndex(r=>r.some(c=>text(c)));
   if(first<0)continue;
-  const headers=sheet.data[first].map(c=>text(c).toLowerCase());
+  const headers=sheet.data[first].map(c=>text(c).toLowerCase().replace(/^tenant name$/, 'name').replace(/^apartment$/, 'unit').replace(/^main phone$/, 'phone').replace(/^(alt number|alt phone|alternate phone)$/, 'alternate phone'));
   const isTemplate=['property','unit','name'].every(h=>headers.includes(h));
   if(isTemplate){
    if(new Set(headers.filter(Boolean)).size!==headers.filter(Boolean).length)throw Error('Duplicate column headers.');
@@ -37,7 +37,7 @@ export async function parseUpload(bytes:Uint8Array,bundle:ReviewBundle|null):Pro
    sheet.data.slice(first+1).forEach((r,index)=>{
     if(!r.some(c=>text(c)))return;const row=index+first+2;
     const contacts:UploadContact[]=[];
-    for(const type of ['phone','email'] as const)if(text(at(r,type)))contacts.push({type,value:text(at(r,type)),cell:column(headers.indexOf(type))+row});
+    for(const h of ['phone','alternate phone','email'])if(text(at(r,h)))contacts.push({type:h==='email'?'email':'phone',value:text(at(r,h)),cell:column(headers.indexOf(h))+row});
     const floor=at(r,'floor');
     out.push({id:sheet.sheet+'!'+row,sheet:sheet.sheet,row,name:text(at(r,'name')),property:text(at(r,'property')),unit:typeof at(r,'unit')==='string'?text(at(r,'unit')):'',tenantId:text(at(r,'tenant id')),floor:typeof floor==='number'&&Number.isInteger(floor)?floor:null,contacts,reasons:typeof at(r,'unit')==='string'?[]:['Unit must be text to preserve leading zeros'],raw:r.map(text).join(' | ')});
    });continue;
