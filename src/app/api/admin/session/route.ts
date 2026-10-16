@@ -58,9 +58,9 @@ export async function POST(request: Request) {
   const claim = await db.prepare("UPDATE admin_login_codes SET attempt_count=attempt_count+1,used_at=CASE WHEN ? THEN datetime('now') ELSE used_at END WHERE id=? AND used_at IS NULL AND expires_at>datetime('now') AND attempt_count<5").bind(valid ? 1 : 0, row.id).run();
   if (!valid || claim.meta.changes !== 1) return unauthorized();
   const session = randomHex(32);
-  await db.prepare("INSERT INTO admin_sessions (token_hash,email,expires_at) VALUES (?,?,datetime('now','+8 hours'))").bind(await hash(session), email).run();
+  await db.prepare("INSERT INTO admin_sessions (token_hash,email,expires_at) VALUES (?,?,datetime('now','+24 hours'))").bind(await hash(session), email).run();
   const response = reply({ email });
-  response.cookies.set(cookieName, session, { httpOnly: true, secure: true, sameSite: 'strict', path: '/', maxAge: 8 * 60 * 60 });
+  response.cookies.set(cookieName, session, { httpOnly: true, secure: true, sameSite: 'strict', path: '/', maxAge: 24 * 60 * 60 });
   return response;
 }
 export async function DELETE(request: Request) {

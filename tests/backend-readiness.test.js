@@ -177,11 +177,27 @@ async function signIn(module, email, cookie) {
   expect(header).toMatch(/HttpOnly/i);
   expect(header).toMatch(/Secure/i);
   expect(header).toMatch(/SameSite=strict/i);
+  if (cookie === "teams_admin_session") expect(header).toMatch(/Max-Age=86400/i);
   state.cookies.set(cookie, header.split(";")[0].split("=")[1]);
   return code;
 }
 
 describe("local SQLite-backed auth, isolation and persistence (mail stubbed)", () => {
+  it("Admin persists beyond eight hours, expires after 24 hours, and logout revokes access", async () => {
+    await signIn(admin, "qa-admin@example.test", "teams_admin_session");
+    const remaining = sql.prepare("SELECT (julianday(expires_at)-julianday('now'))*24 AS hours FROM admin_sessions").get().hours;
+    expect(remaining).toBeGreaterThan(23.99);
+    expect(remaining).toBeLessThanOrEqual(24);
+    sql.exec("UPDATE admin_sessions SET expires_at=datetime('now','+15 hours'),created_at=datetime('now','-9 hours')");
+    expect(await currentAdmin()).toBe("qa-admin@example.test");
+    sql.exec("UPDATE admin_sessions SET expires_at=datetime('now','-1 second')");
+    expect(await currentAdmin()).toBeNull();
+    sql.exec("UPDATE admin_sessions SET expires_at=datetime('now','+1 hour')");
+    const response = await admin.DELETE(new Request(origin + "/session", {method:"DELETE",headers:{origin,cookie:"teams_admin_session="+state.cookies.get("teams_admin_session")}}));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("set-cookie")).toMatch(/Max-Age=0/i);
+    expect(await currentAdmin()).toBeNull();
+  });
   it("Admin OTP is single-use and does not grant tenant access", async () => {
     const code = await signIn(
       admin,
