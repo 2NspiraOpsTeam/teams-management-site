@@ -296,3 +296,49 @@ html { scroll-padding-top: 110px; }
  .dashboard-data-note { line-height: 16px; }
  .dashboard-activity > summary { padding-top: 5px; padding-bottom: 5px; }
 }
+
+/* Refined operational overview: compact spacing, generous readable labels. */
+.rent-roll-header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; border:1px solid #e4e1d9; border-radius:14px 14px 0 0; background:linear-gradient(115deg,#fff,#f8f6f0); }
+.rent-roll-eyebrow { margin-bottom:5px; color:#785e29; font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+.rent-roll-header h1 { font-size:30px; line-height:1.2; letter-spacing:-.025em; }
+.rent-roll-subtitle { margin-top:6px; font-size:13px; color:#53616b; }
+.rent-roll-guide { padding:8px 24px; border:1px solid #e4e1d9; border-top:0; border-radius:0 0 14px 14px; background:#fff; color:#53616b; font-size:12px; }
+.rent-roll-guide summary { cursor:pointer; width:fit-content; padding:4px 0; color:#675323; }
+.rent-roll-guide p { max-width:85ch; padding:8px 0; line-height:1.7; }
+.rent-roll-filters { margin:14px 0; padding:16px; border:1px solid #e4e1d9; border-radius:12px; background:#fff; align-items:end; }
+.rent-roll-filters label { min-width:0; color:#475569; font-size:12px; font-weight:600; }
+.rent-roll-filters input,.rent-roll-filters select { font-weight:400; font-size:13px; min-height:42px; }
+.admin-dashboard .renewal-overview { padding:16px; border-radius:14px; box-shadow:0 3px 15px #292d2f05; }
+.admin-dashboard .renewal-overview h2 { font-size:20px; letter-spacing:-.02em; }
+.admin-dashboard .renewal-metrics { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin-top:0; }
+.admin-dashboard .renewal-metric { display:flex; flex-direction:column-reverse; justify-content:flex-end; gap:3px; padding:9px 12px; border-color:#edeae3; background:#faf9f6; }
+.admin-dashboard .renewal-metric > span { min-height:0; font-size:11px; line-height:15px; }
+.admin-dashboard .renewal-metric strong { margin:0; font-size:23px; line-height:26px; color:#343b3c; }
+.admin-dashboard .renewal-snapshot { margin-top:12px; }
+.admin-dashboard .renewal-forecast { margin-top:12px; padding:12px; background:#f8f7f3; border-radius:10px; }
+.admin-dashboard .renewal-forecast h3 { color:#53616b; font-size:12px; }
+.admin-dashboard .renewal-months > a { background:#fff; }
+.admin-dashboard .renewal-review-links { padding-top:10px; border-top:1px solid #eeeae1; margin-top:12px; color:#675323; }
+@media(min-width:1100px) {
+ .admin-dashboard .renewal-snapshot { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; align-items:stretch; }
+ .admin-dashboard .renewal-forecast { margin-top:0; }
+ .admin-dashboard .renewal-months { grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; margin-top:10px; }
+ .admin-dashboard .renewal-bar { height:20px; }
+}
+@media(max-width:1023px) {
+ .admin-dashboard .dashboard-hero { padding:18px 20px; }
+ .admin-dashboard .dashboard-eyebrow { margin-bottom:6px; }
+ .admin-dashboard .dashboard-hero h1 { font-size:28px; }
+ .admin-dashboard .dashboard-intro { display:none; }
+ .admin-dashboard .dashboard-primary { margin-top:12px; padding:8px 12px; }
+ .admin-dashboard .dashboard-shortcuts { gap:6px; margin-top:10px; }
+ .admin-dashboard .dashboard-shortcuts a { min-height:60px; padding:10px 14px; }
+}
+@media(max-width:540px) {
+ .rent-roll-header { padding:16px; gap:14px; }
+ .rent-roll-guide { padding:8px 16px; }
+ .rent-roll-filters { padding:12px; }
+ .admin-dashboard .renewal-overview { padding:12px; }
+ .admin-dashboard .renewal-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .admin-dashboard .renewal-overview h2 { font-size:18px; }
+}

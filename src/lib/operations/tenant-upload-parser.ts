@@ -37,7 +37,7 @@ export async function parseUpload(bytes:Uint8Array,bundle:ReviewBundle|null):Pro
    sheet.data.slice(first+1).forEach((r,index)=>{
     if(!r.some(c=>text(c)))return;const row=index+first+2;
     const contacts:UploadContact[]=[];
-    for(const h of ['phone','alternate phone','email'])if(text(at(r,h)))contacts.push({type:h==='email'?'email':'phone',value:text(at(r,h)),cell:column(headers.indexOf(h))+row});
+    for(const h of headers.filter(h=>/^(phone|alternate phone|email)( \d+)?$/.test(h)))if(text(at(r,h)))contacts.push({type:h.startsWith('email')?'email':'phone',value:text(at(r,h)),cell:column(headers.indexOf(h))+row});
     const floor=at(r,'floor');
     out.push({id:sheet.sheet+'!'+row,sheet:sheet.sheet,row,name:text(at(r,'name')),property:text(at(r,'property')),unit:typeof at(r,'unit')==='string'?text(at(r,'unit')):'',tenantId:text(at(r,'tenant id')),floor:typeof floor==='number'&&Number.isInteger(floor)?floor:null,contacts,reasons:typeof at(r,'unit')==='string'?[]:['Unit must be text to preserve leading zeros'],raw:r.map(text).join(' | ')});
    });continue;

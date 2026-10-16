@@ -32,3 +32,25 @@ it('denies anonymous/tenant-only reads, cross-origin uploads, and oversized bodi
 it('allows held exceptions to be reviewed in a later stage of the same upload without repeating imported rows',async()=>{await saveUpload(a,source,'staged.xlsx',[row(),row(2,{unit:'001C'})]);await importUpload(a,source,1);const reviewed=await resolveUpload(a,source,1,'Tenants!2',{name:'Synthetic Occupant 2',property:'b1',unit:'001C',floor:1,tenantId:'',contacts:[],distinct:false,reason:'Confirmed apartment for second stage.'});expect(reviewed.preview.summary.validated).toBe(2);const done=await importUpload(a,source,reviewed.revision);expect(done.imported).toHaveLength(2);expect(sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT count(*) n FROM tenant_import_batches').get()?.n).toBe(2);});
 
 it('blank alternate contact cells do not archive previously imported alternate contacts',async()=>{const original=row(1,{contacts:[{type:'phone',value:'111-1111',cell:'D1'},{type:'phone',value:'222-2222',cell:'F1'}]});await saveUpload(a,source,'old.xlsx',[original]);await importUpload(a,source,1);await saveUpload(a,next,'new.xlsx',[row(1,{contacts:[{type:'phone',value:'333-3333',cell:'D1'}]})]);await importUpload(a,next,1);expect(sql.prepare('SELECT value_raw FROM tenant_contacts WHERE archived=0 ORDER BY value_raw').all()).toEqual([{value_raw:'222-2222'},{value_raw:'333-3333'}]);});
+
+it('exports stable tenant IDs and every contact, and reimports reordered Excel revisions without duplicate tenants',async()=>{
+ await saveUpload(a,source,'first.xlsx',[row(1,{contacts:[{type:'phone',value:'212-555-0101',cell:'D1'},{type:'phone',value:'212-555-0102',cell:'E1'},{type:'phone',value:'212-555-0103',cell:'F1'},{type:'email',value:'one@example.test',cell:'G1'},{type:'email',value:'two@example.test',cell:'H1'}]}),row(2)]);
+ await importUpload(a,source,1);
+ const response=await GET(new Request('https://example.test/api/admin/tenant-uploads?format=xlsx&property=b1'));
+ expect(response.status).toBe(200);expect(response.headers.get('cache-control')).toBe('private, no-store');
+ const parsed=await parseUpload(new Uint8Array(await response.arrayBuffer()),null);
+ expect(parsed).toHaveLength(2);expect(parsed[0].tenantId).toBeTruthy();expect(parsed[0].unit).toBe('01A');expect(parsed.find(r=>r.name.endsWith('1'))!.contacts).toHaveLength(5);
+ const {xlsx}=await import('../src/lib/operations/spreadsheet');
+ const revised=await parseUpload(xlsx([['Property','Unit','Tenant Name','Tenant ID','Phone','Email'],...parsed.reverse().map(r=>[r.property,r.unit,r.name,r.tenantId,r.name.endsWith('1')?'212-555-0199':'',''])]),null);
+ const preview=await saveUpload(a,next,'revision.xlsx',revised);expect(preview.preview.summary.held).toBe(0);expect(preview.preview.summary.new).toBe(0);expect(preview.preview.summary.updates).toBe(1);
+ await importUpload(a,next,1);expect(sql.prepare('SELECT count(*) AS n FROM tenant_accounts').get()!.n).toBe(2);
+ expect(sql.prepare("SELECT count(*) AS n FROM tenant_contacts WHERE value_raw='one@example.test' AND archived=0").get()!.n).toBe(1);
+ expect(sql.prepare("SELECT count(*) AS n FROM tenant_contacts WHERE value_raw='212-555-0199' AND archived=0").get()!.n).toBe(1);
+ const again=await importUpload(a,next,1);expect(again.batchStatus).toBe('committed');expect(sql.prepare('SELECT count(*) AS n FROM tenant_accounts').get()!.n).toBe(2);
+});
+it('scopes editable Excel export to a selected property and denies anonymous export',async()=>{
+ expect((await GET(new Request('https://example.test/api/admin/tenant-uploads?format=xlsx'))).status).toBe(400);
+ expect((await GET(new Request('https://example.test/api/admin/tenant-uploads?format=xlsx&property=missing'))).status).toBe(404);
+ expect((await GET(new Request('https://example.test/api/admin/tenant-uploads?format=xlsx&property=b1'))).status).toBe(422);
+ state.actor=null;expect((await GET(new Request('https://example.test/api/admin/tenant-uploads?format=xlsx&property=b1'))).status).toBe(401);
+});

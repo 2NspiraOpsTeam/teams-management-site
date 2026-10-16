@@ -1,3 +1,4 @@
+import {exportTenantWorkbook} from '@/lib/operations/tenant-workbook';
 import {requireAdmin,sameOrigin,unauthorized} from '@/lib/admin-auth';
 import {boundedBody,BodyTooLarge} from '@/lib/request-body';
 import {all,body} from '@/lib/operations/database';
@@ -8,6 +9,7 @@ import {parseUpload} from '@/lib/operations/tenant-upload-parser';
 export const runtime='nodejs';
 export async function GET(request:Request){const a=await requireAdmin();if(!a)return unauthorized();try{
  const url=new URL(request.url),id=url.searchParams.get('id');
+ if(url.searchParams.get('format')==='xlsx')return await exportTenantWorkbook(a,url.searchParams.get('property')||'');
  if(id&&!/^[a-f0-9]{64}$/.test(id))return json({error:'Invalid upload.'},400);
  return json(id?await getUpload(a,id):{...await catalog(a),uploads:await all(a.db,'SELECT id,file_name,created_at FROM tenant_uploads ORDER BY created_at DESC LIMIT 30')});
  }catch(e){return error(e);}}
