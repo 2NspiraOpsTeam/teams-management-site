@@ -170,3 +170,42 @@ main details > div { animation: detail-open 240ms ease both; }
 .skip-link:focus { transform: none; }
 html { scroll-padding-top: 110px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto !important; } }
+
+/* Private staff workspace — restrained Teams branding, scoped from public pages. */
+.admin-shell { background: #f6f5f1; }
+.admin-shell aside { border-color: #e5e2da; }
+.admin-brand { line-height: 1.3; letter-spacing: -.025em; }
+.admin-brand-logo { width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; }
+.admin-shell aside nav a { transition: background-color .18s, color .18s; }
+.admin-shell aside nav a[aria-current="page"] { background: #292d2f; box-shadow: inset 3px 0 #d4a62a; }
+.admin-dashboard { padding-top: 36px; padding-bottom: 56px; }
+.dashboard-hero { display: flex; align-items: center; justify-content: space-between; gap: 24px; overflow: hidden; padding: 36px 40px; border: 1px solid #454744; border-radius: 20px; color: #fff; background: radial-gradient(ellipse at top right, #515044 0, transparent 65%), #292d2f; box-shadow: 0 12px 30px #252b3010; }
+.dashboard-eyebrow { margin: 0 0 18px; font-size: 10px; letter-spacing: .18em; font-weight: 600; text-transform: uppercase; color: #efd797; }
+.dashboard-hero h1 { font-family: Georgia, serif; font-size: clamp(32px, 3.8vw, 46px); font-weight: 400; letter-spacing: -.035em; }
+.dashboard-intro { margin: 16px 0 24px; color: #e0e1dc; font-size: 15px; line-height: 1.8; }
+.dashboard-primary { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 44px; padding: 11px 18px; border-radius: 7px; background: #efd797; color: #242829; font-size: 14px; font-weight: 600; }
+.dashboard-primary:hover { background: #f7e4b5; }
+.dashboard-brand-seal { display: flex; flex-direction: column; align-items: center; gap: 15px; flex-shrink: 0; padding: 8px 12px; }
+.dashboard-brand-seal img { width: 152px; height: 152px; border-radius: 50%; }
+.dashboard-brand-seal span { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #e3d3ad; }
+.dashboard-shortcuts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-top: 20px; }
+.dashboard-shortcuts a { display: flex; align-items: center; gap: 12px; min-height: 100px; padding: 18px; border: 1px solid #e4e1d9; border-radius: 12px; background: #fff; transition: border-color .18s, box-shadow .18s; }
+.dashboard-shortcuts a:hover { border-color: #ac8a40; box-shadow: 0 4px 18px #292d2f09; }
+.shortcut-number { align-self: flex-start; font-size: 10px; color: #766239; padding-top: 4px; }
+.dashboard-shortcuts strong { display: block; font-size: 14px; font-weight: 600; }
+.shortcut-description { display: block; margin-top: 5px; color: #606563; font-size: 12px; line-height: 1.6; }
+.shortcut-arrow { margin-left: auto; color: #766239; }
+.admin-dashboard .metric-group-title { display: flex; align-items: center; gap: 14px; color: #454b49; font-size: 12px; letter-spacing: .11em; text-transform: uppercase; }
+.admin-dashboard .metric-group-title::after { content: ''; height: 1px; flex: 1; background: #e1dfd6; }
+.admin-dashboard .metric-card { border-color: #e4e1d9; border-radius: 12px; box-shadow: 0 2px 5px #292d2f03; }
+.admin-dashboard .metric-card:hover { border-color: #a68a4e; box-shadow: 0 5px 18px #292d2f09; }
+.admin-dashboard .metric-card dt { min-height: 44px; font-size: 13px; }
+.admin-dashboard .metric-card dd { font-size: 32px; font-weight: 500; letter-spacing: -.04em; color: #292d2f; }
+.admin-dashboard .metric-card dd span { float: right; color: #79673e; }
+@media (max-width: 767px) {
+  .admin-dashboard { padding-top: 20px; }
+  .dashboard-hero { padding: 26px 24px; border-radius: 14px; }
+  .dashboard-brand-seal { display: none; }
+  .dashboard-shortcuts { grid-template-columns: 1fr; gap: 10px; }
+  .dashboard-shortcuts a { min-height: 78px; padding: 16px; }
+}
