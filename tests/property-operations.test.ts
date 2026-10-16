@@ -111,3 +111,21 @@ it('updates a shared lease without changing the unit, tenant or maintenance hist
  expect((await(await request('leases/'+lease.id)).json())).toMatchObject({unit_identifier:'1A',property_name:'QA One',unit_id:'u1'});
  expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT COUNT(*) AS n FROM units').get()?.n).toBe(2);expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
 });
+it('finds property apartments by occupant name and preserved contact without cross-property leakage',async()=>{
+ sql.exec("INSERT INTO tenant_contacts(id,tenant_id,contact_type,label,value_raw) VALUES('contact-search','t1','phone','mobile','212-555-0199')");
+ for(const q of ['QA One','212-555']){const found=await(await request('units?buildingId=b1&q='+encodeURIComponent(q))).json();expect(found.items.map((r:any)=>r.id)).toEqual(['u1']);expect((await(await request('units?buildingId=b2&q='+encodeURIComponent(q))).json()).items).toEqual([]);}
+});
+it('rejects a fresh duplicate lease receipt while retaining safe same-receipt retry',async()=>{
+ const lease=await createLease();expect((await request('leases','POST',lease.data)).status).toBe(200);expect((await request('leases','POST',{...lease.data,idempotencyKey:crypto.randomUUID()})).status).toBe(409);expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(1);
+});
+it('retains former leaseholders in Admin history and links renewal agreements in both directions',async()=>{
+ const old=await createLease();const next=await createLease({predecessor_id:old.id,lease_start:'2028-01-01',lease_end:'2029-12-31'});
+ expect((await request('leases/'+old.id,'PATCH',{...old.data,revision:1,holders:[holder('t2')]})).status).toBe(200);
+ const tenant=await(await request('leases?tenantId=t1')).json();expect(tenant.items.map((r:any)=>r.id)).toContain(old.id);
+ const detail=await(await request('leases/'+old.id)).json();expect(detail.renewals.map((r:any)=>r.id)).toEqual([next.id]);expect((await(await request('leases/'+next.id)).json()).predecessor_id).toBe(old.id);
+});
+it('refuses editing a different lease into a duplicate apartment and date range',async()=>{
+ const old=await createLease();const next=await createLease({lease_start:'2028-01-01',lease_end:'2029-12-31'});
+ expect((await request('leases/'+next.id,'PATCH',{...next.data,revision:1,lease_start:old.data.lease_start,lease_end:old.data.lease_end})).status).toBe(409);
+ expect((await(await request('leases/'+next.id)).json()).lease_start).toBe('2028-01-01');
+});
