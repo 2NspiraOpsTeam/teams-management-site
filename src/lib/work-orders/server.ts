@@ -73,7 +73,9 @@ export function photos(value: unknown): PhotoInput[] {
     return { mime: p.mime, data: p.data };
   });
 }
-export const orderSelect = `SELECT r.id,d.number,d.revision,r.category,r.description,r.urgency,COALESCE(op.workflow_status,CASE WHEN r.status='scheduled' THEN 'in_progress' ELSE r.status END) AS status,r.preferred_contact,r.submitted_at,r.updated_at,d.completed_at,d.permission_to_enter,d.access_instructions,b.name AS property_name,b.address_json,u.unit_identifier,a.building_id,t.email,t.display_name FROM tenant_maintenance_requests r JOIN work_order_details d ON d.request_id=r.id JOIN tenant_assignments a ON a.id=r.assignment_id AND a.tenant_id=r.tenant_id JOIN tenant_accounts t ON t.id=r.tenant_id JOIN buildings b ON b.id=a.building_id JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id LEFT JOIN operations_work_order_profiles op ON op.request_id=r.id`;
+export const maintenanceStatus = (alias = 'op') => `COALESCE(${alias}.workflow_status,CASE WHEN r.status='scheduled' THEN 'in_progress' ELSE r.status END)`;
+export function workOrderSelect(admin = false) { return `SELECT ${admin ? 'op.staff_email,(SELECT s.full_name FROM operations_superintendents s WHERE s.id=op.superintendent_id) AS superintendent_name,' : ''}r.id,d.number,d.revision,r.category,r.description,r.urgency,${maintenanceStatus()} AS status,r.preferred_contact,r.submitted_at,r.updated_at,d.completed_at,d.permission_to_enter,d.access_instructions,b.name AS property_name,b.address_json,u.id AS unit_id,r.tenant_id,u.unit_identifier,a.building_id,t.email,t.display_name FROM tenant_maintenance_requests r JOIN work_order_details d ON d.request_id=r.id JOIN tenant_assignments a ON a.id=r.assignment_id AND a.tenant_id=r.tenant_id JOIN tenant_accounts t ON t.id=r.tenant_id JOIN buildings b ON b.id=a.building_id JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id LEFT JOIN operations_work_order_profiles op ON op.request_id=r.id`; }
+export const orderSelect = workOrderSelect();
 export async function authorized(db: D1Database, id: string, tenantId: string) {
   return db
     .prepare(

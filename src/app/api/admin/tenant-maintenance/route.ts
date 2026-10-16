@@ -1,5 +1,5 @@
 import { requireAdmin, unauthorized } from "@/lib/admin-auth";
-import { reply, orderSelect } from "@/lib/work-orders/server";
+import { reply, orderSelect, maintenanceStatus } from "@/lib/work-orders/server";
 export const runtime = "nodejs";
 export async function GET(request: Request) {
   const a = await requireAdmin();
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     for (const [key, column] of [
       ["building", "a.building_id"],
       ["apartment", "u.unit_identifier"],
-      ["status", "r.status"],
+      ["status", maintenanceStatus()],
       ["number", "d.number"],
     ]) {
       const value = q.get(key);

@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+import { OperationsNav, href } from "@/components/operations/shared";
 import { useEffect, useRef, useState } from "react";
 import {
   type Order,
@@ -135,6 +137,7 @@ export default function MaintenanceAdmin() {
   }
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
+      <OperationsNav/>
       <h1 className="text-3xl font-serif font-semibold">
         Maintenance Requests
       </h1>
@@ -282,9 +285,10 @@ export default function MaintenanceAdmin() {
             Reload request
           </button>
           <p className="break-words">
-            Tenant: {data.request.display_name || "Name not recorded"} ·{" "}
+            Tenant: <Link className="underline" href={href("tenants",data.request.tenant_id!)}>{data.request.display_name || "Name not recorded"}</Link> ·{" "}
             {data.request.email}
           </p>
+          <p className="my-3"><Link className="underline" href={href('properties',data.request.building_id!)}>{data.request.property_name}</Link> · <Link className="underline" href={href('units',data.request.unit_id!)}>Apartment {data.request.unit_identifier}</Link></p>
           <p role="status">{message}</p>
           <WorkOrderActivity data={data} admin />
           <RequestAssignment request={data.request} onSaved={()=>void open(data.request.id)}/>

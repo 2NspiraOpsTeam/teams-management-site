@@ -89,3 +89,25 @@ it('retains ended and proposed property associations without presenting them as 
  const property=await(await request('properties/b1')).json();expect(property.current_occupants).toBe(0);expect(property.occupied_units).toBe(0);expect(property.confirmed_vacant_units).toBe(0);
  expect((await(await request('tenants?unitId=u2')).json()).items.map((t:any)=>t.id)).toEqual(['t2']);
 });
+
+it('unifies maintenance IDs, tenant scoping and effective status filters across Admin and tenant history',async()=>{
+ const {orderSelect,authorized,detail:workDetail}=await import('../src/lib/work-orders/server');
+ sql.exec("INSERT INTO operations_work_order_profiles(request_id,workflow_status) VALUES('r1','scheduled'); UPDATE tenant_maintenance_requests SET status='scheduled' WHERE id='r1'");
+ for(const path of ['maintenance?tenantId=t1','maintenance?unitId=u1','maintenance?buildingId=b1','maintenance?status=scheduled']){
+  const result=await(await request(path)).json();expect(result.items).toHaveLength(1);expect(result.items[0]).toMatchObject({id:'r1',tenant_id:'t1',unit_id:'u1',building_id:'b1',status:'scheduled'});
+ }
+ expect((await(await request('maintenance?tenantId=t2')).json()).items).toHaveLength(0);
+ expect((await(await request('maintenance?status=in_progress')).json()).items).toHaveLength(0);
+ expect(await authorized(state.db,'r1','t2')).toBeNull();expect(await authorized(state.db,'r1','t1')).toBeTruthy();
+ sql.exec("UPDATE operations_work_order_profiles SET workflow_status='cancelled' WHERE request_id='r1'; UPDATE tenant_maintenance_requests SET status='closed' WHERE id='r1'");
+ expect((await(await request('maintenance?status=cancelled')).json()).items[0].status).toBe('cancelled');
+ expect((await(await request('maintenance?openOnly=1')).json()).items).toHaveLength(0);
+ expect((await workDetail(state.db,'r1'))?.request.status).toBe('cancelled');
+ expect(sql.prepare(orderSelect+" WHERE r.id='r1'").get()?.status).toBe('cancelled');
+});
+it('updates a shared lease without changing the unit, tenant or maintenance history',async()=>{
+ const lease=await createLease();expect((await request('leases/'+lease.id,'PATCH',{...lease.data,revision:1,lease_end:'2028-06-30'})).status).toBe(200);
+ for(const path of ['leases?tenantId=t1','leases?unitId=u1','leases?buildingId=b1'])expect((await(await request(path)).json()).items[0]).toMatchObject({id:lease.id,lease_end:'2028-06-30'});
+ expect((await(await request('leases/'+lease.id)).json())).toMatchObject({unit_identifier:'1A',property_name:'QA One',unit_id:'u1'});
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT COUNT(*) AS n FROM units').get()?.n).toBe(2);expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+});

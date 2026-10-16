@@ -50,6 +50,8 @@ export type Order = {
   superintendent_id?: string | null;
   staff_email?: string | null;
   building_id?: string;
+  unit_id?: string;
+  tenant_id?: string;
 };
 export type Activity = {
   id: string;
