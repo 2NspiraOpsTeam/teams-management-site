@@ -1,5 +1,6 @@
-import Link from 'next/link';
-import { requireAdmin } from '@/lib/admin-auth';
-import { enabled } from '@/lib/operations/database';
-import { overview } from '@/lib/operations/queries';
-export async function OperationsSummary(){if(!enabled())return null;const actor=await requireAdmin();if(!actor)return null;const summary=await overview(actor);return <section className="mt-7 rounded border bg-white p-5"><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-semibold">Operations Overview</h2><Link className="underline" href="/admin/operations">Open operations →</Link></div><dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{Object.entries(summary||{}).map(([key,value])=><div key={key}><dt className="text-sm capitalize text-slate-600">{key.replaceAll('_',' ')}</dt><dd className="mt-1 text-2xl font-semibold">{Number(value)}</dd></div>)}</dl><p className="mt-5 text-sm text-slate-600">No assignment does not imply vacancy. Labeled QA accounts do not count as verified occupancy.</p></section>;}
+import {requireAdmin} from '@/lib/admin-auth';
+import {enabled} from '@/lib/operations/database';
+import {overview,recentActivity} from '@/lib/operations/queries';
+import {MetricGrid} from './MetricGrid';
+import {ActivityList} from './ActivityList';
+export async function OperationsSummary(){if(!enabled())return null;const actor=await requireAdmin();if(!actor)return null;const [summary,activity]=await Promise.all([overview(actor),recentActivity(actor)]);return <section className="mt-7"><MetricGrid data={summary||{}}/><p className="mt-4 text-sm text-slate-600">An apartment without a current occupant needs review; it is not automatically vacant. Missing lease information is never an estimated rent.</p><ActivityList items={activity}/></section>;}

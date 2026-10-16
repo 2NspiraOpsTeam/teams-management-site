@@ -1,11 +1,17 @@
+import { phoneList,phonePrint } from './phone-list';
+import { exportRecords } from './exports';
+import { rentRoll } from './rent-roll';
 import { NextResponse } from 'next/server';
-import { authorize,body,enabled,all,type Row } from './database';
-import { detail,list,overview } from './queries';
+import { authorize,body,enabled,all,auditStatement,type Row } from './database';
+import { detail,list,overview,recentActivity } from './queries';
 import { saveRequestAssignment,saveAssignment,saveLease,saveProperty,saveSuperintendent,saveTenant,saveUnit } from './mutations';
 import { documentStore,downloadDocument,uploadLeaseDocument } from './private-documents';
 import { fail,id,OperationError } from './validation';
 export const json=(value:unknown,status=200)=>NextResponse.json(value,{status,headers:{'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
-export async function operationsRequest(request:Request,path:string[]){try{const a=await authorize(request,request.method!=='GET');const [entity,key,action]=path;const url=new URL(request.url);if(request.method==='GET'){
+export async function operationsRequest(request:Request,path:string[]){try{const a=await authorize(request,request.method!=='GET');const [entity,key,action]=path;const url=new URL(request.url);if(request.method==='POST'&&entity==='phone-list'&&key==='print'&&path.length===2){const items=await phonePrint(a,url);await auditStatement(a,'operations_print',crypto.randomUUID(),null,{entity,count:items.length,filters:Object.fromEntries(url.searchParams)},'print_prepared').run();return json({items,generatedAt:new Date().toISOString()});}if(request.method==='POST'&&key==='export'&&path.length===2)return await exportRecords(a,entity,url);if(request.method==='GET'){
+ if(entity==='phone-list'&&path.length===1)return json(await phoneList(a,url));
+ if(entity==='rent-roll'&&path.length===1)return json(await rentRoll(a,url));
+ if(entity==='activity'&&path.length===1)return json({items:await recentActivity(a,url.searchParams.get('buildingId')||'')});
  if(entity==='overview'&&path.length===1)return json(await overview(a));
  if(entity==='staff'&&path.length===1)return json({items:await all(a.db,'SELECT email FROM admin_identities WHERE active=1 ORDER BY email LIMIT 200')});
  if(entity==='storage'&&path.length===1)return json({enabled:!!documentStore(),maxBytes:5*1024*1024,acceptedType:'application/pdf'});

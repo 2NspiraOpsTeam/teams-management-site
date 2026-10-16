@@ -12,18 +12,20 @@ export async function saveTenant(a:Actor,key:string|null,v:Row){
  // Identity and portal access have their own explicit workflow, never contact editing.
  if(v.email!==undefined&&v.email!==(old?.email??''))fail('Login identity is managed separately from contact information.',409);
  if(v.active!==undefined&&bool(v.active)!==!!old?.active)fail('Portal access is managed separately from contact information.',409);
- const normalized={display_name:text(v.display_name,200,true),directory_status:choice(v.directory_status,['active','inactive','unknown'],'active'),preferred_language:text(v.preferred_language,100),internal_notes:text(v.internal_notes,5000)};
+ const profile=key?await one(a.db,'SELECT * FROM operations_tenants WHERE tenant_id=?',key)||{revision:1}:null;
+ const first_name=v.first_name===undefined?profile?.first_name||null:text(v.first_name,100)||null,last_name=v.last_name===undefined?profile?.last_name||null:text(v.last_name,100)||null;
+ const normalized={display_name:text([first_name,last_name].filter(Boolean).join(' ')||v.display_name,200,true),first_name,last_name,directory_status:choice(v.directory_status,['active','inactive','unknown'],'active'),preferred_contact:choice(v.preferred_contact,['email','phone'],profile?.preferred_contact||'email'),preferred_language:text(v.preferred_language,100),internal_notes:text(v.internal_notes,5000)};
  const contacts=validateContacts(v.contacts);
  const r=key?null:await receipt(a,v,'tenant',{...normalized,contacts});if(r?.duplicate)return {id:r.id,duplicate:true};const target=key||r!.id;
- const profile=key?await one(a.db,'SELECT * FROM operations_tenants WHERE tenant_id=?',key)||{revision:1}:null;
  const rev=key?revision(v,profile!):0;
  const beforeContacts=key?await all(a.db,'SELECT * FROM tenant_contacts WHERE tenant_id=? AND archived=0',key):[];
  const statements=key?[
  stmt(a.db,'INSERT OR IGNORE INTO operations_tenants(tenant_id) VALUES(?)',key),
- stmt(a.db,'UPDATE operations_tenants SET directory_status=?,preferred_language=?,internal_notes=?,updated_at=datetime(\'now\'),revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END WHERE tenant_id=?',normalized.directory_status,normalized.preferred_language,normalized.internal_notes,rev,key),
+ stmt(a.db,'UPDATE operations_tenants SET first_name=?,last_name=?,preferred_contact=?,directory_status=?,preferred_language=?,internal_notes=?,updated_at=datetime(\'now\'),revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END WHERE tenant_id=?',normalized.first_name,normalized.last_name,normalized.preferred_contact,normalized.directory_status,normalized.preferred_language,normalized.internal_notes,rev,key),
  stmt(a.db,'UPDATE tenant_accounts SET display_name=? WHERE id=?',normalized.display_name,key)
- ]:[r!.statement!,stmt(a.db,'INSERT INTO tenant_accounts(id,email,display_name,active) VALUES(?,NULL,?,0)',target,normalized.display_name),stmt(a.db,'INSERT INTO operations_tenants(tenant_id,directory_status,preferred_language,internal_notes) VALUES(?,?,?,?)',target,normalized.directory_status,normalized.preferred_language,normalized.internal_notes)];
+ ]:[r!.statement!,stmt(a.db,'INSERT INTO tenant_accounts(id,email,display_name,active) VALUES(?,NULL,?,0)',target,normalized.display_name),stmt(a.db,'INSERT INTO operations_tenants(tenant_id,first_name,last_name,preferred_contact,directory_status,preferred_language,internal_notes) VALUES(?,?,?,?,?,?,?)',target,normalized.first_name,normalized.last_name,normalized.preferred_contact,normalized.directory_status,normalized.preferred_language,normalized.internal_notes)];
  if(contacts!==null){
+ if(!contacts.some(c=>c.contact_type==='phone'))statements.push(stmt(a.db,"UPDATE operations_tenants SET phone='' WHERE tenant_id=?",target));
  // Archive omitted contacts; retain audit/history instead of destructive deletion.
  statements.push(stmt(a.db,'UPDATE tenant_contacts SET is_primary=0 WHERE tenant_id=? AND archived=0',target));
  for(const previous of beforeContacts)if(!contacts.some(c=>c.id===previous.id))statements.push(stmt(a.db,'UPDATE tenant_contacts SET archived=1,revision=revision+1,updated_at=datetime(\'now\') WHERE id=?',previous.id));

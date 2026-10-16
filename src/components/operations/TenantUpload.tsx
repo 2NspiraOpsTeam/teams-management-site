@@ -1,4 +1,5 @@
 'use client';
+import {TenantNav} from './TenantNav';
 import Link from 'next/link';
 import {useEffect,useRef,useState} from 'react';
 import {button,primary,OperationsNav,href} from './shared';
@@ -19,7 +20,7 @@ export function TenantUpload(){
  async function save(key:string,value:Resolution){if(!upload)return;await run(async()=>{show(await request(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'review',id:upload.id,revision:upload.revision,record:key,value})}));setEdit(null);setNotice('Review decision saved and validation refreshed.');});}
  const rows:Row[]=upload?.preview.rows||[],summary=upload?.preview.summary,imported=new Set((upload?.imported||[]).map((r:Row)=>r.record_id));
  const filtered=rows.filter(r=>filter==='all'||(filter==='hold'?r.outcome==='hold':imported.has(r.id))),pages=Math.ceil(filtered.length/25);
- return <main id="main-content" className="mx-auto max-w-7xl p-4 sm:p-8"><OperationsNav/><h1 className="text-3xl font-serif font-semibold">Tenant Import / Upload</h1><p className="my-3 max-w-3xl text-slate-600">Upload a current Excel occupancy roster, review assignments, then import validated records into your existing properties and apartments. This is manual only. No invitations, automatic removals or synchronization.</p>
+ return <main id="main-content" className="mx-auto max-w-7xl p-4 sm:p-8"><TenantNav/><h1 className="text-3xl font-serif font-semibold">Tenant Import / Upload</h1><p className="my-3 max-w-3xl text-slate-600">Upload a current Excel occupancy roster, review assignments, then import validated records into your existing properties and apartments. This is manual only. No invitations, automatic removals or synchronization.</p>
  <Link className="underline" href="/admin/tenants/import-review">Open original property mapping review</Link>
  {error&&<div role="alert" className="my-4 rounded border border-red-300 bg-red-50 p-4"><p>{error}</p><button className={button+' mt-3'} disabled={busy} onClick={()=>void load()}>Reload saved upload / retry loading</button></div>}{notice&&<p role="status" className="my-4 rounded bg-green-50 p-4">{notice}</p>}
  {loading&&<p role="status" className="my-4">Loading saved uploads…</p>}

@@ -1,4 +1,5 @@
 "use client";
+import { ExportButton } from "@/components/operations/ExportButton";
 import Link from "next/link";
 import { OperationsNav, href } from "@/components/operations/shared";
 import { useEffect, useRef, useState } from "react";
@@ -29,6 +30,7 @@ export default function MaintenanceAdmin() {
       number: "",
     }),
     [buildings, setBuildings] = useState<{ id: string; name: string }[]>([]);
+  const [applied,setApplied]=useState({building:"",apartment:"",status:"",number:""});
   const lock = useRef(false),
     form = useRef<HTMLFormElement>(null);
   async function list(nextPage = 0) {
@@ -46,6 +48,7 @@ export default function MaintenanceAdmin() {
       };
       if (!r.ok) throw Error(d.error);
       setRows(d.requests);
+      setApplied({...filters});
       setPage(nextPage);
       setTruncated(d.truncated);
       setError("");
@@ -137,7 +140,7 @@ export default function MaintenanceAdmin() {
   }
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
-      <OperationsNav/>
+      <OperationsNav/><div className="mb-4 flex justify-end"><ExportButton entity="maintenance" disabled={loading} params={new URLSearchParams({buildingId:applied.building,apartmentIdentifier:applied.apartment,status:applied.status,number:applied.number}).toString()}/></div>
       <h1 className="text-3xl font-serif font-semibold">
         Maintenance Requests
       </h1>
