@@ -71,3 +71,21 @@ it('preserves confirmed normalization on role-only edits and clears verification
  d=await(await request('tenants/t1')).json();expect(d.contacts[0]).toMatchObject({value_normalized:'+12125550100',country_code:'US',extension:'9',validation_state:'verified'});
  expect((await request('tenants/t1','PATCH',{revision:2,display_name:'QA One',contacts:d.contacts.map((c:any)=>({...c,value_raw:'Unknown new phone'}))})).status).toBe(200);d=await(await request('tenants/t1')).json();expect(d.contacts[0]).toMatchObject({value_normalized:null,country_code:null,extension:null,validation_state:'unreviewed',verified_at:null});
 });
+it('shares contacts and exact bidirectional associations across property, apartment and tenant lists without copying identities',async()=>{
+ sql.exec("INSERT INTO tenant_assignments(id,tenant_id,building_id,unit_id) VALUES('a3','t2','b1','u1')");
+ const before=sql.prepare('SELECT COUNT(*) AS n FROM tenant_accounts').get();
+ expect((await request('tenants/t1','PATCH',{revision:1,display_name:'QA Updated',contacts:[{contact_type:'phone',value_raw:'212-555-0100',label:'mobile'},{contact_type:'email',value_raw:'contact@example.test',label:'contact'}]})).status).toBe(200);
+ const units=await(await request('units?buildingId=b1')).json(),tenants=await(await request('tenants?buildingId=b1')).json();
+ expect(units.items[0].associations.map((a:any)=>a.tenant_id).sort()).toEqual(['t1','t2']);
+ const link=units.items[0].associations.find((a:any)=>a.tenant_id==='t1');expect(link).toMatchObject({building_id:'b1',unit_id:'u1',phone:'212-555-0100',contact_email:'contact@example.test',active:1});
+ expect(tenants.items.find((t:any)=>t.id==='t1').associations[0]).toEqual(link);
+ const property=await(await request('properties/b1')).json();expect(property.current_occupants).toBe(2);expect(property.occupied_units).toBe(1);expect(property.open_maintenance).toBe(1);expect(property.expiring_90_days).toBe(0);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_accounts').get()).toEqual(before);
+ expect(sql.prepare("SELECT assignment_id FROM tenant_maintenance_requests WHERE id='r1'").get()?.assignment_id).toBe('a1');
+});
+it('retains ended and proposed property associations without presenting them as current occupancy',async()=>{
+ sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'; INSERT INTO operations_assignment_profiles(assignment_id,assignment_status) VALUES('a1','proposed')");
+ const tenants=await(await request('tenants?buildingId=b1')).json();expect(tenants.items.map((t:any)=>t.id)).toEqual(['t1']);expect(tenants.items[0].associations[0]).toMatchObject({active:0,assignment_status:'proposed',unit_id:'u1'});
+ const property=await(await request('properties/b1')).json();expect(property.current_occupants).toBe(0);expect(property.occupied_units).toBe(0);expect(property.confirmed_vacant_units).toBe(0);
+ expect((await(await request('tenants?unitId=u2')).json()).items.map((t:any)=>t.id)).toEqual(['t2']);
+});
