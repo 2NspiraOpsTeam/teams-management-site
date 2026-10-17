@@ -220,6 +220,9 @@ it('does not remove an expiration merely because staff record non-renewal; only 
 it('derives apartment occupancy from linked tenant records, retaining source bedrooms and no fabricated agreements',async()=>{
  sql.exec("DELETE FROM tenant_assignments WHERE id='a2'; INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,tenant_name,status_code,bedrooms,square_footage,source_values_json,imported_by) VALUES('u2','hash','October',1,'October 2026','Recorded tenant','D','0','460','[]','qa')");
  let r=await (await request('units/u2')).json();expect(r).toMatchObject({occupancy_status:'Occupied',rent_roll_bedrooms:'0',rent_roll_square_footage:'460'});
+ sql.exec("UPDATE units SET unit_identifier='1A' WHERE id='u2'");
+ expect((await (await request('rent-roll?buildingId=b2&unitId=u2')).json()).items.map((r:any)=>r.id)).toEqual(['u2']);
+ expect((await (await request('rent-roll?buildingId=b1&unitId=u2')).json()).items).toEqual([]);
  sql.exec("UPDATE operations_rent_roll_source SET tenant_name='VACANT' WHERE unit_id='u2'");
  r=await (await request('units/u2')).json();expect(r.occupancy_status).toBe('Non-occupied');
  sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'");
