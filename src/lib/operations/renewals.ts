@@ -25,6 +25,13 @@ export async function renewalData(a:Actor,today=businessDate()){
  WHERE b.publication_state!='archived' ORDER BY b.name,u.unit_identifier LIMIT 5001`);
  if(source.length>5000)fail('Renewal reporting limit reached.',422);
  const review:Row[]=source.filter(s=>!rows.some(r=>r.unit_id===s.unit_id&&r.confirmed)).map(s=>({...s,id:s.unit_id,kind:'source',recorded_expiration:calendarDate(s.lease_expiration),month_to_month:isMonthToMonth(s.lease_expiration),missing:!isMonthToMonth(s.lease_expiration)&&s.current_occupants>0,renewal_status:'review_needed',review_reason:rows.some(r=>r.unit_id===s.unit_id&&r.overlap_count>1)?'Overlapping active agreements — Admin review':s.vacancy_confirmed||(/^VACANT$/i.test(s.tenant_name||'')&&!s.current_occupants)?'Recorded vacant':s.assignment_history&&!s.current_occupants?'No current assignment — review departure':calendarDate(s.lease_expiration)?'Imported date — verify lease and current assignment':isMonthToMonth(s.lease_expiration)?'Recorded month-to-month':'Missing or non-calendar expiration'}));
+ // Calendar totals use recorded dates, not assignment/verification completeness.
+ // A current entered agreement takes precedence over its imported apartment row.
+ const expirationByUnit=new Map<string,Row>();
+ for(const s of review)if(s.recorded_expiration)expirationByUnit.set(s.unit_id,s);
+ for(const r of [...rows].sort((a,b)=>String(a.lease_start).localeCompare(String(b.lease_start))||String(a.lease_id).localeCompare(String(b.lease_id))))
+  if(r.verified_expiration&&['active','expiring'].includes(r.lease_status)&&calendarDate(r.lease_start)&&r.lease_start<=today&&!r.successor_id)expirationByUnit.set(r.unit_id,r);
+ const expirations=[...expirationByUnit.values()];
  const months=monthKeys(today),active=rows.filter(r=>r.attention);const period=today.slice(0,7);
  const summary={this_month:active.filter(r=>r.lease_end.startsWith(period)).length,next_month:active.filter(r=>r.lease_end.startsWith(months[1])).length,
  days_30:active.filter(r=>r.days_until<=30).length,days_60:active.filter(r=>r.days_until<=60).length,days_90:active.filter(r=>r.days_until<=90).length,
@@ -33,12 +40,12 @@ export async function renewalData(a:Actor,today=businessDate()){
  renewed:rows.filter(r=>r.successor_id&&r.completed_at?.startsWith(period)).length,review:review.filter(r=>r.lease_expiration||r.current_occupants).length,
  follow_up:rows.filter(r=>r.confirmed&&r.follow_up_date&&r.follow_up_date<=today&&r.renewal_status!=='renewed'&&r.renewal_status!=='not_renewing').length,
  distinct_upcoming:active.length};
- return {today,settings,rows,review,summary,months:months.map(month=>({month,count:active.filter(r=>r.lease_end.startsWith(month)).length})),reminders:settings.reminderDays.map((days:number)=>({days,count:active.filter(r=>r.days_until<=days).length}))};
+ return {today,settings,rows,review,expirations,summary,months:months.map(month=>({month,count:expirations.filter(r=>(r.lease_end||r.recorded_expiration).startsWith(month)).length})),reminders:settings.reminderDays.map((days:number)=>({days,count:active.filter(r=>r.days_until<=days).length}))};
 }
 export function filterRenewals(data:Awaited<ReturnType<typeof renewalData>>,url:URL){const mode=url.searchParams.get('view')||'upcoming',building=url.searchParams.get('buildingId')||'',month=url.searchParams.get('month')||'',status=url.searchParams.get('status')||'',q=(url.searchParams.get('q')||'').trim().toLowerCase(),window=url.searchParams.get('days');
  if(month&&!/^\d{4}-(0[1-9]|1[0-2])$/.test(month))fail('Choose a valid expiration month.');if((url.searchParams.get('period')||'')&&!/^\d{4}-(0[1-9]|1[0-2])$/.test(url.searchParams.get('period')!))fail('Choose a valid reporting month.');if(window&&(!/^\d+$/.test(window)||Number(window)<1||Number(window)>365))fail('Choose a window of 1–365 days.');
- if(!['upcoming','review','month_to_month','missing','in_progress','renewed','follow_up','all'].includes(mode))fail('Choose a valid worklist.');
- let rows:Row[]= ['review','month_to_month','missing'].includes(mode)?data.review.filter(r=>mode==='review'?(r.lease_expiration||r.current_occupants):mode==='missing'?r.missing:r.month_to_month&&r.review_reason!=='Recorded vacant'&&!(r.assignment_history&&!r.current_occupants)):
+ if(!['calendar','upcoming','review','month_to_month','missing','in_progress','renewed','follow_up','all'].includes(mode))fail('Choose a valid worklist.');
+ let rows:Row[]= mode==='calendar'?data.expirations: ['review','month_to_month','missing'].includes(mode)?data.review.filter(r=>mode==='review'?(r.lease_expiration||r.current_occupants):mode==='missing'?r.missing:r.month_to_month&&r.review_reason!=='Recorded vacant'&&!(r.assignment_history&&!r.current_occupants)):
  data.rows.filter(r=>mode==='all'?true:mode==='renewed'?!!r.successor_id&&r.completed_at?.startsWith(url.searchParams.get('period')||data.today.slice(0,7)):mode==='follow_up'?r.confirmed&&r.follow_up_date&&r.follow_up_date<=data.today&&!['renewed','not_renewing'].includes(r.renewal_status):mode==='in_progress'?r.attention&&data.settings.statuses.some((s:Row)=>s.key===r.renewal_status&&s.inProgress):r.attention);
  rows=rows.filter(r=>(!building||r.building_id===building)&&(!month||(r.lease_end||r.recorded_expiration||'').startsWith(month))&&(!status||r.renewal_status===status)&&(!window||(r.days_until!==null&&r.days_until>=0&&r.days_until<=Number(window)))&&(!q||[r.property_name,r.unit_identifier,r.tenant_name].some(v=>String(v||'').toLowerCase().includes(q))));
  const direction=url.searchParams.get('sort')==='desc'?-1:1;rows.sort((a,b)=>direction*String(a.lease_end||a.recorded_expiration||'9999').localeCompare(String(b.lease_end||b.recorded_expiration||'9999'))||String(a.id).localeCompare(String(b.id)));return rows;
