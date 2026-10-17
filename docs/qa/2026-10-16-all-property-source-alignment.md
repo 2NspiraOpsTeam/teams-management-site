@@ -55,3 +55,28 @@ Shared apply and candidate/stable deployment evidence are recorded separately in
 restricted operational evidence; preparation/local results alone are not hosted
 verification or promotion. Management source conflicts remain visible for later
 business review, not hidden as missing information.
+
+## Shared apply / review deployment
+
+The authorized reconciliation was applied to `teams-database-dev` in one guarded,
+atomic import. A fresh post-apply export verified every one of the original 4,235
+rows is unchanged. Exact outcomes: 100 new tenants and current assignments, 48
+existing source links, 40 new source contacts, 93 explicit source conflicts, two
+vacancy markers excluded. Zero FK violations, duplicate unit keys or mismatched
+property/unit assignments. All 243 source receipts match the immutable manifest;
+all Phone List source evidence matches the staged bytes exactly. A resumed check
+recognizes the committed receipt and performs zero replayed writes.
+
+Application commit: `e008c86577ed00d5663c05aa613ad8e942c5dff6`.
+Review: https://ad00b673.teams-management-preview.pages.dev
+Runtime: `teams-alignment-runtime-e008c86`, version
+`6f4054f7-1d95-4a89-b028-78c632135b34`.
+Nine anonymous hosted route/asset/fingerprint checks passed. Stable deployment
+`f45f2617-c0fc-437f-bd76-0ce1263a84bd` remains unchanged; the shared-data additions
+are visible through existing stable directory views. The new source panels and
+dashboard refinements are on the review candidate, not yet promoted.
+
+Hosted authenticated acceptance requires ordinary Admin sign-in. A code was
+requested through the normal candidate UI; receipt/verification is not yet proven.
+No authentication bypass or synthetic hosted session was used. The configured
+mailbox OAuth grant was expired, so automated inbox retrieval is unavailable.
