@@ -187,7 +187,7 @@ it('separates imported values from verified renewal counts, retaining unknown co
 });
 it('counts each confirmed lease once per month, uses inclusive rolling windows without summing, and filters the same exact records',async()=>{
  const one=await createLease({lease_end:'2026-10-31'});await createLease({unit_id:'u2',lease_end:'2026-11-15',holders:[holder('t2')]});
- const d=await renewalData(state.actor,'2026-10-16');expect(d.summary).toMatchObject({this_month:1,next_month:1,days_30:2,days_60:2,days_90:2,distinct_upcoming:2});expect(d.months.reduce((n,m)=>n+m.count,0)).toBe(2);expect(filterRenewals(d,new URL(origin+'?month=2026-10')).map(r=>r.lease_id)).toEqual([one.id]);
+ const d=await renewalData(state.actor,'2026-10-16');expect(d.summary).toMatchObject({this_month:1,next_month:1,days_30:2,days_60:2,days_90:2,distinct_upcoming:2});expect(d.months.reduce((n,m)=>n+m.count,0)).toBe(0);expect(filterRenewals(d,new URL(origin+'?month=2026-10')).map(r=>r.lease_id)).toEqual([one.id]);
 });
 it('preserves original renewal history, excludes predecessor from forecast and updates after move-out without inferring vacancy',async()=>{
  const old=await createLease({lease_end:'2026-10-31'});const renewed=await createLease({predecessor_id:old.id,lease_start:'2026-11-01',lease_end:'2027-10-31'});

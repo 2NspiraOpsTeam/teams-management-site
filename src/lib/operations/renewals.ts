@@ -25,13 +25,8 @@ export async function renewalData(a:Actor,today=businessDate()){
  WHERE b.publication_state!='archived' ORDER BY b.name,u.unit_identifier LIMIT 5001`);
  if(source.length>5000)fail('Renewal reporting limit reached.',422);
  const review:Row[]=source.filter(s=>!rows.some(r=>r.unit_id===s.unit_id&&r.confirmed)).map(s=>({...s,id:s.unit_id,kind:'source',recorded_expiration:calendarDate(s.lease_expiration),month_to_month:isMonthToMonth(s.lease_expiration),missing:!isMonthToMonth(s.lease_expiration)&&s.current_occupants>0,renewal_status:'review_needed',review_reason:rows.some(r=>r.unit_id===s.unit_id&&r.overlap_count>1)?'Overlapping active agreements — Admin review':s.vacancy_confirmed||(/^VACANT$/i.test(s.tenant_name||'')&&!s.current_occupants)?'Recorded vacant':s.assignment_history&&!s.current_occupants?'No current assignment — review departure':calendarDate(s.lease_expiration)?'Imported date — verify lease and current assignment':isMonthToMonth(s.lease_expiration)?'Recorded month-to-month':'Missing or non-calendar expiration'}));
- // Calendar totals use recorded dates, not assignment/verification completeness.
- // A current entered agreement takes precedence over its imported apartment row.
- const expirationByUnit=new Map<string,Row>();
- for(const s of review)if(s.recorded_expiration)expirationByUnit.set(s.unit_id,s);
- for(const r of [...rows].sort((a,b)=>String(a.lease_start).localeCompare(String(b.lease_start))||String(a.lease_id).localeCompare(String(b.lease_id))))
-  if(r.verified_expiration&&['active','expiring'].includes(r.lease_status)&&calendarDate(r.lease_start)&&r.lease_start<=today&&!r.successor_id)expirationByUnit.set(r.unit_id,r);
- const expirations=[...expirationByUnit.values()];
+ // Calendar totals reflect the Rent Roll as recorded, independent of lease verification.
+ const expirations:Row[]=source.filter(s=>calendarDate(s.lease_expiration)).map(s=>({...s,id:s.unit_id,kind:'source',recorded_expiration:calendarDate(s.lease_expiration),renewal_status:'review_needed',review_reason:'Recorded Rent Roll expiration'}));
  const months=monthKeys(today),active=rows.filter(r=>r.attention);const period=today.slice(0,7);
  const summary={this_month:active.filter(r=>r.lease_end.startsWith(period)).length,next_month:active.filter(r=>r.lease_end.startsWith(months[1])).length,
  days_30:active.filter(r=>r.days_until<=30).length,days_60:active.filter(r=>r.days_until<=60).length,days_90:active.filter(r=>r.days_until<=90).length,
