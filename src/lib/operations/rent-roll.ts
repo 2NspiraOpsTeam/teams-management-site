@@ -5,7 +5,7 @@ import { choice } from './validation';
 export async function rentRoll(a:Actor,url:URL){
  const p=page(url),building=url.searchParams.get('buildingId')||'',unit=url.searchParams.get('unitId')||'',q=search(url),review=url.searchParams.get('review')||'';
  if(review)choice(review,['missing_lease','occupancy','expiring']);
- const rows=await all(a.db,`SELECT u.id,u.building_id,u.unit_identifier,b.name AS property_name,b.address_json,
+ const rows=await all(a.db,`SELECT u.id,u.building_id,u.unit_identifier,x.square_feet,x.bedrooms,b.name AS property_name,b.address_json,
  rr.source_period AS rent_roll_period,rr.tenant_name AS rent_roll_tenant,rr.status_code AS rent_roll_status,rr.square_footage AS rent_roll_square_footage,rr.bedrooms AS rent_roll_bedrooms,rr.lease_expiration AS rent_roll_expiration,rr.security AS rent_roll_security,rr.legal_rent AS rent_roll_legal_rent,rr.rent AS rent_roll_rent,
  (SELECT group_concat(t.display_name,'; ') FROM tenant_assignments ta JOIN tenant_accounts t ON t.id=ta.tenant_id WHERE ta.unit_id=u.id AND ta.active=1) AS occupants,
  CASE WHEN EXISTS(SELECT 1 FROM tenant_assignments ta WHERE ta.unit_id=u.id AND ta.active=1) THEN 'Current occupants' WHEN x.vacancy_confirmed=1 THEN 'Confirmed vacant' ELSE 'Needs occupancy review' END AS occupancy,

@@ -219,13 +219,38 @@ it('does not remove an expiration merely because staff record non-renewal; only 
 });
 it('derives apartment occupancy from linked tenant records, retaining source bedrooms and no fabricated agreements',async()=>{
  sql.exec("DELETE FROM tenant_assignments WHERE id='a2'; INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,tenant_name,status_code,bedrooms,square_footage,source_values_json,imported_by) VALUES('u2','hash','October',1,'October 2026','Recorded tenant','D','0','460','[]','qa')");
- let r=await (await request('units/u2')).json();expect(r).toMatchObject({occupancy_status:'Occupied',rent_roll_bedrooms:'0',rent_roll_square_footage:'460'});
+ let r=await (await request('units/u2')).json();expect(r).toMatchObject({occupancy_status:'Needs occupancy review',rent_roll_bedrooms:'0',rent_roll_square_footage:'460'});
  sql.exec("UPDATE units SET unit_identifier='1A' WHERE id='u2'");
  expect((await (await request('rent-roll?buildingId=b2&unitId=u2')).json()).items.map((r:any)=>r.id)).toEqual(['u2']);
  expect((await (await request('rent-roll?buildingId=b1&unitId=u2')).json()).items).toEqual([]);
  sql.exec("UPDATE operations_rent_roll_source SET tenant_name='VACANT' WHERE unit_id='u2'");
- r=await (await request('units/u2')).json();expect(r.occupancy_status).toBe('Non-occupied');
+ r=await (await request('units/u2')).json();expect(r.occupancy_status).toBe('Needs occupancy review');
  sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'");
- expect((await (await request('units/u1')).json()).occupancy_status).toBe('Occupied');
+ expect((await (await request('units/u1')).json()).occupancy_status).toBe('Needs occupancy review');
  expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(0);
+});
+
+it('uses stable IDs, preserves exact labels, and rejects a lease under a mismatched property',async()=>{
+ const created=await(await createUnit('A-01','b1')).json();expect((await(await request('units/'+created.id)).json()).unit_identifier).toBe('A-01');
+ expect((await createUnit('A-01','b2')).status).toBe(201);
+ expect((await request('leases','POST',leaseInput({building_id:'b2'}))).status).toBe(409);
+ expect((await request('leases','POST',leaseInput({unit_id:'missing'}))).status).toBe(404);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(0);
+});
+it('lease edits immediately update the consolidated view without modifying workbook evidence or apartment ownership',async()=>{
+ sql.exec("INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,tenant_name,status_code,square_footage,bedrooms,lease_expiration,security,legal_rent,rent,source_values_json,imported_by) VALUES('u1','hash','October',1,'October 2026','Workbook tenant','D','460','STORE','Month to Month','D','RC','uninterpreted','[]','qa'); INSERT INTO operations_units(unit_id,square_feet,bedrooms) VALUES('u1',850,2)");
+ const source=sql.prepare('SELECT * FROM operations_rent_roll_source').get(),lease=await createLease({holders:[holder(),holder('t2')]});
+ expect((await request('leases/'+lease.id,'PATCH',{...lease.data,revision:1,monthly_rent:'2600',security_deposit:'2500',lease_end:'2028-01-31'})).status).toBe(200);
+ const r=(await(await request('rent-roll?unitId=u1&buildingId=b1')).json()).items[0];expect(r).toMatchObject({lease_id:lease.id,monthly_rent_cents:260000,security_deposit_cents:250000,lease_end:'2028-01-31',square_feet:850,bedrooms:2,rent_roll_square_footage:'460',rent_roll_status:'D',rent_roll_rent:'uninterpreted',leaseholders:'QA One; QA Two'});
+ expect(sql.prepare('SELECT * FROM operations_rent_roll_source').get()).toEqual(source);
+ const apartment=await(await request('units/u1')).json();expect(apartment.square_feet).toBe(850);expect(sql.prepare('PRAGMA table_info(operations_units)').all().map(r=>r.name)).not.toContain('lease_end');
+});
+it('resolves live tenant contacts without changing historical lease records and move-out preserves maintenance and agreements',async()=>{
+ const lease=await createLease({lease_end:'2026-01-31'}),before=sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(lease.id);
+ expect((await request('tenants/t1','PATCH',{revision:1,display_name:'QA One',contacts:[{contact_type:'phone',value_raw:'212-555-0188'},{contact_type:'email',value_raw:'contact@example.test'}]})).status).toBe(200);
+ const detail=await(await request('leases/'+lease.id)).json();expect(detail.holders[0]).toMatchObject({phone:'212-555-0188',contact_email:'contact@example.test'});expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(lease.id)).toEqual(before);
+ expect((await request('assignments','POST',{idempotencyKey:crypto.randomUUID(),tenant_id:'t1',unit_id:'u1',active:false,revision:2})).status).toBe(201);
+ expect((await(await request('units/u1')).json()).occupancy_status).toBe('Needs occupancy review');
+ expect((await(await request('leases?unitId=u1&buildingId=b1')).json()).items.map((r:any)=>r.id)).toEqual([lease.id]);expect((await(await request('maintenance?unitId=u1')).json()).items.map((r:any)=>r.id)).toContain('r1');
+ expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(lease.id)).toEqual(before);
 });
