@@ -8,7 +8,9 @@ const propertyFields=`(SELECT group_concat(s.full_name,', ') FROM operations_sup
  (SELECT COUNT(*) FROM tenant_maintenance_requests r JOIN tenant_assignments a ON a.id=r.assignment_id LEFT JOIN operations_work_order_profiles op ON op.request_id=r.id WHERE a.building_id=b.id AND ${maintenanceStatus()} NOT IN('completed','closed','cancelled')) AS open_maintenance,
  (SELECT COUNT(DISTINCT a.tenant_id) FROM tenant_assignments a JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id WHERE u.building_id=b.id AND a.active=1) AS current_occupants,
  (SELECT COUNT(*) FROM operations_leases l JOIN units u ON u.id=l.unit_id WHERE u.building_id=b.id AND l.status NOT IN('renewed','terminated') AND l.lease_end BETWEEN date('now') AND date('now','+90 days')) AS expiring_90_days`;
-const unitFields=`(SELECT tenant_name FROM operations_rent_roll_source WHERE unit_id=u.id) AS rent_roll_tenant,
+const unitFields=`(SELECT bedrooms FROM operations_rent_roll_source WHERE unit_id=u.id) AS rent_roll_bedrooms,
+ CASE WHEN EXISTS(SELECT 1 FROM tenant_assignments a JOIN tenant_accounts t ON t.id=a.tenant_id WHERE a.unit_id=u.id AND trim(COALESCE(t.display_name,t.email,''))!='') OR EXISTS(SELECT 1 FROM operations_rent_roll_source r WHERE r.unit_id=u.id AND trim(COALESCE(r.tenant_name,''))!='') OR EXISTS(SELECT 1 FROM operations_leases l JOIN operations_leaseholders h ON h.lease_id=l.id WHERE l.unit_id=u.id) THEN 'Occupied' ELSE 'Non-occupied' END AS occupancy_status,
+ (SELECT tenant_name FROM operations_rent_roll_source WHERE unit_id=u.id) AS rent_roll_tenant,
  (SELECT status_code FROM operations_rent_roll_source WHERE unit_id=u.id) AS rent_roll_status,
  (SELECT square_footage FROM operations_rent_roll_source WHERE unit_id=u.id) AS rent_roll_square_footage,
  (SELECT lease_expiration FROM operations_rent_roll_source WHERE unit_id=u.id) AS rent_roll_expiration,u.*,b.name AS property_name,b.address_json,x.bedrooms,x.bathrooms,x.square_feet,COALESCE(x.vacancy_confirmed,0) AS vacancy_confirmed,COALESCE(x.revision,1) AS revision,

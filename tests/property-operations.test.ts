@@ -217,3 +217,12 @@ it('exports and prints the whole filtered renewal worklist, excluding other prop
 it('does not remove an expiration merely because staff record non-renewal; only the authorized underlying assignment or agreement change does',async()=>{
  const l=await createLease({lease_end:'2026-11-15'});expect((await request('renewals/'+l.id,'PATCH',{revision:1,status:'not_renewing'})).status).toBe(200);expect((await renewalData(state.actor,'2026-10-16')).rows.filter(r=>r.confirmed&&r.days_until<=30).length).toBe(1);sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'");expect((await renewalData(state.actor,'2026-10-16')).rows.filter(r=>r.confirmed&&r.days_until<=30).length).toBe(0);
 });
+it('derives apartment occupancy from linked tenant records, retaining source bedrooms and no fabricated agreements',async()=>{
+ sql.exec("DELETE FROM tenant_assignments WHERE id='a2'; INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,tenant_name,status_code,bedrooms,square_footage,source_values_json,imported_by) VALUES('u2','hash','October',1,'October 2026','Recorded tenant','D','0','460','[]','qa')");
+ let r=await (await request('units/u2')).json();expect(r).toMatchObject({occupancy_status:'Occupied',rent_roll_bedrooms:'0',rent_roll_square_footage:'460'});
+ sql.exec("UPDATE operations_rent_roll_source SET tenant_name='   ' WHERE unit_id='u2'");
+ r=await (await request('units/u2')).json();expect(r.occupancy_status).toBe('Non-occupied');
+ sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'");
+ expect((await (await request('units/u1')).json()).occupancy_status).toBe('Occupied');
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(0);
+});
