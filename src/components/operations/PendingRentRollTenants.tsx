@@ -1,0 +1,12 @@
+'use client';
+import Link from 'next/link';
+import {useEffect,useState} from 'react';
+import {button,href,read,type RecordRow} from './shared';
+/** Read-only projection of the original Rent Roll. No shadow tenant directory. */
+export function PendingRentRollTenants({buildingId='',search='',refreshKey=0}:{buildingId?:string;search?:string;refreshKey?:number}){
+ const [rows,setRows]=useState<RecordRow[]>([]),[page,setPage]=useState(0),[next,setNext]=useState<number|null>(null),[busy,setBusy]=useState(true),[error,setError]=useState(''),[retry,setRetry]=useState(0);
+ useEffect(()=>setPage(0),[buildingId,search]);
+ useEffect(()=>{const c=new AbortController();setBusy(true);setError('');void read('/rent-roll?'+new URLSearchParams({buildingId,q:search,page:String(page),review:'reconciliation'}),c.signal).then(d=>{setRows(d.items);setNext(d.nextPage);}).catch(e=>{if(!c.signal.aborted)setError(e.message);}).finally(()=>{if(!c.signal.aborted)setBusy(false);});return()=>c.abort();},[buildingId,search,page,refreshKey,retry]);
+ if(!busy&&!error&&!rows.length&&!page)return null;
+ return <section aria-label="Tenant source conflicts" className="my-6 rounded border border-amber-300 bg-amber-50 p-4"><h2 className="text-xl font-semibold">Tenant information needing reconciliation</h2><p className="my-3 text-sm">These names are supplied, not missing. They remain original Rent Roll evidence until identity or Phone List conflicts are resolved. Existing occupants below are preserved; no duplicate tenant or signed agreement is created. <Link className="underline" href="/admin/tenants/import-review">Open source mapping review</Link>.</p>{error?<p role="alert">{error} <button className={button} onClick={()=>setRetry(v=>v+1)}>Retry source conflicts</button></p>:busy?<p role="status">Loading source conflicts…</p>:<><ul className="space-y-4">{rows.map(r=><li key={r.id}><Link className="font-medium underline" href={href('units',r.id)}>{r.property_name} · {r.unit_identifier}</Link><p className="font-medium">{r.rent_roll_tenant}</p><p className="text-sm">{r.reconciliation_reason}</p><p className="text-sm">Expiration: {r.rent_roll_expiration||'Not supplied'} · Source: {r.rent_roll_period}</p></li>)}</ul><div className="mt-4 flex flex-wrap items-center gap-3"><button className={button} disabled={!page} onClick={()=>setPage(v=>v-1)}>Previous source conflicts</button><span>Page {page+1}</span><button className={button} disabled={next===null} onClick={()=>setPage(next!)}>Next source conflicts</button></div></>}</section>;
+}

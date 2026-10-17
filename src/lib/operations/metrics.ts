@@ -3,6 +3,9 @@ export const metrics=[
  {group:'Portfolio',key:'total_units',name:'Apartments',to:'/admin/operations/units'},
  {group:'Portfolio',key:'current_occupants',name:'Current occupants',to:'/admin/tenants?review=current'},
  {group:'Portfolio',key:'occupancy_review',name:'Occupancy needs review',to:'/admin/operations/rent-roll?review=occupancy'},
+ {group:'Portfolio',key:'phone_source_rows',name:'Phone List source rows',to:'/admin/tenants'},
+ {group:'Portfolio',key:'rent_roll_records',name:'Rent Roll apartments',to:'/admin/operations/rent-roll'},
+ {group:'Portfolio',key:'reconciliation_pending',name:'Source conflicts to review',to:'/admin/operations/rent-roll?review=reconciliation'},
  {group:'Leases',key:'active_leases',name:'Current leases',to:'/admin/operations/leases?review=current'},
  {group:'Leases',key:'expiring_30_days',name:'Expiring within 30 days',to:'/admin/operations/leases?expiringDays=30'},
  {group:'Leases',key:'expiring_60_days',name:'Expiring within 60 days',to:'/admin/operations/leases?expiringDays=60'},
@@ -12,5 +15,5 @@ export const metrics=[
  {group:'Maintenance',key:'urgent_maintenance',name:'Urgent open requests',to:'/admin/operations/maintenance?review=urgent&openOnly=1'},
  {group:'Maintenance',key:'recently_completed',name:'Completed in the last 30 days',to:'/admin/operations/maintenance?review=recent_completed'},
  {group:'Operations',key:'missing_superintendent',name:'Buildings without a superintendent',to:'/admin/properties?review=missing_superintendent'},
- {group:'Operations',key:'missing_contact',name:'Tenants missing phone or email',to:'/admin/tenants?review=missing_contact'},
+ {group:'Operations',key:'missing_contact',name:'Tenant contacts to link or complete',to:'/admin/tenants?review=missing_contact'},
 ];

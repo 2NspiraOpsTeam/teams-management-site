@@ -137,7 +137,7 @@ it('builds the rent roll without fanout and reflects lease edits and assignments
  expect((await request('leases/'+l.id,'PATCH',{...l.data,revision:1,monthly_rent:'2250.50'})).status).toBe(200);
  d=await(await request('rent-roll?buildingId=b1')).json();expect(d.items[0].monthly_rent_cents).toBe(225050);
  sql.exec("UPDATE tenant_assignments SET active=0 WHERE unit_id='u1'");d=await(await request('rent-roll?buildingId=b1')).json();expect(d.items[0].occupancy).toBe('Needs occupancy review');expect(d.items[0].occupants).toBeNull();
- expect((await(await request('rent-roll?buildingId=b2')).json()).items[0].lease_status).toBe('Missing lease information');
+ expect((await(await request('rent-roll?buildingId=b2')).json()).items[0].lease_status).toBe('Lease information not supplied');
  expect((await(await request('rent-roll?review=occupancy')).json()).items.map((r:any)=>r.id)).toEqual(['u1']);
  state.actor=null;expect((await request('rent-roll')).status).toBe(401);
 });
@@ -253,4 +253,30 @@ it('resolves live tenant contacts without changing historical lease records and 
  expect((await(await request('units/u1')).json()).occupancy_status).toBe('Needs occupancy review');
  expect((await(await request('leases?unitId=u1&buildingId=b1')).json()).items.map((r:any)=>r.id)).toEqual([lease.id]);expect((await(await request('maintenance?unitId=u1')).json()).items.map((r:any)=>r.id)).toContain('r1');
  expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(lease.id)).toEqual(before);
+});
+
+it('keeps source conflicts visible without inventing tenants, and aligns dashboard expiry counts with Rent Roll',async()=>{
+ const expiry=new Date(Date.now()+20*86400000).toISOString().slice(0,10);
+ sql.prepare(`INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,tenant_name,lease_expiration,rent,source_values_json,imported_by) VALUES('u1','qa-sha','QA',1,'QA period','Recorded Party',?,'1250','[]','QA')`).run(expiry);
+ sql.exec(`INSERT INTO tenant_import_batches(id,source_sha256,approved_package_sha256,parser_version,status,requested_by,approved_by,counts_json) VALUES('qa-reconcile','qa-sha','qa-package','qa','committed','QA','QA','{}');
+ INSERT INTO tenant_import_items(id,batch_id,record_id,source_sha256,source_sheet,source_row,source_cell,unit_id,outcome,review_reason,reviewed_by,reviewed_at) VALUES('qa-held','qa-reconcile','rentroll:u1','qa-sha','QA',1,'@row','u1','hold','Different names in source files','QA',datetime('now'));`);
+ const conflicts=await(await request('rent-roll?review=reconciliation')).json();expect(conflicts.items).toHaveLength(1);expect(conflicts.items[0]).toMatchObject({id:'u1',rent_roll_tenant:'Recorded Party',rent_roll_expiration:expiry,reconciliation_outcome:'hold',reconciled_tenant_id:null,lease_status:'Recorded terms · agreement not supplied'});
+ const property=await(await request('properties/b1')).json();expect(property).toMatchObject({rent_roll_records:1,reconciliation_pending:1,expiring_90_days:1});
+ const summary=await(await request('overview')).json();expect(summary).toMatchObject({rent_roll_records:1,reconciliation_pending:1});
+ const tenants=await(await request('tenants?buildingId=b1')).json();expect(tenants.items).toHaveLength(1);expect(tenants.items[0].lease_expirations).toBeNull();
+ sql.exec("UPDATE tenant_import_items SET tenant_id='t1',outcome='link' WHERE id='qa-held'");const linked=await(await request('tenants?buildingId=b1')).json();expect(linked.items[0].lease_expirations).toBe(expiry);
+ const scoped=await(await request('rent-roll?tenantId=t1')).json();expect(scoped.items.map((r:any)=>r.id)).toEqual(['u1']);expect((await(await request('rent-roll?tenantId=unknown')).json()).items).toHaveLength(0);
+ expect(sql.prepare('SELECT count(*) AS n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT count(*) AS n FROM operations_leases').get()?.n).toBe(0);
+ state.actor=null;expect((await request('rent-roll?review=reconciliation')).status).toBe(401);
+});
+
+it('serves every provided contact before verification, preserves literal units, and rejects changed source evidence',async()=>{
+ const bundle={source_sha256:'source-qa',records:[{id:'QA!1',property:'b1',address:'QA One',unit:'A01',name:'Source Name',source_tenant_text:'QA A01 Source Name',contacts:[{contact_value_raw:'212-555-0100 relative'}]},{id:'QA!2',property:'b1',address:'QA One',unit:'1A',name:'Source Name',source_tenant_text:'QA 1A Source Name',contacts:[]}]};
+ const encoded=JSON.stringify(bundle),digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(encoded))),v=>v.toString(16).padStart(2,'0')).join('');
+ const insert=sql.prepare('INSERT INTO audit_log(id,action,entity_type,entity_id,record_after_json) VALUES(?,?,?,?,?)');insert.run('phone-source-roster:summary','source_summary','tenant_source_roster','qa',JSON.stringify({bundle_sha256:digest,rows:2,contacts:1,properties:{b1:2}}));insert.run('qa-source-chunk','source_chunk','tenant_source_roster','00000',JSON.stringify({text:encoded}));
+ const result=await(await request('source-roster?buildingId=b1')).json();expect(result.total).toBe(2);expect(result.items[0].unit_id).toBeNull();expect(result.items[1].unit_id).toBe('u1');expect(result.items[0].contacts[0].contact_value_raw).toBe('212-555-0100 relative');
+ const filtered=await(await request('source-roster?q=relative')).json();expect(filtered.items).toHaveLength(1);
+ expect((await(await request('properties/b1')).json()).phone_source_rows).toBe(2);expect((await(await request('overview')).json()).phone_source_rows).toBe(2);
+ sql.prepare("UPDATE audit_log SET record_after_json=? WHERE id='qa-source-chunk'").run(JSON.stringify({text:encoded+' '}));expect((await request('source-roster')).status).toBe(503);
+ state.actor=null;expect((await request('source-roster')).status).toBe(401);
 });
