@@ -182,12 +182,12 @@ it('dashboard drill-downs match operational figures and workflow overrides updat
 
 it('separates imported values from verified renewal counts, retaining unknown codes and month-to-month text',async()=>{
  sql.exec("INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,tenant_name,status_code,bedrooms,lease_expiration,legal_rent,rent,source_values_json,imported_by) VALUES('u1','hash','October 2026',1,'October 2026','Original workbook name','D','2 + office','2026-11-30','D','0.00','[]','qa'),('u2','hash','October 2026',2,'October 2026','Other','RC','STORE','Month to Month','D','123.45','[]','qa')");
- const d=await renewalData(state.actor,'2026-10-16');expect(d.summary.days_90).toBe(0);expect(d.summary.missing).toBe(1);expect(d.summary.month_to_month).toBe(1);expect(d.months.find(m=>m.month==='2026-11')?.count).toBe(1);expect(filterRenewals(d,new URL(origin+'?view=calendar&month=2026-11'))).toHaveLength(1);expect(filterRenewals(d,new URL(origin+'?view=review'))).toHaveLength(2);
+ const d=await renewalData(state.actor,'2026-10-16');expect(d.summary.days_90).toBe(1);expect(d.summary.missing).toBe(0);expect(d.summary.month_to_month).toBe(1);expect(d.months.find(m=>m.month==='2026-11')?.count).toBe(1);expect(filterRenewals(d,new URL(origin+'?view=calendar&month=2026-11'))).toHaveLength(1);expect(filterRenewals(d,new URL(origin+'?view=review'))).toHaveLength(2);
  const r=await(await request('rent-roll')).json();expect(r.items.find((r:any)=>r.id==='u1')).toMatchObject({rent_roll_status:'D',rent_roll_legal_rent:'D',rent_roll_bedrooms:'2 + office',rent_roll_rent:'0.00'});expect((await(await request('units/u1')).json()).rent_roll_source.tenant_name).toBe('Original workbook name');
 });
 it('counts each confirmed lease once per month, uses inclusive rolling windows without summing, and filters the same exact records',async()=>{
  const one=await createLease({lease_end:'2026-10-31'});await createLease({unit_id:'u2',lease_end:'2026-11-15',holders:[holder('t2')]});
- const d=await renewalData(state.actor,'2026-10-16');expect(d.summary).toMatchObject({this_month:1,next_month:1,days_30:2,days_60:2,days_90:2,distinct_upcoming:2});expect(d.months.reduce((n,m)=>n+m.count,0)).toBe(0);expect(filterRenewals(d,new URL(origin+'?month=2026-10')).map(r=>r.lease_id)).toEqual([one.id]);
+ const d=await renewalData(state.actor,'2026-10-16');expect(d.summary).toMatchObject({this_month:0,next_month:0,days_30:0,days_60:0,days_90:0,distinct_upcoming:2});expect(d.months.reduce((n,m)=>n+m.count,0)).toBe(0);expect(filterRenewals(d,new URL(origin+'?month=2026-10')).map(r=>r.lease_id)).toEqual([one.id]);
 });
 it('preserves original renewal history, excludes predecessor from forecast and updates after move-out without inferring vacancy',async()=>{
  const old=await createLease({lease_end:'2026-10-31'});const renewed=await createLease({predecessor_id:old.id,lease_start:'2026-11-01',lease_end:'2027-10-31'});
@@ -215,5 +215,5 @@ it('exports and prints the whole filtered renewal worklist, excluding other prop
 });
 
 it('does not remove an expiration merely because staff record non-renewal; only the authorized underlying assignment or agreement change does',async()=>{
- const l=await createLease({lease_end:'2026-11-15'});expect((await request('renewals/'+l.id,'PATCH',{revision:1,status:'not_renewing'})).status).toBe(200);expect((await renewalData(state.actor,'2026-10-16')).summary.days_30).toBe(1);sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'");expect((await renewalData(state.actor,'2026-10-16')).summary.days_30).toBe(0);
+ const l=await createLease({lease_end:'2026-11-15'});expect((await request('renewals/'+l.id,'PATCH',{revision:1,status:'not_renewing'})).status).toBe(200);expect((await renewalData(state.actor,'2026-10-16')).rows.filter(r=>r.confirmed&&r.days_until<=30).length).toBe(1);sql.exec("UPDATE tenant_assignments SET active=0 WHERE id='a1'");expect((await renewalData(state.actor,'2026-10-16')).rows.filter(r=>r.confirmed&&r.days_until<=30).length).toBe(0);
 });

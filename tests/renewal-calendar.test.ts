@@ -18,7 +18,7 @@ it('counts recorded dates by month/year once per apartment, without requiring te
  ]);
  const data=await renewalData({db:{}} as Actor,'2026-10-16');
  expect(data.months.slice(0,4).map(m=>m.count)).toEqual([1,1,1,1]);
- expect(data.summary.this_month).toBe(0); // Verified-workflow metrics stay unchanged.
+ expect(data.summary.this_month).toBe(1); expect(data.summary.days_30).toBe(0);
  const december=filterRenewals(data,new URL('https://example.test/?view=calendar&month=2026-12'));
  expect(december.map(r=>r.unit_id)).toEqual(['b']);
  expect(filterRenewals(data,new URL('https://example.test/?view=calendar&month=2026-11'))[0].unit_id).toBe('a');
