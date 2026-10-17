@@ -352,3 +352,17 @@ html { scroll-padding-top: 110px; }
  .admin-dashboard .metric-card dd { margin-top:5px; font-size:24px; line-height:28px; }
  .admin-dashboard .metric-card dd span { margin-left:6px; font-size:14px; }
 }
+
+/* Data colors retain text labels; color never carries meaning alone. */
+.admin-dashboard [data-tone="info"] { background:#eff6ff; border-color:#bfdbfe; }
+.admin-dashboard [data-tone="info"] dd,.admin-dashboard [data-tone="info"] strong { color:#1e40af; }
+.admin-dashboard [data-tone="attention"] { background:#fffbeb; border-color:#fcd34d; }
+.admin-dashboard [data-tone="attention"] dd,.admin-dashboard [data-tone="attention"] strong { color:#92400e; }
+.admin-dashboard [data-tone="urgent"] { background:#fff1f2; border-color:#fda4af; }
+.admin-dashboard [data-tone="urgent"] dd { color:#9f1239; }
+.admin-dashboard [data-tone="success"] { background:#ecfdf5; border-color:#6ee7b7; }
+.admin-dashboard [data-tone="success"] dd,.admin-dashboard [data-tone="success"] strong { color:#065f46; }
+.admin-dashboard .renewal-months a[data-count="positive"] { background:#fff7ed; box-shadow:inset 0 0 0 1px #fed7aa; color:#9a3412; }
+.admin-dashboard .renewal-months a[data-count="zero"] { background:#f1f5f9; color:#475569; }
+.admin-dashboard .renewal-months a[data-count="positive"] .renewal-bar > span { background:#c2410c; }
+@media print { .admin-dashboard [data-tone],.admin-dashboard .renewal-months a { background:white; box-shadow:none; } }
