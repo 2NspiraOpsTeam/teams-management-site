@@ -30,7 +30,7 @@ The capture command now supplies the verified Worker config to every D1 command.
 - Synthetic local OTP verification tested after household approval, including apartment scope, consumed-code rejection, secure/HTTP-only/Strict cookie, failed sign-out feedback, successful retry and session revocation. No email sent. This is not Jeffrey's fresh emailed-code acceptance check.
 - A transient hydration mismatch was reproduced during boundary integration. The optional newly added portal-wide error/loading boundaries were not included in the final build; final local and hosted 15-navigation checks passed without recurrence. The standard framework boundaries remain. Do not describe the historical mismatch as an established framework defect.
 
-Hosted synthetic review: https://ea8f1b03.teams-management-development.pages.dev, runtime version `14862ce3-cf44-4f2b-aab6-3c89648e1f25`. This preview runtime uses its own synthetic D1 database; it is not a copy of private tenant rows. QA sessions are temporary and must be revoked after verification. The stable development gateway continues to use its original migrated database binding.
+Hosted synthetic review: https://ea8f1b03.teams-management-development.pages.dev, runtime version `14862ce3-cf44-4f2b-aab6-3c89648e1f25`. This preview runtime uses its own synthetic D1 database; it is not a copy of private tenant rows. QA sessions were revoked after verification. Future-preview project service settings were restored to their pre-review configuration; the immutable QA deployment remains isolated. The stable development gateway continues to use its original migrated database binding.
 
 ## Still open from recovery handoff
 
@@ -40,3 +40,15 @@ Hosted synthetic review: https://ea8f1b03.teams-management-development.pages.dev
 4. Private lease upload storage: still unavailable behind its existing guard.
 
 See [operations index](README.md), [current recovery handoff](WATERBEAR-DEVELOPMENT.md) and [backup/restore procedure](BACKUP-AND-RESTORE.md).
+
+## Stable development release
+
+- Application commit: `f133572` (follow-up release records are documentation-only).
+- Stable URL: https://teams-management-development.pages.dev/tenant/login
+- Release header: `tenant-household-20261018`.
+- Development runtime version: `c498f52a-f9cf-4167-a4ea-1db77e3a38de`, verified at 100 percent traffic.
+- Existing stable Pages gateway and migrated D1 binding preserved; no Pages stable upload, credential replacement, schema migration, or 2Nspira deployment.
+- Final live checks: home, tenant login, contact, new protected page redirects, tenant/admin API denial, and branded login at all three widths passed with no browser errors. Authenticated household round-trips were verified on the isolated hosted synthetic candidate, not by impersonating a real tenant in the migrated database.
+- One initial stable home request returned HTTP 500 immediately after release. Its historical cause is unconfirmed. Subsequent home checks and the full final stable smoke pass returned normally; a subsequent runtime tail contained no exceptions. Do not label this observation a diagnosed or guaranteed-fixed cold-start issue.
+- Post-release checkpoint: all 63 tables/schema restore exactly, integrity `ok`, zero foreign-key violations, unchanged export bookmark during capture. Its logical database fingerprint equals the pre-change checkpoint: no migrated database content changed during implementation or verification.
+- The corrected capture tool completed the post-release capture directly, without the temporary pre-change config wrapper.
