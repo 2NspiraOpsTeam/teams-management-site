@@ -2,6 +2,17 @@
 
 Status: local verification complete for first pass; hosted recovery and capacity certification pending quota reset. No billing change.
 
+## Historical hosted analytics (pre-fix; rolling24h)
+
+Cloudflare d1 insights returned historical metrics without running table queries.
+Three Properties aggregate-list variants total4,541,215 rows read in240 executions
+(averages18,325–19,591 reads/execution). They are also used by old building dropdowns.
+This identifies a measured hotspot, not attribution between development and staff.
+The window spans UTC days; do not equate it to today's exact quota counter.
+Property-detail aggregates:167,496 reads/147 executions. Renewal source graph:
+162,826 reads/71 executions. Dashboard overview:142,974 reads/26 executions.
+No post-fix hosted measurement or CPU measurement has occurred yet.
+
 ## Local D1 measurements (NOT hosted workflow totals)
 
 Synthetic fixture: 6 buildings,180 apartments,180 tenants,180 leases. Each row below is one authenticated API request, including its authentication query; browser navigation may issue additional requests. Index file applied locally.
