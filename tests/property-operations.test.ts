@@ -301,3 +301,12 @@ it('exposes complete source fields and filtered totals across pages without inve
  const blank=await (await request('rent-roll?buildingId=b2')).json();expect(blank.total).toBe(1);expect(blank.items[0].rent_roll_move_in_date).toBeNull();expect(blank.items[0].rent_roll_rentredi).toBeNull();
  const empty=await (await request('rent-roll?q=nonexistent')).json();expect(empty.total).toBe(0);expect(empty.items).toEqual([]);
 });
+
+it('counts filtered apartment and distinct tenant records across pages and empty results',async()=>{
+ for(let i=0;i<55;i++)sql.prepare('INSERT INTO units(id,building_id,unit_identifier) VALUES(?,?,?)').run('count-'+i,'b1','COUNT-'+String(i).padStart(3,'0'));
+ for(const page of [0,1]){const d=await(await request('units?buildingId=b1&q=COUNT-&page='+page)).json();expect(d.total).toBe(55);expect(d.items).toHaveLength(page===0?50:5);}
+ const none=await(await request('units?buildingId=b1&q=no-match')).json();expect(none.total).toBe(0);expect(none.items).toEqual([]);
+ sql.exec("INSERT INTO tenant_assignments(id,tenant_id,building_id,unit_id) VALUES('extra-count','t1','b1','count-0')");
+ const tenants=await(await request('tenants?buildingId=b1')).json();expect(tenants.total).toBe(1);expect(tenants.items).toHaveLength(1);
+ expect((await(await request('tenants?buildingId=b1&q=no-match')).json()).total).toBe(0);
+});
