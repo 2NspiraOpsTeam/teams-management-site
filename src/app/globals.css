@@ -366,3 +366,12 @@ html { scroll-padding-top: 110px; }
 .admin-dashboard .renewal-months a[data-count="zero"] { background:#f1f5f9; color:#475569; }
 .admin-dashboard .renewal-months a[data-count="positive"] .renewal-bar > span { background:#c2410c; }
 @media print { .admin-dashboard [data-tone],.admin-dashboard .renewal-months a { background:white; box-shadow:none; } }
+
+/* Dashboard: Portfolio first, renewal overview immediately below. */
+.admin-dashboard .dashboard-operations > .metric-grid:first-child { grid-template-columns: minmax(0,1fr); }
+.admin-dashboard .dashboard-operations > .metric-grid:first-child dl { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.admin-dashboard .dashboard-operations > .renewal-overview { margin-top: 16px; }
+@media(min-width:1024px) {
+ .admin-dashboard .dashboard-operations > .metric-grid:first-child dl { grid-template-columns: repeat(4,minmax(0,1fr)); }
+ .admin-dashboard .dashboard-operations > .metric-grid:not(:first-child) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
