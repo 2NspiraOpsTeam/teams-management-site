@@ -310,3 +310,20 @@ it('counts filtered apartment and distinct tenant records across pages and empty
  const tenants=await(await request('tenants?buildingId=b1')).json();expect(tenants.total).toBe(1);expect(tenants.items).toHaveLength(1);
  expect((await(await request('tenants?buildingId=b1&q=no-match')).json()).total).toBe(0);
 });
+
+it('counts every operational directory and paginates only eligible recorded leases',async()=>{
+ for(const entity of ['properties','superintendents','leases','maintenance']){
+  const data=await(await request(entity)).json();expect(data.total).toBe(data.items.length);
+  const empty=await(await request(entity+'?q=zz-no-match')).json();expect(empty.total).toBe(0);expect(empty.items).toEqual([]);
+ }
+ for(let i=0;i<55;i++){
+  const id='recorded-count-'+i;
+  sql.prepare('INSERT INTO units(id,building_id,unit_identifier,floor_number) VALUES(?,?,?,2)').run(id,'b1',id);
+  sql.prepare("INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,source_values_json,imported_by) VALUES(?,'sha','QA',?,'QA','[]','QA')").run(id,i+1);
+ }
+ for(const page of [0,1]){
+  const data=await(await request('rent-roll?recordedOnly=1&buildingId=b1&page='+page)).json();
+  expect(data.total).toBe(55);expect(data.items).toHaveLength(page===0?50:5);
+  expect(data.items.every((r:any)=>r.rent_roll_period&&!r.lease_id)).toBe(true);
+ }
+});
