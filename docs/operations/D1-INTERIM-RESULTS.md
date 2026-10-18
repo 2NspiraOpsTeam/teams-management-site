@@ -23,7 +23,7 @@ Synthetic fixture: 6 buildings,180 apartments,180 tenants,180 leases. Each row b
 
 The selector comparison is3513 versus8 reads on this same fixture (99.77% reduction). This is not a measured portfolio-wide percentage. Highest-cost measured local API: Tenants5991 reads, Properties3513, Rent Roll3346, Dashboard3110. Query fingerprints and counts retained privately. Hosted ranking may differ.
 
-197 tests passed. Local built-app browser checks:4 screens ×3 widths (1440/768/390), no document overflow or JS page errors; Rent Roll next page starts at51. Fresh emailed-code delivery, tenant-session isolation on hosted preview, public cache hit rates, real staff navigation totals and Worker CPU remain unverified.
+198 tests passed. Local built-app browser checks:4 screens ×3 widths (1440/768/390), no document overflow or JS page errors; Rent Roll next page starts at51. Fresh emailed-code delivery, tenant-session isolation on hosted preview, public cache hit rates, real staff navigation totals and Worker CPU remain unverified.
 
 ## Projections, NOT operational measurements
 
