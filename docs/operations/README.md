@@ -2,6 +2,7 @@
 
 Start with the [current development handoff](WATERBEAR-DEVELOPMENT.md). It replaces the initial synthetic-only setup status and identifies the working build, migration results, and acceptance checks.
 
+- [Resident portal and household access](TENANT-PORTAL-2026-10-18.md): current feature scope, permissions and QA.
 - [Backup and restore procedure](BACKUP-AND-RESTORE.md): capture, verify, recover, and prove the result.
 - [Future production promotion](PRODUCTION-PROMOTION.md): release the approved build to 2Nspira after development is finished.
 - [Migration QA and build comparison](MIGRATION-QA-2026-10-18.md): completed checks, deliberate differences, and limits.
