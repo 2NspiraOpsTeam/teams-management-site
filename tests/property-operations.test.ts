@@ -339,7 +339,7 @@ it('sums workbook monthly rent in cents across all pages without substituting le
 
 it('combines only the explicit 349/351 workbook group without changing property links',async()=>{
  for(const [i,id]of ['real-349-w-46th-st','real-351-w-46th-st','real-349-351-w-46th-st'].entries()){
-  sql.prepare("INSERT INTO buildings(id,name,address_json) VALUES(?,?, '{}')").run(id,id);
+  sql.prepare("INSERT INTO buildings(id,slug,name,address_json) VALUES(?,?,?, '{}')").run(id,id,id);
   sql.prepare('INSERT INTO units(id,building_id,unit_identifier,floor_number) VALUES(?,?,?,1)').run('shared-'+i,id,'shared-'+i);
   sql.prepare("INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,rent,source_values_json,imported_by) VALUES(?,'sha','QA',?,'QA','100.01','[]','QA')").run('shared-'+i,i+1);
  }
