@@ -1,3 +1,5 @@
+import { previewPortfolio } from './preview-portfolio';
+import { publicDataCache } from './public-data-cache';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
 import type { BuildingPublic } from './database.types';
@@ -14,8 +16,10 @@ function database() {
 const publicColumns = "id, name, slug, NULL AS description_public, address_json, latitude, longitude, geocode_status, map_verified, '[]' AS amenities_public, '[]' AS gallery, publication_state, created_at, updated_at";
 
 export async function listPublicBuildings(): Promise<BuildingPublic[]> {
+  return publicDataCache('published-buildings',async()=>{
   const result = await database().prepare(`SELECT ${publicColumns} FROM buildings WHERE publication_state = ? ORDER BY name`).bind('published').all<PublicBuildingRow>();
   return result.results.map(parsePublicBuildingRow);
+  });
 }
 
 export async function getPublicBuilding(slug: string): Promise<BuildingPublic | null> {
@@ -26,7 +30,7 @@ export async function getPublicBuilding(slug: string): Promise<BuildingPublic | 
 
 /** Preserve preview-only publication scope, while taking mailing addresses from canonical records. */
 export async function canonicalPreviewBuildings(fixtures: BuildingPublic[]): Promise<BuildingPublic[]> {
-  const rows = await database().prepare("SELECT slug,address_json FROM buildings WHERE publication_state!='archived'").all<{slug:string;address_json:string}>();
-  const addresses = new Map(rows.results.map(row => [row.slug, JSON.parse(row.address_json) as BuildingPublic['address']]));
+  const rows = await publicDataCache('preview-addresses',async()=> (await database().prepare(`SELECT slug,address_json FROM buildings WHERE publication_state!='archived' AND slug IN (${previewPortfolio.map(()=>'?').join(',')})`).bind(...previewPortfolio.map(b=>b.slug)).all<{slug:string;address_json:string}>()).results);
+  const addresses = new Map(rows.map(row => [row.slug, JSON.parse(row.address_json) as BuildingPublic['address']]));
   return fixtures.map(building => ({ ...building, address: addresses.get(building.slug) || building.address }));
 }

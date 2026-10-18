@@ -20,10 +20,10 @@ export function useOperationsRefresh(refresh:()=>void,enabled=true){
   if(!enabled)return;
   let timer:ReturnType<typeof setTimeout>|undefined;
   const reload=()=>{if(document.visibilityState!=='visible')return;clearTimeout(timer);timer=setTimeout(()=>latest.current(),150);};
-  const visible=()=>{if(document.visibilityState==='visible')reload();};
+  const visible=()=>{if(document.visibilityState==='visible')void checkForChanges();};
   let channel:BroadcastChannel|undefined;try{channel=new BroadcastChannel(channelName);channel.onmessage=reload;}catch{}
-  window.addEventListener(eventName,reload);window.addEventListener('focus',reload);document.addEventListener('visibilitychange',visible);
+  window.addEventListener(eventName,reload);window.addEventListener('focus',checkForChanges);document.addEventListener('visibilitychange',visible);
   const unsubscribe=subscribe();
-  return()=>{clearTimeout(timer);unsubscribe();channel?.close();window.removeEventListener(eventName,reload);window.removeEventListener('focus',reload);document.removeEventListener('visibilitychange',visible);};
+  return()=>{clearTimeout(timer);unsubscribe();channel?.close();window.removeEventListener(eventName,reload);window.removeEventListener('focus',checkForChanges);document.removeEventListener('visibilitychange',visible);};
  },[enabled]);
 }

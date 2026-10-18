@@ -389,3 +389,16 @@ it('projects saved tenant and apartment edits consistently into phone, rent roll
 });
 
 it('uses a cheap audit watermark to detect other staff edits without reloading unchanged records',async()=>{const before=await(await request('sync')).json();expect((await(await request('sync')).json()).version).toBe(before.version);expect((await request('properties/b1','PATCH',{revision:1,property_type:'unverified',llc_name:'QA Sync LLC'})).status).toBe(200);expect((await(await request('sync')).json()).version).toBeGreaterThan(before.version);state.actor=null;expect((await request('sync')).status).toBe(401);});
+it('uses paginated minimal selectors without contact or aggregate payloads',async()=>{
+ const data=await(await request('properties?lookup=1')).json();expect(data.items[0]).toEqual({id:'b1',name:'QA One'});expect(data.nextPage).toBeNull();
+ expect((await request('units?lookup=1')).status).toBe(422);
+ const units=await(await request('units?lookup=1&buildingId=b1')).json();expect(units.items).toEqual([{id:'u1',building_id:'b1',unit_identifier:'1A'}]);
+ state.actor=null;expect((await request('properties?lookup=1')).status).toBe(401);
+});
+it('applies read indexes additively and uses the unit-review index',()=>{
+ const before=sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n;
+ sql.exec(readFileSync('src/lib/migrations/operations-read-efficiency.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/operations-read-efficiency.sql','utf8'));
+ expect(sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n).toBe(before);
+ const plan=sql.prepare("EXPLAIN QUERY PLAN SELECT id FROM tenant_import_items WHERE unit_id=? AND source_cell='@row' AND outcome='hold' AND record_id=?").all('u1','rentroll:u1');expect(JSON.stringify(plan)).toContain('operations_import_unit_review');
+ expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+});

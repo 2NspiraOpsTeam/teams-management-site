@@ -29,7 +29,9 @@ export async function rentRoll(a:Actor,url:URL){
  const effectiveSql=grouped?sql.replace('AND u.building_id=?',"AND u.building_id IN ('real-349-w-46th-st','real-351-w-46th-st','real-349-351-w-46th-st')"):sql;
  const effectiveArgs=grouped?args.slice(1):args;
  const rows=await all(a.db,effectiveSql+' LIMIT 51 OFFSET ?',...effectiveArgs,p.offset);
- const amounts=await all(a.db,`SELECT rent_roll_rent FROM (${effectiveSql})`,...effectiveArgs);
+ // Totals need only source rent and matching IDs, not the full display projection/window.
+ const amountSql='SELECT rr.rent AS rent_roll_rent '+effectiveSql.slice(effectiveSql.indexOf('FROM units u JOIN buildings b'));
+ const amounts=await all(a.db,amountSql.replace(/ORDER BY b\.name COLLATE NOCASE,u\.unit_identifier COLLATE NOCASE,u\.id$/, ''),...effectiveArgs);
  let workbookMonthlyRentCents=0,unavailableRentCount=0;
  for(const row of amounts){const raw=String(row.rent_roll_rent??'').trim().replace(/[$,]/g,'');if(!/^-?\d+(?:\.\d{1,2})?$/.test(raw)){unavailableRentCount++;continue;}const negative=raw.startsWith('-'),[whole,fraction='']=raw.replace(/^-/,'').split('.');workbookMonthlyRentCents+=(negative?-1:1)*(Number(whole)*100+Number(fraction.padEnd(2,'0')));}
  return {...pageResult(rows,p.page),total:rows[0]?.filtered_total??0,workbookMonthlyRentCents,unavailableRentCount};

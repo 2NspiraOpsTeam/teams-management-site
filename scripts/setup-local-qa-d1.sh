@@ -7,6 +7,8 @@ sed '/^INSERT /,$d' src/lib/migrations/media-management.sql > "$media_schema_fil
 for schema_file in \
   src/lib/migrations/schema.sql \
   "$media_schema_file" \
+  src/lib/migrations/admin-phase1.sql \
+  src/lib/migrations/admin-otp.sql \
   src/lib/migrations/tenant-portal.sql \
   src/lib/migrations/work-orders-mvp.sql \
   src/lib/migrations/media-read-indexes.sql \
@@ -20,7 +22,15 @@ for schema_file in \
   src/lib/migrations/dining-card-image.sql \
   src/lib/migrations/dining-client-images.sql \
   src/lib/migrations/dining-venue-photos.sql \
-  src/lib/migrations/media-presentation-contexts.sql; do
+  src/lib/migrations/media-presentation-contexts.sql \
+  src/lib/migrations/property-operations.sql \
+  src/lib/migrations/property-llc-name.sql \
+  src/lib/migrations/rent-roll-source.sql \
+  src/lib/migrations/rent-roll-complete-fields.sql \
+  src/lib/migrations/tenant-directory-identity-nullable.sql \
+  src/lib/migrations/tenant-directory-import.sql \
+  src/lib/migrations/tenant-directory-names.sql \
+  src/lib/migrations/operations-read-efficiency.sql; do
   npx wrangler d1 execute teams-database-dev --local --persist-to "$qa_state_dir" --file "$schema_file" >/dev/null
 done
 printf 'Isolated local D1 ready: %s\n' "$qa_state_dir"

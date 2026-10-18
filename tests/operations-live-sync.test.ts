@@ -14,3 +14,9 @@ it('does not poll or replace a disabled editor draft, and stops all checks after
  const fetch=vi.fn(async()=>({ok:true,json:async()=>({version:1})}));vi.stubGlobal('fetch',fetch);const refresh=vi.fn();useOperationsRefresh(refresh,false);await vi.advanceTimersByTimeAsync(60000);expect(fetch).not.toHaveBeenCalled();
  useOperationsRefresh(refresh);await vi.advanceTimersByTimeAsync(0);expect(fetch).toHaveBeenCalledTimes(1);state.cleanups.splice(0).forEach(fn=>fn());await vi.advanceTimersByTimeAsync(60000);expect(fetch).toHaveBeenCalledTimes(1);
 });
+
+it('focus and visibility checks do not reload unchanged full views',async()=>{
+ const fetch=vi.fn(async()=>({ok:true,json:async()=>({version:1})}));vi.stubGlobal('fetch',fetch);const refresh=vi.fn();useOperationsRefresh(refresh);
+ await vi.advanceTimersByTimeAsync(0);window.dispatchEvent(new Event('focus'));await vi.advanceTimersByTimeAsync(200);expect(refresh).not.toHaveBeenCalled();
+ document.dispatchEvent(new Event('visibilitychange'));await vi.advanceTimersByTimeAsync(200);expect(refresh).not.toHaveBeenCalled();
+});

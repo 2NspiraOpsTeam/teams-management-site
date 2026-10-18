@@ -1,4 +1,5 @@
 import { WorkerEntrypoint } from 'cloudflare:workers';
+import { meterDatabase } from './d1-meter.mjs';
 import application from '../../.open-next/worker.js';
 
 // Only the same-account Pages service binding can invoke this entrypoint.
@@ -26,7 +27,16 @@ export class TeamsPreviewRuntime extends WorkerEntrypoint {
       const asset = await this.env.ASSETS.fetch(request);
       if (asset.status !== 404) return identify(asset);
     }
-    return identify(await application.fetch(request, { ...this.env, ...runtime }, this.ctx));
+    const usage={queries:0,rowsRead:0,rowsWritten:0,durationMs:0};
+    const environment={...this.env,...runtime,DB:meterDatabase(this.env.DB,usage)};
+    try{const response=await application.fetch(request,environment,this.ctx);usage.status=response.status;return identify(response);}
+    finally{
+      // Path template only; IDs, search terms, cookies and request bodies are omitted.
+      const parts=new URL(request.url).pathname.split('/').filter(Boolean);
+      const safe=new Set(['api','admin','operations','overview','properties','units','tenants','leases','rent-roll','phone-list','maintenance','tenant-maintenance','tenant','auth','session','sync','renewals','buildings','map','access','tenant-services']);
+      const route=parts.slice(0,4).map(p=>safe.has(p)?p:':resource').join('/');
+      console.log(JSON.stringify({event:'teams_d1_usage',release:this.env.TEAMS_RELEASE_SHA||'local',route,method:request.method,...usage}));
+    }
   }
 }
 export default { fetch() { return new Response('Not found', { status: 404 }); } };
