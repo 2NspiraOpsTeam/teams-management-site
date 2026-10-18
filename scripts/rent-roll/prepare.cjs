@@ -1,6 +1,7 @@
 // Private one-time workbook reconciliation. Never writes to D1. Run from this checkout.
 // node scripts/rent-roll/prepare.cjs <workbook.xlsx> <inventory.json> <private-output-directory>
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),read=require('read-excel-file/node');
+const {sourceFields}=require('./source-fields.cjs');
 const norm=v=>String(v??'').trim().toUpperCase();
 const address=v=>norm(v).replace(/\bEAST\b/g,'E').replace(/\bWEST\b/g,'W').replace(/\bFIRST\b/g,'1ST').replace(/\bSECOND\b/g,'2ND').replace(/\bSTREET\b/g,'ST').replace(/\bAVENUE\b/g,'AVE').replace(/(\d+)(?:ST|ND|RD|TH)\b/g,'$1').replace(/\s+/g,' ');
 const text=v=>v==null||v===''?null:v instanceof Date?v.toISOString().slice(0,10):String(v).trim();
@@ -21,7 +22,7 @@ async function prepare(input,inventoryFile,out){
   if(!headers||!second||second.startsWith('*')||(!first&&!row.some((v,k)=>k>1&&v!=null)))continue;
   if((formulas[sheetIndex]||[]).some(c=>c.row===i+1&&c.column.charCodeAt(0)-65<headers.filter(Boolean).length))throw Error('Formula in a rent-roll data field at row '+(i+1));
   total++;const field=name=>row[headers.indexOf(name)]??null;
-  const item={source_sha256:sha,source_sheet:sheet.sheet,source_row:i+1,source_period:sheet.sheet,tenant_name:second,status_code:text(field('STATUS')),square_footage:text(field('SQUARE FOOTAGE')),bedrooms:text(field('# BEDROOMS')),lease_expiration:text(field('EXPIRATION DATE')),security:money(field('SECURITY')),legal_rent:money(field('LEGAL RENT')),rent:money(field('RENT')),source_values_json:JSON.stringify(row),property_id:property?.id,source_unit:first};
+  const item={...sourceFields(row,headers),source_sha256:sha,source_sheet:sheet.sheet,source_row:i+1,source_period:sheet.sheet,tenant_name:second,status_code:text(field('STATUS')),square_footage:text(field('SQUARE FOOTAGE')),bedrooms:text(field('# BEDROOMS')),lease_expiration:text(field('EXPIRATION DATE')),security:money(field('SECURITY')),legal_rent:money(field('LEGAL RENT')),rent:money(field('RENT')),source_values_json:JSON.stringify(row),property_id:property?.id,source_unit:first};
   if(!property||!first){held.push({...item,reason:'Missing exact property or apartment label'});continue;}
   if(combined&&norm(first)==='STORE'){held.push({...item,reason:'Shared 349/351 commercial address needs exact apartment mapping'});continue;}
   const literal=norm(first);let candidates=units.filter(u=>u.building_id===property.id&&norm(u.unit_identifier)===literal);
