@@ -1,0 +1,12 @@
+{
+  "waterbear": {
+    "account_id": "REPLACE_WITH_VERIFIED_ACCOUNT_ID",
+    "database_id": "REPLACE_WITH_VERIFIED_DATABASE_ID",
+    "worker": "teams-development-runtime"
+  },
+  "2nspira": {
+    "account_id": "REPLACE_WITH_VERIFIED_ACCOUNT_ID",
+    "database_id": "REPLACE_WITH_VERIFIED_DATABASE_ID",
+    "worker": "REPLACE_WITH_CURRENT_PRODUCTION_WORKER"
+  }
+}
