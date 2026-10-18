@@ -327,3 +327,12 @@ it('counts every operational directory and paginates only eligible recorded leas
   expect(data.items.every((r:any)=>r.rent_roll_period&&!r.lease_id)).toBe(true);
  }
 });
+
+it('sums workbook monthly rent in cents across all pages without substituting lease rent or blanks',async()=>{
+ for(let i=0;i<55;i++){
+  const id='monthly-'+i;sql.prepare('INSERT INTO units(id,building_id,unit_identifier,floor_number) VALUES(?,?,?,2)').run(id,'b1',id);
+  sql.prepare("INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,rent,source_values_json,imported_by) VALUES(?,'sha','QA',?,'QA',?,'[]','QA')").run(id,i+1,i===0?'$1,234.56':i===1?null:'100.01');
+ }
+ for(const page of [0,1]){const d=await(await request('rent-roll?buildingId=b1&q=monthly-&page='+page)).json();expect(d.total).toBe(55);expect(d.workbookMonthlyRentCents).toBe(653509);expect(d.unavailableRentCount).toBe(1);}
+ const empty=await(await request('rent-roll?q=zz-no-match')).json();expect(empty.workbookMonthlyRentCents).toBe(0);expect(empty.unavailableRentCount).toBe(0);
+});
