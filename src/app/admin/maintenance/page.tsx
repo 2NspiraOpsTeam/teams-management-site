@@ -1,4 +1,6 @@
 "use client";
+import { useOperationsRefresh } from "@/components/operations/live-sync";
+import { OfficeMaintenance } from "@/components/operations/OfficeMaintenance";
 import { ExportButton } from "@/components/operations/ExportButton";
 import Link from "next/link";
 import { OperationsNav, href } from "@/components/operations/shared";
@@ -33,6 +35,7 @@ export default function MaintenanceAdmin() {
   const [applied,setApplied]=useState({building:"",apartment:"",status:"",number:""});
   const lock = useRef(false),
     form = useRef<HTMLFormElement>(null);
+  useOperationsRefresh(()=>{if(!data)void list(page);},!busy);
   async function list(nextPage = 0) {
     setLoading(true);
     try {
@@ -147,6 +150,7 @@ export default function MaintenanceAdmin() {
       <p className="mt-2">
         Review tenant requests, keep internal notes private, and share progress.
       </p>
+      <OfficeMaintenance onSaved={()=>void list(0)}/>
       <form
         onSubmit={(e) => {
           e.preventDefault();

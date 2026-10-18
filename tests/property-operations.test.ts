@@ -1,3 +1,4 @@
+import {createOfficeMaintenance,officeAssignments} from '../src/lib/operations/office-maintenance';
 import {renewalData,filterRenewals} from '../src/lib/operations/renewals';
 import { beforeEach,afterEach,expect,it,vi } from 'vitest';
 import { DatabaseSync } from 'node:sqlite';
@@ -16,7 +17,7 @@ const createUnit=(identifier='2A',building='b1',key=crypto.randomUUID())=>reques
 const holder=(tenant='t1')=>({tenant_id:tenant,holder_role:'leaseholder',can_view_document:true,show_rent:false});
 const leaseInput=(extra={})=>({idempotencyKey:crypto.randomUUID(),unit_id:'u1',lease_start:'2026-01-01',lease_end:'2027-12-31',monthly_rent:'2100.25',security_deposit:'2100.25',status:'active',renewal_status:'not_started',portal_published:false,holders:[holder()],...extra});
 const createLease=async(extra={})=>{const data=leaseInput(extra),response=await request('leases','POST',data);expect(response.status).toBe(201);return {data,...await response.json()};};
-beforeEach(()=>{sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');for(const file of ['schema.sql','admin-phase1.sql','admin-otp.sql','tenant-portal.sql','work-orders-mvp.sql'])sql.exec(readFileSync('src/lib/migrations/'+file,'utf8'));sql.exec(`INSERT INTO buildings(id,name,slug,address_json) VALUES('b1','QA One','qa-one','{"street":"100 QA St","city":"New York","state":"NY","zip":"10021"}'),('b2','QA Two','qa-two','{}'); INSERT INTO units(id,building_id,unit_identifier,floor_number,status) VALUES('u1','b1','1A',1,'unverified'),('u2','b2','1B',1,'unverified'); INSERT INTO tenant_accounts(id,email,display_name,active) VALUES('t1','one@example.test','QA One',1),('t2','two@example.test','QA Two',1); INSERT INTO tenant_assignments(id,tenant_id,building_id,unit_id) VALUES('a1','t1','b1','u1'),('a2','t2','b2','u2'); INSERT INTO admin_identities(email) VALUES('admin@example.test'); INSERT INTO tenant_sessions(token_hash,tenant_id,expires_at) VALUES('fixture-token','t1',datetime('now','+1 day')); INSERT INTO tenant_maintenance_requests(id,tenant_id,assignment_id,category,description,urgency,preferred_contact) VALUES('r1','t1','a1','plumbing','QA existing request','routine','email');`);sql.exec(readFileSync('src/lib/migrations/property-operations.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/rent-roll-source.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/rent-roll-complete-fields.sql','utf8'));sql.exec('BEGIN');sql.exec(readFileSync('src/lib/migrations/tenant-directory-identity-nullable.sql','utf8'));sql.exec('COMMIT');sql.exec(readFileSync('src/lib/migrations/tenant-directory-import.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/tenant-directory-names.sql','utf8'));state.db=adapter();state.actor={db:state.db,email:'admin@example.test'};state.env={PROPERTY_OPERATIONS_ENABLED:'1',TENANT_LEASES_ENABLED:'1'};state.tenant={id:'t1',email:'one@example.test'};});
+beforeEach(()=>{sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');for(const file of ['schema.sql','admin-phase1.sql','admin-otp.sql','tenant-portal.sql','work-orders-mvp.sql'])sql.exec(readFileSync('src/lib/migrations/'+file,'utf8'));sql.exec(`INSERT INTO buildings(id,name,slug,address_json) VALUES('b1','QA One','qa-one','{"street":"100 QA St","city":"New York","state":"NY","zip":"10021"}'),('b2','QA Two','qa-two','{}'); INSERT INTO units(id,building_id,unit_identifier,floor_number,status) VALUES('u1','b1','1A',1,'unverified'),('u2','b2','1B',1,'unverified'); INSERT INTO tenant_accounts(id,email,display_name,active) VALUES('t1','one@example.test','QA One',1),('t2','two@example.test','QA Two',1); INSERT INTO tenant_assignments(id,tenant_id,building_id,unit_id) VALUES('a1','t1','b1','u1'),('a2','t2','b2','u2'); INSERT INTO admin_identities(email) VALUES('admin@example.test'); INSERT INTO tenant_sessions(token_hash,tenant_id,expires_at) VALUES('fixture-token','t1',datetime('now','+1 day')); INSERT INTO tenant_maintenance_requests(id,tenant_id,assignment_id,category,description,urgency,preferred_contact) VALUES('r1','t1','a1','plumbing','QA existing request','routine','email');`);sql.exec(readFileSync('src/lib/migrations/property-operations.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/property-llc-name.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/rent-roll-source.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/rent-roll-complete-fields.sql','utf8'));sql.exec('BEGIN');sql.exec(readFileSync('src/lib/migrations/tenant-directory-identity-nullable.sql','utf8'));sql.exec('COMMIT');sql.exec(readFileSync('src/lib/migrations/tenant-directory-import.sql','utf8'));sql.exec(readFileSync('src/lib/migrations/tenant-directory-names.sql','utf8'));state.db=adapter();state.actor={db:state.db,email:'admin@example.test'};state.env={PROPERTY_OPERATIONS_ENABLED:'1',TENANT_LEASES_ENABLED:'1'};state.tenant={id:'t1',email:'one@example.test'};});
 afterEach(()=>sql.close());
 it('applies additively and idempotently without replacing existing identities, units, assignments or maintenance',()=>{sql.exec(readFileSync('src/lib/migrations/property-operations.sql','utf8'));expect(sql.prepare('SELECT unit_id FROM tenant_assignments WHERE id=?').get('a1')?.unit_id).toBe('u1');expect(sql.prepare('SELECT assignment_id FROM tenant_maintenance_requests WHERE id=?').get('r1')?.assignment_id).toBe('a1');expect(sql.prepare('SELECT COUNT(*) AS n FROM tenant_accounts').get()?.n).toBe(2);});
 it('denies anonymous, tenant-only and foreign-origin writes before touching records',async()=>{state.actor=null;expect((await request('units')).status).toBe(401);state.actor={db:state.db,email:'admin@example.test'};expect((await request('units','POST',{}, {origin:'https://foreign.example'})).status).toBe(401);state.env.PROPERTY_OPERATIONS_ENABLED='0';expect((await request('tenants')).status).toBe(404);expect(sql.prepare('SELECT COUNT(*) AS n FROM units').get()?.n).toBe(2);});
@@ -346,4 +347,43 @@ it('combines only the explicit 349/351 workbook group without changing property 
  const separate=await(await request('rent-roll?buildingId=real-351-w-46th-st')).json();expect(separate.total).toBe(1);
  const grouped=await(await request('rent-roll?buildingId=real-351-w-46th-st&group349351=1')).json();expect(grouped.total).toBe(3);expect(grouped.workbookMonthlyRentCents).toBe(30003);expect(new Set(grouped.items.map((r:any)=>r.building_id)).size).toBe(3);
  expect((await(await request('rent-roll?buildingId=b1&group349351=1')).json()).total).toBe(1);
+});
+
+it('persists, clears and validates LLC names with revisions and audited history',async()=>{
+ const input={revision:1,property_type:'unverified',llc_name:'QA Owners LLC',internal_notes:''};
+ expect((await request('properties/b1','PATCH',input)).status).toBe(200);
+ expect((await(await request('properties/b1')).json()).llc_name).toBe('QA Owners LLC');
+ expect((await(await request('properties')).json()).items.find((r:any)=>r.id==='b1').llc_name).toBe('QA Owners LLC');
+ expect((await request('properties/b1','PATCH',input)).status).toBe(409);
+ expect((await request('properties/b1','PATCH',{...input,revision:2,llc_name:'x'.repeat(241)})).status).toBe(400);
+ expect((await request('properties/b1','PATCH',{...input,revision:2,llc_name:''})).status).toBe(200);
+ expect((await(await request('properties/b1')).json()).llc_name).toBe('');
+ expect(sql.prepare("SELECT count(*) n FROM audit_log WHERE entity_type='operations_property'").get()?.n).toBe(2);
+});
+const officeInput=()=>({idempotencyKey:crypto.randomUUID(),buildingId:'b1',unitId:'u1',assignmentId:'a1',category:'plumbing',description:'[QA] Office-created plumbing request',urgency:'routine',preferredContact:'phone',permissionToEnter:null,accessInstructions:''});
+it('creates office requests against the exact assignment, attributes Admin, and suppresses duplicate retries without sending mail',async()=>{
+ const v=officeInput(),saved=await createOfficeMaintenance(state.actor,v);
+ expect(saved.number).toBeTruthy();expect((await createOfficeMaintenance(state.actor,v)).duplicate).toBe(true);
+ expect(sql.prepare('SELECT tenant_id,assignment_id FROM tenant_maintenance_requests WHERE id=?').get(saved.id)).toMatchObject({tenant_id:'t1',assignment_id:'a1'});
+ expect(sql.prepare('SELECT actor_type,actor_id FROM work_order_events WHERE request_id=?').get(saved.id)).toMatchObject({actor_type:'admin',actor_id:'admin@example.test'});
+ expect(sql.prepare('SELECT permission_to_enter FROM work_order_details WHERE request_id=?').get(saved.id)?.permission_to_enter).toBeNull();
+ expect(sql.prepare('SELECT count(*) n FROM work_order_notifications WHERE request_id=?').get(saved.id)?.n).toBe(0);
+ await expect(createOfficeMaintenance(state.actor,{...v,description:'Different request payload'})).rejects.toMatchObject({status:409});
+});
+it('rejects mismatched, historical and incomplete office requests and rolls back failed audits',async()=>{
+ await expect(createOfficeMaintenance(state.actor,{...officeInput(),unitId:'u2'})).rejects.toMatchObject({status:409});
+ await expect(createOfficeMaintenance(state.actor,{...officeInput(),description:'short'})).rejects.toMatchObject({status:400});
+ sql.exec("CREATE TRIGGER qa_office_fail BEFORE INSERT ON audit_log BEGIN SELECT RAISE(ABORT,'QA failure'); END;");
+ await expect(createOfficeMaintenance(state.actor,officeInput())).rejects.toMatchObject({status:503});
+ expect(sql.prepare('SELECT count(*) n FROM tenant_maintenance_requests').get()?.n).toBe(1);
+ sql.exec("DROP TRIGGER qa_office_fail; UPDATE tenant_assignments SET active=0 WHERE id='a1'");
+ expect(await officeAssignments(state.actor,'b1')).toEqual([]);
+ await expect(createOfficeMaintenance(state.actor,officeInput())).rejects.toMatchObject({status:409});
+});
+it('projects saved tenant and apartment edits consistently into phone, rent roll, assignments and lease views',async()=>{
+ expect((await request('tenants/t1','PATCH',{revision:1,display_name:'QA Synced Name',contacts:[{contact_type:'phone',value_raw:'212-555-0100',is_primary:true}]})).status).toBe(200);
+ expect((await request('units/u1','PATCH',{revision:1,unit_identifier:'1A-corrected',floor_number:1,status:'unverified'})).status).toBe(200);
+ const phone=(await(await request('phone-list?buildingId=b1')).json()).items[0];expect(phone).toMatchObject({display_name:'QA Synced Name',unit_identifier:'1A-corrected',phones:'212-555-0100'});
+ const roll=(await(await request('rent-roll?buildingId=b1')).json()).items[0];expect(roll).toMatchObject({unit_identifier:'1A-corrected',occupants:'QA Synced Name'});
+ const lease=await createLease();expect((await(await request('leases/'+lease.id)).json()).unit_identifier).toBe('1A-corrected');
 });

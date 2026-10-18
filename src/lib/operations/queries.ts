@@ -1,8 +1,9 @@
+import {propertyEntities} from './property-entities';
 import { businessDate } from './renewal-rules';
 import { workOrderSelect, maintenanceStatus } from '../work-orders/server';
 import { all,existing,one,page,pageResult,search,type Actor } from './database';
 import { choice, fail } from './validation';
-const propertyFields=()=>`(SELECT group_concat(s.full_name,', ') FROM operations_superintendents s JOIN operations_superintendent_properties sp ON sp.superintendent_id=s.id WHERE sp.building_id=b.id AND sp.active=1 AND s.contact_status='active') AS superintendent_names,b.id,b.name,b.address_json,b.publication_state,COALESCE(p.property_type,'unverified') AS property_type,COALESCE(p.revision,1) AS revision,
+const propertyFields=()=>`(SELECT group_concat(s.full_name,', ') FROM operations_superintendents s JOIN operations_superintendent_properties sp ON sp.superintendent_id=s.id WHERE sp.building_id=b.id AND sp.active=1 AND s.contact_status='active') AS superintendent_names,b.id,b.name,b.address_json,b.publication_state,COALESCE(p.llc_name,CASE b.id ${Object.entries(propertyEntities).map(([id,name])=>`WHEN '${id}' THEN '${name.replaceAll("'","''")}'`).join(' ')} ELSE '' END) AS llc_name,COALESCE(p.property_type,'unverified') AS property_type,COALESCE(p.revision,1) AS revision,
  (SELECT COUNT(*) FROM units u WHERE u.building_id=b.id) AS total_units,
  (SELECT COUNT(*) FROM operations_rent_roll_source rr JOIN units u ON u.id=rr.unit_id WHERE u.building_id=b.id AND rr.status_code='Comm') AS commercial_rent_roll_entries,
  (SELECT COUNT(*) FROM operations_rent_roll_source rr JOIN units u ON u.id=rr.unit_id WHERE u.building_id=b.id AND COALESCE(rr.status_code,'')!='Comm') AS residential_rent_roll_entries,

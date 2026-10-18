@@ -1,10 +1,12 @@
 'use client';
+import {useOperationsRefresh} from './live-sync';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
 import {button,href,read,type RecordRow} from './shared';
 export function RecordedLeases({buildingId='',search='',unitId='',tenantId=''}:{buildingId?:string;search?:string;unitId?:string;tenantId?:string}){
  const [total,setTotal]=useState(0);
  const [rows,setRows]=useState<RecordRow[]>([]),[page,setPage]=useState(0),[next,setNext]=useState<number|null>(null),[busy,setBusy]=useState(true),[error,setError]=useState(''),[refresh,setRefresh]=useState(0);
+ useOperationsRefresh(()=>setRefresh(x=>x+1));
  useEffect(()=>setPage(0),[buildingId,search,unitId,tenantId]);
  useEffect(()=>{const c=new AbortController();setBusy(true);setError('');void read('/rent-roll?'+new URLSearchParams({buildingId,unitId,tenantId,q:search,page:String(page),recordedOnly:'1'}),c.signal).then(d=>{setRows(d.items);setTotal(d.total??0);setNext(d.nextPage);}).catch(e=>{if(!c.signal.aborted)setError(e.message);}).finally(()=>{if(!c.signal.aborted)setBusy(false);});return()=>c.abort();},[buildingId,unitId,tenantId,search,page,refresh]);
  const visible=rows.filter(r=>(!unitId||r.id===unitId)&&r.rent_roll_period&&!r.lease_id);

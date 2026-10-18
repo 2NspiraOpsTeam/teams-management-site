@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {announceOperationsChange} from './live-sync';
 export type RecordRow=Record<string,any>;
 export const api='/api/admin/operations';
 export const control='block min-h-11 w-full min-w-0 rounded border border-slate-300 bg-white px-3 py-2 text-slate-900';
@@ -12,7 +13,7 @@ export const dollars=(c:number|null)=>c===null||c===undefined?'Not supplied':new
 export async function read(path:string,signal?:AbortSignal){const r=await fetch(api+path,{cache:'no-store',signal});const d=await r.json();if(!r.ok)throw Error(d.error||'Unable to load records.');return d;}
 // Load bounded selector pages; never silently omit apartments after the first 50.
 export async function options(path:string,signal?:AbortSignal){const items:RecordRow[]=[];for(let page=0;page<20;page++){const d=await read(path+(path.includes('?')?'&':'?')+'page='+page,signal);items.push(...d.items);if(d.nextPage===null)return items;}throw Error('Too many matches. Narrow the selection to one property.');}
-export async function write(path:string,method:string,data:unknown){const r=await fetch(api+path,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const d=await r.json();if(!r.ok)throw Error(d.error||'Save was not confirmed. Keep your draft and retry.');return d;}
+export async function write(path:string,method:string,data:unknown){const r=await fetch(api+path,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const d=await r.json();if(!r.ok)throw Error(d.error||'Save was not confirmed. Keep your draft and retry.');announceOperationsChange();return d;}
 // The shared Admin shell owns navigation; avoid repeating every module above each table.
 export function OperationsNav(){return null;}
 export function Address({value}:{value:string}){try{const a=JSON.parse(value);return <span>{[a.street,a.city,a.state,a.zip].filter(Boolean).join(', ')}{!a.zip?' · ZIP not supplied':''}</span>;}catch{return <span>Address needs review</span>;}}
