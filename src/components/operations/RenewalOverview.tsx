@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import type {renewalData} from '@/lib/operations/renewals';
-type Data=Awaited<ReturnType<typeof renewalData>>;
+export type RenewalOverviewData=Pick<Awaited<ReturnType<typeof renewalData>>,'summary'|'months'|'reminders'|'today'>;
 const root='/admin/operations/rent-roll/renewals';
-export function RenewalOverview({data}:{data:Data}){const {summary,months,reminders,today}=data;const metrics=[
+export function RenewalOverview({data}:{data:RenewalOverviewData}){const {summary,months,reminders,today}=data;const metrics=[
  ['Expiring This Month',summary.this_month,'view=calendar&month='+today.slice(0,7)],['Expiring Next Month',summary.next_month,'view=calendar&month='+months[1].month],
  ['Expiring in 30 Days',summary.days_30,'view=calendar&days=30'],['Expiring in 60 Days',summary.days_60,'view=calendar&days=60'],['Expiring in 90 Days',summary.days_90,'view=calendar&days=90'],
  ['Month-to-Month · recorded',summary.month_to_month,'view=month_to_month'],['Missing Rent Roll Expiration',summary.missing,'view=calendar_missing'],['Renewal in Progress',summary.in_progress,'view=in_progress'],['Renewed This Month',summary.renewed,'view=renewed']
