@@ -6,6 +6,14 @@ import application from '../../.open-next/worker.js';
 // Secrets stay configured on Pages and travel over private RPC, never HTTP headers.
 export class TeamsPreviewRuntime extends WorkerEntrypoint {
   async handleRequest(request, configuration) {
+    // Keep the replica stable while approved migration batches are applied.
+    // Default is off; read-only browsing remains available during a copy.
+    if (this.env.TEAMS_MIGRATION_WRITE_FREEZE === '1' && !['GET', 'HEAD', 'OPTIONS'].includes(request.method)) {
+      return new Response('Development data maintenance is in progress. Please retry shortly.', {
+        status: 503,
+        headers: { 'Cache-Control': 'no-store', 'Retry-After': '60' },
+      });
+    }
     const allowed = [
       'ADMIN_AUTH_FROM', 'ADMIN_AUTH_REPLY_TO', 'ADMIN_OTP_PEPPER',
       'TENANT_AUTH_FROM', 'TENANT_OTP_PEPPER', 'GOOGLE_CLIENT_ID',

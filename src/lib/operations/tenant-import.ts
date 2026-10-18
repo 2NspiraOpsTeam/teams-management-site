@@ -17,7 +17,7 @@ async function all(db:D1Database,sql:string,...values:any[]){return (await state
 async function gate(a:Actor,environment:string,binding:string,manual=false){
  if(manual&&environment==='teams-preview-manual'&&binding==='DB'){
   const env=adminEnv() as unknown as Record<string,string>;
-  check(env.TENANT_MANUAL_IMPORT_DATABASE_ID==='2d04fbea-8af6-4d6d-b5bf-cf758666d55e','Manual import is not enabled on this database');
+  check(['2d04fbea-8af6-4d6d-b5bf-cf758666d55e','29dfe758-69b1-4465-b74e-101d48c53f7e'].includes(env.TENANT_MANUAL_IMPORT_DATABASE_ID),'Manual import is not enabled on this database');
   check(await statement(a.db,"SELECT id FROM tenant_upload_configuration WHERE id='teams-preview' AND enabled=1 AND database_id=? AND length(backup_sha256)=64",env.TENANT_MANUAL_IMPORT_DATABASE_ID).first(),'Verified backup and migration release required');
   check(a.email&&await statement(a.db,'SELECT email FROM admin_identities WHERE email=? AND active=1',a.email).first(),'Active authenticated staff actor required');return;
  }
