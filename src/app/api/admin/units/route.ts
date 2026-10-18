@@ -13,8 +13,8 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const admin = await requireAdmin(); if (!admin) return unauthorized(); if (!sameOrigin(request)) return unauthorized();
   let input: Record<string,unknown>; try { input = await request.json(); } catch { return NextResponse.json({error:'Invalid request'},{status:400}); }
-  const buildingId=String(input.building_id || ''), identifier=String(input.unit_identifier || '').trim(), floor=Number(input.floor_number), status=String(input.status || 'available_internal'), layoutId=input.layout_id ? String(input.layout_id) : null;
-  if (!buildingId || !identifier || identifier.length>50 || !Number.isInteger(floor) || floor < -10 || floor > 300 || !statuses.has(status)) return NextResponse.json({error:'Invalid request'},{status:400});
+  const buildingId=String(input.building_id || ''), identifier=String(input.unit_identifier || '').trim(), floor=input.floor_number===null||input.floor_number===undefined||input.floor_number===''?null:Number(input.floor_number), status=String(input.status || 'available_internal'), layoutId=input.layout_id ? String(input.layout_id) : null;
+  if (!buildingId || !identifier || identifier.length>50 || (floor!==null&&(!Number.isInteger(floor) || floor < -10 || floor > 300)) || !statuses.has(status)) return NextResponse.json({error:'Invalid request'},{status:400});
   const building=await admin.db.prepare('SELECT id FROM buildings WHERE id=?').bind(buildingId).first();
   const layout=layoutId ? await admin.db.prepare('SELECT id FROM layouts WHERE id=?').bind(layoutId).first() : true;
   if (!building || !layout) return NextResponse.json({error:'Invalid request'},{status:400});

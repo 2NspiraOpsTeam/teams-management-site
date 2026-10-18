@@ -280,3 +280,17 @@ it('serves every provided contact before verification, preserves literal units, 
  sql.prepare("UPDATE audit_log SET record_after_json=? WHERE id='qa-source-chunk'").run(JSON.stringify({text:encoded+' '}));expect((await request('source-roster')).status).toBe(503);
  state.actor=null;expect((await request('source-roster')).status).toBe(401);
 });
+
+it('preserves populated unit links and supports unknown floor create, clear, refresh and retries',async()=>{
+ sql.exec('BEGIN');sql.exec(readFileSync('src/lib/migrations/units-nullable-floor.sql','utf8'));sql.exec('COMMIT');
+ expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+ expect(sql.prepare('SELECT unit_id FROM tenant_assignments WHERE id=?').get('a1')?.unit_id).toBe('u1');
+ const input={idempotencyKey:crypto.randomUUID(),building_id:'b1',unit_identifier:'Mezz',floor_number:'',status:'unverified'};
+ const created=await request('units','POST',input);expect(created.status).toBe(201);const record=await created.json();
+ expect((await (await request('units/'+record.id)).json()).floor_number).toBeNull();
+ const retry=await request('units','POST',input);expect((await retry.json()).duplicate).toBe(true);
+ const cleared=await request('units/u1','PATCH',{revision:1,unit_identifier:'1A',floor_number:'',status:'unverified'});expect(cleared.status).toBe(200);
+ expect((await (await request('units/u1')).json()).floor_number).toBeNull();
+ const invalid=await request('units/u1','PATCH',{revision:2,unit_identifier:'1A',floor_number:1.5,status:'unverified'});expect(invalid.status).toBe(400);
+ expect(sql.prepare('SELECT floor_number FROM units WHERE id=?').get('u1')?.floor_number).toBeNull();
+});
