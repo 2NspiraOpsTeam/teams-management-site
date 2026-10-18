@@ -1,10 +1,10 @@
 export const metrics=[
  {group:'Portfolio',key:'managed_properties',name:'Managed buildings',to:'/admin/properties'},
  {group:'Portfolio',key:'total_units',name:'Apartments',to:'/admin/operations/units'},
- {group:'Portfolio',key:'current_occupants',name:'Current occupants',to:'/admin/tenants?review=current'},
+ {group:'Portfolio',key:'current_occupants',name:'Distinct current tenants',to:'/admin/tenants?review=current'},
  {group:'Portfolio',key:'occupancy_review',name:'Occupancy needs review',to:'/admin/operations/rent-roll?review=occupancy'},
  {group:'Portfolio',key:'phone_source_rows',name:'Phone List source rows',to:'/admin/tenants'},
- {group:'Portfolio',key:'rent_roll_records',name:'Rent Roll apartments',to:'/admin/operations/rent-roll'},
+ {group:'Portfolio',key:'rent_roll_records',name:'Rent Roll entries',to:'/admin/operations/rent-roll'},
  {group:'Portfolio',key:'reconciliation_pending',name:'Source conflicts to review',to:'/admin/operations/rent-roll?review=reconciliation'},
  {group:'Leases',key:'active_leases',name:'Current leases',to:'/admin/operations/leases?review=current'},
  {group:'Leases',key:'expiring_30_days',name:'Expiring within 30 days',to:'/admin/operations/leases?expiringDays=30'},
