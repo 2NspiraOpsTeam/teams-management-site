@@ -387,3 +387,5 @@ it('projects saved tenant and apartment edits consistently into phone, rent roll
  const roll=(await(await request('rent-roll?buildingId=b1')).json()).items[0];expect(roll).toMatchObject({unit_identifier:'1A-corrected',occupants:'QA Synced Name'});
  const lease=await createLease();expect((await(await request('leases/'+lease.id)).json()).unit_identifier).toBe('1A-corrected');
 });
+
+it('uses a cheap audit watermark to detect other staff edits without reloading unchanged records',async()=>{const before=await(await request('sync')).json();expect((await(await request('sync')).json()).version).toBe(before.version);expect((await request('properties/b1','PATCH',{revision:1,property_type:'unverified',llc_name:'QA Sync LLC'})).status).toBe(200);expect((await(await request('sync')).json()).version).toBeGreaterThan(before.version);state.actor=null;expect((await request('sync')).status).toBe(401);});
