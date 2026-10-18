@@ -1,0 +1,10 @@
+name = "teams-management-development"
+account_id = "8fbe09502d38e82ab1b3d51f8eb7a1c6"
+pages_build_output_dir = "."
+compatibility_date = "2026-10-14"
+compatibility_flags = ["nodejs_compat"]
+
+[[services]]
+binding = "TEAMS_RUNTIME"
+service = "teams-development-runtime"
+entrypoint = "TeamsPreviewRuntime"
