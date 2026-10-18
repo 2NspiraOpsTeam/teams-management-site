@@ -336,3 +336,14 @@ it('sums workbook monthly rent in cents across all pages without substituting le
  for(const page of [0,1]){const d=await(await request('rent-roll?buildingId=b1&q=monthly-&page='+page)).json();expect(d.total).toBe(55);expect(d.workbookMonthlyRentCents).toBe(653509);expect(d.unavailableRentCount).toBe(1);}
  const empty=await(await request('rent-roll?q=zz-no-match')).json();expect(empty.workbookMonthlyRentCents).toBe(0);expect(empty.unavailableRentCount).toBe(0);
 });
+
+it('combines only the explicit 349/351 workbook group without changing property links',async()=>{
+ for(const [i,id]of ['real-349-w-46th-st','real-351-w-46th-st','real-349-351-w-46th-st'].entries()){
+  sql.prepare("INSERT INTO buildings(id,name,address_json) VALUES(?,?, '{}')").run(id,id);
+  sql.prepare('INSERT INTO units(id,building_id,unit_identifier,floor_number) VALUES(?,?,?,1)').run('shared-'+i,id,'shared-'+i);
+  sql.prepare("INSERT INTO operations_rent_roll_source(unit_id,source_sha256,source_sheet,source_row,source_period,rent,source_values_json,imported_by) VALUES(?,'sha','QA',?,'QA','100.01','[]','QA')").run('shared-'+i,i+1);
+ }
+ const separate=await(await request('rent-roll?buildingId=real-351-w-46th-st')).json();expect(separate.total).toBe(1);
+ const grouped=await(await request('rent-roll?buildingId=real-351-w-46th-st&group349351=1')).json();expect(grouped.total).toBe(3);expect(grouped.workbookMonthlyRentCents).toBe(30003);expect(new Set(grouped.items.map((r:any)=>r.building_id)).size).toBe(3);
+ expect((await(await request('rent-roll?buildingId=b1&group349351=1')).json()).total).toBe(1);
+});

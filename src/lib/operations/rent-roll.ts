@@ -25,8 +25,11 @@ export async function rentRoll(a:Actor,url:URL){
  ${review==='reconciliation'?"AND ri.outcome='hold'":review==='missing_lease'?"AND NOT EXISTS(SELECT 1 FROM operations_leases c WHERE c.unit_id=u.id AND c.status IN('active','expiring') AND c.lease_start<=date('now') AND c.lease_end>=date('now'))":review==='occupancy'?"AND COALESCE(x.vacancy_confirmed,0)=0 AND NOT EXISTS(SELECT 1 FROM tenant_assignments ta WHERE ta.unit_id=u.id AND ta.active=1)":review==='expiring'?"AND l.status IN('active','expiring') AND l.lease_end BETWEEN date('now') AND date('now','+90 days')":''}
  ORDER BY b.name COLLATE NOCASE,u.unit_identifier COLLATE NOCASE,u.id`;
  const args=[...(building?[building]:[]),...(unit?[unit]:[]),...(tenant?[tenant]:[]),q,q,q,q];
- const rows=await all(a.db,sql+' LIMIT 51 OFFSET ?',...args,p.offset);
- const amounts=await all(a.db,`SELECT rent_roll_rent FROM (${sql})`,...args);
+ const grouped=url.searchParams.get('group349351')==='1'&&['real-349-w-46th-st','real-351-w-46th-st','real-349-351-w-46th-st'].includes(building);
+ const effectiveSql=grouped?sql.replace('AND u.building_id=?',"AND u.building_id IN ('real-349-w-46th-st','real-351-w-46th-st','real-349-351-w-46th-st')"):sql;
+ const effectiveArgs=grouped?args.slice(1):args;
+ const rows=await all(a.db,effectiveSql+' LIMIT 51 OFFSET ?',...effectiveArgs,p.offset);
+ const amounts=await all(a.db,`SELECT rent_roll_rent FROM (${effectiveSql})`,...effectiveArgs);
  let workbookMonthlyRentCents=0,unavailableRentCount=0;
  for(const row of amounts){const raw=String(row.rent_roll_rent??'').trim().replace(/[$,]/g,'');if(!/^-?\d+(?:\.\d{1,2})?$/.test(raw)){unavailableRentCount++;continue;}const negative=raw.startsWith('-'),[whole,fraction='']=raw.replace(/^-/,'').split('.');workbookMonthlyRentCents+=(negative?-1:1)*(Number(whole)*100+Number(fraction.padEnd(2,'0')));}
  return {...pageResult(rows,p.page),total:rows[0]?.filtered_total??0,workbookMonthlyRentCents,unavailableRentCount};
