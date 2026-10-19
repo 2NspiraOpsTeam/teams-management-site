@@ -8,16 +8,15 @@ export async function readContent(db:D1Database,id:string) {
 export class ContentConflict extends Error {}
 export async function mutateContent(db:D1Database,id:string,actor:string,input:{action:unknown;revision:unknown;operationId:unknown;values?:unknown;approved?:unknown}) {
   if(!contentPage(id))throw new ContentValidationError('Unknown website page.');
-  if(!['save','publish','restore'].includes(String(input.action)) || typeof input.operationId!=='string' || !/^[0-9a-f-]{36}$/i.test(input.operationId) || !(input.revision===null || typeof input.revision==='string'))throw new ContentValidationError('Invalid content request. Reload and try again.');
+  if(!['save','restore'].includes(String(input.action)) || typeof input.operationId!=='string' || !/^[0-9a-f-]{36}$/i.test(input.operationId) || !(input.revision===null || typeof input.revision==='string'))throw new ContentValidationError('Invalid content request. Reload and try again.');
   const current=await readContent(db,id);
   if(current.revision===input.operationId)return current; // Safe retry after a response was lost.
   if(current.revision!==input.revision)throw new ContentConflict('Another admin changed this page. Reload the latest version before continuing. Your unsaved text is still shown.');
-  if(input.action!=='save'&&input.approved!==true)throw new ContentValidationError('Review and approve the wording before publishing.');
+  if(input.action==='restore'&&input.approved!==true)throw new ContentValidationError('Review and approve the wording before publishing.');
   const draft=input.action==='save'?validateContent(id,input.values):input.action==='restore'?current.previous:current.draft;
   if(!draft)throw new ContentValidationError('There is no previous published version to restore.');
   validateContent(id,draft);
-  if(input.action==='publish'&&JSON.stringify(current.draft)===JSON.stringify(current.published))throw new ContentValidationError('Save changed wording before publishing.');
-  const publishing=input.action!=='save';
+  const publishing=true;
   const published=publishing?draft:current.published;
   const previous=publishing?current.published:current.previous;
   const revision=input.operationId;

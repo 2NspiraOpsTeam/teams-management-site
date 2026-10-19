@@ -7,42 +7,42 @@
       {
         "key": "home.text-1",
         "label": "Description · Teams Management · New York City",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Teams Management · New York City",
         "maxLength": 3000
       },
       {
         "key": "home.text-2",
         "label": "Heading · New York properties. People-first management.",
-        "section": "New York properties. People-first management.",
+        "section": "Welcome / hero",
         "default": "New York properties. People-first management.",
         "maxLength": 250
       },
       {
         "key": "home.text-3",
         "label": "Description · We care for residential and retail properties across the city, he",
-        "section": "New York properties. People-first management.",
+        "section": "Welcome / hero",
         "default": "We care for residential and retail properties across the city, helping residents, prospective renters, and businesses connect with the right place and the right team.",
         "maxLength": 3000
       },
       {
         "key": "home.text-4",
         "label": "Button / link label · Explore Our Properties",
-        "section": "New York properties. People-first management.",
+        "section": "Welcome / hero",
         "default": "Explore Our Properties ",
         "maxLength": 120
       },
       {
         "key": "home.text-5",
         "label": "Button / link label · Rent With Us",
-        "section": "New York properties. People-first management.",
+        "section": "Welcome / hero",
         "default": "Rent With Us ",
         "maxLength": 120
       },
       {
         "key": "home.text-6",
         "label": "Description · Discover",
-        "section": "New York properties. People-first management.",
+        "section": "Welcome / hero",
         "default": "Discover",
         "maxLength": 3000
       },
@@ -371,7 +371,7 @@
       {
         "key": "about.text-1",
         "label": "Description · About Teams Management",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "About Teams Management",
         "maxLength": 3000
       },
@@ -504,42 +504,42 @@
       {
         "key": "about.text-21",
         "label": "Text · For residents",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "For residents",
         "maxLength": 250
       },
       {
         "key": "about.text-22",
         "label": "Text · Know where to turn when something needs attention.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Know where to turn when something needs attention.",
         "maxLength": 250
       },
       {
         "key": "about.text-23",
         "label": "Text · For people looking for a place",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "For people looking for a place",
         "maxLength": 250
       },
       {
         "key": "about.text-24",
         "label": "Text · Find clear information to help picture what comes next.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Find clear information to help picture what comes next.",
         "maxLength": 250
       },
       {
         "key": "about.text-25",
         "label": "Text · For our neighborhoods",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "For our neighborhoods",
         "maxLength": 250
       },
       {
         "key": "about.text-26",
         "label": "Text · See each address as part of a larger community.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "See each address as part of a larger community.",
         "maxLength": 250
       }
@@ -616,49 +616,49 @@
       {
         "key": "retail.text-1",
         "label": "Description · Property",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Property ",
         "maxLength": 3000
       },
       {
         "key": "retail.text-2",
         "label": "Text · Planned Retail",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Planned Retail",
         "maxLength": 3000
       },
       {
         "key": "retail.text-3",
         "label": "Button / link label · View Retail Property →",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "View Retail Property →",
         "maxLength": 120
       },
       {
         "key": "retail.text-4",
         "label": "Button / link label · View on Map ↗",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "View on Map ↗",
         "maxLength": 120
       },
       {
         "key": "retail.text-5",
         "label": "Button / link label · Explore Street View ↗",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Explore Street View ↗",
         "maxLength": 120
       },
       {
         "key": "retail.text-6",
         "label": "Button / link label · Retail Inquiry ↗",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Retail Inquiry ↗",
         "maxLength": 120
       },
       {
         "key": "retail.text-7",
         "label": "Description · Teams Management portfolio",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Teams Management portfolio",
         "maxLength": 3000
       },
@@ -798,35 +798,35 @@
       {
         "key": "dining.text-1",
         "label": "Description · Featured dining destination",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Featured dining destination",
         "maxLength": 3000
       },
       {
         "key": "dining.text-2",
         "label": "Text · View Menu",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "View Menu",
         "maxLength": 3000
       },
       {
         "key": "dining.text-3",
         "label": "Text · Reservations",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Reservations",
         "maxLength": 3000
       },
       {
         "key": "dining.text-4",
         "label": "Text · Order Online",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Order Online",
         "maxLength": 3000
       },
       {
         "key": "dining.text-5",
         "label": "Button / link label · Get Directions",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Get Directions ",
         "maxLength": 120
       },
@@ -854,84 +854,84 @@
       {
         "key": "rent-with-us.text-1",
         "label": "Button / link label · NYC HPD",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC HPD",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-2",
         "label": "Button / link label · NYC Buildings",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC Buildings",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-3",
         "label": "Button / link label · NYC HPD detector guidance",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC HPD detector guidance",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-4",
         "label": "Button / link label · NYC Health",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC Health",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-5",
         "label": "Button / link label · NYC assistance-animal guidance",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC assistance-animal guidance",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-6",
         "label": "Button / link label · NYC Sanitation",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC Sanitation",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-7",
         "label": "Button / link label · NYS HCR",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYS HCR",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-8",
         "label": "Button / link label · NYC Good Cause guidance",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NYC Good Cause guidance",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-9",
         "label": "Button / link label · NY law",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NY law",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-10",
         "label": "Button / link label · NY Attorney General",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NY Attorney General",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-11",
         "label": "Button / link label · NY security-deposit law",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "NY security-deposit law",
         "maxLength": 120
       },
       {
         "key": "rent-with-us.text-12",
         "label": "Description · Rent with Us",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Rent with Us",
         "maxLength": 3000
       },
@@ -1365,77 +1365,77 @@
       {
         "key": "rent-with-us.text-74",
         "label": "Text · Rental inquiry received",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Rental inquiry received",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-75",
         "label": "Text · Teams Management has your inquiry and will follow up about the ap",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Teams Management has your inquiry and will follow up about the appropriate leasing or broker next step. This is not a rental application or an availability confirmation.",
         "maxLength": 3000
       },
       {
         "key": "rent-with-us.text-76",
         "label": "Text · Reference:",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Reference: ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-77",
         "label": "Text · Send another inquiry",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Send another inquiry",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-78",
         "label": "Text · Name",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Name ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-79",
         "label": "Text · Email",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Email ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-80",
         "label": "Text · Phone",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Phone ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-81",
         "label": "Text · Property or address of interest",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Property or address of interest ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-82",
         "label": "Text · How can we help?",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "How can we help? ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-83",
         "label": "Text · Website",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Website",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-84",
         "label": "Text · No application or sensitive documents are collected here. Teams w",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "No application or sensitive documents are collected here. Teams will confirm availability and the next step, which may be handled by a broker.",
         "maxLength": 3000
       }
@@ -1596,7 +1596,7 @@
       {
         "key": "contact.text-1",
         "label": "Description · Contact Teams Management",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Contact Teams Management",
         "maxLength": 3000
       },
@@ -1638,70 +1638,70 @@
       {
         "key": "contact.text-7",
         "label": "Topic · General",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "General",
         "maxLength": 250
       },
       {
         "key": "contact.text-8",
         "label": "Topic · Questions about Teams Management.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Questions about Teams Management.",
         "maxLength": 250
       },
       {
         "key": "contact.text-9",
         "label": "Topic · Property Inquiry",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Property Inquiry",
         "maxLength": 250
       },
       {
         "key": "contact.text-10",
         "label": "Topic · Ask about a specific published property or address.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Ask about a specific published property or address.",
         "maxLength": 250
       },
       {
         "key": "contact.text-11",
         "label": "Topic · Rent With Us",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Rent With Us",
         "maxLength": 250
       },
       {
         "key": "contact.text-12",
         "label": "Topic · Prospective renter questions.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Prospective renter questions.",
         "maxLength": 250
       },
       {
         "key": "contact.text-13",
         "label": "Topic · Owner/Business",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Owner/Business",
         "maxLength": 250
       },
       {
         "key": "contact.text-14",
         "label": "Topic · Company and business inquiries.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Company and business inquiries.",
         "maxLength": 250
       },
       {
         "key": "contact.text-15",
         "label": "Topic · Tenant Services",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Tenant Services",
         "maxLength": 250
       },
       {
         "key": "contact.text-16",
         "label": "Topic · Current resident questions and guidance.",
-        "section": "Page details",
+        "section": "Supporting text and form labels",
         "default": "Current resident questions and guidance.",
         "maxLength": 250
       }
@@ -1715,7 +1715,7 @@
       {
         "key": "gallery.text-1",
         "label": "Description · The portfolio in view",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "The portfolio in view",
         "maxLength": 3000
       },
@@ -1764,7 +1764,7 @@
       {
         "key": "privacy-policy.page-title",
         "label": "Page heading",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Privacy Policy",
         "maxLength": 200
       },
@@ -1883,7 +1883,7 @@
       {
         "key": "terms-of-use.page-title",
         "label": "Page heading",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Terms of Use",
         "maxLength": 200
       },
@@ -1981,7 +1981,7 @@
       {
         "key": "accessibility.page-title",
         "label": "Page heading",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Accessibility",
         "maxLength": 200
       },
@@ -2037,7 +2037,7 @@
       {
         "key": "fair-housing.page-title",
         "label": "Page heading",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Fair Housing / Equal Housing Opportunity",
         "maxLength": 200
       },
@@ -2086,7 +2086,7 @@
       {
         "key": "copyright.page-title",
         "label": "Page heading",
-        "section": "Page introduction",
+        "section": "Page introduction / hero",
         "default": "Copyright",
         "maxLength": 200
       },
@@ -2156,119 +2156,119 @@
       {
         "key": "footer.text-1",
         "label": "Description · Teams Management property portfolio in New York City.",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Teams Management property portfolio in New York City.",
         "maxLength": 3000
       },
       {
         "key": "footer.text-2",
         "label": "Button / link label · Connect with our team ↗",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Connect with our team ↗",
         "maxLength": 120
       },
       {
         "key": "footer.text-3",
         "label": "Description · © 2026 Teams Management. All rights reserved.",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "© 2026 Teams Management. All rights reserved.",
         "maxLength": 3000
       },
       {
         "key": "footer.text-4",
         "label": "Heading · Explore",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Explore",
         "maxLength": 250
       },
       {
         "key": "footer.text-5",
         "label": "Button / link label · Home",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Home",
         "maxLength": 120
       },
       {
         "key": "footer.text-6",
         "label": "Button / link label · Residences",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Residences",
         "maxLength": 120
       },
       {
         "key": "footer.text-7",
         "label": "Button / link label · Retail",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Retail",
         "maxLength": 120
       },
       {
         "key": "footer.text-8",
         "label": "Button / link label · Dining",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Dining",
         "maxLength": 120
       },
       {
         "key": "footer.text-9",
         "label": "Button / link label · Rent with Us",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Rent with Us",
         "maxLength": 120
       },
       {
         "key": "footer.text-10",
         "label": "Button / link label · About",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "About",
         "maxLength": 120
       },
       {
         "key": "footer.text-11",
         "label": "Button / link label · Tenant Services",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Tenant Services",
         "maxLength": 120
       },
       {
         "key": "footer.text-12",
         "label": "Heading · Get in touch",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Get in touch",
         "maxLength": 250
       },
       {
         "key": "footer.text-13",
         "label": "Button / link label · Privacy Policy",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Privacy Policy",
         "maxLength": 120
       },
       {
         "key": "footer.text-14",
         "label": "Button / link label · Terms of Use",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Terms of Use",
         "maxLength": 120
       },
       {
         "key": "footer.text-15",
         "label": "Button / link label · Accessibility",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Accessibility",
         "maxLength": 120
       },
       {
         "key": "footer.text-16",
         "label": "Button / link label · Fair Housing & Equal Housing Opportunity",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Fair Housing & Equal Housing Opportunity",
         "maxLength": 120
       },
       {
         "key": "footer.text-17",
         "label": "Button / link label · Copyright",
-        "section": "Page introduction",
+        "section": "Website footer",
         "default": "Copyright",
         "maxLength": 120
       }
@@ -2282,63 +2282,63 @@
       {
         "key": "header.text-1",
         "label": "Text · Residences",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Residences",
         "maxLength": 250
       },
       {
         "key": "header.text-2",
         "label": "Text · Retail",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Retail",
         "maxLength": 250
       },
       {
         "key": "header.text-3",
         "label": "Text · Dining",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Dining",
         "maxLength": 250
       },
       {
         "key": "header.text-4",
         "label": "Text · Rent with Us",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Rent with Us",
         "maxLength": 250
       },
       {
         "key": "header.text-5",
         "label": "Text · About",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "About",
         "maxLength": 250
       },
       {
         "key": "header.text-6",
         "label": "Text · Contact",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Contact",
         "maxLength": 250
       },
       {
         "key": "header.text-7",
         "label": "Text · Teams Management",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Teams Management",
         "maxLength": 250
       },
       {
         "key": "header.text-8",
         "label": "Text · Tenant Services",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Tenant Services",
         "maxLength": 250
       },
       {
         "key": "header.text-9",
         "label": "Text · Tenant Services",
-        "section": "Page details",
+        "section": "Website navigation",
         "default": "Tenant Services",
         "maxLength": 250
       }
