@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { describe,it,expect } from 'vitest';
 import type { D1Database } from '@cloudflare/workers-types';
 import { presentationCandidates,presentationState,savePresentation,validPresentation,type PresentationInput } from '../src/lib/media-presentation';
-import { propertyMedia } from '../src/lib/media-management';
+import { propertyMedia,propertyUnitMedia } from '../src/lib/media-management';
 import { eligibleShowcases } from '../src/lib/page-showcase';
 import { approvedRetailGallery } from '../src/lib/retail-profile';
 function fixture(){
@@ -31,4 +31,15 @@ describe('independent property media presentations',()=>{
  it('rejects stale and double-submit writes without partially erasing the gallery',async()=>{const {db,input}=fixture();expect(await savePresentation(db,'b',input('retail','b',['b','a']))).toBe(true);expect(await savePresentation(db,'b',input('retail','a',[]))).toBe(false);const s=(await presentationState(db,'b')).contexts.retail;expect(s.cover_asset_id).toBe('b');expect(s.gallery.map(x=>x.asset_id)).toEqual(['b','a']);expect(s.revision).toBe(1);});
  it('rolls back every context write if a gallery insert fails',async()=>{const {db,input}=fixture();await expect(savePresentation(db,'b',input('retail','a',['missing']))).rejects.toThrow();const s=(await presentationState(db,'b')).contexts.retail;expect(s.revision).toBe(0);expect(s.gallery.map(x=>x.asset_id)).toEqual(['b']);});
  it('validates malformed selections, duplicates and context values',()=>{const {input}=fixture();expect(validPresentation(input('retail','a',['a']))).toBe(true);for(const value of [{...input('retail','a',['a','a'])},{...input('retail','a',[]),context:'unit'},{...input('residential','a',[]),fallback_to_property_cover:true},{...input('retail','a',[]),revision:0.5},{...input('retail','a',[]),gallery:[{asset_id:'a',kind:'unknown'}]}])expect(validPresentation(value)).toBe(false);});
+ it('does not emit archived-property image URLs publicly while retaining Admin library access',async()=>{
+  const {db,sql}=fixture();
+  expect((await propertyMedia(db,'qa')).map(x=>x.id)).toEqual(['a','b']);
+  expect(await propertyUnitMedia(db,'qa')).toHaveLength(1);
+  sql.exec("UPDATE buildings SET publication_state='archived' WHERE id='b'");
+  expect(await propertyMedia(db,'qa')).toEqual([]);
+  expect(await propertyUnitMedia(db,'qa')).toEqual([]);
+  expect((await propertyMedia(db,'qa',true)).map(x=>x.id)).toEqual(expect.arrayContaining(['a','b','private','unpublished','unit']));
+  expect(sql.prepare('SELECT COUNT(*) n FROM media_assignments').get()?.n).toBe(6);
+ });
+
 });
