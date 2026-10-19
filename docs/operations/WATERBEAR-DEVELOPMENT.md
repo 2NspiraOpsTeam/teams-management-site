@@ -1,5 +1,7 @@
 # Waterbear development handoff
 
+> **19 October update:** 2Nspira is primary again. Waterbear is **prepared, awaiting hosted verification**, not ready for immediate use while Workers Error 1027 remains active. The existing client-bearing database is preserved, not the new development target. See [current standby status and recovery procedure](WATERBEAR-STANDBY-2026-10-19.md) before using the historical instructions below.
+
 Updated 18 October 2026. Waterbear development is ready for continued feature work after the corrected migration. The original 2Nspira environment remains unchanged. This status supersedes the initial synthetic-only setup.
 
 ## Environment and release

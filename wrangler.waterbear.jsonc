@@ -22,18 +22,18 @@
     "NEXT_PUBLIC_TEAMS_PORTAL_ORIGIN": "https://teams-management-development.pages.dev",
     "PROPERTY_OPERATIONS_ENABLED": "1",
     "TENANT_LEASES_ENABLED": "1",
-    "TENANT_MANUAL_IMPORT_DATABASE_ID": "29dfe758-69b1-4465-b74e-101d48c53f7e",
+    "TENANT_MANUAL_IMPORT_DATABASE_ID": "8d1aa9bb-8370-4569-97b5-c1a61eb9406e",
     "ADMIN_AUTH_FROM": "do-not-reply@waterbearmecca.com",
     "TENANT_AUTH_FROM": "do-not-reply@waterbearmecca.com",
     "INQUIRY_FROM": "do-not-reply@waterbearmecca.com",
-    "TEAMS_RELEASE_SHA": "property-media-20261018",
+    "TEAMS_RELEASE_SHA": "313f551-waterbear-standby-20261019",
     "TEAMS_MIGRATION_WRITE_FREEZE": "0"
   },
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "teams-development-db",
-      "database_id": "29dfe758-69b1-4465-b74e-101d48c53f7e"
+      "database_name": "teams-standby-synthetic-20261019",
+      "database_id": "8d1aa9bb-8370-4569-97b5-c1a61eb9406e"
     }
   ]
 }
