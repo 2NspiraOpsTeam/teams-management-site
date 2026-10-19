@@ -23,3 +23,17 @@ The Waterbear account has no configured LEASE_DOCUMENTS binding. A read-only R2 
 - Prechange Waterbear checkpoint: all 63 tables and schema restore exactly, integrity OK, no FK violations, export bookmark unchanged. No stable tenant record mutation or schema migration is required.
 
 Hosted candidate and stable release results are recorded below when verified. Development only; no 2Nspira release, DNS change or authentication-provider change.
+
+## Hosted candidate and stable Waterbear release
+
+- Application commit `66ccfee`, on PR [12](https://github.com/2NspiraOpsTeam/teams-management-site/pull/12).
+- Isolated candidate: https://baf33260.teams-management-development.pages.dev ; review Worker version `c58fcfcd-d1a6-462b-a44d-c8ecf0b129c3`, with its separate synthetic D1 database.
+- Hosted QA passes all 18 page/width checks and 11 workflow checks, with no browser page errors. An additional independent browser check confirms the no-published-lease empty state and cross-apartment document denial. Desktop and mobile home screenshots were inspected. These are synthetic acceptance results, not a fresh real-tenant login claim.
+- Stable development Worker version `187999d0-528e-4d29-8b57-384cd01dbc52`, 100% traffic, release `resident-home-20261018`. Existing Pages gateway remains unchanged. Login: https://teams-management-development.pages.dev/tenant/login . TENANT_LEASES_ENABLED is now 1 so approved summaries/empty states are discoverable.
+- Stable checks: 10 public/guard route responses and release headers; login rendered at 1440/768/390, no overflow or page errors, logo loaded. Homepage's existing first-visit cookie redirect verified separately from the subsequent 200 with its visit cookie. Google secret names, original D1 binding, production runtime service and restored future-preview service binding are preserved.
+- Temporary hosted synthetic sessions revoked. No test people, assignments, contact edits or documents were inserted into the migrated stable database. No mail sent in this feature run.
+- Postrelease checkpoint again restores all 63 tables/schema exactly, integrity OK and zero FK violations. Nonempty `snapshot_logical_fingerprint` matches the prechange checkpoint exactly, proving no stable database content changed during this release.
+
+## Remaining live-data readiness
+
+The existing lease records have **no leaseholder associations**, no tenant publication approvals, and no uploaded lease PDFs. Therefore the real portal correctly shows an unpublished/being-prepared lease state; it does not display another household member's terms or invent a primary leaseholder. Verified lease-to-tenant linking and explicit publication are needed before live dates/terms can be shown. Private storage activation and actual signed PDFs are additionally required for full document viewing. These are separate from the completed, tested UI and permissions implementation. Do not bulk-associate or publish agreements by name matching alone.
