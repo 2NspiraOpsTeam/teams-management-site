@@ -2,14 +2,15 @@
 import {useEffect,useRef} from 'react';
 const eventName='teams-operations-saved';
 const channelName='teams-operations-updates';
-let subscribers=0,interval:ReturnType<typeof setInterval>|undefined,checking=false,version:string|undefined;
-// One cheap indexed change check per browser module, not one full-data poll per view.
+let subscribers=0,checking=false,version:string|undefined,lastCheck=0;
+// Initial load, returning to the tab, and explicit save events only; no idle polling.
 async function checkForChanges(){
- if(checking||document.visibilityState!=='visible')return;
- checking=true;
- try{const response=await fetch('/api/admin/operations/sync',{cache:'no-store'});if(!response.ok)return;const data=await response.json(),next=String(data.version);if(version!==undefined&&next!==version)window.dispatchEvent(new Event(eventName));version=next;}catch{/* Keep saved data and drafts available; focus or a later check can retry. */}finally{checking=false;}
+ if(checking||document.visibilityState!=='visible'||(lastCheck&&Date.now()-lastCheck<15000))return;
+ checking=true;lastCheck=Date.now();
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),10000);
+ try{const response=await fetch('/api/admin/operations/sync',{cache:'no-store',signal:controller.signal});if(!response.ok)return;const data=await response.json(),next=String(data.version);if(version!==undefined&&next!==version)window.dispatchEvent(new Event(eventName));version=next;}catch{/* Keep saved data and drafts available; focus or a later check can retry. */}finally{clearTimeout(timeout);checking=false;}
 }
-function subscribe(){if(subscribers++===0){version=undefined;void checkForChanges();interval=setInterval(()=>void checkForChanges(),30000);}return()=>{if(--subscribers===0){clearInterval(interval);interval=undefined;version=undefined;}};}
+function subscribe(){if(subscribers++===0){version=undefined;lastCheck=0;void checkForChanges();}return()=>{if(--subscribers===0){version=undefined;lastCheck=0;}};}
 export function announceOperationsChange(){
  window.dispatchEvent(new Event(eventName));
  try{const channel=new BroadcastChannel(channelName);channel.postMessage('saved');channel.close();}catch{}

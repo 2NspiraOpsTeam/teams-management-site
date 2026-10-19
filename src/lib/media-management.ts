@@ -16,8 +16,8 @@ const deliverableStaticMedia = new Set([
   ...numberedPreviewMedia('42-70-156th-st-flushing',14),
 ]);
 export const isDeliverablePublicMedia = (item:Pick<MediaRow,'storage_key'>) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
-export const mediaUrl = (id:string) => `/api/media/${encodeURIComponent(id)}`;
-export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/') ? item.storage_key : mediaUrl(item.id);
+export const mediaUrl = (id:string,checksum?:string|null) => `/api/media/${encodeURIComponent(id)}${checksum&&/^[a-f0-9]{64}$/.test(checksum)?'?v='+checksum:''}`;
+export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/') ? item.storage_key : mediaUrl(item.id,item.checksum);
 export const mediaPreviewUrl = (id:string) => `/api/admin/media/${encodeURIComponent(id)}/file`;
 export async function propertyMedia(db:D1Database,slug:string,includeDraft=false) {
  const coverExpression=includeDraft?'m.is_cover':"CASE WHEN s.building_id IS NULL THEN m.is_cover WHEN s.cover_asset_id=a.id THEN 1 ELSE 0 END";

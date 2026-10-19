@@ -499,6 +499,12 @@ describe("local SQLite-backed auth, isolation and persistence (mail stubbed)", (
     expect(response.headers.get("location")).toBe(
       "/preview-properties/approved.jpg",
     );
+    const version='a'.repeat(64);
+    sql.prepare("UPDATE media_assets SET checksum=? WHERE id='static'").run(version);
+    expect((await mediaResponse(db,"static",false,false,version)).status).toBe(302);
+    expect((await mediaResponse(db,"static",false,false,'b'.repeat(64))).status).toBe(404);
+    expect(response.headers.get('cache-control')).toBe('public, max-age=60, must-revalidate');
+    expect((await mediaResponse(db,"static",true)).headers.get('cache-control')).not.toContain('public');
     sql.exec("UPDATE media_publications SET published=0");
     expect((await mediaResponse(db, "static", false)).status).toBe(404);
   });

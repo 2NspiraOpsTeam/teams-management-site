@@ -41,9 +41,12 @@ export class TeamsPreviewRuntime extends WorkerEntrypoint {
     finally{
       // Path template only; IDs, search terms, cookies and request bodies are omitted.
       const parts=new URL(request.url).pathname.split('/').filter(Boolean);
-      const safe=new Set(['api','admin','operations','overview','properties','units','tenants','leases','rent-roll','phone-list','maintenance','tenant-maintenance','tenant','auth','session','sync','renewals','buildings','map','access','tenant-services']);
+      const safe=new Set(['api','admin','operations','overview','properties','units','tenants','leases','rent-roll','phone-list','maintenance','tenant-maintenance','tenant','auth','session','sync','renewals','buildings','map','access','tenant-services','media','content','assignments','presentation','videos','home','assets']);
       const route=parts.slice(0,4).map(p=>safe.has(p)?p:':resource').join('/');
-      console.log(JSON.stringify({event:'teams_d1_usage',release:this.env.TEAMS_RELEASE_SHA||'local',route,method:request.method,...usage}));
+      const referrer=request.headers.get('referer');let sourceView='unknown';
+      if(parts[0]==='api'&&parts[1]==='media'&&referrer){try{const u=new URL(referrer);if(u.origin===new URL(request.url).origin)sourceView=u.pathname==='/'?'home':u.pathname.startsWith('/properties/')?'property':u.pathname.startsWith('/residential')?'residential':u.pathname.startsWith('/retail')?'retail':u.pathname.startsWith('/dining')?'dining':'other';}catch{}}
+      const usageWarning=usage.rowsRead>20000||usage.queries>60||Boolean(usage.failedQueries||usage.missingMetadataQueries);
+      console.log(JSON.stringify({event:'teams_d1_usage',sourceView,usageWarning,release:this.env.TEAMS_RELEASE_SHA||'local',route,method:request.method,...usage}));
     }
   }
 }

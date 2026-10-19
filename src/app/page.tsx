@@ -28,7 +28,7 @@ export default async function Home() {
   const eligible = (await Promise.all(buildings.map(async building => {
     const cover = service.eligible.find(item => item.property_slug === building.slug);
     if (!cover) return [];
-    return [{ building, image: { id: cover.media_asset_id, storage_key: cover.storage_key, alt_text: cover.alt_text } as MediaRow }];
+    return [{ building, image: { id: cover.media_asset_id, storage_key: cover.storage_key, checksum:cover.checksum, alt_text: cover.alt_text } as MediaRow }];
   }))).flat();
   const unique = (items: Feature[]) => items.filter((item, index) => items.findIndex(other => other.building.slug === item.building.slug) === index);
   const candidates = unique(eligible);

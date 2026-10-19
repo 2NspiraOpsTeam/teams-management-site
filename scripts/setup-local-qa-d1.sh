@@ -30,8 +30,10 @@ for schema_file in \
   src/lib/migrations/tenant-directory-identity-nullable.sql \
   src/lib/migrations/tenant-directory-import.sql \
   src/lib/migrations/tenant-directory-names.sql \
-  src/lib/migrations/operations-read-efficiency.sql; do
-  npx wrangler d1 execute teams-database-dev --local --persist-to "$qa_state_dir" --file "$schema_file" >/dev/null
+  src/lib/migrations/operations-read-efficiency.sql \
+  src/lib/migrations/property-videos.sql \
+  src/lib/migrations/tenant-manual-uploads.sql; do
+  npx wrangler d1 execute teams-qa-local --config wrangler.qa-local.jsonc --local --persist-to "$qa_state_dir" --file "$schema_file" >/dev/null
 done
 printf 'Isolated local D1 ready: %s\n' "$qa_state_dir"
 printf 'Use --local --persist-to %s for repeatable QA; never --remote.\n' "$qa_state_dir"

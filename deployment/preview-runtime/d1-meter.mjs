@@ -5,13 +5,14 @@ export function meterDatabase(database, report) {
  const fingerprint = sql => {let hash=2166136261;for(const c of sql)hash=Math.imul(hash^c.charCodeAt(0),16777619);return (hash>>>0).toString(16);};
  const record = (result,query) => {
   const results = Array.isArray(result) ? result : [result];
-  for (const item of results) if (item?.meta) {
+  for (const item of results) {
    report.queries++;
-   if(typeof item.meta.rows_read==='number'&&typeof item.meta.rows_written==='number')report.measuredQueries=(report.measuredQueries||0)+1;
-   report.rowsRead += Number(item.meta.rows_read || 0);
-   report.rowsWritten += Number(item.meta.rows_written || 0);
-   report.durationMs += Number(item.meta.duration || 0);
-   if(query){report.costs??={};const cost=report.costs[query]??={queries:0,rowsRead:0,rowsWritten:0};cost.queries++;cost.rowsRead+=Number(item.meta.rows_read||0);cost.rowsWritten+=Number(item.meta.rows_written||0);}
+   if(typeof item?.meta?.rows_read==='number'&&typeof item?.meta?.rows_written==='number')report.measuredQueries=(report.measuredQueries||0)+1;
+   else report.missingMetadataQueries=(report.missingMetadataQueries||0)+1;
+   report.rowsRead += Number(item?.meta?.rows_read || 0);
+   report.rowsWritten += Number(item?.meta?.rows_written || 0);
+   report.durationMs += Number(item?.meta?.duration || 0);
+   if(query){report.costs??={};const cost=report.costs[query]??={queries:0,rowsRead:0,rowsWritten:0};cost.queries++;cost.rowsRead+=Number(item?.meta?.rows_read||0);cost.rowsWritten+=Number(item?.meta?.rows_written||0);}
   }
   return result;
  };

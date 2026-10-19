@@ -28,11 +28,9 @@ export function WorkOrderDetail({ id }: { id: string }) {
   }
   useEffect(() => {
     void load();
-    const timer = setInterval(() => void load(), 30000);
-    const focus = () => void load();
+    const focus = () => {if(document.visibilityState==='visible')void load();};
     window.addEventListener("focus", focus);
     return () => {
-      clearInterval(timer);
       window.removeEventListener("focus", focus);
     };
   }, [id]);

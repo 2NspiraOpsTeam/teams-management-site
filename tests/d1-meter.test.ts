@@ -16,3 +16,10 @@ it('retains database errors and marks failed queries instead of reporting measur
  const error=new Error('synthetic failure'),report={queries:0,rowsRead:0,rowsWritten:0,durationMs:0};const db=meterDatabase({prepare:()=>({all:async()=>{throw error;}})},report);
  await expect(db.prepare('SELECT synthetic').first()).rejects.toBe(error);expect(report).toMatchObject({failedQueries:1,queries:0});
 });
+
+it('marks successful queries with missing metadata as unmeasured rather than free',async()=>{
+ const report={queries:0,rowsRead:0,rowsWritten:0,durationMs:0};
+ const db=meterDatabase({prepare:()=>({all:async()=>({results:[{ok:1}]})})},report);
+ expect(await db.prepare('SELECT 1').first('ok')).toBe(1);
+ expect(report).toMatchObject({queries:1,missingMetadataQueries:1});
+});
