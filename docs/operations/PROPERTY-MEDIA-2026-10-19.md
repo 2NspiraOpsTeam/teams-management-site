@@ -1,0 +1,48 @@
+# Property media management — 19 October 2026
+
+## Release and source
+
+- Website: https://teams-management-preview.pages.dev/admin/media (Admin → Media & content → Website Photos).
+- Source base: `964dc9a` on `feat/website-content-20261019`, the actual serving direct-save baseline; this change does not reconcile or merge main.
+- Application: `d553897` on `fix/property-media-management-20261019`.
+- Private runtime: `teams-media-20261019`; active version `28ac64ec-d081-4ea5-976c-d83e0de100b9` at 100%.
+- Served release: `d553897-property-media-20261019`.
+- Candidate gateway: https://78e8c9fe.teams-management-preview.pages.dev .
+- Stable gateway: `e97dcb11-4007-4500-bd5d-41cb9b265f24`, https://e97dcb11.teams-management-preview.pages.dev .
+- Pages remains direct-upload, primary branch `preview`, Pages Production environment. This is the development preview, not client production. Existing encrypted configuration and D1 bindings were preserved. Waterbear and client-production domains were not changed.
+
+## Diagnosis and repair
+
+The owner-uploaded Gold Street twilight skyline image was public-eligible and deliverable, but associated with 609 Golden Gate Point, Sarasota, rather than 61 Gold Street, New York. It was selected as Sarasota's Retail cover; Sarasota has no public Retail page. No Gold Street association or gallery membership existed for that source.
+
+Using the existing authorized Admin API, the same source was associated with 61 Gold Street, approved, and appended to its Residential and Retail galleries. Neither current Gold cover was replaced, existing gallery order was retained, no image bytes were copied, and the original Sarasota association/selection was left intact under the owner's preservation instruction.
+
+## Admin changes
+
+- A property/address overview shows separate Residential/Retail cover thumbnails and gallery counts, with direct section links. A property without a Retail website page is identified explicitly.
+- Property pages display the full street/city/state and section navigation, plus website links.
+- Each context retains independent Save/Cancel, revision conflicts, disabled in-flight actions and duplicate-click guards. Galleries support adding existing photos, replacement in place, removal without deleting the source, and reorder.
+- Optional upload gallery destinations add one approved building-wide source to either/both galleries, preserving covers and previous gallery order. Repeated duplicate uploads do not duplicate membership; stale editors conflict instead of erasing the appended image. Apartment destinations cannot be added to building-wide galleries.
+- Source inventory now paginates rather than silently stopping at 300 records, and identifies cover/gallery usage. Source approval is no longer described as proof of public gallery placement.
+- Legacy source-order movement is hidden for building-wide photos, whose gallery order is controlled above. Apartment neighbor swaps are scoped to the same unit and saved in a D1 batch.
+
+## Existing website-file reconciliation
+
+The exact additive `existing-website-photos.sql` file was applied, without replaying unrelated migrations. It registers 19 existing Sarasota files and 10 existing Apartment 1B/PHA files at 71 East 110th Street. Files remain at their existing URLs, with the approved captions; no re-upload or byte duplication occurred. Apartment-only images remain unit-scoped and appear in clearly labeled apartment galleries, not cover/showcase candidates.
+
+One-shot import markers prevent reruns from resurrecting photos an admin later removes. Sarasota's public directory/detail/featured cover and gallery now resolve through the same Admin selections, not an overriding hard-coded image list. The unrelated decorative page banners and neighborhood-attribution illustrations remain part of the approved design; this change concerns property covers, galleries, apartment photos and their existing media controls.
+
+## Verification
+
+- 32 test files / 255 tests passed, TypeScript passed, OpenNext preview Worker build passed.
+- Local D1/browser: save/cancel/refresh; independently changed covers; reorder/replace/remove; both-direction context isolation; source reuse; duplicate Save click; authenticated upload to both galleries with automatic editor refresh; public image decoding; invalid foreign-property selection; clear/empty public state; backend failure retaining edits; failed load/Retry; stale-editor conflict; origin and anonymous denial.
+- Candidate: intended release and authenticated editor/overview, prefilled selections, desktop/tablet/mobile overflow/screenshots, no page errors, Website Content direct-save regression.
+- Stable: Gold image decoded on Residential and Retail public routes and in both Admin galleries after refresh; all 19 Sarasota photos editable and publicly retained; both apartment sets visible and unit-scoped; inventory Load more returned additional unique assets; desktop/tablet/mobile editor and overview; no page errors; Website Content preserved.
+- Hosted repair exercised the real authenticated assignment/approval and section-save APIs. Broader destructive/reorder/clear/error mutation QA used isolated local fixtures, not other real properties. Fresh emailed OTP was not repeated; the existing authorized Admin session was reused.
+- Exact before/after comparison: all 312 original asset rows, 296 original assignment rows, 186 original publications, 175 original gallery rows/order and existing cover selections were preserved. Final totals: 341 assets, 326 assignments, 216 publications, 42 settings, 196 gallery entries. No original image object was deleted or modified.
+
+## Recovery
+
+The prior gateway/runtime pair remains available: Pages `59ba3e0c-980b-4ce4-9ca1-a36633b25277`, runtime `teams-content-simple-20261019`, version `1a0ae67c-b80c-44a8-9055-572e89ddd535`. Private metadata snapshots, source evidence, release configuration and rendered evidence are retained outside public Git.
+
+Do not restore an entire database to undo this additive change or erase later Admin edits. The old application still supplies static Sarasota/apartment arrays: before rolling its runtime back, selectively unpublish only unchanged newly imported file associations (identified by `website-import` / `existing-approved-website-photo`) to avoid duplicate old-array plus database rendering; retain their files and metadata. Preserve the separately authorized Gold correction and any later owner edits. Restore the matching known-good gateway/runtime pair, then verify public imagery and authenticated media controls. Candidate/stable gateway URLs reference mutable service runtimes; record the runtime version as well as the gateway ID.
