@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 type Feature = { building: BuildingPublic; image: MediaRow };
-const photo = (image: MediaRow, label: string, eager = false) => <img src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className="home-photo h-full w-full object-cover" />;
+const photo = (image: MediaRow, label: string, eager = false) => <img src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className={`home-photo h-full w-full ${eager ? "object-cover" : "object-scale-down bg-teams-charcoal"}`} />;
 const location = (building: BuildingPublic) => addressLabel(building.address);
 
 export default async function Home() {

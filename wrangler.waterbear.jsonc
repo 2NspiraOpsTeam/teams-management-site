@@ -26,7 +26,7 @@
     "ADMIN_AUTH_FROM": "do-not-reply@waterbearmecca.com",
     "TENANT_AUTH_FROM": "do-not-reply@waterbearmecca.com",
     "INQUIRY_FROM": "do-not-reply@waterbearmecca.com",
-    "TEAMS_RELEASE_SHA": "property-media-20261018",
+    "TEAMS_RELEASE_SHA": "gold-skyline-20261018",
     "TEAMS_MIGRATION_WRITE_FREEZE": "0"
   },
   "d1_databases": [

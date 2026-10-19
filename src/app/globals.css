@@ -68,7 +68,7 @@ input::placeholder, textarea::placeholder { color: var(--teams-secondary); opaci
 .property-card { transition: transform 240ms ease, box-shadow 240ms ease; }
 .property-image { transition: transform 400ms ease; }
 .property-card:hover { transform: translateY(-3px); }
-.property-card:hover .property-image { transform: scale(1.015); }
+.property-card:hover .property-image { transform: none; }
 main a, main button { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease; }
 main a:active, main button:active { transform: translateY(1px); }
 @media (prefers-reduced-motion: reduce) {
@@ -113,7 +113,7 @@ main a:active, main button:active { transform: translateY(1px); }
 .home-button:hover { transform: translateY(-2px); }
 .home-text-link { display: inline-flex; min-height: 44px; align-items: center; gap: 1.5rem; border-bottom: 1px solid currentColor; font-size: .875rem; font-weight: 600; }
 .home-photo { transition: transform .7s cubic-bezier(.2,.7,.2,1); }
-.home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: scale(1.035); }
+.home-image-link:hover .home-photo, .home-path:hover .home-photo { transform: none; }
 .home-rail { scrollbar-width: thin; }
 .home-resident { background-image: radial-gradient(circle at 88% 10%, rgba(212,166,42,.12), transparent 38%); }
 .home-resident-link span { transition: transform 240ms ease; }
@@ -156,7 +156,7 @@ main details > div { animation: detail-open 240ms ease both; }
 .retail-card { transition: border-color 280ms ease, box-shadow 280ms ease, transform 280ms ease; }
 .retail-card:hover { border-color: #d6c9ad; box-shadow: 0 20px 45px -32px rgba(30, 35, 38, .45); transform: translateY(-3px); }
 .retail-card-image { transition: transform 650ms cubic-bezier(.2,.7,.2,1), filter 650ms ease; }
-.retail-card:hover .retail-card-image { transform: scale(1.025); filter: saturate(1.05); }
+.retail-card:hover .retail-card-image { transform: none; }
 .retail-primary-link { transition: background-color 200ms ease, transform 200ms ease; }
 .retail-primary-link:hover { transform: translateY(-2px); }
 .retail-toc-link { transition: background-color 180ms ease, box-shadow 180ms ease; }
