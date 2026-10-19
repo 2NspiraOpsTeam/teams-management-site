@@ -10,6 +10,8 @@ config_path=pathlib.Path(a.worker_config).resolve();cfg=json.loads(config_path.r
 out=pathlib.Path(a.output).resolve();out.mkdir(parents=True,exist_ok=False);out.chmod(0o700);repo=pathlib.Path(a.repository).resolve();tool=pathlib.Path(a.wrangler).resolve();env=dict(os.environ,CLOUDFLARE_ACCOUNT_ID=ACCOUNT,XDG_CONFIG_HOME=str(pathlib.Path(a.config_home).resolve()));env['PATH']=str(pathlib.Path(a.node_directory).resolve())+os.pathsep+env['PATH']
 meta=out/'metadata';meta.mkdir();private=out/'private-logs';private.mkdir(mode=0o700)
 def run(name,args,json_result=False):
+ # D1 lookup must use the explicitly verified config, never a stale default config.
+ if args and args[0]=='d1' and '--config' not in args:args=args+['--config',str(config_path)]
  result=subprocess.run([str(tool)]+args,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
  (private/(name+'.stdout')).write_text(result.stdout);(private/(name+'.stderr')).write_text(result.stderr)
  if result.returncode:raise RuntimeError('Capture failed: '+name+'; inspect private logs. No remote data was changed.')

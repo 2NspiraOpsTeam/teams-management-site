@@ -1,0 +1,6 @@
+import {requireAdmin} from '@/lib/admin-auth';
+import {householdSubject,type HouseholdRequest} from '@/lib/household/shared';
+import {HouseholdRequests} from '@/components/HouseholdRequests';
+import Link from 'next/link';
+export const runtime='nodejs';
+export default async function AccessRequests(){const admin=await requireAdmin();if(!admin)return null;const rows=await admin.db.prepare(`SELECT r.id,r.message,r.status,r.created_at,r.assignment_id,t.display_name AS requester,b.name AS property_name,u.unit_identifier FROM tenant_contact_requests r JOIN tenant_accounts t ON t.id=r.tenant_id JOIN tenant_assignments a ON a.id=r.assignment_id AND a.tenant_id=r.tenant_id JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id JOIN buildings b ON b.id=a.building_id WHERE r.subject=? ORDER BY CASE r.status WHEN 'submitted' THEN 0 ELSE 1 END,r.created_at DESC LIMIT 100`).bind(householdSubject).all<HouseholdRequest>();return <div className="resident-admin"><div className="resident-page-heading"><p className="resident-eyebrow">Tenant portal</p><h1>Household access</h1><p>Verify the apartment and existing approved occupant before enabling a separate portal sign-in.</p><Link href="/admin/tenants" className="resident-text-button">Open tenant directory →</Link></div><HouseholdRequests initial={rows.results} admin/></div>;}

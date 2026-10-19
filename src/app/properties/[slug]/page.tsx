@@ -1,3 +1,5 @@
+import { PropertyVideos } from '@/components/property-videos';
+import { propertyVideos, publicVideoProjection } from '@/lib/property-videos';
 import { OfficialPlaceName } from '@/components/official-place-name';
 import { addressLabel, postalAddressMetadata } from '@/lib/map-location';
 import Link from 'next/link';
@@ -44,7 +46,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   if (!building) notFound();
   const retail = await getPublicRetail(slug);
   const dining = await listPublicDining(slug);
-  const dbLocation = await adminDb().prepare('SELECT latitude, longitude, geocode_status, map_verified FROM buildings WHERE slug = ?').bind(slug).first<{ latitude: number | null; longitude: number | null; geocode_status: string | null; map_verified: number | null }>();
+  const dbLocation = await adminDb().prepare('SELECT id, latitude, longitude, geocode_status, map_verified FROM buildings WHERE slug = ?').bind(slug).first<{ id:string; latitude: number | null; longitude: number | null; geocode_status: string | null; map_verified: number | null }>();
   const location = previewPortfolioEnabled && slug === '609-golden-gate-pt' ? sarasotaBuildingMapLocation : dbLocation;
   const hasMap = location?.map_verified === 1 && location.geocode_status === 'verified' && typeof location.latitude === 'number' && Number.isFinite(location.latitude) && Math.abs(location.latitude) <= 90 && typeof location.longitude === 'number' && Number.isFinite(location.longitude) && Math.abs(location.longitude) <= 180;
   const streetViewUrl = streetViewExploreUrl(building.address, hasMap ? { latitude: location!.latitude, longitude: location!.longitude, map_verified: true, geocode_status: 'verified' } : building);
@@ -52,6 +54,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   const livingFacts = building.address.state === 'NY' ? nycLivingFacts(slug) : undefined;
   const zip = building.address.zip;
   const media = await propertyMedia(adminDb(),slug);
+  const videos = dbLocation ? publicVideoProjection(await propertyVideos(adminDb(),dbLocation.id)) : [];
   const unitMedia = await propertyUnitMedia(adminDb(),slug);
   const unitGroups = unitMedia.reduce<Record<string,typeof unitMedia>>((groups,item)=>{(groups[item.unit_identifier]??=[]).push(item);return groups;},{});
   const coverItem = media.find(item=>item.is_cover);
@@ -71,6 +74,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           <PropertyGallery images={heroImages} name={building.name} address={addressLabel(building.address)} hero />
         </section>
         <nav aria-label="Property actions" className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
+          {videos.length>0&&<a href="#property-videos" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Watch video tours ↓</a>}
           <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
           <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Map &amp; Directions ↗</a>
           <a href={streetViewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Explore Street View ↗</a>
@@ -79,6 +83,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <div className="mx-auto max-w-5xl px-4 sm:px-8">
         {previewPortfolioEnabled && slug === '71-e-110th-st' && <p className="mb-8 text-sm text-slate-600">Interior photos show Apartment 1B and Penthouse A; the terrace belongs to Penthouse A, not shared grounds. Contact Teams Management for current leasing information.</p>}
 
+        <PropertyVideos videos={videos}/>
         {building.description_public && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Overview</h2><p className="text-slate-700 leading-relaxed">{building.description_public}</p></section>}
         {building.amenities_public.length > 0 && <section className="mb-10"><h2 className="text-2xl font-serif font-semibold mb-3">Amenities</h2><ul className="list-disc pl-6 text-slate-700">{building.amenities_public.map(a => <li key={a.id}>{a.name}</li>)}</ul></section>}
         {Object.entries(unitGroups).map(([unit,items])=><section key={unit} aria-label={`Apartment ${unit} photos`} className="mb-12"><h2 className="mb-3 text-2xl font-serif font-semibold text-teams-ink">Apartment {unit} photos</h2><p className="mb-4 text-sm text-slate-600">These photos show this apartment only. Contact Teams Management for current availability.</p><PropertyGallery images={(items||[]).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Apartment ${unit} interior`,caption:item.caption}))} name={`Apartment ${unit}`} /></section>)}

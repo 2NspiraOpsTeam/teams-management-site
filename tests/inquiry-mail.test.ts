@@ -23,14 +23,36 @@ it('includes the correct canonical portal in each role’s actual OTP email, wit
   vi.stubGlobal('fetch', async (url: string, options: RequestInit) => {
     if (url.includes('oauth2')) return Response.json({ access_token: 'synthetic-token' });
     const mime = Buffer.from(JSON.parse(String(options.body)).raw, 'base64url').toString();
-    messages.push(Buffer.from(mime.split('\r\n\r\n')[1], 'base64').toString());
+    const boundary = mime.match(/boundary="([^"]+)/)![1];
+    const parts = mime.split(`--${boundary}`).slice(1, -1);
+    expect(parts).toHaveLength(2);
+    const decoded = parts.map(part => Buffer.from(part.split('\r\n\r\n')[1].trim(), 'base64').toString());
+    expect(parts[0]).toContain('text/plain');
+    expect(parts[1]).toContain('text/html');
+    expect(decoded[1]).toContain('/brand/teams-management-logo.png');
+    expect(decoded[1]).toContain(messages.length === 0 ? 'Welcome back.' : 'Welcome home.');
+    expect(decoded[1]).toContain(messages.length === 0 ? '00000000' : '00000001');
+    for (const part of parts) for (const line of part.split('\r\n\r\n')[1].trim().split('\r\n')) expect(line.length).toBeLessThanOrEqual(76);
+    expect(decoded[1]).toContain('Expires in 10 minutes');
+    expect(decoded[1]).toContain('Single use only');
+    expect(decoded[1]).not.toMatch(/href="[^"]*0000000/);
+    if (messages.length === 0) expect(mime).toContain('Reply-To: reply@example.test');
+    messages.push(decoded[0]);
     return Response.json({ id: 'synthetic-provider' });
   });
-  const mail = new MailService({ GOOGLE_CLIENT_ID: 'test', GOOGLE_CLIENT_SECRET: 'test', GOOGLE_REFRESH_TOKEN: 'test', ADMIN_AUTH_FROM: 'sender@example.test', TENANT_AUTH_FROM: 'sender@example.test' });
+  const mail = new MailService({ GOOGLE_CLIENT_ID: 'test', GOOGLE_CLIENT_SECRET: 'test', GOOGLE_REFRESH_TOKEN: 'test', ADMIN_AUTH_REPLY_TO: 'reply@example.test', ADMIN_AUTH_FROM: 'sender@example.test', TENANT_AUTH_FROM: 'sender@example.test' });
   await mail.sendAdminOtp('admin@example.test', '00000000');
   await mail.sendTenantOtp('tenant@example.test', '00000001');
   expect(messages[0]).toContain('Admin portal: https://teams-management-preview.pages.dev/access');
   expect(messages[1]).toContain('Tenant portal: https://teams-management-preview.pages.dev/tenant/login');
   expect(messages[0]).not.toMatch(/https:\/\/\S*00000000/);
   expect(messages[1]).not.toMatch(/https:\/\/\S*00000001/);
+});
+
+it('rejects invalid sign-in codes before contacting the provider', async () => {
+  const fetch = vi.fn(); vi.stubGlobal('fetch', fetch);
+  const mail = new MailService({TENANT_AUTH_FROM:'sender@example.test', ADMIN_AUTH_FROM:'sender@example.test'});
+  await expect(mail.sendTenantOtp('tenant@example.test', '<script>')).rejects.toThrow('invalid_sign_in_code');
+  await expect(mail.sendAdminOtp('admin@example.test', '1234567')).rejects.toThrow('invalid_sign_in_code');
+  expect(fetch).not.toHaveBeenCalled();
 });

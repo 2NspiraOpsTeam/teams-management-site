@@ -1,10 +1,10 @@
 import { PortalBrand } from '@/components/PortalBrand';
-import { availableTenantLease } from '@/lib/operations/tenant-leases';
+import { ResidentNavigation } from '@/components/ResidentNavigation';
+import { tenantLeasesEnabled } from '@/lib/operations/tenant-leases';
 import { currentTenant } from '@/lib/tenant-auth';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { TenantLogout } from '../tenant-logout';
 import type { Metadata } from 'next';
 export const runtime='nodejs';
-export const metadata: Metadata = { robots: { index: false, follow: false } };
-export default async function TenantLayout({children}:{children:React.ReactNode}){const tenant=await currentTenant();if(!tenant)redirect('/tenant/login');return <div className="min-h-screen bg-slate-50 text-teams-ink"><header className="border-b border-teams-gold/40 bg-teams-charcoal text-white"><div className="max-w-5xl mx-auto px-4 py-4 flex flex-wrap justify-between gap-3 items-center"><PortalBrand href="/tenant" label="Tenant portal" inverse /><nav aria-label="Tenant navigation" className="flex flex-wrap gap-4 text-sm"><Link prefetch={false} href="/tenant">My Apartment</Link>{await availableTenantLease(tenant.id)&&<Link prefetch={false} href="/tenant/lease">My Lease</Link>}<Link prefetch={false} href="/tenant/maintenance">Maintenance Requests</Link><Link prefetch={false} href="/tenant/contact">Contact Management</Link><TenantLogout/></nav></div></header><main id="main-content" className="max-w-5xl mx-auto px-4 py-8">{children}</main></div>}
+export const metadata: Metadata = { title:'Your home | Teams Management',robots: { index: false, follow: false } };
+export default async function TenantLayout({children}:{children:React.ReactNode}){const tenant=await currentTenant();if(!tenant)redirect('/tenant/login');return <div className="resident-shell"><header className="resident-header"><div className="resident-header-top"><PortalBrand href="/tenant" label="Resident living" inverse/><div className="resident-header-right"><span className="resident-private">Your private resident portal</span><TenantLogout/></div></div><ResidentNavigation lease={tenantLeasesEnabled()}/></header><main id="main-content" className="resident-main">{children}</main><footer className="resident-footer"><span>Teams Management</span><span>A place to call home.</span></footer></div>}

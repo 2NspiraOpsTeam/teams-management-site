@@ -25,21 +25,21 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
     return () => window.clearInterval(timer);
   }, [images.length, paused, manuallyPaused, reducedMotion, motionOptIn]);
 
-  const imageAspect = hero ? 'aspect-[4/5] sm:aspect-[4/3] lg:aspect-[16/9]' : compact ? 'aspect-[4/3]' : 'aspect-[16/9]';
+  const imageAspect = hero ? 'aspect-[4/3] lg:aspect-[16/9] max-h-[70vh]' : compact ? 'aspect-[4/3]' : 'aspect-[16/9]';
 
   if (!images.length) return <div className={`${imageAspect} bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center`} aria-label="Branded placeholder; no property photograph available"><span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property image unavailable</span></div>;
 
   const current = images[index % images.length];
-  const photo = <img key={current.src} src={current.src} alt={current.alt} fetchPriority={hero ? 'high' : undefined} onLoad={() => setLoadedSrc(current.src)} onError={() => setLoadedSrc(current.src)} className={`property-image w-full ${imageAspect} object-cover`} />;
+  const photo = <img key={current.src} src={current.src} alt={current.alt} fetchPriority={hero ? 'high' : undefined} onLoad={() => setLoadedSrc(current.src)} onError={() => setLoadedSrc(current.src)} className={`property-image w-full ${imageAspect} object-scale-down bg-teams-charcoal`} />;
   const move = (delta: number) => setIndex(value => (value + delta + images.length) % images.length);
   return <figure className="min-w-0" onMouseEnter={() => { if (!hero) setPaused(true); }} onMouseLeave={() => { if (!hero) setPaused(false); }} onFocusCapture={event => setPaused(!hero || event.target.matches(':focus-visible'))} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}>
+    {hero && address && <div className="bg-teams-charcoal px-4 py-6 text-white sm:px-8 sm:py-8 lg:px-12">
+      <h1 className="font-serif text-3xl font-semibold leading-tight sm:text-5xl lg:text-6xl">{name}</h1>
+      <address className="mt-3 not-italic text-sm font-medium leading-relaxed sm:text-lg">{address}</address>
+    </div>}
     <div className={`relative overflow-hidden ${hero ? "" : "border border-slate-200"} bg-slate-100`}>
       {href ? <a href={href} aria-label={`View Residential Property: ${name}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-teams-gold">{photo}</a> : photo}
-      {hero && address && <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent px-4 pb-20 pt-6 text-white sm:px-8 sm:pt-10 lg:px-12">
-        <h1 className="font-serif text-3xl font-semibold leading-tight sm:text-5xl lg:text-6xl">{name}</h1>
-        <address className="mt-3 not-italic text-sm font-medium leading-relaxed sm:text-lg">{address}</address>
-      </div>}
-      {images.length > 1 && <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-3">
+      {images.length > 1 && <div className="flex items-center justify-between gap-3 bg-teams-charcoal px-3 py-2">
         <button type="button" onClick={() => move(-1)} aria-label={`Previous photo of ${name}`} className="min-h-11 min-w-11 rounded-full bg-white/95 text-2xl text-teams-ink shadow hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold">‹</button>
         <span className="rounded-full bg-teams-charcoal/90 px-3 py-1 text-xs font-semibold text-white" aria-label={`Photo ${index + 1} of ${images.length}`}>{index + 1} / {images.length}</span>
         <button type="button" onClick={() => move(1)} aria-label={`Next photo of ${name}`} className="min-h-11 min-w-11 rounded-full bg-white/95 text-2xl text-teams-ink shadow hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold">›</button>
@@ -49,6 +49,7 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
       {images.map((photo, photoIndex) => ({photo, photoIndex})).filter(({photoIndex}) => Math.abs(photoIndex - index % images.length) <= 2).map(({photo, photoIndex}) => <button key={`${photo.src}-${photoIndex}`} type="button" onClick={() => setIndex(photoIndex)} aria-label={`Show photo ${photoIndex + 1} of ${images.length}: ${photo.alt}`} aria-current={photoIndex === index % images.length ? 'true' : undefined} className={`h-16 w-20 shrink-0 overflow-hidden rounded-sm border-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold ${photoIndex === index % images.length ? 'border-teams-gold' : 'border-transparent hover:border-slate-400'}`}><img src={photo.src} alt="" loading="lazy" className="h-full w-full object-cover" /></button>)}
     </div>}
     {images.length > 1 && <button type="button" onClick={() => { if (reducedMotion && !motionOptIn) { setMotionOptIn(true); setManuallyPaused(false); } else setManuallyPaused(value => !value); }} className={`${hero ? "mx-4 sm:mx-8 lg:mx-12" : ""} mt-2 min-h-11 text-sm font-medium text-teams-ink underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold`}>{manuallyPaused || (reducedMotion && !motionOptIn) ? 'Play slideshow' : 'Pause slideshow'}</button>}
+    {!compact && <a href={current.src} target="_blank" rel="noopener noreferrer" className={`${hero ? "mx-4 sm:mx-8 lg:mx-12" : ""} mt-2 inline-flex min-h-11 items-center text-sm font-medium text-teams-ink underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold`}>View full-size photo ↗</a>}
     {!compact && current.caption && <figcaption className={`mt-3 text-sm text-slate-600 ${hero ? "px-4 sm:px-8 lg:px-12" : ""}`}>{current.caption}</figcaption>}
   </figure>;
 }

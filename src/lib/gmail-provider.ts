@@ -11,7 +11,7 @@ function base64(value: string) {
   return btoa(binary);
 }
 
-export async function sendGmail(env: MailEnv, from: string, to: string, subject: string, body: string, replyTo?: string) {
+export async function sendGmail(env: MailEnv, from: string, to: string, subject: string, body: string, replyTo?: string, html?: string) {
   if (!gmailConfigured(env)) throw new Error('gmail_not_configured');
   const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST', signal: AbortSignal.timeout(10000), headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -20,7 +20,14 @@ export async function sendGmail(env: MailEnv, from: string, to: string, subject:
   if (!tokenResponse.ok) throw new Error(`gmail_token_http_${tokenResponse.status}`);
   const token = await tokenResponse.json() as { access_token?: string };
   if (!token.access_token) throw new Error('gmail_token_missing');
-  const mime = [`From: ${from}`, `To: ${to}`, ...(replyTo ? [`Reply-To: ${replyTo}`] : []), `Subject: =?UTF-8?B?${base64(subject)}?=`, 'MIME-Version: 1.0', 'Content-Type: text/plain; charset="UTF-8"', 'Content-Transfer-Encoding: base64', '', base64(body)].join('\r\n');
+  const encodePart = (value: string) => base64(value).match(/.{1,76}/g)?.join('\r\n') || '';
+  const boundary = `teams-${crypto.randomUUID()}`;
+  const content = html === undefined
+    ? ['Content-Type: text/plain; charset="UTF-8"', 'Content-Transfer-Encoding: base64', '', encodePart(body)]
+    : [`Content-Type: multipart/alternative; boundary="${boundary}"`, '',
+      `--${boundary}`, 'Content-Type: text/plain; charset="UTF-8"', 'Content-Transfer-Encoding: base64', '', encodePart(body),
+      `--${boundary}`, 'Content-Type: text/html; charset="UTF-8"', 'Content-Transfer-Encoding: base64', '', encodePart(html), `--${boundary}--`];
+  const mime = [`From: ${from}`, `To: ${to}`, ...(replyTo ? [`Reply-To: ${replyTo}`] : []), `Subject: =?UTF-8?B?${base64(subject)}?=`, 'MIME-Version: 1.0', ...content].join('\r\n');
   const raw = base64(mime).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
     method: 'POST', signal: AbortSignal.timeout(10000), headers: { Authorization: `Bearer ${token.access_token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ raw }),
