@@ -3,7 +3,7 @@ import { currentTenant,tenantDb } from '@/lib/tenant-auth';
 import { boundedBody } from '@/lib/request-body';
 import { reply } from '@/lib/work-orders/server';
 import { householdInput, householdSubject } from '@/lib/household/shared';
-import { householdRequests } from '@/lib/household/server';
+import { householdLimit,portalUserCountSql,householdRequests } from '@/lib/household/server';
 export const runtime='nodejs';
 export async function GET(){const t=await currentTenant();if(!t)return reply({error:'Unauthorized'},401);try{return reply({requests:(await householdRequests(tenantDb(),t.id)).results});}catch{return reply({error:'Household requests are temporarily unavailable.'},503);}}
 export async function POST(request:Request){
@@ -14,12 +14,14 @@ export async function POST(request:Request){
  if(v.email===t.email?.toLowerCase())return reply({error:'You already have access. Enter the other person’s email.'},400);
  const db=tenantDb();
  try{
-  const a=await db.prepare('SELECT a.id FROM tenant_assignments a JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id WHERE a.id=? AND a.tenant_id=? AND a.active=1').bind(v.assignmentId,t.id).first();
+  const a=await db.prepare('SELECT a.id,a.unit_id,a.building_id FROM tenant_assignments a JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id WHERE a.id=? AND a.tenant_id=? AND a.active=1').bind(v.assignmentId,t.id).first<{id:string;unit_id:string;building_id:string}>();
   if(!a)return reply({error:'This apartment is no longer available to your account.'},403);
   const id='household-'+await hash(JSON.stringify([t.id,v.assignmentId,v.email]));
   const count=await db.prepare("SELECT count(*) AS n FROM tenant_contact_requests WHERE tenant_id=? AND subject=? AND created_at>datetime('now','-1 day')").bind(t.id,householdSubject).first<{n:number}>();
   const prior=await db.prepare('SELECT status FROM tenant_contact_requests WHERE id=? AND tenant_id=?').bind(id,t.id).first<{status:string}>();
   if(prior&&!['cancelled','declined'].includes(prior.status))return reply({id,status:prior.status,duplicate:true});
+  const users=await db.prepare(portalUserCountSql).bind(a.unit_id,a.building_id).first<Record<string,number>>();
+  if(Number(Object.values(users||{})[0]||0)>=householdLimit)return reply({error:'This apartment already has three portal users. Contact management to review access.'},409);
   if((count?.n||0)>=10)return reply({error:'Daily request limit reached. Please contact management.'},429);
   await db.prepare(`INSERT INTO tenant_contact_requests(id,tenant_id,assignment_id,subject,message) SELECT ?,a.tenant_id,a.id,?,? FROM tenant_assignments a JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id WHERE a.id=? AND a.tenant_id=? AND a.active=1 ON CONFLICT(id) DO UPDATE SET message=excluded.message,status='submitted',staff_notes=NULL,created_at=datetime('now') WHERE tenant_contact_requests.status IN ('cancelled','declined')`).bind(id,householdSubject,JSON.stringify({name:v.name,email:v.email}),v.assignmentId,t.id).run();
   const saved=await db.prepare('SELECT status FROM tenant_contact_requests WHERE id=? AND tenant_id=?').bind(id,t.id).first<{status:string}>();

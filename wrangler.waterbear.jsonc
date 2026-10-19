@@ -21,12 +21,12 @@
     "NEXT_PUBLIC_ENVIRONMENT": "development",
     "NEXT_PUBLIC_TEAMS_PORTAL_ORIGIN": "https://teams-management-development.pages.dev",
     "PROPERTY_OPERATIONS_ENABLED": "1",
-    "TENANT_LEASES_ENABLED": "0",
+    "TENANT_LEASES_ENABLED": "1",
     "TENANT_MANUAL_IMPORT_DATABASE_ID": "29dfe758-69b1-4465-b74e-101d48c53f7e",
     "ADMIN_AUTH_FROM": "do-not-reply@waterbearmecca.com",
     "TENANT_AUTH_FROM": "do-not-reply@waterbearmecca.com",
     "INQUIRY_FROM": "do-not-reply@waterbearmecca.com",
-    "TEAMS_RELEASE_SHA": "branded-signin-email-20261018",
+    "TEAMS_RELEASE_SHA": "resident-home-20261018",
     "TEAMS_MIGRATION_WRITE_FREEZE": "0"
   },
   "d1_databases": [

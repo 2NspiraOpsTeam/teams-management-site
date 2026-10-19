@@ -478,3 +478,32 @@ html { scroll-padding-top: 110px; }
 @media(max-width:520px) { .resident-login-card { padding:28px 24px; } }
 .resident-main>h1 { font-family:Georgia,serif; font-size:clamp(30px,4vw,40px); font-weight:400; letter-spacing:-.025em; }
 .resident-page-heading h1 { font-weight:400; }
+
+/* Resident living: real property photography and quiet, accessible motion. */
+.resident-home-visual { position:relative; min-width:0; min-height:330px; }
+.resident-home-visual .resident-home-mark { height:100%; }
+.resident-building-cover { position:absolute; inset:0; margin:0; overflow:hidden; background:#30473c; }
+.resident-building-cover:after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,#13281c00 20%,#10281dd9 100%); pointer-events:none; }
+.resident-building-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+.resident-building-cover figcaption { position:absolute; bottom:26px; left:28px; right:24px; z-index:1; display:grid; gap:6px; color:#fff; }
+.resident-building-cover figcaption span { font-size:12px; letter-spacing:.025em; }
+.resident-building-cover figcaption strong { font-family:Georgia,serif; font-size:25px; font-weight:400; line-height:1.2; }
+.resident-household-members { margin:24px 0; }
+.resident-household-apartment+.resident-household-apartment { border-top:1px solid #e3e4da; margin-top:22px; padding-top:22px; }
+.resident-household-apartment>h3 { font-size:15px; font-weight:600; }
+.resident-member-list { list-style:none; margin:16px 0; padding:0; }
+.resident-member-list li { display:flex; align-items:center; gap:12px; padding:16px 0; border-top:1px solid #e8e9df; }
+.resident-member-list li>div { flex:1; min-width:0; }
+.resident-member-list strong { display:block; font-size:14px; overflow-wrap:anywhere; }
+.resident-member-list small { display:block; margin-top:5px; color:#677064; line-height:1.5; }
+.resident-member-avatar { flex:none; width:40px; height:40px; display:grid; place-items:center; background:#eef1e7; color:#41513b; border-radius:50%; font-family:Georgia,serif; font-size:20px; }
+.resident-profile-contacts { margin-top:24px; max-width:680px; }
+.resident-lease-grid { display:grid; gap:24px; }
+.resident-lease-details { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:24px 0; }
+.resident-lease-details dt { color:#677064; font-size:12px; margin-bottom:6px; }
+.resident-lease-details dd { font-size:16px; }
+.resident-lease-document { border-top:1px solid #e3e4da; padding-top:22px; }
+@media(hover:hover) and (prefers-reduced-motion:no-preference) { .resident-action-card { transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; } .resident-action-card:hover { transform:translateY(-4px); border-color:#b8c4aa; box-shadow:0 12px 30px #243d330c; } .resident-building-cover img { transition:transform .9s cubic-bezier(.2,.65,.3,1); } .resident-welcome:hover .resident-building-cover img { transform:scale(1.025); } }
+@media(prefers-reduced-motion:no-preference) { .resident-overview>.resident-card { animation:resident-arrive .45s ease-out both; } .resident-overview>.resident-card:nth-child(2) { animation-delay:.06s; } .resident-overview>.resident-card:nth-child(3) { animation-delay:.12s; } }
+@media(max-width:520px) { .resident-home-visual { min-height:230px; } .resident-home-visual:has(.resident-home-mark) { display:none; } .resident-member-list { margin-bottom:12px; } .resident-member-list li { flex-wrap:wrap; } .resident-member-list li>.resident-status { margin-left:52px; } .resident-lease-details { grid-template-columns:1fr; } }
+@media(prefers-reduced-motion:reduce) { .resident-shell *, .resident-shell *:before,.resident-shell *:after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } .resident-shell img,.resident-action-card:hover { transform:none!important; } }
