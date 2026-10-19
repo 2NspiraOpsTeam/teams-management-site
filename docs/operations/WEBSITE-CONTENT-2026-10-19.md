@@ -30,3 +30,15 @@ Eight focused tests cover defaults/validation, private drafts, publish/restore, 
 Local built-Worker/browser checks used an isolated schema and synthetic Admin, not client records: anonymous denial, desktop/tablet/mobile editor layouts, required-field validation, cancel, save/refresh persistence, unpublished draft isolation, public publish/restore, retained text after backend failure, stale-editor conflicts, origin rejection and public rental/legal rendering. Hosted release identifiers and additional verification are recorded separately after deployment. Fresh OTP delivery is not established by reusing an existing authorized session.
 
 Recovery: retain the previous Pages gateway/runtime pair. The additive schema is backward compatible, so a code rollback does not require rolling back client data. Keep all database exports, screenshots and QA sessions outside this public repository.
+
+## Verified preview release
+
+- Application source: `c48e413b43693f06dc53a84df07da2a49fa89a5d`.
+- Canonical editor: https://teams-management-preview.pages.dev/admin/website-content
+- Runtime `teams-content-024aa79`, active version `c8ef193c-3609-4d3b-989c-1e269d6b04ed`; served release `c48e413-website-content-20261019`.
+- Restricted candidate gateway: `ac25b71e.teams-management-preview.pages.dev`. The candidate's service runtime was updated during QA; this gateway ID alone is not an immutable application revision.
+- Canonical Pages deployment: `c996fe61-c751-4dac-9a50-1c54973f5013`, branch `preview`, direct-upload mode. Pages calls this the project's production environment; it is the development preview, not the client's production domain.
+- The additive migration is recorded as `website-content.sql`. Protected record totals and existing database/credential bindings were preserved. Existing source-approved wording was not changed by hosted QA. A whitespace-only Services draft tested save/refresh and double-click protection, then was reset exactly to its approved published wording. No hosted publication was performed for testing.
+- Candidate and canonical authenticated editor checks passed at desktop/tablet/mobile widths. All 17 page choices loaded their expected labelled fields on canonical. Home, About and Services retained approved headings and decoded visible images; the old Public Content link redirects correctly. No browser runtime errors were observed.
+- Publish/restore, cross-page navigation freshness, stale-editor conflict handling, backend failures, and validation were exercised against the final local built Worker with a synthetic Admin. Fresh emailed OTP login was not repeated; hosted checks reused an existing authorized Admin session. Production and Waterbear were not changed.
+- Rollback pair retained: Pages `97d2b90e-b156-4ee9-b75d-b29787c40444` with runtime `teams-usage-runtime-195cc75`. Do not restore the entire database to roll back this additive feature.
