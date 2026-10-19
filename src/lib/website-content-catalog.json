@@ -1380,7 +1380,7 @@
         "key": "rent-with-us.text-76",
         "label": "Text · Reference:",
         "section": "Page details",
-        "default": "Reference:",
+        "default": "Reference: ",
         "maxLength": 250
       },
       {
@@ -1394,35 +1394,35 @@
         "key": "rent-with-us.text-78",
         "label": "Text · Name",
         "section": "Page details",
-        "default": "Name",
+        "default": "Name ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-79",
         "label": "Text · Email",
         "section": "Page details",
-        "default": "Email",
+        "default": "Email ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-80",
         "label": "Text · Phone",
         "section": "Page details",
-        "default": "Phone",
+        "default": "Phone ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-81",
         "label": "Text · Property or address of interest",
         "section": "Page details",
-        "default": "Property or address of interest",
+        "default": "Property or address of interest ",
         "maxLength": 250
       },
       {
         "key": "rent-with-us.text-82",
         "label": "Text · How can we help?",
         "section": "Page details",
-        "default": "How can we help?",
+        "default": "How can we help? ",
         "maxLength": 250
       },
       {
