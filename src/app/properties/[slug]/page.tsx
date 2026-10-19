@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { PropertyVideos } from '@/components/property-videos';
 import { propertyVideos, publicVideoProjection } from '@/lib/property-videos';
 import { OfficialPlaceName } from '@/components/official-place-name';
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const building = previewPortfolioEnabled ? (await canonicalPreviewBuildings(previewPortfolio)).find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) notFound();
@@ -153,3 +154,6 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
     <Footer />
   </>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage(props: Parameters<typeof PropertyDetailPage>[0]) { return renderWebsiteContent(await PropertyDetailPage(props)); }

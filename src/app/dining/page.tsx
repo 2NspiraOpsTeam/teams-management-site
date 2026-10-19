@@ -1,3 +1,5 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
+import { WebsiteText } from '@/components/website-text';
 import { OfficialPlaceName } from '@/components/official-place-name';
 import { addressLabel, directionsFromPropertyUrl, mapLocationUrl, navigationAddressLabel } from '@/lib/map-location';
 import Image from 'next/image';
@@ -26,16 +28,16 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
   return <article id={venue.slug} className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
     <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(220px,320px)] md:gap-12">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8b681f]">Featured dining destination</p>
+        <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8b681f]"><WebsiteText contentKey="dining.text-1">Featured dining destination</WebsiteText></p>
         <h2 className="mt-4 font-serif text-4xl leading-tight text-teams-ink sm:text-5xl"><OfficialPlaceName name={venue.name} website={venue.website_url} className="inline-block min-h-11" /></h2>
         <p className="mt-3 text-sm font-semibold uppercase tracking-[.12em] text-slate-600">{venue.category}{venue.neighborhood ? ` · ${venue.neighborhood}` : ''}</p>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-700">{venue.summary}</p>
         <address className="mt-6 not-italic text-slate-700">{addressLabel(venue.address)}</address>
         <div className="mt-8 flex flex-wrap gap-3">
-          <ExternalAction href={venue.menu_url}>View Menu</ExternalAction>
-          <ExternalAction href={venue.reservation_url}>Reservations</ExternalAction>
-          <ExternalAction href={venue.ordering_url}>Order Online</ExternalAction>
-          <a href={directions} target="_blank" rel="noopener noreferrer" aria-label={`Get directions from ${navigationAddressLabel(venue.address)} to ${venue.name} (opens in a new tab)`} className="inline-flex min-h-11 items-center px-5 py-3 text-sm font-semibold underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">Get Directions <span aria-hidden="true" className="ml-1">↗</span></a>
+          <ExternalAction href={venue.menu_url}><WebsiteText contentKey="dining.text-2">View Menu</WebsiteText></ExternalAction>
+          <ExternalAction href={venue.reservation_url}><WebsiteText contentKey="dining.text-3">Reservations</WebsiteText></ExternalAction>
+          <ExternalAction href={venue.ordering_url}><WebsiteText contentKey="dining.text-4">Order Online</WebsiteText></ExternalAction>
+          <a href={directions} target="_blank" rel="noopener noreferrer" aria-label={`Get directions from ${navigationAddressLabel(venue.address)} to ${venue.name} (opens in a new tab)`} className="inline-flex min-h-11 items-center px-5 py-3 text-sm font-semibold underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink"><WebsiteText contentKey="dining.text-5">Get Directions </WebsiteText><span aria-hidden="true" className="ml-1">↗</span></a>
         </div>
       </div>
       <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-sm bg-white p-3 shadow-sm md:max-w-[320px]" aria-label="Delizia logo">
@@ -45,7 +47,7 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
   </article>;
 }
 
-export default async function DiningPage() {
+async function DiningPage() {
   const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
   const service = await featuredPropertyService(adminDb());
   const unique = service.dining;
@@ -60,8 +62,8 @@ export default async function DiningPage() {
     <section className="relative h-[calc(100svh-89px)] min-h-[360px] w-full overflow-hidden bg-teams-charcoal" aria-label="Delizia 73 film">
       <DiningFeatureVideo />
       <div className="pointer-events-none absolute left-0 right-0 top-0 bg-gradient-to-b from-black/55 to-transparent px-4 pb-16 pt-6 text-white sm:px-8 sm:pt-10">
-        <h1 className="font-serif text-3xl sm:text-5xl">Delizia 73</h1>
-        <p className="mt-2 text-sm font-semibold uppercase tracking-[.15em] sm:text-base">A taste of the neighborhood</p>
+        <h1 className="font-serif text-3xl sm:text-5xl"><WebsiteText contentKey="dining.text-6">Delizia 73</WebsiteText></h1>
+        <p className="mt-2 text-sm font-semibold uppercase tracking-[.15em] sm:text-base"><WebsiteText contentKey="dining.text-7">A taste of the neighborhood</WebsiteText></p>
       </div>
     </section>
     <section className="texture-paper" aria-label="Dining destination details">
@@ -70,3 +72,6 @@ export default async function DiningPage() {
     <DiningPropertyRotation properties={properties} />
   </main><Footer /></>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await DiningPage()); }
