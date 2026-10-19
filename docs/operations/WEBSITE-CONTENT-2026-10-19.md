@@ -5,7 +5,7 @@ Admin → Website Content (`/admin/website-content`) edits approved public wordi
 ## Editing workflow
 
 1. Choose the familiar page name. Fields are grouped in website order and labelled by their role/current approved wording.
-2. Edit plain text and **Save draft**. Cancel returns to the saved draft. Refresh reloads saved work, not unsaved edits.
+2. Edit plain text and **Save draft**. Cancel returns to the saved draft. Refresh keeps the selected page and reloads saved work, not unsaved edits.
 3. **Review & publish** shows currently published and proposed text for every changed field. **Publish approved wording** is the explicit approval action.
 4. **Restore previous published version** previews the previous wording, then asks for confirmation. Restoration replaces both the published text and saved draft. The replaced published version becomes the next restore point.
 
@@ -17,7 +17,7 @@ Property names, addresses, facts, availability, descriptions and media remain in
 
 - Existing D1 is sufficient; no external CMS, subscription, rich-text renderer or new dependency is required.
 - `website-content-catalog.json` is an explicit allowlist of approved text slots and defaults. React text nodes preserve markup/layout and escape text; no HTML or arbitrary schema keys are accepted.
-- `website_content` stores a page revision, draft, published snapshot and previous published snapshot. Approved source defaults are the initial public version. Only `published_json` is read by the public provider, once per root render; drafts, actors and audit history are never included in it.
+- `website_content` stores a page revision, draft, published snapshot and previous published snapshot. Approved source defaults are the initial public version. Only `published_json` is read by the public provider, once per navigation template render; drafts, actors and audit history are never included in it.
 - Existing active-Admin session authorization applies to both reads and writes. Writes also require a same-origin JSON request. Authenticated responses are private/no-store.
 - Compare-and-swap revisions prevent lost updates. The content write and actor-labelled audit entry use one atomic D1 batch. An operation UUID makes retries idempotent. Immutable audit events preserve earlier snapshots beyond the one-click previous-version control.
 - The additive SQL is `src/lib/migrations/website-content.sql`. Do not bulk-apply legacy migrations: the default migration directory still lists an unrelated `init-schema.sql`. Apply only this scoped schema and record its name in `d1_migrations`; existing tables/records are untouched.
