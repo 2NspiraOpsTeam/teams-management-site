@@ -1,4 +1,5 @@
 'use client';
+import { WebsiteText } from '@/components/website-text';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -10,12 +11,12 @@ export function Header() {
   const menuButton = useRef<HTMLButtonElement>(null);
 
   const navItems = [
-    { href: '/properties', label: 'Residences' },
-    { href: '/retail', label: 'Retail' },
-    { href: '/dining', label: 'Dining' },
-    { href: '/rent-with-us', label: 'Rent with Us' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/properties', label: <WebsiteText contentKey="header.text-1">Residences</WebsiteText> },
+    { href: '/retail', label: <WebsiteText contentKey="header.text-2">Retail</WebsiteText> },
+    { href: '/dining', label: <WebsiteText contentKey="header.text-3">Dining</WebsiteText> },
+    { href: '/rent-with-us', label: <WebsiteText contentKey="header.text-4">Rent with Us</WebsiteText> },
+    { href: '/about', label: <WebsiteText contentKey="header.text-5">About</WebsiteText> },
+    { href: '/contact', label: <WebsiteText contentKey="header.text-6">Contact</WebsiteText> },
   ];
 
   return (
@@ -25,8 +26,7 @@ export function Header() {
           <Link prefetch={false} href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">
             <img src="/brand/teams-management-logo.png" alt="" width="60" height="60" className="h-14 w-14 object-contain" />
             <span className="hidden sm:block text-lg font-serif font-semibold text-[#252525] leading-tight">
-              Teams Management
-            </span>
+              <WebsiteText contentKey="header.text-7">Teams Management</WebsiteText></span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -45,7 +45,7 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link prefetch={false} href="/tenant-services" aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-[5px] bg-teams-gold px-4 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
+            <Link prefetch={false} href="/tenant-services" aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-[5px] bg-teams-gold px-4 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]"><WebsiteText contentKey="header.text-8">Tenant Services</WebsiteText></Link>
           </div>
 
           {/* Mobile menu button */}
@@ -64,7 +64,7 @@ export function Header() {
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-[#E8E5DF] py-3 flex flex-col gap-1">
           {navItems.map(item => <Link prefetch={false} key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#8b681f] aria-[current=page]:border-[#B49355]">{item.label}</Link>)}
-          <Link prefetch={false} href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
+          <Link prefetch={false} href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]"><WebsiteText contentKey="header.text-9">Tenant Services</WebsiteText></Link>
         </div>}
       </nav>
     </header>

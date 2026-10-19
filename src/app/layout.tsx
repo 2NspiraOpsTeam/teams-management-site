@@ -1,3 +1,6 @@
+import { WebsiteContentProvider } from '@/components/website-text';
+import { publishedWebsiteContent } from '@/lib/website-content-store';
+import { adminDb } from '@/lib/admin-auth';
 import type { Metadata } from "next";
 import "./globals.css";
 import { contactAddress, siteContact } from '@/lib/site-contact';
@@ -25,11 +28,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const values = await publishedWebsiteContent(adminDb());
   return (
     <html lang="en">
       <body className="antialiased bg-slate-50 text-teams-ink">
@@ -43,7 +47,7 @@ export default function RootLayout({
           faxNumber: siteContact.fax,
           address: { '@type': 'PostalAddress', streetAddress: siteContact.address.street, addressLocality: siteContact.address.city, addressRegion: siteContact.address.state, postalCode: siteContact.address.postalCode, addressCountry: 'US' },
         }).replace(/</g, '\\u003c') }} />
-        {children}
+        <WebsiteContentProvider values={values}>{children}</WebsiteContentProvider>
       </body>
     </html>
   );
