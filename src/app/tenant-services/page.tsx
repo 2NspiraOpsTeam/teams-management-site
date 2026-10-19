@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 export const runtime = 'nodejs';
 import { PageShowcase } from '@/components/page-showcase';
@@ -5,7 +6,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { ContactDetails } from '@/components/contact-details';
 
-export default async function TenantServicesPage() {
+async function TenantServicesPage() {
   return <>
     <Header />
     <main id="main-content" className="min-h-[70vh] bg-slate-50">
@@ -32,3 +33,6 @@ export default async function TenantServicesPage() {
     <Footer />
   </>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await TenantServicesPage()); }

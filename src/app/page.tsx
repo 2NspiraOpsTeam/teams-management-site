@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { addressLabel } from '@/lib/map-location';
 import type { Metadata } from 'next';
@@ -22,7 +23,7 @@ type Feature = { building: BuildingPublic; image: MediaRow };
 const photo = (image: MediaRow, label: string, eager = false) => <img src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className="home-photo h-full w-full object-cover" />;
 const location = (building: BuildingPublic) => addressLabel(building.address);
 
-export default async function Home() {
+async function Home() {
   const db = adminDb();
   const service = await featuredPropertyService(db);
   const [buildings, assignments] = await Promise.all([previewPortfolioEnabled ? canonicalPreviewBuildings(previewPortfolio) : listPublicBuildings(), homeMedia(db)]);
@@ -101,3 +102,6 @@ export default async function Home() {
     <section className="texture-graphite bg-teams-charcoal px-5 py-20 text-center text-white sm:py-28"><p className="home-eyebrow text-[#e5d5b2]"><WebsiteText contentKey="home.text-49">Get in touch</WebsiteText></p><h2 className="mx-auto mb-7 max-w-xl font-serif text-4xl font-normal sm:text-6xl"><WebsiteText contentKey="home.text-50">Let’s start a conversation.</WebsiteText></h2><Link prefetch={false} className="home-button bg-teams-gold text-[#111]" href="/contact"><WebsiteText contentKey="home.text-51">Contact Teams ↗</WebsiteText></Link></section>
   </main><Footer /></>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await Home()); }

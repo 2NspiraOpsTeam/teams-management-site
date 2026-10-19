@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import type { Metadata } from 'next';
 import { LegalPage } from '@/components/legal-page';
@@ -6,7 +7,7 @@ import { siteContact } from '@/lib/site-contact';
 export const runtime = 'nodejs';
 export const metadata: Metadata = { title: 'Privacy Policy | Teams Management' };
 
-export default function PrivacyPolicy() {
+function PrivacyPolicy() {
   return <LegalPage title={<WebsiteText contentKey="privacy-policy.page-title">Privacy Policy</WebsiteText>}>
     <section><h2><WebsiteText contentKey="privacy-policy.text-1">What we receive</WebsiteText></h2><p><WebsiteText contentKey="privacy-policy.text-2">When you contact us or inquire about a property, we receive the details you provide, such as your name, email address, phone number, property of interest, and message. If you use an authorized tenant or administrator account, we also process your account email, sign-in activity, assigned property or unit, and information you submit through that account. Tenant maintenance requests may include descriptions of an issue and a preferred contact method.</WebsiteText></p></section>
     <section><h2><WebsiteText contentKey="privacy-policy.text-3">How we use it</WebsiteText></h2><p><WebsiteText contentKey="privacy-policy.text-4">We use information to answer inquiries, manage property and tenant services, route maintenance requests, administer accounts, and operate and protect the website. We may also use it to meet applicable recordkeeping or legal obligations.</WebsiteText></p></section>
@@ -17,3 +18,6 @@ export default function PrivacyPolicy() {
     <section><h2><WebsiteText contentKey="privacy-policy.text-13">Questions and updates</WebsiteText></h2><p><WebsiteText contentKey="privacy-policy.text-14">To ask about information you submitted or request a correction, contact </WebsiteText><a href={`mailto:${siteContact.email}`}>{siteContact.email}</a><WebsiteText contentKey="privacy-policy.text-15">. We may update this policy as our site and services change. The date above identifies this version.</WebsiteText></p></section>
   </LegalPage>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await PrivacyPolicy()); }

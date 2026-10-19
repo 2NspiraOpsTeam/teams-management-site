@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 export const runtime = 'nodejs';
 import type { Metadata } from 'next';
@@ -18,7 +19,7 @@ const commitments = [
   { title: <WebsiteText contentKey="about.text-25">For our neighborhoods</WebsiteText>, body: <WebsiteText contentKey="about.text-26">See each address as part of a larger community.</WebsiteText> },
 ];
 
-export default async function AboutPage() {
+async function AboutPage() {
   return <><Header /><main id="main-content">
     <section className="gold-street-hero gold-street-hero--about py-16 text-white sm:py-20"><div className="mx-auto max-w-5xl px-4 sm:px-6"><div className="mb-6 h-px w-14 bg-white/50" /><p className="mb-4 text-xs uppercase tracking-[.2em] text-slate-200"><WebsiteText contentKey="about.text-1">About Teams Management</WebsiteText></p><h1 className="mb-5 max-w-3xl font-serif text-4xl sm:text-6xl"><WebsiteText contentKey="about.text-2">Places matter. People make them meaningful.</WebsiteText></h1><p className="max-w-2xl text-lg leading-relaxed text-slate-100"><WebsiteText contentKey="about.text-3">We care for a New York property portfolio with a simple belief: a well-run place should make everyday life easier and help people feel they belong.</WebsiteText></p></div></section>
     <section className="bg-[#f7f4ee] py-14 sm:py-20" aria-labelledby="our-story-title"><div className="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-[.8fr_1.2fr] md:gap-12"><div><p className="mb-4 text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary"><WebsiteText contentKey="about.text-4">Our roots</WebsiteText></p><h2 id="our-story-title" className="font-serif text-3xl text-teams-ink sm:text-4xl"><WebsiteText contentKey="about.text-5">Built in New York. Carried forward across generations.</WebsiteText></h2></div><div className="space-y-4 leading-relaxed text-slate-700"><p><WebsiteText contentKey="about.text-6">Our founder came from Italy to New York City and began his entrepreneurial journey in construction, learning firsthand the value of craftsmanship, perseverance, and building things meant to last.</WebsiteText></p><p><WebsiteText contentKey="about.text-7">Over time, that experience evolved into New York real estate and the founding of Teams Management.</WebsiteText></p><p><WebsiteText contentKey="about.text-8">Today, the next generation carries that legacy forward — bringing together decades of experience with a thoughtful, modern approach to property stewardship.</WebsiteText></p><p><WebsiteText contentKey="about.text-9">We believe the true value of a building is measured not only by the structure itself, but by the lives, businesses, relationships, and communities it supports.</WebsiteText></p><p className="font-serif text-xl text-teams-ink"><WebsiteText contentKey="about.text-10">Every Building Has a Story. Every Person Matters.</WebsiteText></p></div></div></section>
@@ -28,3 +29,6 @@ export default async function AboutPage() {
     <PageShowcase page="about" variant="offset"/>
   </main><Footer /></>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await AboutPage()); }

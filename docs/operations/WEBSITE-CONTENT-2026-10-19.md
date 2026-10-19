@@ -17,7 +17,7 @@ Property names, addresses, facts, availability, descriptions and media remain in
 
 - Existing D1 is sufficient; no external CMS, subscription, rich-text renderer or new dependency is required.
 - `website-content-catalog.json` is an explicit allowlist of approved text slots and defaults. React text nodes preserve markup/layout and escape text; no HTML or arbitrary schema keys are accepted.
-- `website_content` stores a page revision, draft, published snapshot and previous published snapshot. Approved source defaults are the initial public version. Only `published_json` is read by the public provider, once per navigation template render; drafts, actors and audit history are never included in it.
+- `website_content` stores a page revision, draft, published snapshot and previous published snapshot. Approved source defaults are the initial public version. Only `published_json` is read by the public provider, once per public page render; drafts, actors and audit history are never included in it.
 - Existing active-Admin session authorization applies to both reads and writes. Writes also require a same-origin JSON request. Authenticated responses are private/no-store.
 - Compare-and-swap revisions prevent lost updates. The content write and actor-labelled audit entry use one atomic D1 batch. An operation UUID makes retries idempotent. Immutable audit events preserve earlier snapshots beyond the one-click previous-version control.
 - The additive SQL is `src/lib/migrations/website-content.sql`. Do not bulk-apply legacy migrations: the default migration directory still lists an unrelated `init-schema.sql`. Apply only this scoped schema and record its name in `d1_migrations`; existing tables/records are untouched.

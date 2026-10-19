@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import type { Metadata } from 'next';
 import { LegalPage } from '@/components/legal-page';
@@ -6,7 +7,7 @@ import { siteContact } from '@/lib/site-contact';
 export const runtime = 'nodejs';
 export const metadata: Metadata = { title: 'Terms of Use | Teams Management' };
 
-export default function TermsOfUse() {
+function TermsOfUse() {
   return <LegalPage title={<WebsiteText contentKey="terms-of-use.page-title">Terms of Use</WebsiteText>}>
     <section><h2><WebsiteText contentKey="terms-of-use.text-1">About this website</WebsiteText></h2><p><WebsiteText contentKey="terms-of-use.text-2">This site provides general information about Teams Management, its properties, and its services. It is not a lease, an offer to rent, a brokerage agreement, legal advice, or a guarantee that any space is available. A property shown here may have no residential unit or retail space currently available. Any transaction is governed by its own signed documents.</WebsiteText></p></section>
     <section><h2><WebsiteText contentKey="terms-of-use.text-3">Confirm property details</WebsiteText></h2><p><WebsiteText contentKey="terms-of-use.text-4">Descriptions, dimensions, amenities, photographs, maps, neighborhood information, and other details may change or contain errors. Please confirm information important to your decision directly with Teams Management and, where appropriate, through an independent inspection.</WebsiteText></p></section>
@@ -16,3 +17,6 @@ export default function TermsOfUse() {
     <section><h2><WebsiteText contentKey="terms-of-use.text-11">Questions</WebsiteText></h2><p><WebsiteText contentKey="terms-of-use.text-12">For questions about this site, contact </WebsiteText><a href={`mailto:${siteContact.email}`}>{siteContact.email}</a>.</p></section>
   </LegalPage>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await TermsOfUse()); }

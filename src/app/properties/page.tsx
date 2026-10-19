@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { PageShowcase } from '@/components/page-showcase';
 import Link from 'next/link';
@@ -13,7 +14,7 @@ import { listPublicRetail } from '@/lib/public-retail';
 
 export const runtime = 'nodejs';
 
-export default async function PropertiesPage() {
+async function PropertiesPage() {
   const sourceBuildings = (previewPortfolioEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings()).filter(building => building.slug !== '3425-east-tremont-bronx');
   const previewLocations = previewPortfolioEnabled ? await adminDb().prepare("SELECT slug, latitude, longitude FROM buildings WHERE map_verified=1 AND geocode_status='verified' AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180").all<{ slug: string; latitude: number; longitude: number }>() : null;
   const locationsBySlug = new Map(previewLocations?.results.map(row => [row.slug, row]));
@@ -64,3 +65,6 @@ export default async function PropertiesPage() {
     <Footer />
   </>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await PropertiesPage()); }

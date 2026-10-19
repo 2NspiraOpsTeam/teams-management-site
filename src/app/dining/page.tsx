@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { OfficialPlaceName } from '@/components/official-place-name';
 import { addressLabel, directionsFromPropertyUrl, mapLocationUrl, navigationAddressLabel } from '@/lib/map-location';
@@ -46,7 +47,7 @@ function VenueDetails({ venue }: { venue: DiningVenue }) {
   </article>;
 }
 
-export default async function DiningPage() {
+async function DiningPage() {
   const venues = (await listPublicDining()).filter(venue => venue.slug === 'delizia-73');
   const service = await featuredPropertyService(adminDb());
   const unique = service.dining;
@@ -71,3 +72,6 @@ export default async function DiningPage() {
     <DiningPropertyRotation properties={properties} />
   </main><Footer /></>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await DiningPage()); }

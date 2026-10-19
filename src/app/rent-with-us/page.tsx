@@ -1,3 +1,4 @@
+import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 export const runtime = 'nodejs';
 import { PageShowcase } from '@/components/page-showcase';
@@ -23,7 +24,7 @@ const faq = [
   { question: <WebsiteText contentKey="rent-with-us.text-71">When will my security deposit be returned?</WebsiteText>, answer: <><WebsiteText contentKey="rent-with-us.text-72">Provide your forwarding address and return all keys when you move out. Deposits are subject only to lawful deductions, such as unpaid rent or damage beyond ordinary wear and tear.</WebsiteText><br /><br /><WebsiteText contentKey="rent-with-us.text-73">For apartments that are not rent-regulated, the remaining deposit and any itemized deductions generally must be provided within 14 days after you vacate. Rent-regulated apartments follow different return requirements. Ask management about your applicable deadline and any pre-move-out inspection rights. Do not treat the deposit as your last month’s rent without a written agreement.</WebsiteText><a href="https://ag.ny.gov/publications/residential-tenants-rights-guide"><WebsiteText contentKey="rent-with-us.text-10">NY Attorney General</WebsiteText></a>, <a href="https://www.nysenate.gov/legislation/laws/GOB/7-108"><WebsiteText contentKey="rent-with-us.text-11">NY security-deposit law</WebsiteText></a></> },
 ];
 
-export default async function RentWithUsPage() {
+async function RentWithUsPage() {
   const handoff = await adminDb().prepare("SELECT kind,label,destination FROM rental_handoff_settings WHERE id='primary'").first<{kind:string;label:string|null;destination:string|null}>();
   const brokerHref = handoff?.kind === 'url' ? handoff.destination : handoff?.kind === 'email' ? `mailto:${handoff.destination}` : handoff?.kind === 'phone' ? `tel:${handoff.destination?.replace(/[^+\d]/g,'')}` : null;
   return <><Header /><main id="main-content">
@@ -34,3 +35,6 @@ export default async function RentWithUsPage() {
     <section aria-labelledby="rent-faq-heading" className="bg-slate-50 py-16 sm:py-20"><div className="max-w-4xl mx-auto px-4 sm:px-6"><p className="uppercase tracking-[.2em] text-xs text-teams-secondary mb-3"><WebsiteText contentKey="rent-with-us.text-38">Resident information</WebsiteText></p><h2 id="rent-faq-heading" className="text-3xl sm:text-4xl font-serif text-teams-ink mb-4"><WebsiteText contentKey="rent-with-us.text-39">Frequently Asked Questions</WebsiteText></h2><p className="text-teams-secondary leading-relaxed mb-9"><WebsiteText contentKey="rent-with-us.text-40">Your lease and applicable law govern where they differ from this general guidance.</WebsiteText></p><div className="divide-y divide-slate-100 border-y border-slate-100">{faq.map(({ question, answer }, index) => <details key={index} className="group rent-faq"><summary className="cursor-pointer list-none py-5 pr-8 text-lg font-semibold text-teams-ink marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-gold relative">{question}<span aria-hidden="true" className="absolute right-1 top-5 text-teams-secondary group-open:rotate-45 transition-transform">+</span></summary><div className="pb-6 pr-4 text-teams-secondary leading-relaxed [&_a]:underline [&_a]:underline-offset-4 [&_a]:decoration-teams-gold [&_a:hover]:text-teams-ink [&_a:focus-visible]:outline [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-teams-gold">{answer}</div></details>)}</div></div></section>
 <PageShowcase page="rent-with-us" variant="split"/>  </main><Footer /></>;
 }
+
+// Keep published copy in the page payload, not the persistent App Router layout.
+export default async function WebsitePage() { return renderWebsiteContent(await RentWithUsPage()); }
