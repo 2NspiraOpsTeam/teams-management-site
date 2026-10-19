@@ -18,3 +18,14 @@ export async function savePresentation(db:D1Database,id:string,input:Presentatio
  const result=await db.batch(statements);
  return result[1].meta.changes===1;
 }
+
+// Append explicitly requested upload uses without replacing either section's current selections.
+export async function appendUploadedGallery(db:D1Database,buildingId:string,assetId:string,contexts:MediaContext[]) {
+ for(const context of contexts){
+  await db.batch([
+   db.prepare('INSERT OR IGNORE INTO media_presentation_settings(building_id,context) VALUES (?,?)').bind(buildingId,context),
+   db.prepare("UPDATE media_presentation_settings SET revision=revision+1,mutation_token=? WHERE building_id=? AND context=? AND NOT EXISTS(SELECT 1 FROM media_presentation_gallery WHERE building_id=? AND context=? AND asset_id=?)").bind(crypto.randomUUID(),buildingId,context,buildingId,context,assetId),
+   db.prepare("INSERT OR IGNORE INTO media_presentation_gallery(building_id,context,asset_id,order_index,kind) SELECT ?,?,?,COALESCE(MAX(order_index),-1)+1,'exterior' FROM media_presentation_gallery WHERE building_id=? AND context=?").bind(buildingId,context,assetId,buildingId,context)
+  ]);
+ }
+}

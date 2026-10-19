@@ -13,7 +13,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, propertyUnitMedia, publicMediaSrc } from '@/lib/media-management';
 import { canonicalPreviewBuildings, getPublicBuilding } from '@/lib/public-buildings';
 import { listPublicDining } from '@/lib/public-dining';
-import { previewPortfolio, previewPortfolioEnabled, sarasotaBuildingPhotos, sarasotaBuildingMapLocation, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaBuildingMapLocation } from '@/lib/preview-portfolio';
 import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
 import { greatSchoolsZipUrl, nycLivingFacts } from '@/lib/nyc-living-facts';
@@ -62,8 +62,6 @@ async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }
   const residentialCover = coverItem ? {src:publicMediaSrc(coverItem),alt:coverItem.alt_text||`Approved property image for ${building.name}`} : null;
   const images = media.filter(item=>item.in_gallery!==0).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
 
-  if (previewPortfolioEnabled && slug === '609-golden-gate-pt') images.unshift(...sarasotaBuildingPhotos);
-  if (previewPortfolioEnabled && slug === '71-e-110th-st') images.push(...east110UnitPhotos, ...east110PenthousePhotos);
 
   const heroImages = residentialCover ? [{ ...images.find(image => image.src === residentialCover.src), ...residentialCover }, ...images.filter(image => image.src !== residentialCover.src)] : images;
 
