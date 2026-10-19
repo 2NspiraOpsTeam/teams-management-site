@@ -17,3 +17,7 @@ Gmail sends multipart/alternative (plain first, HTML second), base64 UTF-8 parts
 Six synthetic browser previews at 390, 768 and 1440 pixels passed logo decode and overflow checks; mobile tenant and desktop Admin screenshots visually inspected. These are browser checks, not Gmail/Outlook inbox rendering or real emailed-code acceptance.
 
 Pre-release private checkpoint restored all 63 tables/schema exactly with integrity OK and no foreign-key violations. This code-only change requires no database writes or migration. Waterbear only; 2Nspira production untouched.
+
+## Released
+
+Waterbear runtime `e5ca72e4-75b9-4c73-ae6e-dac91704e9b2` verified at 100% traffic, release header `branded-signin-email-20261018`. Live Admin/tenant login and logo returned 200; protected household page redirected to tenant login. Application commit `8bf5704`. Existing gateway, database and credentials preserved. Real Gmail/Outlook inbox acceptance remains unverified; no live sign-in email was requested.
