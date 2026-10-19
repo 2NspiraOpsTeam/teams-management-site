@@ -1177,7 +1177,7 @@
         "key": "rent-with-us.text-47",
         "label": "Answer · You will receive keys when you move in. Contact management if you",
         "section": "Rental questions & answers",
-        "default": "You will receive keys when you move in. Contact management if you lose a key, need a replacement, or have a broken lock. We will explain the appropriate replacement or locksmith procedure and any lawful charges. Report damaged building-entry or apartment locks promptly. If you change an apartment lock, provide management with a duplicate key as required by law.",
+        "default": "You will receive keys when you move in. Contact management if you lose a key, need a replacement, or have a broken lock. We will explain the appropriate replacement or locksmith procedure and any lawful charges. Report damaged building-entry or apartment locks promptly. If you change an apartment lock, provide management with a duplicate key as required by law. ",
         "maxLength": 3000
       },
       {
@@ -1198,7 +1198,7 @@
         "key": "rent-with-us.text-50",
         "label": "Answer · Never block a fire-escape window or another exit. Keep fire escap",
         "section": "Rental questions & answers",
-        "default": "Never block a fire-escape window or another exit. Keep fire escapes, hallways and other exit routes clear.",
+        "default": "Never block a fire-escape window or another exit. Keep fire escapes, hallways and other exit routes clear. ",
         "maxLength": 3000
       },
       {
@@ -1233,7 +1233,7 @@
         "key": "rent-with-us.text-55",
         "label": "Answer · If an alarm indicates a possible fire or carbon monoxide emergenc",
         "section": "Rental questions & answers",
-        "default": "If an alarm indicates a possible fire or carbon monoxide emergency, leave the affected area and call 911.",
+        "default": "If an alarm indicates a possible fire or carbon monoxide emergency, leave the affected area and call 911. ",
         "maxLength": 3000
       },
       {
@@ -1268,7 +1268,7 @@
         "key": "rent-with-us.text-60",
         "label": "Answer · Management arranges installation in eligible windows; fire-escape",
         "section": "Rental questions & answers",
-        "default": "Management arranges installation in eligible windows; fire-escape windows have different requirements. Complete the annual window-guard notice and report household changes promptly. Any permitted charge depends on your apartment’s status; rent-stabilized or rent-controlled apartments have a maximum charge of $10 per guard.",
+        "default": "Management arranges installation in eligible windows; fire-escape windows have different requirements. Complete the annual window-guard notice and report household changes promptly. Any permitted charge depends on your apartment’s status; rent-stabilized or rent-controlled apartments have a maximum charge of $10 per guard. ",
         "maxLength": 3000
       },
       {
@@ -1282,7 +1282,7 @@
         "key": "rent-with-us.text-62",
         "label": "Answer · Contact management before bringing a pet into the apartment to co",
         "section": "Rental questions & answers",
-        "default": "Contact management before bringing a pet into the apartment to confirm the policy for your building and lease, including any size or insurance requirements. Residents must prevent excessive noise and unsafe behavior and clean up after their animals. Service and emotional-support animals are handled through the reasonable-accommodation process rather than ordinary pet restrictions. Contact management to request an accommodation.",
+        "default": "Contact management before bringing a pet into the apartment to confirm the policy for your building and lease, including any size or insurance requirements. Residents must prevent excessive noise and unsafe behavior and clean up after their animals. Service and emotional-support animals are handled through the reasonable-accommodation process rather than ordinary pet restrictions. Contact management to request an accommodation. ",
         "maxLength": 3000
       },
       {
@@ -1296,7 +1296,7 @@
         "key": "rent-with-us.text-64",
         "label": "Answer · Use your building’s designated disposal areas and labeled contain",
         "section": "Rental questions & answers",
-        "default": "Use your building’s designated disposal areas and labeled containers. Separate trash, recyclables and compostable material, including food scraps and food-soiled paper, according to NYC rules. Keep corridors and exits clear. Contact management before disposing of bulky items, electronics or hazardous materials.",
+        "default": "Use your building’s designated disposal areas and labeled containers. Separate trash, recyclables and compostable material, including food scraps and food-soiled paper, according to NYC rules. Keep corridors and exits clear. Contact management before disposing of bulky items, electronics or hazardous materials. ",
         "maxLength": 3000
       },
       {
@@ -1317,7 +1317,7 @@
         "key": "rent-with-us.text-67",
         "label": "Answer · For NYC rent-stabilized apartments, renewal offers generally must",
         "section": "Rental questions & answers",
-        "default": "For NYC rent-stabilized apartments, renewal offers generally must be delivered 90–150 days before expiration, with 60 days to respond. Other apartments may have protections under Good Cause Eviction and applicable notice rules.",
+        "default": "For NYC rent-stabilized apartments, renewal offers generally must be delivered 90–150 days before expiration, with 60 days to respond. Other apartments may have protections under Good Cause Eviction and applicable notice rules. ",
         "maxLength": 3000
       },
       {
@@ -1338,7 +1338,7 @@
         "key": "rent-with-us.text-70",
         "label": "Answer · Contact management as soon as possible to discuss your circumstan",
         "section": "Rental questions & answers",
-        "default": "Contact management as soon as possible to discuss your circumstances and available options. Moving out does not automatically end your lease obligations, but lawful early-termination rights may apply. New York law also requires residential landlords to take reasonable, good-faith steps to re-rent an apartment and reduce losses. Obtain any agreed release in writing.",
+        "default": "Contact management as soon as possible to discuss your circumstances and available options. Moving out does not automatically end your lease obligations, but lawful early-termination rights may apply. New York law also requires residential landlords to take reasonable, good-faith steps to re-rent an apartment and reduce losses. Obtain any agreed release in writing. ",
         "maxLength": 3000
       },
       {
@@ -1359,7 +1359,7 @@
         "key": "rent-with-us.text-73",
         "label": "Answer · For apartments that are not rent-regulated, the remaining deposit",
         "section": "Rental questions & answers",
-        "default": "For apartments that are not rent-regulated, the remaining deposit and any itemized deductions generally must be provided within 14 days after you vacate. Rent-regulated apartments follow different return requirements. Ask management about your applicable deadline and any pre-move-out inspection rights. Do not treat the deposit as your last month’s rent without a written agreement.",
+        "default": "For apartments that are not rent-regulated, the remaining deposit and any itemized deductions generally must be provided within 14 days after you vacate. Rent-regulated apartments follow different return requirements. Ask management about your applicable deadline and any pre-move-out inspection rights. Do not treat the deposit as your last month’s rent without a written agreement. ",
         "maxLength": 3000
       },
       {
