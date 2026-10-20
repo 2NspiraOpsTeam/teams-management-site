@@ -22,7 +22,7 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
  const filter=`datetimeHour_geq:"${day}T00:00:00Z",datetimeHour_leq:"${now.toISOString()}"`;
  const [d1,workers,page,auth]=await Promise.allSettled([
   gql(`d1AnalyticsAdaptiveGroups(limit:20,filter:{${filter}}){dimensions{databaseId}sum{rowsRead rowsWritten}}`),
-  gql(`workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${day}T00:00:00Z",datetime_leq:"${now.toISOString()}"}){dimensions{status}sum{requests errors}}`),
+  gql(`account:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${day}T00:00:00Z",datetime_leq:"${now.toISOString()}"}){dimensions{status}sum{requests errors}} ${config.runtime?`active:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${day}T00:00:00Z",datetime_leq:"${now.toISOString()}",scriptName:"${config.runtime}"}){dimensions{status}sum{requests errors}}`:""}`),
   fetcher(config.origin+'/',{redirect:'manual',signal:AbortSignal.timeout(12000),headers:{'User-Agent':'TeamsIntegrityMonitor/1.0'}}).then(async r=>({status:r.status,release:r.headers.get('x-teams-release'),html:await r.text()})),
   authHealth(),
  ]);
@@ -35,9 +35,9 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
   // Hour-rate inspection remains an on-demand investigation, not a scheduled fanout.
  }else problems.push('D1 usage monitoring unavailable');
  if(workers.status==='fulfilled'){
-  const rows=workers.value.workersInvocationsAdaptive;metrics.invocations=rows.reduce((n,r)=>n+r.sum.requests,0);
-  metrics.resourceErrors=rows.filter(r=>r.dimensions.status==='exceededResources').reduce((n,r)=>n+r.sum.requests,0);
-  metrics.invocationErrors=rows.reduce((n,r)=>n+r.sum.errors,0);
+  const rows=workers.value.account,active=workers.value.active||rows;metrics.invocations=rows.reduce((n,r)=>n+r.sum.requests,0);
+  metrics.resourceErrors=active.filter(r=>r.dimensions.status==='exceededResources').reduce((n,r)=>n+r.sum.requests,0);
+  metrics.invocationErrors=active.reduce((n,r)=>n+r.sum.errors,0);
  }else problems.push('Worker usage monitoring unavailable');
  if(page.status==='fulfilled'){
   if(page.value.status!==200)problems.push('Homepage HTTP '+page.value.status);
@@ -50,7 +50,7 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
   if(metrics.loginLockouts>=3)problems.push('Repeated sign-in lockouts in the last hour');
   if(metrics.loginThrottleExcess>=20)problems.push('Unusual sign-in request volume in the last hour');
  }else problems.push('Authentication monitoring unavailable');
- return {at:now.toISOString(),day,metrics,problems,limits:config.limits,usageCaveat:'Worker invocations are an analytics proxy, not the enforced billable counter. Provider data can lag. Failed-login classifications are logged separately.'};
+ return {at:now.toISOString(),day,runtime:config.runtime,metrics,problems,limits:config.limits,usageCaveat:'Worker invocations are an analytics proxy, not the enforced billable counter. Provider data can lag. Failed-login classifications are logged separately.'};
 }
 function evaluate(current,prior={}) {
  const notices=current.problems.filter(p=>!(prior.problems||[]).includes(p)),keys=[];
@@ -60,12 +60,12 @@ function evaluate(current,prior={}) {
   if(level){const key=current.day+':'+metric+':'+level;keys.push(key);if(!(prior.keys||[]).includes(key))notices.push(`${metric} reached ${level}% of conservative Free baseline (${value.toLocaleString()}/${limit.toLocaleString()})`);}
  }
  for(const metric of ['resourceErrors','invocationErrors']){
-  const previous=prior.day===current.day?prior.metrics?.[metric]??current.metrics[metric]:current.metrics[metric];
+  const previous=prior.day===current.day&&prior.runtime===current.runtime?prior.metrics?.[metric]??current.metrics[metric]:current.metrics[metric];
   const delta=current.metrics[metric]-previous;if(delta>0)notices.push(`${delta} new ${metric}`);
  }
  if(current.metrics.previousHourReads>500000 && (prior.metrics?.previousHourReads!==current.metrics.previousHourReads||prior.day!==current.day))notices.push('Read-rate warning: previous complete UTC hour exceeded 500,000 rows');
  // Persist only compact counters in scheduler scratch/state, never raw logs/data.
- return {fire:notices.length>0,message:notices.length?'Teams website integrity alert: '+notices.join('; ')+'. '+current.usageCaveat:'',state:{day:current.day,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics:current.metrics,problems:current.problems,lastChecked:current.at}};
+ return {fire:notices.length>0,message:notices.length?'Teams website integrity alert: '+notices.join('; ')+'. '+current.usageCaveat:'',state:{day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics:current.metrics,problems:current.problems,lastChecked:current.at}};
 }
 module.exports={snapshot,evaluate};
 if(require.main===module)(async()=>{
