@@ -9,6 +9,7 @@ const deliverableStaticMedia = new Set([
   '/preview-properties/3425-east-tremont-ave.jpg',
   '/preview-properties/166-e-118th-street.jpg',
   ...goldStreetGallery,
+  '/preview-properties/61-gold-st/twilight-skyline-original.png',
   ...existingWebsitePhotos.map(photo=>photo.src),
   ...numberedPreviewMedia('1374-1st-ave',10),
   ...numberedPreviewMedia('225-e-83rd-st',13),

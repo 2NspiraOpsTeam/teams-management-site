@@ -6,7 +6,7 @@ import {RetainedGalleryPhoto} from './retained-gallery-photo';
 
 export interface GalleryImage { src: string; alt: string; caption?: string | null }
 
-export function PropertyGallery({ images, name, compact = false, hero = false, href, address }: { images: GalleryImage[]; name: string; compact?: boolean; hero?: boolean; href?: string; address?: string }) {
+export function PropertyGallery({ images, name, compact = false, hero = false, href, address, preventUpscale = false }: { images: GalleryImage[]; name: string; compact?: boolean; hero?: boolean; href?: string; address?: string; preventUpscale?: boolean }) {
   const activity=useGalleryActivity();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -33,7 +33,7 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
   if (!images.length) return <div className={`${imageAspect} bg-teams-charcoal border border-slate-200 flex flex-col items-center justify-center px-6 text-center`} aria-label="Branded placeholder; no property photograph available"><span className="mb-4 font-serif text-4xl text-teams-gold" aria-hidden="true">TM</span><span className="text-xs uppercase tracking-[0.14em] text-white">Property image unavailable</span></div>;
 
   const current = images[index % images.length];
-  const photo = <div ref={activity.ref}>{images.map((item,photoIndex)=><RetainedGalleryPhoto key={`${item.src}-${photoIndex}`} active={photoIndex===index % images.length} src={item.src} alt={item.alt} fetchPriority={hero ? 'high' : undefined} onLoad={() => setLoadedSrc(item.src)} onError={() => setLoadedSrc(item.src)} className={`property-image w-full ${imageAspect} object-cover`} />)}</div>;
+  const photo = <div ref={activity.ref}>{images.map((item,photoIndex)=><RetainedGalleryPhoto key={`${item.src}-${photoIndex}`} active={photoIndex===index % images.length} src={item.src} alt={item.alt} fetchPriority={hero ? 'high' : undefined} onLoad={() => setLoadedSrc(item.src)} onError={() => setLoadedSrc(item.src)} className={`property-image w-full ${imageAspect} ${preventUpscale ? 'object-scale-down bg-teams-charcoal' : 'object-cover'}`} />)}</div>;
   const move = (delta: number) => setIndex(value => (value + delta + images.length) % images.length);
   return <figure className="min-w-0" onMouseEnter={() => { if (!hero) setPaused(true); }} onMouseLeave={() => { if (!hero) setPaused(false); }} onFocusCapture={event => setPaused(!hero || event.target.matches(':focus-visible'))} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}>
     <div className={`relative overflow-hidden ${hero ? "" : "border border-slate-200"} bg-slate-100`}>
