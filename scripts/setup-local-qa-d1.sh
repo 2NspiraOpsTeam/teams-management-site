@@ -25,6 +25,7 @@ for schema_file in \
   src/lib/migrations/media-presentation-contexts.sql \
   src/lib/migrations/property-operations.sql \
   src/lib/migrations/property-llc-name.sql \
+  src/lib/migrations/property-admin-facts.sql \
   src/lib/migrations/rent-roll-source.sql \
   src/lib/migrations/rent-roll-complete-fields.sql \
   src/lib/migrations/tenant-directory-identity-nullable.sql \
