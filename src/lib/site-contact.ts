@@ -4,7 +4,7 @@ export const siteContact = {
   phone: '212-861-0303',
   fax: '212-861-1118',
   address: {
-    street: '1374 1st Avenue',
+    street: '1374 1st Avenue, Apt. 1A',
     city: 'New York',
     state: 'NY',
     postalCode: '10021',
