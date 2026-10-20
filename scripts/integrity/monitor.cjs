@@ -2,6 +2,7 @@
 // Read-only monitor. Credentials and target identifiers belong in a mode-0600
 // config OUTSIDE the public repository. Never prints provider error payloads.
 const fs=require('node:fs');
+const {readRate}=require('./read-rate.cjs');
 async function snapshot(config,fetcher=fetch,now=new Date()) {
  if(config.wrangler)require('node:child_process').execFileSync(config.wrangler,['whoami'],{timeout:15000,stdio:'pipe',env:{...process.env,CLOUDFLARE_ACCOUNT_ID:config.account_id}});
  const text=fs.readFileSync(config.oauth_config,'utf8');
@@ -78,6 +79,7 @@ function evaluate(current,prior={}) {
  const incidents={},lastNotified={...(prior.monitorLastNotified||{})};
  const notices=current.problems.filter(p=>!monitoring(p)&&!(prior.problems||[]).includes(p)),keys=[];
  const now=Date.parse(current.at);
+ const rate=readRate(current,prior);if(rate.message)notices.push(rate.message);
  for(const p of current.problems.filter(monitoring)){
   const previous=prior.monitorIncidents?.[p];
   const failures=(typeof previous==='object'?previous.failures:0)+1;
@@ -100,7 +102,7 @@ function evaluate(current,prior={}) {
  const onlyMonitoring=notices.length>0&&notices.every(p=>monitoring(p)||p.endsWith('monitoring restored'));
  const message=notices.length?(onlyMonitoring?'Teams monitoring notice: ':'Teams website integrity alert: ')+notices.join('; ')+(onlyMonitoring?'. This concerns monitoring visibility, not confirmed hacking or an outage.':'. '+current.usageCaveat):'';
  const metrics={...(prior.day===current.day&&prior.runtime===current.runtime?prior.metrics||{}:{}),...current.metrics};
- return {fire:notices.length>0,message,state:{day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics,problems:current.problems,monitorIncidents:incidents,monitorLastNotified:lastNotified,diagnostics:current.diagnostics,lastChecked:current.at}};
+ return {fire:notices.length>0,message,state:{...rate.state,day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics,problems:current.problems,monitorIncidents:incidents,monitorLastNotified:lastNotified,diagnostics:current.diagnostics,lastChecked:current.at}};
 }
 module.exports={snapshot,evaluate};
 if(require.main===module)(async()=>{
