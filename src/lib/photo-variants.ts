@@ -13,8 +13,8 @@ export function photoAttributes(src:string|undefined,sizes='(max-width: 767px) 1
  return {src:variantUrl(photo,fallback),srcSet:photo.variants.map(v=>`${variantUrl(photo,v)} ${v.width}w`).join(', '),sizes};
 }
 export function highResolutionPhoto(src:string,width=2560){const photo=preparedPhoto(src);if(!photo)return src;const variant=photo.variants.find(v=>v.width>=width)||photo.variants[photo.variants.length-1];return variantUrl(photo,variant);}
-export function requestedMediaVariant(id:string,version:string|null,width:number){
- if(!enabled||!Number.isSafeInteger(width)||width<1)return null;
+export function requestedMediaVariant(id:string,version:string|null,width:number,preview=enabled){
+ if(!preview||!Number.isSafeInteger(width)||width<1)return null;
  const photo=byId.get(id);if(!photo||version!==photo.sourceSha256)return null;
  const variant=photo.variants.find(v=>v.width===width);return variant?{photo,variant}:null;
 }
