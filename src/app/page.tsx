@@ -1,7 +1,7 @@
+import { pageMetadata } from '@/lib/site-seo';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { addressLabel } from '@/lib/map-location';
-import type { Metadata } from 'next';
 import { AcrossCityRail } from '@/components/across-city-rail';
 import Link from 'next/link';
 import { Header } from '@/components/header';
@@ -14,10 +14,7 @@ import type { BuildingPublic } from '@/lib/database.types';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 
 export const runtime = 'nodejs';
-export const metadata: Metadata = {
-  title: 'Teams Management | New York Property Management',
-  description: 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.',
-};
+export const metadata = pageMetadata('/', 'Teams Management | New York Property Management', 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.');
 
 type Feature = { building: BuildingPublic; image: MediaRow };
 const photo = (image: MediaRow, label: string, eager = false) => <img src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className="home-photo h-full w-full object-cover" />;
@@ -40,14 +37,12 @@ async function Home() {
     .map(item => item && candidateBySlug.get(item.property_slug))
     .filter((item): item is Feature => !!item);
   const showcaseImages = new Map(candidates.map(item => [item.building.slug, item.image]));
-  const featuredSlugs = new Set([...service.slots.entries()].filter(([slot]) => slot !== 'home:showcase').map(([,item]) => item?.property_slug));
   const railStart = service.select('home:showcase')?.property_slug;
-  const showcasePool = buildings.filter(building => !featuredSlugs.has(building.slug));
+  const showcasePool = buildings;
   const start = Math.max(0, showcasePool.findIndex(building => building.slug === railStart));
   const showcase = [...showcasePool.slice(start), ...showcasePool.slice(0, start)].flatMap(building => {
     const image = showcaseImages.get(building.slug);
-    if (!image) return [];
-    return [{ slug: building.slug, name: building.name, location: location(building), href: previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`, src: publicMediaSrc(image), alt: image.alt_text || `Approved cover photo of ${building.name}` }];
+    return [{ slug: building.slug, name: building.name, location: location(building), href: previewPortfolioEnabled && building.slug === '3425-east-tremont-bronx' ? `/retail/${building.slug}` : `/properties/${building.slug}`, src: image ? publicMediaSrc(image) : undefined, alt: image?.alt_text || `Approved cover photo of ${building.name}` }];
   });
   const hero = assignments.find(item => item.slot === 'hero') || featured[0]?.image;
   const retailImage = featured.find(item => item.building.slug !== featured[0]?.building.slug)?.image || eligible[0]?.image;

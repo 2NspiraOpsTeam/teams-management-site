@@ -1,3 +1,4 @@
+import { permanentRedirect } from 'next/navigation';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { PropertyVideos } from '@/components/property-videos';
 import { propertyVideos, publicVideoProjection } from '@/lib/property-videos';
@@ -5,6 +6,7 @@ import { OfficialPlaceName } from '@/components/official-place-name';
 import { addressLabel, postalAddressMetadata } from '@/lib/map-location';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import { directionsFromPropertyUrl, directionsToPropertyUrl, navigationAddressLabel, mapLocationUrl, nearbyStreetMapCenter, satelliteMapUrl, streetViewExploreUrl } from '@/lib/map-location';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/header';
@@ -13,7 +15,7 @@ import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, propertyUnitMedia, publicMediaSrc } from '@/lib/media-management';
 import { canonicalPreviewBuildings, getPublicBuilding } from '@/lib/public-buildings';
 import { listPublicDining } from '@/lib/public-dining';
-import { previewPortfolio, previewPortfolioEnabled, sarasotaBuildingPhotos, sarasotaBuildingMapLocation, east110UnitPhotos, east110PenthousePhotos } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled, sarasotaBuildingMapLocation } from '@/lib/preview-portfolio';
 import { PropertyGallery } from '@/components/property-gallery';
 import { getPublicRetail } from '@/lib/public-retail';
 import { greatSchoolsZipUrl, nycLivingFacts } from '@/lib/nyc-living-facts';
@@ -26,23 +28,18 @@ export const runtime = 'nodejs';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+  if (['349-w-46th-st','351-w-46th-st'].includes(slug)) permanentRedirect('/properties/349-351-w-46th-st');
   const building = previewPortfolioEnabled ? (await canonicalPreviewBuildings(previewPortfolio)).find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) return {};
   const address = addressLabel(building.address);
   const title = `${building.name} | Teams Management Residences`;
   const description = `Explore ${building.name} at ${address}. View property details, location, photos, and contact information from Teams Management.`;
-  return {
-    title, description,
-    ...(previewPortfolioEnabled && slug === '609-golden-gate-pt' ? {
-      alternates: { canonical: 'https://teams-management-preview.pages.dev/properties/609-golden-gate-pt' },
-      openGraph: { title, description, url: 'https://teams-management-preview.pages.dev/properties/609-golden-gate-pt', type: 'website' },
-      twitter: { card: 'summary', title, description },
-    } : {}),
-  };
+  return pageMetadata(`/properties/${building.slug}`, title, description);
 }
 
 async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (['349-w-46th-st','351-w-46th-st'].includes(slug)) permanentRedirect('/properties/349-351-w-46th-st');
   const building = previewPortfolioEnabled ? (await canonicalPreviewBuildings(previewPortfolio)).find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) notFound();
   const retail = await getPublicRetail(slug);
@@ -62,8 +59,6 @@ async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }
   const residentialCover = coverItem ? {src:publicMediaSrc(coverItem),alt:coverItem.alt_text||`Approved property image for ${building.name}`} : null;
   const images = media.filter(item=>item.in_gallery!==0).map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));
 
-  if (previewPortfolioEnabled && slug === '609-golden-gate-pt') images.unshift(...sarasotaBuildingPhotos);
-  if (previewPortfolioEnabled && slug === '71-e-110th-st') images.push(...east110UnitPhotos, ...east110PenthousePhotos);
 
   const heroImages = residentialCover ? [{ ...images.find(image => image.src === residentialCover.src), ...residentialCover }, ...images.filter(image => image.src !== residentialCover.src)] : images;
 
@@ -72,9 +67,10 @@ async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Place", name: building.name, address: postalAddressMetadata(building.address) }).replace(/</g, "\\u003c") }} /><main id="main-content" className="min-h-screen bg-white">
       <div className="pb-16">
         <section aria-label={`${building.name} photo gallery`} data-residential-hero>
-          <PropertyGallery images={heroImages} name={building.name} address={addressLabel(building.address)} hero />
+          <PropertyGallery images={heroImages} name={building.name} address={addressLabel(building.address)} hero preventUpscale={slug==='61-gold-st'} />
         </section>
         <nav aria-label="Property actions" className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
+          {slug==='61-gold-st' && residentialCover && <a href={residentialCover.src} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View full-size photo ↗</a>}
           {videos.length>0&&<a href="#property-videos" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Watch video tours ↓</a>}
           <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
           <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Map &amp; Directions ↗</a>

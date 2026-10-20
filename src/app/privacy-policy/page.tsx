@@ -1,11 +1,11 @@
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import { LegalPage } from '@/components/legal-page';
 import { siteContact } from '@/lib/site-contact';
 
 export const runtime = 'nodejs';
-export const metadata: Metadata = { title: 'Privacy Policy | Teams Management' };
+export const metadata = pageMetadata('/privacy-policy', 'Privacy Policy | Teams Management', 'Read how Teams Management handles website inquiries, account information, cookies, and privacy questions.');
 
 function PrivacyPolicy() {
   return <LegalPage title={<WebsiteText contentKey="privacy-policy.page-title">Privacy Policy</WebsiteText>}>

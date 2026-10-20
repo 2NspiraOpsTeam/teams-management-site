@@ -3,7 +3,7 @@ const { DatabaseSync } = createRequire(import.meta.url)('node:sqlite');
 import { readFileSync } from 'node:fs';
 import { describe,it,expect } from 'vitest';
 import type { D1Database } from '@cloudflare/workers-types';
-import { presentationCandidates,presentationState,savePresentation,validPresentation,type PresentationInput } from '../src/lib/media-presentation';
+import { saveVisualPresentation,selectablePresentationPhotos,appendUploadedGallery,presentationCandidates,presentationState,savePresentation,validPresentation,type PresentationInput } from '../src/lib/media-presentation';
 import { propertyMedia,propertyUnitMedia } from '../src/lib/media-management';
 import { eligibleShowcases } from '../src/lib/page-showcase';
 import { approvedRetailGallery } from '../src/lib/retail-profile';
@@ -22,6 +22,37 @@ function fixture(){
 }
 describe('independent property media presentations',()=>{
  it('preserves legacy covers/galleries and seeds idempotently without restoring removed selections',async()=>{const {db,sql,migration,input}=fixture();expect((await eligibleShowcases(db)).find(x=>x.property_id==='b')?.media_asset_id).toBe('a');expect((await approvedRetailGallery(db,'b'))).toHaveLength(1);await savePresentation(db,'b',input('retail',null,[]));sql.exec(migration);expect((await presentationState(db,'b')).contexts.retail.gallery).toEqual([]);expect(sql.prepare('SELECT COUNT(*) n FROM media_assets').get()?.n).toBe(6);});
+ it('appends explicit upload sections without erasing existing covers or order; repeat upload is idempotent and old editors conflict',async()=>{
+  const {db,input}=fixture();
+  await appendUploadedGallery(db,'b','b',['residential','retail']);
+  let state=await presentationState(db,'b');
+  expect(state.contexts.residential.cover_asset_id).toBe('a');
+  expect(state.contexts.residential.gallery.map(x=>x.asset_id)).toEqual(['a','b']);
+  expect(state.contexts.residential.revision).toBe(0); // already in that gallery
+  expect(state.contexts.retail.revision).toBe(0);
+  await appendUploadedGallery(db,'b','a',['retail']);
+  state=await presentationState(db,'b');
+  expect(state.contexts.retail.gallery.map(x=>x.asset_id)).toEqual(['b','a']);
+  expect(state.contexts.retail.revision).toBe(1);
+  expect(await savePresentation(db,'b',input('retail',null,[],0))).toBe(false);
+  await appendUploadedGallery(db,'b','a',['retail']);
+  expect((await presentationState(db,'b')).contexts.retail).toEqual(state.contexts.retail);
+ });
+ it('registers all 29 existing website photos once, keeps apartment photos unit-scoped, and does not resurrect later removals',async()=>{
+  const {sql,db}=fixture();
+  sql.exec("INSERT INTO buildings(id,name,slug,address_json,publication_state) VALUES ('sarasota','The Pearl','609-golden-gate-pt','{}','published'),('east110','71 E 110th','71-e-110th-st','{}','published'); INSERT INTO units(id,building_id,unit_identifier,floor_number) VALUES ('unit1b','east110','1B',1),('unitpha','east110','PHA',6);");
+  const migration=readFileSync('src/lib/migrations/existing-website-photos.sql','utf8');
+  sql.exec(migration);
+  expect((await presentationCandidates(db,'sarasota'))).toHaveLength(19);
+  expect((await propertyMedia(db,'609-golden-gate-pt'))).toHaveLength(19);
+  expect((await propertyUnitMedia(db,'71-e-110th-st'))).toHaveLength(10);
+  expect((await presentationCandidates(db,'east110'))).toHaveLength(0);
+  const photo='website-609-golden-gate-pt-property-01';
+  sql.prepare('DELETE FROM media_presentation_gallery WHERE asset_id=?').run(photo);
+  sql.exec(migration);
+  expect((await presentationState(db,'sarasota')).contexts.residential.gallery).toHaveLength(18);
+  expect(sql.prepare("SELECT COUNT(*) n FROM media_assets WHERE uploaded_by='website-import'").get()?.n).toBe(29);
+ });
  it('allows one asset as both covers and in both galleries, without duplicate files',async()=>{const {db,input,sql}=fixture();await savePresentation(db,'b',input('residential','a',['a']));await savePresentation(db,'b',input('retail','a',['a']));const state=await presentationState(db,'b');expect(state.contexts.retail.cover_asset_id).toBe('a');expect(state.contexts.residential.gallery).toEqual([{asset_id:'a',kind:'storefront'}]);expect(sql.prepare('SELECT COUNT(*) n FROM media_assets').get()?.n).toBe(6);});
  it('changes retail cover, gallery membership and order without changing residential',async()=>{const {db,input}=fixture();await savePresentation(db,'b',input('retail','b',['b','a']));expect((await eligibleShowcases(db,true,'retail')).find(x=>x.property_id==='b')?.media_asset_id).toBe('b');expect((await eligibleShowcases(db)).find(x=>x.property_id==='b')?.media_asset_id).toBe('a');expect((await approvedRetailGallery(db,'b')).map(x=>x.src)).toEqual(['/api/media/b','/api/media/a']);expect((await propertyMedia(db,'qa')).map(x=>x.id)).toEqual(['a','b']);});
  it('allows an approved deliverable gallery asset to become a cover without upload',async()=>{const {db,sql,input}=fixture();sql.exec("UPDATE media_assets SET storage_key='/preview-properties/1365-1st-ave/image-01.jpg' WHERE id='b'");await savePresentation(db,'b',input('retail','b',['b']));expect((await eligibleShowcases(db,true,'retail')).find(x=>x.property_id==='b')?.storage_key).toBe('/preview-properties/1365-1st-ave/image-01.jpg');});
@@ -30,6 +61,38 @@ describe('independent property media presentations',()=>{
  it('excludes private, unpublished, unit-only, foreign and revoked images',async()=>{const {db,sql,input}=fixture();expect((await presentationCandidates(db,'b')).map(x=>x.id)).toEqual(['a','b']);await savePresentation(db,'b',input('retail','b',['b']));sql.exec("UPDATE media_assets SET visibility='internal' WHERE id='b'");expect(await approvedRetailGallery(db,'b')).toEqual([]);expect((await eligibleShowcases(db,true,'retail')).find(x=>x.property_id==='b')).toBeUndefined();});
  it('rejects stale and double-submit writes without partially erasing the gallery',async()=>{const {db,input}=fixture();expect(await savePresentation(db,'b',input('retail','b',['b','a']))).toBe(true);expect(await savePresentation(db,'b',input('retail','a',[]))).toBe(false);const s=(await presentationState(db,'b')).contexts.retail;expect(s.cover_asset_id).toBe('b');expect(s.gallery.map(x=>x.asset_id)).toEqual(['b','a']);expect(s.revision).toBe(1);});
  it('rolls back every context write if a gallery insert fails',async()=>{const {db,input}=fixture();await expect(savePresentation(db,'b',input('retail','a',['missing']))).rejects.toThrow();const s=(await presentationState(db,'b')).contexts.retail;expect(s.revision).toBe(0);expect(s.gallery.map(x=>x.asset_id)).toEqual(['b']);});
+ it('shows private/unpublished property thumbnails without publishing; excludes apartment and foreign sources',async()=>{
+  const {db,sql}=fixture();
+  expect((await selectablePresentationPhotos(db,'b')).map(x=>x.id)).toEqual(expect.arrayContaining(['a','b','private','unpublished']));
+  expect((await selectablePresentationPhotos(db,'b')).map(x=>x.id)).not.toEqual(expect.arrayContaining(['unit','foreign']));
+  expect(sql.prepare("SELECT visibility FROM media_assets WHERE id='private'").get()?.visibility).toBe('internal');
+ });
+ it('saves both visual destinations and dedicated covers together; selecting publishes only chosen sources',async()=>{
+  const {db,sql,input}=fixture();
+  expect(await saveVisualPresentation(db,'b',[input('residential','private',['unpublished']),input('retail','unpublished',['private'])])).toBe(true);
+  expect((await propertyMedia(db,'qa')).filter(x=>x.in_gallery).map(x=>x.id)).toEqual(['unpublished']);
+  expect((await approvedRetailGallery(db,'b')).map(x=>x.src)).toEqual(['/api/media/private']);
+  expect(sql.prepare("SELECT visibility FROM media_assets WHERE id='private'").get()?.visibility).toBe('public');
+  const state=await presentationState(db,'b');expect(state.contexts.residential.cover_asset_id).toBe('private');expect(state.contexts.retail.cover_asset_id).toBe('unpublished');
+  expect(await saveVisualPresentation(db,'b',[input('residential',null,[],1),input('retail',null,[],1)])).toBe(true);
+  expect(await propertyMedia(db,'qa')).toEqual([]);expect(await approvedRetailGallery(db,'b')).toEqual([]);
+  expect(sql.prepare('SELECT COUNT(*) n FROM media_assets').get()?.n).toBe(6);
+ });
+ it('successful visual saves leave unchecked private photos, apartments and archived sources untouched',async()=>{
+  const {db,sql,input}=fixture();sql.exec("UPDATE media_assets SET visibility='archived' WHERE id='b'");
+  expect((await selectablePresentationPhotos(db,'b')).some(x=>x.id==='b')).toBe(false);
+  const unitBefore=sql.prepare("SELECT * FROM media_publications WHERE assignment_id='unit'").get();
+  expect(await saveVisualPresentation(db,'b',[input('residential','a',['unpublished']),input('retail',null,[])])).toBe(true);
+  expect(sql.prepare("SELECT visibility FROM media_assets WHERE id='private'").get()?.visibility).toBe('internal');
+  expect(sql.prepare("SELECT visibility FROM media_assets WHERE id='b'").get()?.visibility).toBe('archived');
+  expect(sql.prepare("SELECT * FROM media_publications WHERE assignment_id='unit'").get()).toEqual(unitBefore);
+ });
+ it('a stale visual save changes neither section nor private eligibility, even when just one revision is stale',async()=>{
+  const {db,sql,input}=fixture();await savePresentation(db,'b',input('retail','a',['a']));
+  expect(await saveVisualPresentation(db,'b',[input('residential','private',['private']),input('retail','private',['private'])])).toBe(false);
+  expect(sql.prepare("SELECT visibility FROM media_assets WHERE id='private'").get()?.visibility).toBe('internal');
+  const state=await presentationState(db,'b');expect(state.contexts.residential.revision).toBe(0);expect(state.contexts.retail.cover_asset_id).toBe('a');
+ });
  it('validates malformed selections, duplicates and context values',()=>{const {input}=fixture();expect(validPresentation(input('retail','a',['a']))).toBe(true);for(const value of [{...input('retail','a',['a','a'])},{...input('retail','a',[]),context:'unit'},{...input('residential','a',[]),fallback_to_property_cover:true},{...input('retail','a',[]),revision:0.5},{...input('retail','a',[]),gallery:[{asset_id:'a',kind:'unknown'}]}])expect(validPresentation(value)).toBe(false);});
  it('does not emit archived-property image URLs publicly while retaining Admin library access',async()=>{
   const {db,sql}=fixture();

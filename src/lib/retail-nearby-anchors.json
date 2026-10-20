@@ -594,5 +594,57 @@
       "placeIdVerifiedAt": null,
       "placeIdEvidenceUrl": null
     }
+  ],
+  "349-351-w-46th-st": [
+    {
+      "category": "hotel",
+      "label": "Hotel",
+      "name": "InterContinental New York Times Square",
+      "source": "https://www.openstreetmap.org/way/266034045",
+      "mapQuery": "40.7586056,-73.9896109",
+      "destinationQuery": "InterContinental New York Times Square, 300 West 44th Street, New York, NY 10036",
+      "addressDetail": "300 West 44th Street, New York, NY 10036",
+      "officialWebsiteUrl": null,
+      "websiteVerifiedAt": null,
+      "websiteEvidenceUrl": null,
+      "destinationAddress": "300 West 44th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7586056,
+        "longitude": -73.9896109
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "InterContinental New York Times Square, 300 West 44th Street, New York, NY 10036",
+      "locationEvidenceUrl": "https://www.openstreetmap.org/way/266034045",
+      "locationVerifiedAt": "2026-10-14",
+      "destinationPlaceId": null,
+      "placeIdVerifiedAt": null,
+      "placeIdEvidenceUrl": null
+    },
+    {
+      "category": "theatre",
+      "label": "Theater & culture",
+      "name": "Al Hirschfeld Theatre",
+      "source": "https://www.openstreetmap.org/way/265320169",
+      "mapQuery": "40.7592532,-73.9892108",
+      "destinationQuery": "Al Hirschfeld Theatre, 302 West 45th Street, New York, NY 10036",
+      "addressDetail": "302 West 45th Street, New York, NY 10036",
+      "officialWebsiteUrl": "https://us.atgtickets.com/venues/al-hirschfeld-theatre/venue-info/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://us.atgtickets.com/venues/al-hirschfeld-theatre/venue-info/",
+      "destinationAddress": "302 West 45th Street, New York, NY 10036",
+      "destinationCoordinates": {
+        "latitude": 40.7592532,
+        "longitude": -73.9892108
+      },
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Al Hirschfeld Theatre, 302 West 45th Street, New York, NY 10036",
+      "locationEvidenceUrl": "https://www.openstreetmap.org/way/265320169",
+      "locationVerifiedAt": "2026-10-14",
+      "destinationPlaceId": null,
+      "placeIdVerifiedAt": null,
+      "placeIdEvidenceUrl": null
+    }
   ]
 }

@@ -1,11 +1,13 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 // Only allowlisted public projections may call this helper. Never wrap Admin,
 // Tenant Services, leases, maintenance, contact records, or session lookups.
-export async function publicDataCache<T>(key:'published-buildings'|'preview-addresses'|'public-retail',load:()=>Promise<T>):Promise<T>{
+export type PublicProjectionKey = 'published-buildings'|'preview-addresses'|'public-retail'|`showcase-${'preview'|'published'}-${'residential'|'retail'}-${'covers'|'all'}-${'explicit'|'fallback'}`;
+export async function publicDataCache<T>(key:PublicProjectionKey,load:()=>Promise<T>):Promise<T>{
+ if(typeof caches==='undefined')return load();
  const env=getCloudflareContext().env as {TEAMS_RELEASE_SHA?:string};
  const release=env.TEAMS_RELEASE_SHA;
  // Local tests/dev and runtimes without an immutable release never share cache.
- if(!release||typeof caches==='undefined')return load();
+ if(!release)return load();
  let cache:Cache;try{cache=await caches.open('teams-public-projections-v1');}catch{return load();}
  const request=new Request('https://teams-public-cache.invalid/'+encodeURIComponent(release)+'/'+key);
  try{const hit=await cache.match(request);if(hit)return await hit.json() as T;}catch{/* Cache failure must not break the public site. */}

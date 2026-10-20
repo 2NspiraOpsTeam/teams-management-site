@@ -1,0 +1,11 @@
+import {expect,it,vi} from 'vitest';
+const state=vi.hoisted(()=>({review:true}));
+vi.mock('../src/lib/site-seo',async importOriginal=>{const original=await importOriginal<typeof import('../src/lib/site-seo')>();return {...original,get reviewSite(){return state.review;}};});
+vi.mock('../src/lib/public-buildings',()=>({listPublicBuildings:vi.fn(async()=>[{slug:'approved-building'}])}));
+vi.mock('../src/lib/public-retail',()=>({listPublicRetail:vi.fn(async()=>[{slug:'approved-retail'}])}));
+import {pageMetadata,siteOrigin,publicPages} from '../src/lib/site-seo';
+import robots from '../src/app/robots';
+import sitemap from '../src/app/sitemap';
+import {listPublicBuildings} from '../src/lib/public-buildings';
+it('aligns each public page canonical and share descriptions without inventing content',()=>{for(const path of publicPages){const m=pageMetadata(path,'Approved title','Approved description');expect(m.alternates?.canonical).toBe(siteOrigin+(path==='/'?'/':path));expect(m.openGraph).toMatchObject({title:'Approved title',description:'Approved description',url:m.alternates?.canonical});expect(m.twitter).toMatchObject({description:m.description});}});
+it('keeps review records out of discovery while publishing only public selectors at launch',async()=>{state.review=true;expect(robots().rules).toMatchObject({disallow:'/'});expect(await sitemap()).toEqual([]);expect(listPublicBuildings).not.toHaveBeenCalled();state.review=false;const r=robots();expect(r.sitemap).toBe(siteOrigin+'/sitemap.xml');const urls=(await sitemap()).map(x=>x.url);expect(urls).toContain(siteOrigin+'/properties/approved-building');expect(urls).toContain(siteOrigin+'/retail/approved-retail');expect(urls.some(x=>/\/(?:admin|access|tenant)(?:\/|$)/.test(x))).toBe(false);state.review=true;});

@@ -1,5 +1,6 @@
 'use client';
 import { WebsiteText } from '@/components/website-text';
+import { PublicPageEffects } from '@/components/public-page-effects';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,7 +21,8 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E8E5DF] bg-white text-[#252525]">
+    <header className="public-site-header sticky top-0 z-50 border-b border-[#E8E5DF] bg-white text-[#252525]">
+      <PublicPageEffects />
       <nav onKeyDown={event => { if (event.key === 'Escape' && menuOpen) { setMenuOpen(false); menuButton.current?.focus(); } }} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex items-center justify-between h-[88px] gap-4">
           <Link prefetch={false} href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">

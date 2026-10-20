@@ -1,3 +1,4 @@
+import { dailyHeroStyle } from '@/lib/daily-hero-style';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { PageShowcase } from '@/components/page-showcase';
@@ -9,12 +10,13 @@ import { Footer } from '@/components/footer';
 import { canonicalPreviewBuildings, listPublicBuildings } from '@/lib/public-buildings';
 import { adminDb } from '@/lib/admin-auth';
 import { propertyMedia, publicMediaSrc } from '@/lib/media-management';
-import { previewPortfolio, previewPortfolioEnabled, sarasotaBuildingPhotos } from '@/lib/preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled } from '@/lib/preview-portfolio';
 import { listPublicRetail } from '@/lib/public-retail';
 
 export const runtime = 'nodejs';
 
 async function PropertiesPage() {
+  const heroStyle = await dailyHeroStyle('properties');
   const sourceBuildings = (previewPortfolioEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings()).filter(building => building.slug !== '3425-east-tremont-bronx');
   const previewLocations = previewPortfolioEnabled ? await adminDb().prepare("SELECT slug, latitude, longitude FROM buildings WHERE map_verified=1 AND geocode_status='verified' AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180").all<{ slug: string; latitude: number; longitude: number }>() : null;
   const locationsBySlug = new Map(previewLocations?.results.map(row => [row.slug, row]));
@@ -25,11 +27,10 @@ async function PropertiesPage() {
   const retailSlugs = new Set((await listPublicRetail()).map(property => property.slug));
   const galleries = await Promise.all(buildings.map(async building => {const media = await propertyMedia(adminDb(),building.slug);const ordered=[...media.filter(m=>m.is_cover),...media.filter(m=>!m.is_cover)];const images=ordered.map(item=>({src:publicMediaSrc(item),alt:item.alt_text||`Approved property image for ${building.name}`,caption:item.caption}));return [building.slug,images] as const;}));
   const galleryMap = new Map(galleries);
-  if (previewPortfolioEnabled) galleryMap.set('609-golden-gate-pt', sarasotaBuildingPhotos);
   return <>
     <Header />
     <main id="main-content">
-      <section className="gold-street-hero gold-street-hero--properties text-white py-14 sm:py-20">
+      <section style={heroStyle} className="gold-street-hero gold-street-hero--properties text-white py-14 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-serif font-semibold text-white mb-4"><WebsiteText contentKey="properties.text-1">Our Portfolio</WebsiteText></h1>
           <p className="text-lg text-slate-100 max-w-2xl"><WebsiteText contentKey="properties.text-2">Explore the properties and individual residences in our portfolio.</WebsiteText></p>

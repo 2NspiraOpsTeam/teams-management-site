@@ -35,7 +35,7 @@ export const commercialDirectory: Record<string, CommercialDirectory> = {
   '41-w-46th-st': { heading: 'Listed commercial occupant', entries: [
     { name: 'Mala Midtown LLC dba Mala Project', spaces: 'STORE', area: '2,000 sq ft', website: 'https://www.malaproject.com/' }
   ] },
-  '349-w-46th-st': { heading: 'Listed commercial occupant', entries: [
+  '349-351-w-46th-st': { heading: 'Listed commercial occupant', entries: [
     { name: 'JazzCultural LLC', spaces: 'STORE', website: 'https://www.jazzcultural.com/' }
   ] },
   '171-e-74th-st': { heading: 'Listed commercial occupants', entries: [

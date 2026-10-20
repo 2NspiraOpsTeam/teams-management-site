@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/site-seo';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { OfficialPlaceName } from '@/components/official-place-name';
@@ -13,10 +14,7 @@ import { featuredPropertyService } from '@/lib/featured-property-service';
 import { previewPortfolioEnabled } from '@/lib/preview-portfolio';
 
 export const runtime = 'nodejs';
-export const metadata = {
-  title: 'Dining | Teams Management',
-  description: 'Explore dining at Teams Management properties, beginning with Delizia 73 on the Upper East Side.',
-};
+export const metadata = pageMetadata('/dining', 'Dining | Teams Management', 'Explore dining at Teams Management properties, beginning with Delizia 73 on the Upper East Side.');
 
 function ExternalAction({ href, children, primary = false }: { href: string | null; children: React.ReactNode; primary?: boolean }) {
   if (!href) return null;

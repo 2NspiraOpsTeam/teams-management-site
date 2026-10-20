@@ -28,8 +28,8 @@ describe('Neighborhood directions', () => {
         checked++;
       }
     }
-    expect(checked).toBe(103);
-    expect(transitChecked).toBe(17);
+    expect(checked).toBe(110);
+    expect(transitChecked).toBe(18);
   });
 });
 

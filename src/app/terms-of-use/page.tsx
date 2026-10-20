@@ -1,11 +1,11 @@
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import { LegalPage } from '@/components/legal-page';
 import { siteContact } from '@/lib/site-contact';
 
 export const runtime = 'nodejs';
-export const metadata: Metadata = { title: 'Terms of Use | Teams Management' };
+export const metadata = pageMetadata('/terms-of-use', 'Terms of Use | Teams Management', 'Read the terms for using the Teams Management website, property information, and third-party resources.');
 
 function TermsOfUse() {
   return <LegalPage title={<WebsiteText contentKey="terms-of-use.page-title">Terms of Use</WebsiteText>}>

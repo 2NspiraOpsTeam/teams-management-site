@@ -1,4 +1,5 @@
 import type { D1Database } from '@cloudflare/workers-types';
+import existingWebsitePhotos from './existing-website-photos.json';
 import { goldStreetGallery } from './preview-portfolio';
 
 export type MediaRow = { photo_number?:number; id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; in_gallery?:number; slot?:string; property_name?:string|null; property_slug?:string|null; unit_identifier?:string|null };
@@ -8,6 +9,8 @@ const deliverableStaticMedia = new Set([
   '/preview-properties/3425-east-tremont-ave.jpg',
   '/preview-properties/166-e-118th-street.jpg',
   ...goldStreetGallery,
+  '/preview-properties/61-gold-st/twilight-skyline-original.png',
+  ...existingWebsitePhotos.map(photo=>photo.src),
   ...numberedPreviewMedia('1374-1st-ave',10),
   ...numberedPreviewMedia('225-e-83rd-st',13),
   ...numberedPreviewMedia('171-e-74th-st',7),

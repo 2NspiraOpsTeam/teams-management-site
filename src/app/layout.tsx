@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { contactAddress, siteContact } from '@/lib/site-contact';
+import { siteOrigin } from '@/lib/site-seo';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteOrigin),
   title: "Teams Management | New York Property Management",
   description: "Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.",
   openGraph: {
@@ -37,11 +39,19 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Organization',
+          '@id': `${siteOrigin}/#organization`,
+          url: siteOrigin,
+          logo: `${siteOrigin}/brand/teams-management-logo.png`,
           name: 'Teams Management',
           email: siteContact.email,
           telephone: siteContact.phone,
           faxNumber: siteContact.fax,
           address: { '@type': 'PostalAddress', streetAddress: siteContact.address.street, addressLocality: siteContact.address.city, addressRegion: siteContact.address.state, postalCode: siteContact.address.postalCode, addressCountry: 'US' },
+        }).replace(/</g, '\\u003c') }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${siteOrigin}/#website`,
+          url: siteOrigin, name: 'Teams Management', inLanguage: 'en',
+          publisher: { '@id': `${siteOrigin}/#organization` },
         }).replace(/</g, '\\u003c') }} />
         {children}
       </body>

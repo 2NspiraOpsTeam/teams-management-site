@@ -1,3 +1,4 @@
+import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { NextResponse } from 'next/server';
 import { adminEnv, hash, sameOrigin } from '@/lib/admin-auth';
 import { tenantCookie, tenantDb, currentTenant, randomHex, tenantCodeHash } from '@/lib/tenant-auth';
@@ -8,7 +9,15 @@ const generic={message:'If this address has tenant access, a sign-in code has be
 export async function GET(){const tenant=await currentTenant();return tenant?reply({tenant}):reply({error:'Unauthorized'},401);}
 export async function POST(request:Request){
   if(!sameOrigin(request)) return reply({error:'Unauthorized'},401);
-  const input=await request.json().catch(()=>null) as {action?:unknown;email?:unknown;code?:unknown}|null;
+  if(!request.headers.get('content-type')?.toLowerCase().startsWith('application/json'))return reply({error:'Expected JSON.'},415);
+  let input: {email?:unknown;code?:unknown;action?:unknown}|null;
+  try {
+    const value:unknown=JSON.parse(new TextDecoder().decode(await boundedBody(request,4096)));
+    if(!value||typeof value!=='object'||Array.isArray(value))return reply({error:'Invalid sign-in request.'},400);
+    input=value;
+  } catch(error) {
+    return reply({error:error instanceof BodyTooLarge?'Sign-in request is too large.':'Invalid sign-in request.'},error instanceof BodyTooLarge?413:400);
+  }
   const email=typeof input?.email==='string'?input.email.trim().toLowerCase():'';
   if(!/^[^\s@]{1,64}@[^\s@]{1,190}$/.test(email)) return reply(generic);
   const db=tenantDb(),env=adminEnv(),mail=new MailService(env);

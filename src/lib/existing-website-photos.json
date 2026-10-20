@@ -1,0 +1,263 @@
+[
+  {
+    "id": "website-609-golden-gate-pt-property-01",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/building-waterfront.webp",
+    "alt": "Aerial view of The Pearl and nearby waterfront",
+    "caption": "The Pearl and surroundings",
+    "order": 0
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-02",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/living-room.webp",
+    "alt": "Living area opening onto a terrace",
+    "caption": "Living area",
+    "order": 1
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-03",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/bathroom.webp",
+    "alt": "Bathroom with double vanity and glass shower",
+    "caption": "Bathroom",
+    "order": 2
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-04",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/shower.webp",
+    "alt": "Glass-enclosed shower and bathroom",
+    "caption": "Shower",
+    "order": 3
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-05",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/bathroom-tub.webp",
+    "alt": "Bathroom with double vanity and freestanding tub",
+    "caption": "Bathroom and tub",
+    "order": 4
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-06",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/bedroom.webp",
+    "alt": "Bedroom with tall windows",
+    "caption": "Bedroom",
+    "order": 5
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-07",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/pearl-entrance.webp",
+    "alt": "The Pearl condominium entrance",
+    "caption": "Building entrance",
+    "order": 6
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-08",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/kitchen-living.webp",
+    "alt": "Open kitchen and living area",
+    "caption": "Kitchen and living area",
+    "order": 7
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-09",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/kitchen-dining.webp",
+    "alt": "Kitchen island, cooktop, and dining area",
+    "caption": "Kitchen and dining area",
+    "order": 8
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-10",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/kitchen-to-living.webp",
+    "alt": "View from the kitchen toward the living area and terrace",
+    "caption": "Open living area",
+    "order": 9
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-11",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/interior-terrace.webp",
+    "alt": "Interior room beside a terrace",
+    "caption": "Interior and terrace",
+    "order": 10
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-12",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/interior-reverse.webp",
+    "alt": "Interior room and adjoining bathroom",
+    "caption": "Interior room",
+    "order": 11
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-13",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/building-pool.webp",
+    "alt": "Aerial view of The Pearl and pool area",
+    "caption": "The Pearl and pool area",
+    "order": 12
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-14",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/pool.webp",
+    "alt": "The Pearl condominium pool",
+    "caption": "Building pool",
+    "order": 13
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-15",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/pool-deck.webp",
+    "alt": "The Pearl condominium pool deck",
+    "caption": "Pool deck",
+    "order": 14
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-16",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/waterfront-view.webp",
+    "alt": "Waterfront near Golden Gate Point",
+    "caption": "Golden Gate Point waterfront",
+    "order": 15
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-17",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/terrace-view.webp",
+    "alt": "Terrace overlooking the waterfront",
+    "caption": "Terrace",
+    "order": 16
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-18",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/laundry.webp",
+    "alt": "Laundry room with washer and dryer",
+    "caption": "Laundry room",
+    "order": 17
+  },
+  {
+    "id": "website-609-golden-gate-pt-property-19",
+    "slug": "609-golden-gate-pt",
+    "unit": null,
+    "src": "/preview-properties/609-golden-gate-pt/office.webp",
+    "alt": "Office area",
+    "caption": "Office",
+    "order": 18
+  },
+  {
+    "id": "website-71-e-110th-st-1b-01",
+    "slug": "71-e-110th-st",
+    "unit": "1B",
+    "src": "/preview-properties/71-e-110th-st/living-wide.jpg",
+    "alt": "Wide view of the living area in Apartment 1B",
+    "caption": "Apartment 1B \u00b7 Living area",
+    "order": 0
+  },
+  {
+    "id": "website-71-e-110th-st-1b-02",
+    "slug": "71-e-110th-st",
+    "unit": "1B",
+    "src": "/preview-properties/71-e-110th-st/kitchen.jpg",
+    "alt": "Kitchen with wood cabinets and stainless-steel appliances in Apartment 1B",
+    "caption": "Apartment 1B \u00b7 Kitchen",
+    "order": 1
+  },
+  {
+    "id": "website-71-e-110th-st-1b-03",
+    "slug": "71-e-110th-st",
+    "unit": "1B",
+    "src": "/preview-properties/71-e-110th-st/bedroom-one.jpg",
+    "alt": "Bedroom with a window and wood flooring in Apartment 1B",
+    "caption": "Apartment 1B \u00b7 Bedroom",
+    "order": 2
+  },
+  {
+    "id": "website-71-e-110th-st-1b-04",
+    "slug": "71-e-110th-st",
+    "unit": "1B",
+    "src": "/preview-properties/71-e-110th-st/bedroom-two.jpg",
+    "alt": "Second bedroom view with mirrored closet doors in Apartment 1B",
+    "caption": "Apartment 1B \u00b7 Bedroom",
+    "order": 3
+  },
+  {
+    "id": "website-71-e-110th-st-1b-05",
+    "slug": "71-e-110th-st",
+    "unit": "1B",
+    "src": "/preview-properties/71-e-110th-st/bathroom.jpg",
+    "alt": "Bathroom with tub, vanity, and laundry appliance in Apartment 1B",
+    "caption": "Apartment 1B \u00b7 Bathroom",
+    "order": 4
+  },
+  {
+    "id": "website-71-e-110th-st-pha-01",
+    "slug": "71-e-110th-st",
+    "unit": "PHA",
+    "src": "/preview-properties/71-e-110th-st/penthouse-living.jpg",
+    "alt": "Living area and city-facing windows in Penthouse A",
+    "caption": "Penthouse A \u00b7 Living area",
+    "order": 0
+  },
+  {
+    "id": "website-71-e-110th-st-pha-02",
+    "slug": "71-e-110th-st",
+    "unit": "PHA",
+    "src": "/preview-properties/71-e-110th-st/penthouse-kitchen.jpg",
+    "alt": "Open kitchen and adjoining living area in Penthouse A",
+    "caption": "Penthouse A \u00b7 Kitchen and living area",
+    "order": 1
+  },
+  {
+    "id": "website-71-e-110th-st-pha-03",
+    "slug": "71-e-110th-st",
+    "unit": "PHA",
+    "src": "/preview-properties/71-e-110th-st/penthouse-bedroom.jpg",
+    "alt": "Room with mirrored closet and terrace door in Penthouse A",
+    "caption": "Penthouse A \u00b7 Interior room",
+    "order": 2
+  },
+  {
+    "id": "website-71-e-110th-st-pha-04",
+    "slug": "71-e-110th-st",
+    "unit": "PHA",
+    "src": "/preview-properties/71-e-110th-st/penthouse-bathroom.jpg",
+    "alt": "Bathroom with tub and laundry appliance in Penthouse A",
+    "caption": "Penthouse A \u00b7 Bathroom",
+    "order": 3
+  },
+  {
+    "id": "website-71-e-110th-st-pha-05",
+    "slug": "71-e-110th-st",
+    "unit": "PHA",
+    "src": "/preview-properties/71-e-110th-st/penthouse-terrace.jpg",
+    "alt": "Private terrace photographed from Penthouse A",
+    "caption": "Penthouse A \u00b7 Terrace",
+    "order": 4
+  }
+]
