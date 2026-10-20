@@ -8,21 +8,39 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
  const token=text.match(/oauth_token\s*=\s*"([^"]+)"/)?.[1];
  if(!token)throw Error('Monitoring credential unavailable');
  const day=now.toISOString().slice(0,10);
- async function gql(fields){
-  const r=await fetcher('https://api.cloudflare.com/client/v4/graphql',{method:'POST',signal:AbortSignal.timeout(12000),headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({query:`{viewer{accounts(filter:{accountTag:"${config.account_id}"}){${fields}}}}`})});
-  const data=await r.json();if(!r.ok||data.errors||!data.data?.viewer?.accounts?.[0])throw Error('Provider usage monitoring unavailable');return data.data.viewer.accounts[0];
+ // Retry one transient read failure only; never retry permission/schema errors.
+ // Keep provider payloads and credentials out of diagnostics and alerts.
+ const diagnostics={};
+ async function providerRequest(url,options,label){
+  for(let attempt=0;attempt<2;attempt++){
+   let r,data;
+   try{r=await fetcher(url,{...options,signal:AbortSignal.timeout(10000)});data=await r.json();}
+   catch{if(attempt===0)continue;diagnostics[label]='network-or-response';throw Error('Provider unavailable');}
+   const transient=r.status>=500;
+   if(transient&&attempt===0)continue;
+   const hasErrors=Array.isArray(data.errors)?data.errors.length>0:Boolean(data.errors);
+   if(!r.ok||hasErrors||data.success===false){
+    diagnostics[label]=r.status===401||r.status===403?'access-denied':r.status===429?'rate-limited':r.status>=500?'provider-error':hasErrors?'query-rejected':'request-rejected';
+    throw Error('Provider unavailable');
+   }
+   return data;
+  }
+ }
+ async function gql(fields,label){
+  const data=await providerRequest('https://api.cloudflare.com/client/v4/graphql',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({query:`{viewer{accounts(filter:{accountTag:"${config.account_id}"}){${fields}}}}`})},label);
+  if(!data.data?.viewer?.accounts?.[0]){diagnostics[label]='missing-data';throw Error('Provider usage monitoring unavailable');}return data.data.viewer.accounts[0];
  }
  async function authHealth(){
   if(!config.database_id)throw Error('Authentication monitoring target unavailable');
   // Aggregate counts only: no email, IP, code, token hash or identity is returned.
   const sql="SELECT (SELECT count(*) FROM admin_login_codes WHERE attempt_count>=5 AND used_at IS NULL AND created_at>datetime('now','-1 hour'))+(SELECT count(*) FROM tenant_login_codes WHERE attempt_count>=5 AND used_at IS NULL AND created_at>datetime('now','-1 hour')) AS lockouts, (SELECT COALESCE(sum(count-30),0) FROM admin_login_throttle WHERE count>30 AND window_start>datetime('now','-1 hour'))+(SELECT COALESCE(sum(count-30),0) FROM tenant_login_throttle WHERE count>30 AND window_start>datetime('now','-1 hour')) AS throttleExcess";
-  const r=await fetcher(`https://api.cloudflare.com/client/v4/accounts/${config.account_id}/d1/database/${config.database_id}/query`,{method:'POST',signal:AbortSignal.timeout(12000),headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({sql})});
-  const value=await r.json();if(!r.ok||!value.success||!value.result?.[0]?.results?.[0])throw Error('Authentication monitoring unavailable');return value.result[0].results[0];
+  const value=await providerRequest(`https://api.cloudflare.com/client/v4/accounts/${config.account_id}/d1/database/${config.database_id}/query`,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({sql})},'authentication');
+  if(!value.result?.[0]?.results?.[0]){diagnostics.authentication='missing-data';throw Error('Authentication monitoring unavailable');}return value.result[0].results[0];
  }
  const filter=`datetimeHour_geq:"${day}T00:00:00Z",datetimeHour_leq:"${now.toISOString()}"`;
  const [d1,workers,page,auth]=await Promise.allSettled([
-  gql(`d1AnalyticsAdaptiveGroups(limit:20,filter:{${filter}}){dimensions{databaseId}sum{rowsRead rowsWritten}}`),
-  gql(`account:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${day}T00:00:00Z",datetime_leq:"${now.toISOString()}"}){dimensions{status}sum{requests errors}} ${config.runtime?`active:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${config.runtime_error_since||day+'T00:00:00Z'}",datetime_leq:"${now.toISOString()}",scriptName:"${config.runtime}"}){dimensions{status}sum{requests errors}}`:""}`),
+  gql(`d1AnalyticsAdaptiveGroups(limit:20,filter:{${filter}}){dimensions{databaseId}sum{rowsRead rowsWritten}}`,'database'),
+  gql(`account:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${day}T00:00:00Z",datetime_leq:"${now.toISOString()}"}){dimensions{status}sum{requests errors}} ${config.runtime?`active:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${config.runtime_error_since||day+'T00:00:00Z'}",datetime_leq:"${now.toISOString()}",scriptName:"${config.runtime}"}){dimensions{status}sum{requests errors}}`:""}`,'workers'),
   fetcher(config.origin+'/',{redirect:'manual',signal:AbortSignal.timeout(12000),headers:{'User-Agent':'TeamsIntegrityMonitor/1.0'}}).then(async r=>({status:r.status,release:r.headers.get('x-teams-release'),html:await r.text()})),
   authHealth(),
  ]);
@@ -50,22 +68,34 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
   if(metrics.loginLockouts>=3)problems.push('Repeated sign-in lockouts in the last hour');
   if(metrics.loginThrottleExcess>=20)problems.push('Unusual sign-in request volume in the last hour');
  }else problems.push('Authentication monitoring unavailable');
- return {at:now.toISOString(),day,runtime:config.runtime?config.runtime+(config.runtime_error_since?'@'+config.runtime_error_since:''):undefined,errorBaseline:config.runtime_error_since?0:undefined,metrics,problems,limits:config.limits,usageCaveat:'Worker invocations are an analytics proxy, not the enforced billable counter. Provider data can lag. Failed-login classifications are logged separately.'};
+ return {at:now.toISOString(),day,runtime:config.runtime?config.runtime+(config.runtime_error_since?'@'+config.runtime_error_since:''):undefined,errorBaseline:config.runtime_error_since?0:undefined,metrics,problems,diagnostics,limits:config.limits,usageCaveat:'Worker invocations are an analytics proxy, not the enforced billable counter. Provider data can lag. Failed-login classifications are logged separately.'};
 }
 function evaluate(current,prior={}) {
- const notices=current.problems.filter(p=>!(prior.problems||[]).includes(p)),keys=[];
+ const monitoring=p=>p.endsWith('monitoring unavailable');
+ // Latch a monitoring incident through brief recovery/failure flaps. Two healthy
+ // scheduled samples close it. Security/site failures still alert immediately.
+ const incidents={...(prior.monitorIncidents||{})},recoveries=[];
+ for(const p of current.problems.filter(monitoring))incidents[p]=0;
+ for(const p of Object.keys(incidents))if(!current.problems.includes(p)){
+  incidents[p]++;if(incidents[p]>=2){delete incidents[p];recoveries.push(p.replace(' unavailable',' restored'));}
+ }
+ const notices=current.problems.filter(p=>monitoring(p)?!(p in (prior.monitorIncidents||{}))&&!((prior.problems||[]).includes(p)):!(prior.problems||[]).includes(p)),keys=[];
+ notices.push(...recoveries);
  for(const [metric,limit] of Object.entries(current.limits||{})){
   const value=current.metrics[metric];if(typeof value!=='number')continue;
   const level=[90,75,50].find(p=>value>=limit*p/100);
   if(level){const key=current.day+':'+metric+':'+level;keys.push(key);if(!(prior.keys||[]).includes(key))notices.push(`${metric} reached ${level}% of conservative Free baseline (${value.toLocaleString()}/${limit.toLocaleString()})`);}
  }
  for(const metric of ['resourceErrors','invocationErrors']){
-  const previous=prior.day===current.day&&prior.runtime===current.runtime?prior.metrics?.[metric]??current.metrics[metric]:current.errorBaseline??current.metrics[metric];
+  const previous=prior.day===current.day&&prior.runtime===current.runtime?prior.metrics?.[metric]??current.errorBaseline??current.metrics[metric]:current.errorBaseline??current.metrics[metric];
   const delta=current.metrics[metric]-previous;if(delta>0)notices.push(`${delta} new ${metric}`);
  }
  if(current.metrics.previousHourReads>500000 && (prior.metrics?.previousHourReads!==current.metrics.previousHourReads||prior.day!==current.day))notices.push('Read-rate warning: previous complete UTC hour exceeded 500,000 rows');
  // Persist only compact counters in scheduler scratch/state, never raw logs/data.
- return {fire:notices.length>0,message:notices.length?'Teams website integrity alert: '+notices.join('; ')+'. '+current.usageCaveat:'',state:{day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics:current.metrics,problems:current.problems,lastChecked:current.at}};
+ const onlyMonitoring=notices.length>0&&notices.every(p=>monitoring(p)||p.endsWith('monitoring restored'));
+ const message=notices.length?(onlyMonitoring?'Teams monitoring notice: ':'Teams website integrity alert: ')+notices.join('; ')+(onlyMonitoring?'. This concerns monitoring visibility, not confirmed hacking or an outage.':'. '+current.usageCaveat):'';
+ const metrics={...(prior.day===current.day&&prior.runtime===current.runtime?prior.metrics||{}:{}),...current.metrics};
+ return {fire:notices.length>0,message,state:{day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics,problems:current.problems,monitorIncidents:incidents,diagnostics:current.diagnostics,lastChecked:current.at}};
 }
 module.exports={snapshot,evaluate};
 if(require.main===module)(async()=>{

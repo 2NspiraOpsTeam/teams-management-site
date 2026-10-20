@@ -14,7 +14,7 @@ async function load(db:any){
  const draft=validateDraft(bundle,{format:'teams-review-draft-1',bundle_sha256:bundle.bundle_sha256,events});
  return {bundle,draft};
 }
-export async function GET(){const a=await requireAdmin();if(!a)return unauthorized();try{return NextResponse.json({...await load(a.db),reviewer:a.email},{headers});}catch(e){console.error('Review loading failed', e instanceof Error?e.message:'Unknown');return NextResponse.json({error:'Review data could not be loaded. Please retry.'},{status:503,headers});}}
+export async function GET(){const a=await requireAdmin();if(!a)return unauthorized();try{return NextResponse.json({...await load(a.db),reviewer:a.email},{headers});}catch{console.error('Review loading unavailable');return NextResponse.json({error:'Review data could not be loaded. Please retry.'},{status:503,headers});}}
 export async function POST(request:Request){const a=await requireAdmin();if(!a)return unauthorized();if(!sameOrigin(request))return unauthorized();
  try{
  let input;try{input=JSON.parse(new TextDecoder().decode(await boundedBody(request,12000)));}catch(error){return NextResponse.json({error:error instanceof BodyTooLarge?'Request too large':'Invalid review request.'},{status:error instanceof BodyTooLarge?413:400,headers});}
