@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import {getCloudflareContext} from "@opennextjs/cloudflare";
+import {CloudflareBeacon} from "@/components/analytics/CloudflareBeacon";
 import "./globals.css";
 import { contactAddress, siteContact } from '@/lib/site-contact';
 import { siteOrigin } from '@/lib/site-seo';
@@ -32,6 +34,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let analytics: {CF_ANALYTICS_BEACON_TOKEN?: string; CF_ANALYTICS_HOST?: string} = {};
+  try { analytics = getCloudflareContext().env as typeof analytics; } catch { /* Local rendering without bindings. */ }
+  const beacon = analytics.CF_ANALYTICS_BEACON_TOKEN;
+  const analyticsHost = analytics.CF_ANALYTICS_HOST;
   return (
     <html lang="en">
       <body className="antialiased bg-slate-50 text-teams-ink">
@@ -53,6 +59,7 @@ export default function RootLayout({
           url: siteOrigin, name: 'Teams Management', inLanguage: 'en',
           publisher: { '@id': `${siteOrigin}/#organization` },
         }).replace(/</g, '\\u003c') }} />
+        {beacon && /^[a-f0-9]{32}$/.test(beacon) && analyticsHost && <CloudflareBeacon token={beacon} host={analyticsHost}/>}
         {children}
       </body>
     </html>
