@@ -10,7 +10,7 @@ it('warns at 50/75/90 once per UTC day, escalates and resets',()=>{
 it('does not hide monitoring failures or new resource errors, and never treats historical totals as new errors',()=>{
  const baseline=evaluate(sample({resourceErrors:12,invocationErrors:0}));expect(baseline.fire).toBe(false);
  expect(evaluate(sample({resourceErrors:13,invocationErrors:0}),baseline.state).message).toContain('1 new resourceErrors');
- expect(evaluate({...sample(),problems:['Provider monitoring unavailable']},baseline.state).fire).toBe(true);
+ expect(evaluate({...sample(),problems:['Provider monitoring unavailable']},baseline.state).fire).toBe(false);
 });
 
 it('scopes error deltas to the active runtime while retaining account quota warnings',()=>{
@@ -24,14 +24,22 @@ it('alerts even on the first new error when the release-scoped window starts fro
  expect(evaluate({...sample({resourceErrors:1}),runtime:'new@release-time',errorBaseline:0},prior.state).message).toContain('1 new resourceErrors');
 });
 
-it('latches monitoring flaps, reports sustained recovery, and uses plain-language notices',()=>{
+it('filters transient failures, recovers silently, and rate-limits repeated monitoring incidents',()=>{
  const failed={...sample(),problems:['D1 usage monitoring unavailable']};
- const first=evaluate(failed);expect(first.message).toContain('not confirmed hacking');
- const brief=evaluate(sample(),first.state);expect(brief.fire).toBe(false);
- const flap=evaluate(failed,brief.state);expect(flap.fire).toBe(false);
- const good=evaluate(sample(),flap.state);
- const recovered=evaluate(sample(),good.state);expect(recovered.message).toContain('monitoring restored');
- expect(evaluate(failed,recovered.state).fire).toBe(true);
+ const first=evaluate(failed);expect(first.fire).toBe(false);
+ const second=evaluate(failed,first.state);expect(second.fire).toBe(false);
+ const third=evaluate(failed,second.state);expect(third.message).toContain('not confirmed hacking');
+ expect(evaluate(failed,third.state).fire).toBe(false);
+ const recovered=evaluate(sample(),third.state);expect(recovered.fire).toBe(false);
+ let state=recovered.state;
+ for(let i=0;i<4;i++){const flap=evaluate(failed,state);expect(flap.fire).toBe(false);state=flap.state;}
+ const nextDay=evaluate({...failed,at:'2026-10-21T03:00:00Z'},state);expect(nextDay.fire).toBe(true);
+ expect(evaluate(sample(),nextDay.state).fire).toBe(false);
+});
+it('does not delay actual site or authentication alerts during monitoring failures',()=>{
+ const result=evaluate({...sample(),problems:['D1 usage monitoring unavailable','Homepage HTTP 502','Repeated sign-in lockouts in the last hour']});
+ expect(result.message).toContain('Homepage HTTP 502');expect(result.message).toContain('Repeated sign-in lockouts');
+ expect(result.message).not.toContain('D1 usage monitoring unavailable');
 });
 it('retains error counters across unavailable samples so new errors are not silently lost',()=>{
  const initial=evaluate({...sample({resourceErrors:2}),runtime:'same'});

@@ -72,15 +72,20 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
 }
 function evaluate(current,prior={}) {
  const monitoring=p=>p.endsWith('monitoring unavailable');
- // Latch a monitoring incident through brief recovery/failure flaps. Two healthy
- // scheduled samples close it. Security/site failures still alert immediately.
- const incidents={...(prior.monitorIncidents||{})},recoveries=[];
- for(const p of current.problems.filter(monitoring))incidents[p]=0;
- for(const p of Object.keys(incidents))if(!current.problems.includes(p)){
-  incidents[p]++;if(incidents[p]>=2){delete incidents[p];recoveries.push(p.replace(' unavailable',' restored'));}
+ // A failed analytics read is not a website incident. Require three consecutive
+ // misses, notify at most once per monitoring source per 24h, and recover quietly.
+ // Keep failure streaks and notification timestamps in the existing scheduler state.
+ const incidents={},lastNotified={...(prior.monitorLastNotified||{})};
+ const notices=current.problems.filter(p=>!monitoring(p)&&!(prior.problems||[]).includes(p)),keys=[];
+ const now=Date.parse(current.at);
+ for(const p of current.problems.filter(monitoring)){
+  const previous=prior.monitorIncidents?.[p];
+  const failures=(typeof previous==='object'?previous.failures:0)+1;
+  incidents[p]={failures};
+  if(failures>=3&&(!lastNotified[p]||now-lastNotified[p]>=86400000)){
+   notices.push(p);lastNotified[p]=now;
+  }
  }
- const notices=current.problems.filter(p=>monitoring(p)?!(p in (prior.monitorIncidents||{}))&&!((prior.problems||[]).includes(p)):!(prior.problems||[]).includes(p)),keys=[];
- notices.push(...recoveries);
  for(const [metric,limit] of Object.entries(current.limits||{})){
   const value=current.metrics[metric];if(typeof value!=='number')continue;
   const level=[90,75,50].find(p=>value>=limit*p/100);
@@ -95,7 +100,7 @@ function evaluate(current,prior={}) {
  const onlyMonitoring=notices.length>0&&notices.every(p=>monitoring(p)||p.endsWith('monitoring restored'));
  const message=notices.length?(onlyMonitoring?'Teams monitoring notice: ':'Teams website integrity alert: ')+notices.join('; ')+(onlyMonitoring?'. This concerns monitoring visibility, not confirmed hacking or an outage.':'. '+current.usageCaveat):'';
  const metrics={...(prior.day===current.day&&prior.runtime===current.runtime?prior.metrics||{}:{}),...current.metrics};
- return {fire:notices.length>0,message,state:{day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics,problems:current.problems,monitorIncidents:incidents,diagnostics:current.diagnostics,lastChecked:current.at}};
+ return {fire:notices.length>0,message,state:{day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics,problems:current.problems,monitorIncidents:incidents,monitorLastNotified:lastNotified,diagnostics:current.diagnostics,lastChecked:current.at}};
 }
 module.exports={snapshot,evaluate};
 if(require.main===module)(async()=>{
