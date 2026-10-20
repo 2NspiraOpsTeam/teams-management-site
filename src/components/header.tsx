@@ -48,7 +48,7 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link prefetch={false} href="/tenant/login" aria-current={pathname === '/tenant/login' ? 'page' : undefined} className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-[5px] bg-teams-gold px-4 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Sign in</Link>
+            <Link prefetch={false} href="/tenant-services" aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-[5px] bg-teams-gold px-4 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
           </div>
 
           {/* Mobile menu button */}
@@ -67,7 +67,7 @@ export function Header() {
         </div>
         {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-[#E8E5DF] py-3 flex flex-col gap-1">
           {navItems.map(item => <Link prefetch={false} key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#8b681f] aria-[current=page]:border-[#B49355]">{item.label}</Link>)}
-          <Link prefetch={false} href="/tenant/login" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant/login' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Sign in</Link>
+          <Link prefetch={false} href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
         </div>}
       </nav>
     </header>
