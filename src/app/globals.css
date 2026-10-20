@@ -520,3 +520,25 @@ html { scroll-padding-top: 110px; }
  .gold-street-hero--retail a { position: absolute; right: 2rem; bottom: 0; margin-top: 0; }
  .page-showcase--retail .page-showcase-image img { height: 320px; aspect-ratio: auto; }
 }
+
+/* Public editorial polish: no fixed backgrounds, blur, or perpetual page animation. */
+.public-site-header nav a[aria-current=page] { text-underline-offset: .4em; }
+.public-site-header nav a:hover { border-color: var(--teams-gold-deep); }
+.public-editorial :is(.home-text-link, .home-resident-link, .retail-toc-link):focus-visible { background-color: #f0e8d7; }
+.public-editorial :is(.contact-topic, .tenant-service-card):focus-within::before { transform: scaleX(1); }
+.public-editorial :is(input, textarea, select):focus-visible { border-color: var(--teams-gold-deep); }
+.public-editorial .rent-faq summary { transition: color 180ms ease, background-color 180ms ease; }
+.public-editorial .rent-faq summary:focus-visible { background: var(--teams-surface); }
+.public-editorial figure { overflow: hidden; }
+@media (hover: hover) and (pointer: fine) {
+  .public-editorial :is(.property-card, .retail-card, .rent-download, .tenant-service-card):focus-within { border-color: var(--teams-gold-deep); box-shadow: 0 12px 28px rgba(45,48,50,.08); }
+  .public-editorial .home-rail a:hover { box-shadow: inset 0 -3px var(--teams-gold-deep); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-editorial *, .public-editorial *::before, .public-editorial *::after { animation: none !important; transition: none !important; }
+  .public-editorial :is(a, button, figure):hover img { transform: none !important; }
+}
+.public-editorial .editorial-story-card { transition: border-color 240ms ease, box-shadow 240ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .public-editorial .editorial-story-card:hover { border-color: #c7b48c; box-shadow: 0 12px 32px rgba(45,48,50,.06); }
+}
