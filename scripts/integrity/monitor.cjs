@@ -12,11 +12,19 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
   const r=await fetcher('https://api.cloudflare.com/client/v4/graphql',{method:'POST',signal:AbortSignal.timeout(12000),headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({query:`{viewer{accounts(filter:{accountTag:"${config.account_id}"}){${fields}}}}`})});
   const data=await r.json();if(!r.ok||data.errors||!data.data?.viewer?.accounts?.[0])throw Error('Provider usage monitoring unavailable');return data.data.viewer.accounts[0];
  }
+ async function authHealth(){
+  if(!config.database_id)throw Error('Authentication monitoring target unavailable');
+  // Aggregate counts only: no email, IP, code, token hash or identity is returned.
+  const sql="SELECT (SELECT count(*) FROM admin_login_codes WHERE attempt_count>=5 AND created_at>datetime('now','-1 hour'))+(SELECT count(*) FROM tenant_login_codes WHERE attempt_count>=5 AND created_at>datetime('now','-1 hour')) AS lockouts, (SELECT COALESCE(sum(count-30),0) FROM admin_login_throttle WHERE count>30 AND window_start>datetime('now','-1 hour'))+(SELECT COALESCE(sum(count-30),0) FROM tenant_login_throttle WHERE count>30 AND window_start>datetime('now','-1 hour')) AS throttleExcess";
+  const r=await fetcher(`https://api.cloudflare.com/client/v4/accounts/${config.account_id}/d1/database/${config.database_id}/query`,{method:'POST',signal:AbortSignal.timeout(12000),headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({sql})});
+  const value=await r.json();if(!r.ok||!value.success||!value.result?.[0]?.results?.[0])throw Error('Authentication monitoring unavailable');return value.result[0].results[0];
+ }
  const filter=`datetimeHour_geq:"${day}T00:00:00Z",datetimeHour_leq:"${now.toISOString()}"`;
- const [d1,workers,page]=await Promise.allSettled([
+ const [d1,workers,page,auth]=await Promise.allSettled([
   gql(`d1AnalyticsAdaptiveGroups(limit:20,filter:{${filter}}){dimensions{databaseId}sum{rowsRead rowsWritten}}`),
   gql(`workersInvocationsAdaptive(limit:100,filter:{datetime_geq:"${day}T00:00:00Z",datetime_leq:"${now.toISOString()}"}){dimensions{status}sum{requests errors}}`),
   fetcher(config.origin+'/',{redirect:'manual',signal:AbortSignal.timeout(12000),headers:{'User-Agent':'TeamsIntegrityMonitor/1.0'}}).then(async r=>({status:r.status,release:r.headers.get('x-teams-release'),html:await r.text()})),
+  authHealth(),
  ]);
  const problems=[],metrics={};
  if(d1.status==='fulfilled'){
@@ -37,6 +45,11 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
   const contract=JSON.parse(fs.readFileSync(__dirname+'/release_contract.json'));
   if(!page.value.html.includes('<title>'+contract.home_title+'</title>')||contract.forbidden_home_copy.some(s=>page.value.html.includes(s)))problems.push('Sharing metadata regression');
  }else problems.push('Homepage monitoring unavailable');
+ if(auth.status==='fulfilled'){
+  metrics.loginLockouts=auth.value.lockouts;metrics.loginThrottleExcess=auth.value.throttleExcess;
+  if(metrics.loginLockouts>=3)problems.push('Repeated sign-in lockouts in the last hour');
+  if(metrics.loginThrottleExcess>=20)problems.push('Unusual sign-in request volume in the last hour');
+ }else problems.push('Authentication monitoring unavailable');
  return {at:now.toISOString(),day,metrics,problems,limits:config.limits,usageCaveat:'Worker invocations are an analytics proxy, not the enforced billable counter. Provider data can lag. Failed-login classifications are logged separately.'};
 }
 function evaluate(current,prior={}) {

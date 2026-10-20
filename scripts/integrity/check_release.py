@@ -29,12 +29,19 @@ class Page(HTMLParser):
   values=self.metas.get(key,[]);assert len(values)==1,f'Expected one {key}, found {len(values)}';return values[0]
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--origin',required=True);p.add_argument('--release',required=True);p.add_argument('--scope',choices=['preview','production'],required=True);p.add_argument('--full',action='store_true');p.add_argument('--output');a=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--origin',required=True);p.add_argument('--release',required=True);p.add_argument('--scope',choices=['preview','production'],required=True);p.add_argument('--full',action='store_true');p.add_argument('--output');p.add_argument('--access-file',help='Private diagnostic service token; scoped to this project only');a=p.parse_args()
  contract=json.loads(pathlib.Path(__file__).with_name('release_contract.json').read_text());origin=a.origin.rstrip('/');canonical=contract['canonical_'+a.scope];count=0;pages=[];seen=set();assets=set()
+ access={}
+ if a.access_file:
+  host=urllib.parse.urlparse(origin).hostname
+  assert host=='teams-management-preview.pages.dev' or host.endswith('.teams-management-preview.pages.dev'),'Diagnostic token origin refused'
+  assert origin.startswith('https://'),'Diagnostic credentials require HTTPS'
+  credential=json.loads(pathlib.Path(a.access_file).read_text());access={'CF-Access-Client-Id':credential['client_id'],'CF-Access-Client-Secret':credential['client_secret']}
  def get(path,agent='TeamsReleaseCheck/1.0'):
   nonlocal count
   count+=1;assert count<=85,'Probe budget exhausted'
-  request=urllib.request.Request(origin+path,headers={'User-Agent':agent})
+  assert path.startswith('/') and not path.startswith('//'),'Unsafe request path'
+  request=urllib.request.Request(origin+path,headers={'User-Agent':agent,**access})
   # Refuse redirects (including Access/login redirects); never turn login HTML into a PASS.
   class NoRedirect(urllib.request.HTTPRedirectHandler):
    def redirect_request(self,*args,**kwargs):return None
@@ -51,7 +58,7 @@ def main():
   status,headers,body=get(path,'TelegramBot' if path=='/' else 'TeamsReleaseCheck/1.0');assert status==200,f'{path}: HTTP {status}';assert len(body)<=2_000_000,'Oversized HTML'
   page=Page(body.decode());assert page.h1==1,f'{path}: expected one H1';assert page.title and page.meta('description'),path
   assert page.meta('og:title')==page.title and page.meta('og:description')==page.meta('description'),f'{path}: social metadata drift'
-  assert page.canonicals==[canonical+path],f'{path}: canonical drift'
+  assert len(page.canonicals)==1 and page.canonicals[0].rstrip('/')==(canonical+path).rstrip('/'),f'{path}: canonical drift'
   assert ('noindex' in page.meta('robots'))==(a.scope=='preview'),f'{path}: indexing scope mismatch'
   for directive in ["base-uri 'self'","object-src 'none'","frame-ancestors 'self'","form-action 'self'"]:assert directive in headers.get('Content-Security-Policy',''),f'{path}: missing CSP {directive}'
   assert headers.get('X-Content-Type-Options')=='nosniff';assert headers.get('X-Frame-Options')=='SAMEORIGIN'
