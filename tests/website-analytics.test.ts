@@ -1,5 +1,19 @@
 import {describe,it,expect,vi} from 'vitest';
 import {analyticsConfig,analyticsQuery,normalizeAnalytics,cloudflareAnalytics} from '@/lib/analytics/cloudflare';
+import {sampleAnalytics} from '@/lib/analytics/sample';
+describe('Display-only sample analytics',()=>{
+ it('labels synthetic data and keeps all breakdowns consistent across supported periods',()=>{
+  for(const days of [7,30,90]){
+   const report=sampleAnalytics(days,new Date('2026-10-20T18:00:00Z'));
+   expect(report.host).toContain('not real visitors');
+   expect(report.daily).toHaveLength(days);
+   expect(report.daily.at(-1)?.day).toBe('2026-10-20');
+   expect(report.daily.reduce((sum,row)=>sum+row.views,0)).toBe(report.totals.views);
+   for(const rows of [report.segments,report.devices,report.channels,report.countries!,report.pages]) expect(rows.reduce((sum,row)=>sum+row.views,0)).toBe(report.totals.views);
+   expect(report.properties.reduce((sum,row)=>sum+row.views,0)).toBe(report.totals.propertyViews);
+  }
+ });
+});
 const env={CF_ANALYTICS_ACCOUNT_ID:'a'.repeat(32),CF_ANALYTICS_SITE_TAG:'b'.repeat(32),CF_ANALYTICS_HOST:'teams.example.com',CF_ANALYTICS_API_TOKEN:'server-only-test'};
 const buildings=[{name:'Example property',slug:'example-property',has_retail:1,retail_published:1}];
 const row=(count:number,dimensions:Record<string,string>,visits=0)=>({count,dimensions,sum:{visits}});
