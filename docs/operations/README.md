@@ -4,6 +4,7 @@ Start with the [current development handoff](WATERBEAR-DEVELOPMENT.md). It repla
 
 - [Resident home, household roster, contacts and lease summaries](RESIDENT-HOME-2026-10-18.md): three-user limit, approved cover photography, release verification and remaining document/data readiness.
 - [Resident portal and household access](TENANT-PORTAL-2026-10-18.md): current feature scope, permissions and QA.
+- [Integrity hardening and release gates](INTEGRITY-HARDENING-2026-10-19.md): verified preview protections, monitoring, recovery proof and remaining limits.
 - [Backup and restore procedure](BACKUP-AND-RESTORE.md): capture, verify, recover, and prove the result.
 - [Future production promotion](PRODUCTION-PROMOTION.md): release the approved build to 2Nspira after development is finished.
 - [Migration QA and build comparison](MIGRATION-QA-2026-10-18.md): completed checks, deliberate differences, and limits.
