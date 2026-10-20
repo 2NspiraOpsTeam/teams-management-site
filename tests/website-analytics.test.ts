@@ -36,3 +36,20 @@ describe('Admin analytics API boundary',()=>{
    expect(response.headers.get('Cache-Control')).toBe('no-store');expect((await response.json()).state).toBe('setup');expect(prepare).not.toHaveBeenCalled();
  });
 });
+
+
+describe('Calendar traffic grouping and geography',()=>{
+ it('groups Monday weeks across year boundaries without losing counts',async()=>{
+  const {aggregateTrend}=await import('@/lib/analytics/shared');
+  const rows=[{day:'2025-12-31',views:3,visits:1},{day:'2026-01-01',views:5,visits:2},{day:'2026-01-05',views:2,visits:1}];
+  expect(aggregateTrend(rows,'weekly')).toEqual([{day:'2025-12-29',views:8,visits:3},{day:'2026-01-05',views:2,visits:1}]);
+  expect(aggregateTrend(rows,'monthly')).toEqual([{day:'2025-12',views:3,visits:1},{day:'2026-01',views:7,visits:3}]);
+  expect(aggregateTrend(rows,'daily')).toEqual(rows);
+  expect(aggregateTrend([],'monthly')).toEqual([]);
+ });
+ it('preserves unknown countries and ranks approximate country page views',()=>{
+  const report=normalizeAnalytics({...groups(),countries:[row(3,{countryName:''}),row(7,{countryName:'United States'})]},buildings,7,'example.com');
+  expect(report.countries).toEqual([{label:'United States',views:7},{label:'Unknown',views:3}]);
+  expect(analyticsQuery(analyticsConfig(env)!,buildings,30)).toContain('dimensions{countryName}');
+ });
+});
