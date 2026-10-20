@@ -1,11 +1,11 @@
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import { LegalPage } from '@/components/legal-page';
 import { siteContact } from '@/lib/site-contact';
 
 export const runtime = 'nodejs';
-export const metadata: Metadata = { title: 'Fair Housing | Teams Management' };
+export const metadata = pageMetadata('/fair-housing', 'Fair Housing | Teams Management', 'Read Teams Management’s equal housing opportunity commitment and how to ask about accommodations.');
 
 function FairHousingPage() {
   return <LegalPage title={<WebsiteText contentKey="fair-housing.page-title">Fair Housing / Equal Housing Opportunity</WebsiteText>}>

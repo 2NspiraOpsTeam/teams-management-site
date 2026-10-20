@@ -1,13 +1,14 @@
 import { addressLabel } from '@/lib/map-location';
 import Link from 'next/link';
 import { adminDb } from '@/lib/admin-auth';
-import { eligibleShowcases, type ShowcasePage } from '@/lib/page-showcase';
+import type { ShowcasePage } from '@/lib/page-showcase';
+import { publicShowcases } from '@/lib/public-showcases';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 import { mapLocationUrl } from '@/lib/map-location';
 
 export async function PageShowcase({page,variant='split',propertySlug}:{page:ShowcasePage;variant?:'split'|'wide'|'offset';propertySlug?:string}) {
  const item=propertySlug
-  ? (await eligibleShowcases(adminDb(),true,page==='retail'?'retail':'residential')).find(item=>item.property_slug===propertySlug)
+  ? (await publicShowcases(adminDb(),true,page==='retail'?'retail':'residential')).find(item=>item.property_slug===propertySlug)
   : (await featuredPropertyService(adminDb())).select(page==='home'?'home:showcase':page);
  if(!item)return null;
  let address: {street:string;city:string;state:string;zip:string;neighborhood?:string}={street:'',city:'',state:'',zip:''};

@@ -1,11 +1,11 @@
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import { LegalPage } from '@/components/legal-page';
 import { siteContact, contactPhoneHref } from '@/lib/site-contact';
 
 export const runtime = 'nodejs';
-export const metadata: Metadata = { title: 'Accessibility | Teams Management' };
+export const metadata = pageMetadata('/accessibility', 'Accessibility | Teams Management', 'Learn about website accessibility and how to request information or report an accessibility barrier to Teams Management.');
 
 function AccessibilityPage() {
   return <LegalPage title={<WebsiteText contentKey="accessibility.page-title">Accessibility</WebsiteText>}>

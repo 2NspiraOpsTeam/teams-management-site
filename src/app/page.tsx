@@ -1,7 +1,7 @@
+import { pageMetadata } from '@/lib/site-seo';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { addressLabel } from '@/lib/map-location';
-import type { Metadata } from 'next';
 import { AcrossCityRail } from '@/components/across-city-rail';
 import Link from 'next/link';
 import { Header } from '@/components/header';
@@ -14,10 +14,7 @@ import type { BuildingPublic } from '@/lib/database.types';
 import { featuredPropertyService } from '@/lib/featured-property-service';
 
 export const runtime = 'nodejs';
-export const metadata: Metadata = {
-  title: 'Teams Management | New York Property Management',
-  description: 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.',
-};
+export const metadata = pageMetadata('/', 'Teams Management | New York Property Management', 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.');
 
 type Feature = { building: BuildingPublic; image: MediaRow };
 const photo = (image: MediaRow, label: string, eager = false) => <img src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className="home-photo h-full w-full object-cover" />;

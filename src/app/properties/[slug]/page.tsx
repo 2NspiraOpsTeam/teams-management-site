@@ -6,6 +6,7 @@ import { OfficialPlaceName } from '@/components/official-place-name';
 import { addressLabel, postalAddressMetadata } from '@/lib/map-location';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import { directionsFromPropertyUrl, directionsToPropertyUrl, navigationAddressLabel, mapLocationUrl, nearbyStreetMapCenter, satelliteMapUrl, streetViewExploreUrl } from '@/lib/map-location';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/header';
@@ -33,14 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const address = addressLabel(building.address);
   const title = `${building.name} | Teams Management Residences`;
   const description = `Explore ${building.name} at ${address}. View property details, location, photos, and contact information from Teams Management.`;
-  return {
-    title, description,
-    ...(previewPortfolioEnabled && slug === '609-golden-gate-pt' ? {
-      alternates: { canonical: 'https://teams-management-preview.pages.dev/properties/609-golden-gate-pt' },
-      openGraph: { title, description, url: 'https://teams-management-preview.pages.dev/properties/609-golden-gate-pt', type: 'website' },
-      twitter: { card: 'summary', title, description },
-    } : {}),
-  };
+  return pageMetadata(`/properties/${building.slug}`, title, description);
 }
 
 async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {

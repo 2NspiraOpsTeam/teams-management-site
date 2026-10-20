@@ -1,7 +1,7 @@
+import { pageMetadata } from '@/lib/site-seo';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 export const runtime = 'nodejs';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageShowcase } from '@/components/page-showcase';
 import { Header } from '@/components/header';
@@ -9,10 +9,7 @@ import { Footer } from '@/components/footer';
 import { ContactDetails } from '@/components/contact-details';
 import { dailyHeroStyle } from '@/lib/daily-hero-style';
 
-export const metadata: Metadata = {
-  title: 'About Teams Management | New York Property Management',
-  description: 'Meet Teams Management and our people-centered approach to caring for New York properties, supporting residents, and helping visitors find their place.',
-};
+export const metadata = pageMetadata('/about', 'About Teams Management | New York Property Management', 'Meet Teams Management and our people-centered approach to caring for New York properties, supporting residents, and helping visitors find their place.');
 
 const commitments = [
   { title: <WebsiteText contentKey="about.text-21">For residents</WebsiteText>, body: <WebsiteText contentKey="about.text-22">Know where to turn when something needs attention.</WebsiteText> },

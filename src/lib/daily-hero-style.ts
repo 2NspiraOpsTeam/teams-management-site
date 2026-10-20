@@ -1,14 +1,14 @@
 import type { CSSProperties } from 'react';
 import { adminDb } from './admin-auth';
-import { eligibleShowcases } from './page-showcase';
+import { publicShowcases } from './public-showcases';
 import { dailyHeroPlan, type DailyHeroPage } from './daily-hero-photo';
 import { listPublicRetail } from './public-retail';
 
 export async function dailyHeroStyle(page:DailyHeroPage):Promise<CSSProperties> {
   const db=adminDb();
   const [residential,retail,listed]=await Promise.all([
-    eligibleShowcases(db,true,'residential',true),
-    eligibleShowcases(db,true,'retail',true),
+    publicShowcases(db,true,'residential',true),
+    publicShowcases(db,true,'retail',true),
     listPublicRetail(),
   ]);
   const published=new Set(listed.map(item=>item.id));
