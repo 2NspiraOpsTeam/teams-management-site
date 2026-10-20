@@ -27,6 +27,11 @@ it('includes the correct canonical portal in each role’s actual OTP email, wit
     const parts = mime.split(`--${boundary}`).slice(1, -1);
     expect(parts).toHaveLength(2);
     const decoded = parts.map(part => Buffer.from(part.split('\r\n\r\n')[1].trim(), 'base64').toString());
+    const code = messages.length === 0 ? '00000000' : '00000001';
+    const subject = Buffer.from(mime.match(/Subject: =\?UTF-8\?B\?([^?]+)/)![1], 'base64').toString();
+    expect(subject).toBe(`${code} is your Teams Management sign-in code`);
+    expect(decoded[0].startsWith(`${code} is your Teams Management sign-in code. Expires in 10 minutes.`)).toBe(true);
+    expect(decoded[1]).toContain(`overflow:hidden">${code} is your Teams Management sign-in code. Expires in 10 minutes.`);
     expect(parts[0]).toContain('text/plain');
     expect(parts[1]).toContain('text/html');
     expect(decoded[1]).toContain('/brand/teams-management-logo.png');
