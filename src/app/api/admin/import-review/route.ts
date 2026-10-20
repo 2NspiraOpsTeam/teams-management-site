@@ -1,3 +1,4 @@
+import {boundedBody,BodyTooLarge} from '@/lib/request-body';
 import {NextResponse} from 'next/server';
 import {requireAdmin,sameOrigin,unauthorized} from '@/lib/admin-auth';
 import {appendEvent,validateBundle,validateDraft,type ReviewDraft} from '@/lib/operations/import-review';
@@ -16,8 +17,8 @@ async function load(db:any){
 export async function GET(){const a=await requireAdmin();if(!a)return unauthorized();try{return NextResponse.json({...await load(a.db),reviewer:a.email},{headers});}catch(e){console.error('Review loading failed', e instanceof Error?e.message:'Unknown');return NextResponse.json({error:'Review data could not be loaded. Please retry.'},{status:503,headers});}}
 export async function POST(request:Request){const a=await requireAdmin();if(!a)return unauthorized();if(!sameOrigin(request))return unauthorized();
  try{
- if(Number(request.headers.get('content-length')||0)>12000)return NextResponse.json({error:'Request too large'},{status:413,headers});
- const input=await request.json();const {bundle,draft}=await load(a.db);
+ let input;try{input=JSON.parse(new TextDecoder().decode(await boundedBody(request,12000)));}catch(error){return NextResponse.json({error:error instanceof BodyTooLarge?'Request too large':'Invalid review request.'},{status:error instanceof BodyTooLarge?413:400,headers});}
+ if(!input||typeof input!=='object'||Array.isArray(input))return NextResponse.json({error:'Invalid review request.'},{status:400,headers});const {bundle,draft}=await load(a.db);
  if(input.bundle_sha256!==bundle.bundle_sha256||input.revision!==draft.events.length)return NextResponse.json({error:'Another reviewer saved a decision. Reload the review before saving.'},{status:409,headers});
  const value={outcome:input.value?.outcome,property_id:input.value?.property_id,note:input.value?.note,reviewer:a.email};
  if(!['outcome','property_id','note'].every(k=>typeof value[k as keyof typeof value]==='string'))throw Error('Enter a valid review decision.');

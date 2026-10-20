@@ -1,0 +1,9 @@
+{
+  "canonical_preview": "https://teams-management-preview.pages.dev",
+  "canonical_production": "https://www.teamsmanagement.com",
+  "home_title": "Teams Management | New York Property Management",
+  "home_description": "Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.",
+  "forbidden_home_copy": ["Premium Property Portfolio", "The Property Steward | Premium NYC"],
+  "public_paths": ["/", "/about", "/properties", "/retail", "/rent-with-us", "/gallery", "/contact", "/tenant-services", "/services", "/dining", "/privacy-policy", "/terms-of-use", "/accessibility", "/fair-housing", "/copyright"],
+  "protected_paths": ["/api/admin/session", "/api/tenant/session", "/api/buildings/data-report", "/api/admin/website-content/home", "/api/admin/media", "/api/tenant/leases", "/api/tenant/lease-documents/00000000-0000-4000-8000-000000000001", "/api/tenant/maintenance/photos/00000000-0000-4000-8000-000000000001"]
+}
