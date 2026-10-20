@@ -1,0 +1,9 @@
+# Property header layout follow-up
+
+Jeffrey requested more visible property imagery, less black surround, and a shorter Retail header that exposes the featured property without scrolling.
+
+- Application `c3dace7`: decorative page headers now use edge-to-edge cover sizing without the radial edge vignette/native-size cap, with a lighter directional contrast overlay. Existing original sources and daily Residential/Retail allocation remain unchanged. Cover sizing deliberately trades the prior no-enlargement rule for full-bleed framing; low-resolution source detail cannot be recovered by CSS.
+- Retail introduction uses compact responsive spacing/type, with the inquiries action alongside the description on desktop. Retail-only showcase padding is reduced and desktop photo height is 320px. Other showcase variants, detail galleries and slideshow controls/cadence are unchanged.
+- TypeScript, seven daily allocation tests and OpenNext preview build passed. Candidate `cc789fa6.teams-management-preview.pages.dev` passed 20 rendered checks over five routes at 390/768/1440/2560, decoded backgrounds, no horizontal overflow or browser exceptions. Desktop/mobile screenshots inspected; Retail feature photo appears in the first viewport.
+- Private runtime `teams-header-layout-20261019`, version `01a6c9e7-29ad-4bcd-9d67-a2380c03e9b0`, fingerprint `c3dace7-header-layout-20261019`. Preview-project service-binding updates preserve other configuration. No database, original media, client production, main or DNS changes.
+- Recovery: restore matching gateway `c3a6045d-4bc7-41d1-9c1b-3c75e85c49c2` and runtime `teams-combined-46th-20261019`, version `1895a22e-f007-45db-a9df-4218891d2f23`. This code-only rollback needs no database restore; preserve later Admin edits.
