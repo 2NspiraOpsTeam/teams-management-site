@@ -1,4 +1,5 @@
 import { WorkerEntrypoint } from 'cloudflare:workers';
+import { observeRequest } from './request-observation.mjs';
 import { meterDatabase } from './d1-meter.mjs';
 import application from '../../.open-next/worker.js';
 
@@ -37,7 +38,7 @@ export class TeamsPreviewRuntime extends WorkerEntrypoint {
     }
     const usage={queries:0,rowsRead:0,rowsWritten:0,durationMs:0};
     const environment={...this.env,...runtime,DB:meterDatabase(this.env.DB,usage)};
-    try{const response=await application.fetch(request,environment,this.ctx);usage.status=response.status;return identify(response);}
+    try{const response=await observeRequest(request,this.env.TEAMS_RELEASE_SHA||'local',()=>application.fetch(request,environment,this.ctx));usage.status=response.status;return identify(response);}
     finally{
       // Path template only; IDs, search terms, cookies and request bodies are omitted.
       const parts=new URL(request.url).pathname.split('/').filter(Boolean);
