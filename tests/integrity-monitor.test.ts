@@ -12,3 +12,14 @@ it('does not hide monitoring failures or new resource errors, and never treats h
  expect(evaluate(sample({resourceErrors:13,invocationErrors:0}),baseline.state).message).toContain('1 new resourceErrors');
  expect(evaluate({...sample(),problems:['Provider monitoring unavailable']},baseline.state).fire).toBe(true);
 });
+
+it('scopes error deltas to the active runtime while retaining account quota warnings',()=>{
+ const old=evaluate({...sample({resourceErrors:13}),runtime:'old-worker'});
+ const current=evaluate({...sample({resourceErrors:1}),runtime:'new-worker'},old.state);expect(current.fire).toBe(false);
+ expect(evaluate({...sample({resourceErrors:2}),runtime:'new-worker'},current.state).message).toContain('1 new resourceErrors');
+});
+
+it('alerts even on the first new error when the release-scoped window starts from zero',()=>{
+ const prior=evaluate({...sample({resourceErrors:0}),runtime:'old'});
+ expect(evaluate({...sample({resourceErrors:1}),runtime:'new@release-time',errorBaseline:0},prior.state).message).toContain('1 new resourceErrors');
+});

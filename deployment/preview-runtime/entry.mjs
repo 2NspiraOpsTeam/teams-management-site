@@ -1,4 +1,6 @@
 import { WorkerEntrypoint } from 'cloudflare:workers';
+import {preparedPhotoRequest,preparedPhotoResponse} from './prepared-photo.mjs';
+import { privatePhotoPath } from './private-photo-path.mjs';
 import { observeRequest } from './request-observation.mjs';
 import { meterDatabase } from './d1-meter.mjs';
 import application from '../../.open-next/worker.js';
@@ -32,6 +34,14 @@ export class TeamsPreviewRuntime extends WorkerEntrypoint {
       result.headers.set('X-Teams-Runtime', 'OpenNext');
       return result;
     };
+    if (privatePhotoPath(new URL(request.url).pathname)) return identify(new Response('Not found',{status:404,headers:{'Cache-Control':'no-store'}}));
+    if(preparedPhotoRequest(request)){
+      const usage={queries:0,rowsRead:0,rowsWritten:0,durationMs:0};
+      try{
+        const response=await observeRequest(request,this.env.TEAMS_RELEASE_SHA||'local',()=>preparedPhotoResponse(request,{...this.env,DB:meterDatabase(this.env.DB,usage)}));
+        usage.status=response.status;return identify(response);
+      }finally{console.log(JSON.stringify({event:'teams_d1_usage',pipeline:'prepared-photo',route:'api/media/:resource',method:request.method,release:this.env.TEAMS_RELEASE_SHA||'local',usageWarning:usage.rowsRead>20000||Boolean(usage.failedQueries||usage.missingMetadataQueries),...usage}));}
+    }
     if (request.method === 'GET' || request.method === 'HEAD') {
       const asset = await this.env.ASSETS.fetch(request);
       if (asset.status !== 404) return identify(asset);

@@ -70,7 +70,6 @@ async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }
           <PropertyGallery images={heroImages} name={building.name} address={addressLabel(building.address)} hero preventUpscale={slug==='61-gold-st'} />
         </section>
         <nav aria-label="Property actions" className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-14 mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-stone-200 pb-8 sm:mb-20 sm:mt-8">
-          {slug==='61-gold-st' && residentialCover && <a href={residentialCover.src} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View full-size photo ↗</a>}
           {videos.length>0&&<a href="#property-videos" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Watch video tours ↓</a>}
           <a href={mapLocationUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">View on Map ↗</a>
           <a href={directionsToPropertyUrl(building.address)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-teams-ink underline underline-offset-4">Map &amp; Directions ↗</a>

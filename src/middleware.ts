@@ -1,12 +1,9 @@
+import {browserSecurityHeaders} from './lib/security-headers';
 import { NextResponse, type NextRequest } from 'next/server';
 import { cursorCookie, visitCookie } from './lib/featured-rotation';
 const visitPages = new Set(['/', '/about', '/properties', '/retail', '/rent-with-us', '/gallery', '/contact', '/tenant-services', '/dining']);
 function secured(response: NextResponse, privateRoute = false) {
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
-  response.headers.set('Content-Security-Policy', "base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'");
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  for(const [key,value] of Object.entries(browserSecurityHeaders))response.headers.set(key,value);
   if (privateRoute) response.headers.set('Cache-Control', 'private, no-store');
   return response;
 }
