@@ -23,7 +23,12 @@ export function middleware(request: NextRequest) {
       const value = request.cookies.get(cursorCookie)?.value;
       const prior = value ? Number(value) : NaN;
       const visit = Number.isSafeInteger(prior) && prior >= 0 ? (prior + 1) % 1000000 : 0;
-      const response = NextResponse.redirect(request.nextUrl);
+      // Render the first request directly: sharing crawlers and cookie-disabled
+      // visitors cannot complete a cookie-setting redirect back to this URL.
+      const headers = new Headers(request.headers);
+      const cookie = request.headers.get('cookie');
+      headers.set('cookie', `${cookie ? `${cookie}; ` : ''}${visitCookie}=${visit}`);
+      const response = NextResponse.next({ request: { headers } });
       response.cookies.set(visitCookie, String(visit), { path: '/', sameSite: 'lax', secure: request.nextUrl.protocol === 'https:' });
       response.cookies.set(cursorCookie, String(visit), { path: '/', sameSite: 'lax', secure: request.nextUrl.protocol === 'https:', maxAge: 60 * 60 * 24 * 365 });
       return secured(response, true);
