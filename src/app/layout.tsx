@@ -1,4 +1,3 @@
-import { HeroPhotoSizing } from '@/components/hero-photo-sizing';
 import type { Metadata } from "next";
 import "./globals.css";
 import { contactAddress, siteContact } from '@/lib/site-contact';
@@ -45,7 +44,6 @@ export default function RootLayout({
           address: { '@type': 'PostalAddress', streetAddress: siteContact.address.street, addressLocality: siteContact.address.city, addressRegion: siteContact.address.state, postalCode: siteContact.address.postalCode, addressCountry: 'US' },
         }).replace(/</g, '\\u003c') }} />
         {children}
-        <HeroPhotoSizing/>
       </body>
     </html>
   );

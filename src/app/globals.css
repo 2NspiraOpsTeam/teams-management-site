@@ -78,7 +78,7 @@ main a:active, main button:active { transform: translateY(1px); }
 /* Small transparent grain tiles add material depth without covering content or photography. */
 .texture-paper { background-image: url("/textures/paper-grain.png"); background-repeat: repeat; }
 .texture-graphite { background-image: url("/textures/graphite-grain.png"); background-repeat: repeat; }
-.gold-street-hero { background-color: #25292b; background-image: linear-gradient(90deg, rgba(20,24,26,.88), rgba(20,24,26,.56)), radial-gradient(ellipse closest-side, transparent 45%, #25292b 100%), var(--gold-street-photo); background-size: cover, var(--hero-photo-size, auto), var(--hero-photo-size, auto); background-repeat: no-repeat; background-position: center 48%; }
+.gold-street-hero { background-color: #25292b; background-image: linear-gradient(90deg, rgba(20,24,26,.72), rgba(20,24,26,.18)), var(--gold-street-photo); background-size: cover; background-repeat: no-repeat; background-position: center 48%; }
 .gold-street-hero--about { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1621---5b1701de-49f5-465f-afeb-0d6d7f05dfd5.jpg"); }
 .gold-street-hero--services { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_1768---aee1973b-f300-46c7-95fa-e60c1c3205c7.jpg"); }
 .gold-street-hero--contact { --gold-street-photo: url("/preview-properties/61-gold-st/input-IMG_5284---88aaeaac-e28b-4bd6-a193-2f0c0d9bab21.jpg"); }
@@ -507,3 +507,17 @@ html { scroll-padding-top: 110px; }
 @media(prefers-reduced-motion:no-preference) { .resident-overview>.resident-card { animation:resident-arrive .45s ease-out both; } .resident-overview>.resident-card:nth-child(2) { animation-delay:.06s; } .resident-overview>.resident-card:nth-child(3) { animation-delay:.12s; } }
 @media(max-width:520px) { .resident-home-visual { min-height:230px; } .resident-home-visual:has(.resident-home-mark) { display:none; } .resident-member-list { margin-bottom:12px; } .resident-member-list li { flex-wrap:wrap; } .resident-member-list li>.resident-status { margin-left:52px; } .resident-lease-details { grid-template-columns:1fr; } }
 @media(prefers-reduced-motion:reduce) { .resident-shell *, .resident-shell *:before,.resident-shell *:after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } .resident-shell img,.resident-action-card:hover { transform:none!important; } }
+
+/* Compact retail introduction lets the featured property lead the page. */
+.gold-street-hero--retail { padding-block: 1.75rem; }
+.gold-street-hero--retail > div { padding-block: 0; }
+.gold-street-hero--retail h1 { font-size: clamp(1.875rem, 3vw, 2.75rem); max-width: none; }
+.gold-street-hero--retail > div > p:first-child { margin-bottom: .625rem; }
+.gold-street-hero--retail h1 + p { margin-top: .75rem; font-size: 1rem; }
+.gold-street-hero--retail a { margin-top: 1rem; }
+.page-showcase--retail { padding-block: 1.5rem; }
+@media (min-width: 1024px) {
+ .gold-street-hero--retail > div { position: relative; padding-right: 22rem; }
+ .gold-street-hero--retail a { position: absolute; right: 2rem; bottom: 0; margin-top: 0; }
+ .page-showcase--retail .page-showcase-image img { height: 320px; aspect-ratio: auto; }
+}
