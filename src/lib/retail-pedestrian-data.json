@@ -219,5 +219,18 @@
     "publication_status": "published",
     "source_url": "https://data.cityofnewyork.us/resource/cqsj-cfgu.json?objectid=48",
     "distance_method": "straight-line from geocoded address to official counter point"
+  },
+  "349-351-w-46th-st": {
+    "pedestrian_source": "NYC DOT Bi-Annual Pedestrian Counts",
+    "measurement_location": "Eighth Avenue between West 44th Street and West 45th Street",
+    "distance_from_property": 223,
+    "count_period": "May 2026 midday",
+    "count_value": 11075,
+    "demand_category": null,
+    "measured_at": "2026-05",
+    "verified_at": "2026-10-13",
+    "publication_status": "published",
+    "source_url": "https://data.cityofnewyork.us/resource/cqsj-cfgu.json?objectid=44",
+    "distance_method": "straight-line from geocoded address to official counter point"
   }
 }

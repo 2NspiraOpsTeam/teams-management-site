@@ -5,10 +5,10 @@ vi.mock('./page-showcase', () => ({ eligibleShowcases: mocks.eligible }));
 vi.mock('./public-retail', () => ({ listPublicRetail: mocks.retail }));
 import { dailyHeroStyle } from './daily-hero-style';
 const photo = (id: string, slug = id) => ({ property_id: id, property_slug: slug, media_asset_id: id, image: `/photo-${id}.jpg` });
-beforeEach(() => { vi.clearAllMocks(); mocks.eligible.mockResolvedValue([photo('residential')]); mocks.retail.mockResolvedValue([]); });
+beforeEach(() => { vi.clearAllMocks(); mocks.eligible.mockImplementation(async (_db,_covers,context) => context === 'residential' ? [photo('residential')] : []); mocks.retail.mockResolvedValue([]); });
 describe('daily header media isolation', () => {
   it.each(['about', 'contact', 'rent-with-us', 'properties'] as const)('%s requests only explicit residential covers', async page => {
-    expect(await dailyHeroStyle(page)).toEqual({ '--gold-street-photo': 'url("/photo-residential.jpg")' });
+    expect(await dailyHeroStyle(page)).toEqual({ '--gold-street-photo': page==='about' ? 'url("/photo-residential.jpg")' : 'none' });
     expect(mocks.eligible).toHaveBeenCalledWith({}, true, 'residential', true);
   });
   it('restricts retail to explicit covers of publicly listed retail properties', async () => {

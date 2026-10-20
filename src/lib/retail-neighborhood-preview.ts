@@ -27,7 +27,7 @@ const bySlug: Record<string, Neighborhood> = {
   '1374-1st-ave': areas.upperEastSide,
   '1365-1st-ave': areas.upperEastSide,
   '41-w-46th-st': areas.midtown,
-  '349-w-46th-st': areas.hellsKitchen,
+  '349-351-w-46th-st': areas.hellsKitchen,
   '351-w-46th-st': areas.hellsKitchen,
   '307-w-39th-st': areas.midtown,
   '235-w-18th-st': areas.chelsea,

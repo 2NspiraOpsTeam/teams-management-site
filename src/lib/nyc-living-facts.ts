@@ -14,7 +14,7 @@ const facts: Record<string, { zip: string; yearBuilt?: number; bbl?: string }> =
   '1374-1st-ave': { zip: '10021', yearBuilt: 1910, bbl: '1014680003' },
   '1365-1st-ave': { zip: '10021', yearBuilt: 1910, bbl: '1014480025' },
   '41-w-46th-st': { zip: '10036', yearBuilt: 1920, bbl: '1012620018' },
-  '349-w-46th-st': { zip: '10036' },
+  '349-351-w-46th-st': { zip: '10036' },
   '351-w-46th-st': { zip: '10036' },
   '307-w-39th-st': { zip: '10018', yearBuilt: 1920, bbl: '1007630031' },
   '235-w-18th-st': { zip: '10011', yearBuilt: 1901, bbl: '1007680017' },

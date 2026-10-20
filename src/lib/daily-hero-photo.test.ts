@@ -22,3 +22,29 @@ describe('daily page backgrounds', () => {
     expect(dailyHeroPhoto([photos[0], photos[0]])).toEqual(photos[0]);
   });
 });
+
+import { dailyHeroPlan, dailyHeroPages } from './daily-hero-photo';
+describe('unique cross-context daily plan',()=>{
+  const photo=(id:string,checksum?:string)=>({media_asset_id:id,image:`/${id}.jpg`,checksum});
+  it('never repeats a source across all five pages, including shared Residential/Retail covers',()=>{
+    const residential=['a','b','c','d','e','f'].map(id=>photo(id));
+    for(let day=1;day<=366;day++){
+      const now=new Date(Date.UTC(2026,0,day,12));
+      const plan=dailyHeroPlan(residential,[residential[0],residential[1]],now);
+      expect(new Set(Object.values(plan).map(p=>p?.media_asset_id)).size).toBe(5);
+      expect(['a','b']).toContain(plan.retail?.media_asset_id);
+      expect(dailyHeroPlan([...residential].reverse(),[residential[1],residential[0]],now)).toEqual(plan);
+    }
+  });
+  it('recognizes duplicate bytes imported with a different asset ID',()=>{
+    const checksum='a'.repeat(64);
+    const plan=dailyHeroPlan([photo('copy',checksum),...['b','c','d','e'].map(id=>photo(id))],[photo('retail',checksum)]);
+    expect(Object.values(plan).some(p=>p?.media_asset_id==='copy')).toBe(false);
+    expect(dailyHeroPages.every(page=>plan[page]!==null)).toBe(true);
+  });
+  it('uses neutral backgrounds instead of duplicates when inventory is insufficient',()=>{
+    const same=photo('same');const plan=dailyHeroPlan([same],[same]);
+    expect(plan.retail).toEqual(same);
+    expect(dailyHeroPages.filter(page=>plan[page]===null)).toHaveLength(4);
+  });
+});

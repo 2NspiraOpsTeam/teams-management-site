@@ -30,7 +30,7 @@ export async function getPublicBuilding(slug: string): Promise<BuildingPublic | 
 
 /** Preserve preview-only publication scope, while taking mailing addresses from canonical records. */
 export async function canonicalPreviewBuildings(fixtures: BuildingPublic[]): Promise<BuildingPublic[]> {
-  const rows = await publicDataCache('preview-addresses',async()=> (await database().prepare(`SELECT slug,address_json FROM buildings WHERE publication_state!='archived' AND slug IN (${previewPortfolio.map(()=>'?').join(',')})`).bind(...previewPortfolio.map(b=>b.slug)).all<{slug:string;address_json:string}>()).results);
-  const addresses = new Map(rows.map(row => [row.slug, JSON.parse(row.address_json) as BuildingPublic['address']]));
-  return fixtures.map(building => ({ ...building, address: addresses.get(building.slug) || building.address }));
+  const rows = await publicDataCache('preview-addresses',async()=> (await database().prepare(`SELECT slug,name,address_json FROM buildings WHERE publication_state!='archived' AND slug IN (${previewPortfolio.map(()=>'?').join(',')})`).bind(...previewPortfolio.map(b=>b.slug)).all<{slug:string;name:string;address_json:string}>()).results);
+  const canonical = new Map(rows.map(row => [row.slug, {name:row.name,address:JSON.parse(row.address_json) as BuildingPublic['address']}]));
+  return fixtures.map(building => ({ ...building, ...canonical.get(building.slug) }));
 }

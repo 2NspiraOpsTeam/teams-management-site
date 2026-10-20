@@ -1,3 +1,4 @@
+import { permanentRedirect } from 'next/navigation';
 import { renderWebsiteContent } from '@/components/website-content-page';
 import { PropertyVideos } from '@/components/property-videos';
 import { propertyVideos, publicVideoProjection } from '@/lib/property-videos';
@@ -26,6 +27,7 @@ export const runtime = 'nodejs';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+  if (['349-w-46th-st','351-w-46th-st'].includes(slug)) permanentRedirect('/properties/349-351-w-46th-st');
   const building = previewPortfolioEnabled ? (await canonicalPreviewBuildings(previewPortfolio)).find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) return {};
   const address = addressLabel(building.address);
@@ -43,6 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (['349-w-46th-st','351-w-46th-st'].includes(slug)) permanentRedirect('/properties/349-351-w-46th-st');
   const building = previewPortfolioEnabled ? (await canonicalPreviewBuildings(previewPortfolio)).find(item => item.slug === slug) : await getPublicBuilding(slug);
   if (!building) notFound();
   const retail = await getPublicRetail(slug);
