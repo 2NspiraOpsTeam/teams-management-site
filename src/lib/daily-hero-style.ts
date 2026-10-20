@@ -1,3 +1,4 @@
+import {highResolutionPhoto} from './photo-variants';
 import type { CSSProperties } from 'react';
 import { adminDb } from './admin-auth';
 import { publicShowcases } from './public-showcases';
@@ -16,6 +17,6 @@ export async function dailyHeroStyle(page:DailyHeroPage):Promise<CSSProperties> 
     residential.filter(item=>item.property_slug!=='3425-east-tremont-bronx'),
     retail.filter(item=>published.has(item.property_id)),
   )[page];
-  // Original source URLs, with no thumbnail derivative or synthetic upscaling.
-  return {'--gold-street-photo':photo?`url(${JSON.stringify(photo.image)})`:'none'} as CSSProperties;
+  // Versioned offline-prepared source; original files and cover selections are retained.
+  return {'--gold-street-photo':photo?`url(${JSON.stringify(highResolutionPhoto(photo.image))})`:'none'} as CSSProperties;
 }

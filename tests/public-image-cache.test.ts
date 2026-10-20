@@ -19,3 +19,10 @@ it('isolates release and preview publication scopes and only caches versioned su
 it('falls back to the guarded loader on cache failure',async()=>{
  vi.stubGlobal('caches',{open:async()=>{throw Error('unavailable');}});const load=vi.fn(async()=>new Response('Not found',{status:404}));expect((await publicImageCache(request(),'one',false,load)).status).toBe(404);expect(load).toHaveBeenCalledOnce();
 });
+it('never serves a thumbnail as a high-resolution rendition or vice versa',async()=>{
+ const small=new Request(request().url+'&w=480'),large=new Request(request().url+'&w=2400');
+ const low=vi.fn(async()=>new Response('thumbnail',{headers:{'Content-Type':'image/webp'}})),high=vi.fn(async()=>new Response('high-resolution',{headers:{'Content-Type':'image/webp'}}));
+ expect(await(await publicImageCache(small,'release',false,low)).text()).toBe('thumbnail');
+ expect(await(await publicImageCache(large,'release',false,high)).text()).toBe('high-resolution');
+ expect(await(await publicImageCache(small,'release',false,low)).text()).toBe('thumbnail');expect(low).toHaveBeenCalledOnce();expect(high).toHaveBeenCalledOnce();
+});

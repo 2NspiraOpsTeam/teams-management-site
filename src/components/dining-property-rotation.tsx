@@ -1,4 +1,5 @@
 'use client';
+import {PublishedPhoto} from '@/components/published-photo';
 
 import Link from 'next/link';
 import { useState } from 'react';
@@ -15,7 +16,7 @@ export function DiningPropertyRotation({ properties }: { properties: DiningPrope
   return <section className="border-t border-stone-200 bg-white px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="featured-property">
     <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-2 md:gap-12">
       <Link prefetch={false} href={property.href} className="group block overflow-hidden rounded-sm bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B49355]" aria-label={`View ${property.name} property`}>
-        <img src={property.image} alt={property.alt} loading="lazy" className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" />
+        <PublishedPhoto src={property.image} alt={property.alt} loading="lazy" className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" />
       </Link>
       <div>
         <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8b681f]">Featured property</p>

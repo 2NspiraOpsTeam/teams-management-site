@@ -1,0 +1,12 @@
+{
+  "images": 268,
+  "media": 246,
+  "static": 22,
+  "covers": 23,
+  "upscaled": 115,
+  "variants": 1333,
+  "totalBytes": 155267230,
+  "originalBytes": 82211103,
+  "tools": "Sharp/libvips, local CPU only; zero API/service calls",
+  "fidelity": "Unmodified originals retained; interpolation does not recover true missing detail"
+}

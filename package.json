@@ -12,7 +12,7 @@
     "test": "vitest run",
     "qa:d1:local": "bash scripts/setup-local-qa-d1.sh",
     "build:worker": "opennextjs-cloudflare build --config wrangler.worker.jsonc",
-    "build:preview:worker": "NEXT_PUBLIC_PREVIEW_PORTFOLIO=1 opennextjs-cloudflare build --config wrangler.worker.jsonc"
+    "build:preview:worker": "NEXT_PUBLIC_PREVIEW_PORTFOLIO=1 opennextjs-cloudflare build --config wrangler.worker.jsonc && node scripts/images/stage.cjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20.11",

@@ -1,3 +1,4 @@
+import {PublishedPhoto} from '@/components/published-photo';
 import { OfficialPlaceName } from './official-place-name';
 import type { BuildingPublic } from '@/lib/database.types';
 import { mapLocationUrl, navigationAddressLabel } from '@/lib/map-location';
@@ -54,7 +55,7 @@ export function RetailNeighborhood({ slug, street, address }: { slug: string; st
     <h2 id="retail-neighborhood-title" className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">What surrounds this address?</h2>
     <div className="mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12">
       <div><p className="max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} Use the address, mapped transit, surrounding businesses, and local anchors below to assess the area. These are points of context, not measurements of activity at this storefront or a prediction of sales.</p><a href={area.guide} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center font-semibold underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{area.guideLabel} ↗</a></div>
-      <figure className="min-w-0 overflow-hidden bg-stone-200"><img src={area.image} alt={area.imageAlt} loading="lazy" className="aspect-[16/10] w-full object-cover"/><figcaption className="px-3 py-2 text-xs text-slate-600">{area.name} area · Photo: <a href={area.creditUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{area.credit}</a> · {area.license}. Area image, not the property.</figcaption></figure>
+      <figure className="min-w-0 overflow-hidden bg-stone-200"><PublishedPhoto src={area.image} alt={area.imageAlt} loading="lazy" className="aspect-[16/10] w-full object-cover"/><figcaption className="px-3 py-2 text-xs text-slate-600">{area.name} area · Photo: <a href={area.creditUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{area.credit}</a> · {area.license}. Area image, not the property.</figcaption></figure>
     </div>
     <div className="mt-8 grid gap-4 border-y border-stone-400/50 py-6 sm:grid-cols-2">
       <div><p className="text-xs font-bold uppercase tracking-wider text-teams-secondary">Street setting</p><p className="mt-2 font-semibold">{street}</p></div>

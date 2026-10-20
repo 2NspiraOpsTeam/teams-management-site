@@ -1,4 +1,5 @@
 import { WorkerEntrypoint } from 'cloudflare:workers';
+import { privatePhotoPath } from './private-photo-path.mjs';
 import { observeRequest } from './request-observation.mjs';
 import { meterDatabase } from './d1-meter.mjs';
 import application from '../../.open-next/worker.js';
@@ -32,6 +33,7 @@ export class TeamsPreviewRuntime extends WorkerEntrypoint {
       result.headers.set('X-Teams-Runtime', 'OpenNext');
       return result;
     };
+    if (privatePhotoPath(new URL(request.url).pathname)) return identify(new Response('Not found',{status:404,headers:{'Cache-Control':'no-store'}}));
     if (request.method === 'GET' || request.method === 'HEAD') {
       const asset = await this.env.ASSETS.fetch(request);
       if (asset.status !== 404) return identify(asset);
