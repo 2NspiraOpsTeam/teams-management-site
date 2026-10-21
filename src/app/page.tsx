@@ -4,6 +4,7 @@ import { renderWebsiteContent } from '@/components/website-content-page';
 import { WebsiteText } from '@/components/website-text';
 import { addressLabel } from '@/lib/map-location';
 import { AcrossCityRail } from '@/components/across-city-rail';
+import { ResidentReviews } from '@/components/resident-reviews';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -88,6 +89,7 @@ async function Home() {
     <section className="home-rent py-20 sm:py-28"><div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center lg:px-12"><div><p className="home-eyebrow"><WebsiteText contentKey="home.text-37">Your next step</WebsiteText></p><h2 className="mb-4 font-serif text-4xl font-normal sm:text-6xl"><WebsiteText contentKey="home.text-38">Rent With Us</WebsiteText></h2><p className="mb-0 max-w-lg text-teams-secondary"><WebsiteText contentKey="home.text-39">See our rental pathway and how to get in touch.</WebsiteText></p></div><div className="flex flex-wrap gap-3"><Link prefetch={false} className="home-button bg-teams-gold text-[#111]" href="/rent-with-us"><WebsiteText contentKey="home.text-40">Rent With Us ↗</WebsiteText></Link><Link prefetch={false} className="home-button border border-teams-ink text-teams-ink hover:bg-teams-ink hover:text-white" href="/rent-with-us#rental-inquiry"><WebsiteText contentKey="home.text-41">Start Rental Inquiry ↗</WebsiteText></Link></div></div></section>
     {showcase.length > 0 && <section className="home-across py-16 sm:py-24" aria-labelledby="more-title"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12"><div className="mb-8 flex items-end justify-between gap-4"><div><p className="home-eyebrow"><WebsiteText contentKey="home.text-42">Discover more</WebsiteText></p><h2 id="more-title" className="font-serif text-3xl font-normal sm:text-5xl"><WebsiteText contentKey="home.text-43">Across the city</WebsiteText></h2></div><Link prefetch={false} href="/properties" className="home-text-link shrink-0 text-sm"><WebsiteText contentKey="home.text-44">Browse all ↗</WebsiteText></Link></div><AcrossCityRail items={showcase} /></div></section>}
 
+    <ResidentReviews />
     <section className="home-resident relative isolate overflow-hidden border-y border-stone-300 py-14 sm:py-20" aria-labelledby="resident-title">
       <div className="pointer-events-none absolute -right-16 -top-24 -z-10 h-72 w-72 rounded-full border border-teams-gold/30 sm:h-96 sm:w-96" aria-hidden="true" />
       <div className="mx-auto grid max-w-7xl gap-8 px-5 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16 lg:px-12">
