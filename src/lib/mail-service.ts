@@ -17,7 +17,7 @@ export class MailService implements TeamsMailService {
     const from = this.env.TENANT_AUTH_FROM;
     if (!from) throw new Error('tenant_sender_not_configured');
     const email = signInEmail('tenant', code);
-    return sendGmail(this.env, from, to, email.subject, email.text, undefined, email.html);
+    return sendGmail(this.env, `Teams Management <${from}>`, to, email.subject, email.text, undefined, email.html);
   }
   async sendTenantInvitation(to: string, loginUrl: string) {
     const from = this.env.TENANT_AUTH_FROM;
@@ -28,7 +28,7 @@ export class MailService implements TeamsMailService {
     const from = this.env.ADMIN_AUTH_FROM;
     if (!from) throw new Error('admin_sender_not_configured');
     const email = signInEmail('admin', code);
-    return sendGmail(this.env, from, to, email.subject, email.text, this.env.ADMIN_AUTH_REPLY_TO, email.html);
+    return sendGmail(this.env, `Teams Management <${from}>`, to, email.subject, email.text, this.env.ADMIN_AUTH_REPLY_TO, email.html);
   }
   async sendApplicationConfirmation(_to: string, _text: string): Promise<string> {
     throw new Error('application_confirmation_not_enabled');

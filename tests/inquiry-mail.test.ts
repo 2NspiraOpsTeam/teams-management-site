@@ -29,9 +29,14 @@ it('includes the correct canonical portal in each role’s actual OTP email, wit
     const decoded = parts.map(part => Buffer.from(part.split('\r\n\r\n')[1].trim(), 'base64').toString());
     const code = messages.length === 0 ? '00000000' : '00000001';
     const subject = Buffer.from(mime.match(/Subject: =\?UTF-8\?B\?([^?]+)/)![1], 'base64').toString();
-    expect(subject).toBe(`${code} is your Teams Management sign-in code`);
-    expect(decoded[0].startsWith(`${code} is your Teams Management sign-in code. Expires in 10 minutes.`)).toBe(true);
-    expect(decoded[1]).toContain(`overflow:hidden">${code} is your Teams Management sign-in code. Expires in 10 minutes.`);
+    expect(subject).toBe(`${code} — Sign-in code`);
+    expect(decoded[0].startsWith('Expires in 10 minutes. Never share this code.')).toBe(true);
+    expect(decoded[1]).toContain('overflow:hidden">Expires in 10 minutes. Never share this code.');
+    expect(mime).toContain('From: Teams Management <sender@example.test>');
+    const preheader = decoded[1].match(/overflow:hidden">(.*?)<\/div>/)![1];
+    expect(preheader).not.toContain(code);
+    expect(preheader).toContain('&#8204;&nbsp;'.repeat(160));
+    expect(decoded[0].split(code)).toHaveLength(2);
     expect(parts[0]).toContain('text/plain');
     expect(parts[1]).toContain('text/html');
     expect(decoded[1]).toContain('/brand/teams-management-logo.png');
