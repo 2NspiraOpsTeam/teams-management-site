@@ -1,3 +1,4 @@
+import {saveGoogleLeaseLink} from './google-lease-links';
 import {oneDriveConfig,leaseLinks,saveLeaseLink} from './onedrive-links';
 import {sourceRoster} from './source-roster';
 import {renewalData,filterRenewals,saveRenewal,saveRenewalSettings} from './renewals';
@@ -27,6 +28,7 @@ export async function operationsRequest(request:Request,path:string[]){try{const
  if(['properties','units','tenants','superintendents','leases','maintenance'].includes(entity)&&path.length<3)return json(key?await detail(a,entity,id(key)):await list(a,entity,url));
  } else if(request.method==='POST'&&entity==='maintenance'&&key&&action==='assignment'&&path.length===3)return json(await saveRequestAssignment(a,id(key),await body(request)));
  else if(request.method==='POST'&&entity==='leases'&&key&&action==='documents'&&path.length===3)return json(await uploadLeaseDocument(a,id(key),request),201);
+ else if(request.method==='POST'&&entity==='leases'&&key&&action==='google-links'&&path.length===3)return json(await saveGoogleLeaseLink(a,id(key),await body(request)),201);
  else if(request.method==='POST'&&entity==='leases'&&key&&action==='links'&&path.length===3)return json(await saveLeaseLink(a,id(key),await body(request)),201);
  else if(request.method==='POST'&&entity==='assignments'&&path.length===1)return json(await saveAssignment(a,await body(request)),201);
  else if(['POST','PATCH'].includes(request.method)&&path.length<3){const v=await body(request),target=key?id(key):null;if(request.method==='PATCH'&&!target||request.method==='POST'&&target)fail('Not found',404);let result:Row;
