@@ -1,3 +1,4 @@
+import { trackLoginEmail } from '@/lib/login-email-history';
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { NextResponse } from 'next/server';
 import { activeAdmin, adminDb, adminEnv, cookieName, currentAdmin, hash, sameOrigin, unauthorized } from '@/lib/admin-auth';
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
     await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE email=? AND used_at IS NULL").bind(email).run();
     await db.prepare("INSERT INTO admin_login_codes (id,email,code_hash,expires_at) VALUES (?,?,?,datetime('now','+10 minutes'))").bind(id, email, await codeHash(email, code)).run();
     try {
-      await mail.sendAdminOtp(email, code);
+      await trackLoginEmail(db, 'admin', email, () => mail.sendAdminOtp(email, code));
     } catch {
       await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run();
       console.warn('Admin code delivery failed');

@@ -1,3 +1,4 @@
+import { trackLoginEmail } from '@/lib/login-email-history';
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { NextResponse } from 'next/server';
 import { adminEnv, hash, sameOrigin } from '@/lib/admin-auth';
@@ -33,7 +34,7 @@ export async function POST(request:Request){
     const code=String(crypto.getRandomValues(new Uint32Array(1))[0]%100000000).padStart(8,'0'),id=crypto.randomUUID();
     await db.prepare("UPDATE tenant_login_codes SET used_at=datetime('now') WHERE tenant_id=? AND used_at IS NULL").bind(tenant.id).run();
     await db.prepare("INSERT INTO tenant_login_codes (id,tenant_id,code_hash,expires_at) VALUES (?,?,?,datetime('now','+10 minutes'))").bind(id,tenant.id,await tenantCodeHash(tenant.id,code)).run();
-    try{await mail.sendTenantOtp(email,code);}catch{await db.prepare("UPDATE tenant_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run();return reply({error:'Tenant sign-in is temporarily unavailable. Please contact Teams Management.'},503);}
+    try{await trackLoginEmail(db, 'tenant', email, () => mail.sendTenantOtp(email,code));}catch{await db.prepare("UPDATE tenant_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run();return reply({error:'Tenant sign-in is temporarily unavailable. Please contact Teams Management.'},503);}
     return reply(generic);
   }
   if(input?.action!=='verify'||typeof input.code!=='string'||!/^\d{8}$/.test(input.code)||!tenant) return reply({error:'Invalid or expired code.'},401);
