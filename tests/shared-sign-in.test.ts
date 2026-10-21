@@ -43,3 +43,11 @@ it('fails closed on unavailable account storage',async()=>{
  const result=await POST(request({action:'request',email:'person@example.test'}));
  expect(result.status).toBe(503);expect(mocks.admin).not.toHaveBeenCalled();expect(mocks.tenant).not.toHaveBeenCalled();
 });
+it('preserves daily-limit messaging and retry timing through shared sign-in',async()=>{
+ mocks.activeAdmin.mockResolvedValue(true);
+ mocks.admin.mockResolvedValue(Response.json({error:'Daily sign-in code request limit reached (300 per 24 hours).',retryAfterSeconds:120},{status:429,headers:{'Retry-After':'120'}}));
+ const result=await POST(request({action:'request',email:'qa@example.test'}));
+ expect(result.status).toBe(429);expect(result.headers.get('Retry-After')).toBe('120');
+ expect(await result.json()).toEqual({error:'Daily sign-in code request limit reached (300 per 24 hours).',retryAfterSeconds:120});
+ expect(result.headers.get('set-cookie')).toBeNull();expect(mocks.tenant).not.toHaveBeenCalled();
+});

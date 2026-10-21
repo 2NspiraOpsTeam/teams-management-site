@@ -27,6 +27,13 @@ export async function POST(request: Request) {
     const admin = await activeAdmin(email);
     const forwarded = new Request(request.url, { method: 'POST', headers: request.headers, body: JSON.stringify({ email, action: input.action, code: input.code }) });
     const response = await (admin ? adminSignIn : tenantSignIn)(forwarded);
+    if (response.status === 429) {
+      const body = await response.json() as { error?: string; retryAfterSeconds?: number };
+      const limited = reply({ error: body.error || 'Too many sign-in code requests. Please try again later.', retryAfterSeconds: body.retryAfterSeconds }, 429);
+      const retryAfter = response.headers.get('Retry-After');
+      if (retryAfter) limited.headers.set('Retry-After', retryAfter);
+      return limited;
+    }
     if (!response.ok) return reply({ error: response.status === 503 ? 'Sign-in is temporarily unavailable. Please try again later.' : 'Invalid or expired code. Request a new code and try again.' }, response.status);
     const body = input.action === 'request'
       ? { message: 'If this email is authorized, a sign-in code has been sent.' }

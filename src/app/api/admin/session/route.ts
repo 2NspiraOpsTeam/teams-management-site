@@ -35,14 +35,19 @@ export async function POST(request: Request) {
   const mail = new MailService(env);
   if (!env.ADMIN_OTP_PEPPER || env.ADMIN_OTP_PEPPER.length < 32 || !mail.configured() || !env.ADMIN_AUTH_FROM) return reply({ error: 'Admin sign-in is temporarily unavailable.' }, 503);
   if (input?.action === 'request') {
-    // A fixed window limits both a recipient and a network without storing raw IPs.
+    // Separate daily keys from legacy hourly counters; no data migration is needed.
+    // Count requests atomically, with the first 300 allowed in each 24-hour window.
     const ip = request.headers.get('cf-connecting-ip') || 'unknown';
-    const keys = [await hash(`email:${email}`), await hash(`ip:${ip}`)];
-    for (const key of keys) {
-      await db.prepare("INSERT INTO admin_login_throttle (key_hash, window_start, count) VALUES (?, datetime('now'), 1) ON CONFLICT(key_hash) DO UPDATE SET count=CASE WHEN window_start < datetime('now','-1 hour') THEN 1 ELSE count+1 END, window_start=CASE WHEN window_start < datetime('now','-1 hour') THEN datetime('now') ELSE window_start END").bind(key).run();
+    const keys = [await hash(`daily:email:${email}`), await hash(`daily:ip:${ip}`)];
+    const rates = await Promise.all(keys.map(key => db.prepare("INSERT INTO admin_login_throttle (key_hash, window_start, count) VALUES (?, datetime('now'), 1) ON CONFLICT(key_hash) DO UPDATE SET count=CASE WHEN window_start <= datetime('now','-1 day') THEN 1 ELSE count+1 END, window_start=CASE WHEN window_start <= datetime('now','-1 day') THEN datetime('now') ELSE window_start END RETURNING count, MAX(1, CAST(strftime('%s', window_start) AS INTEGER) + 86400 - CAST(strftime('%s', 'now') AS INTEGER)) AS retry_after").bind(key).first<{ count: number; retry_after: number }>()));
+    if (rates.some(rate => !rate)) return reply({ error: 'Admin sign-in is temporarily unavailable.' }, 503);
+    const blocked = rates.filter(rate => rate && rate.count > 300);
+    if (blocked.length) {
+      const retryAfter = Math.max(...blocked.map(rate => rate!.retry_after));
+      const response = reply({ error: 'Daily sign-in code request limit reached (300 per 24 hours for an email address or network). Please try again when the limit resets.', retryAfterSeconds: retryAfter }, 429);
+      response.headers.set('Retry-After', String(retryAfter));
+      return response;
     }
-    const rates = await Promise.all(keys.map(key => db.prepare('SELECT count FROM admin_login_throttle WHERE key_hash=?').bind(key).first<{ count: number }>()));
-    if ((rates[0]?.count || 0) > 6 || (rates[1]?.count || 0) > 30) return reply(generic);
     if (!(await activeAdmin(email))) return reply(generic);
     const recent = await db.prepare("SELECT id FROM admin_login_codes WHERE email=? AND created_at > datetime('now','-60 seconds') ORDER BY created_at DESC LIMIT 1").bind(email).first();
     if (recent) return reply(generic);
