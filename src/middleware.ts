@@ -14,7 +14,10 @@ export function middleware(request: NextRequest) {
   // Robots directives supplement authentication; they never replace it.
   const protect = (response:NextResponse, privateRoute=false) => {
     if(sensitive)response.headers.set('X-Robots-Tag','noindex, nofollow, noarchive');
-    return secured(response,privateRoute);
+    const result=secured(response,privateRoute);
+    // The native Microsoft picker posts its token into a popup, never to our server.
+    if(path.startsWith('/admin/operations/leases/'))result.headers.set('Content-Security-Policy',browserSecurityHeaders['Content-Security-Policy'].replace("form-action 'self'","form-action 'self' https://*.sharepoint.com"));
+    return result;
   };
   if (path === '/properties/609-golden-gate-pt-unit-402') {
     const destination = request.nextUrl.clone();
