@@ -1,8 +1,20 @@
+import { propertyFactFields } from './property-facts';
 import {businessDate} from './renewal-rules';
 import { all,auditStatement,commit,existing,one,receipt,revision,stmt,type Actor,type Row } from './database';
 import { bool,choice,date,email,fail,id,money,number,roleChoices,text } from './validation';
 
-export async function saveProperty(a:Actor,key:string,v:Row){const b=await existing(a.db,'buildings','id',key),old=await one(a.db,'SELECT * FROM operations_properties WHERE building_id=?',key)||{building_id:key,property_type:'unverified',internal_notes:'',revision:1};const rev=revision(v,old);const after={llc_name:v.llc_name===undefined?old.llc_name??null:text(v.llc_name,240),property_type:choice(v.property_type,['unverified','residential','commercial','mixed_use','condominium_unit','other']),internal_notes:text(v.internal_notes,5000)};await commit(a,[stmt(a.db,'INSERT OR IGNORE INTO operations_properties(building_id) VALUES(?)',key),stmt(a.db,'UPDATE operations_properties SET llc_name=?,property_type=?,internal_notes=?,revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END WHERE building_id=?',after.llc_name,after.property_type,after.internal_notes,rev,b.id),auditStatement(a,'operations_property',key,old,after)]);return {id:key,revision:rev+1};}
+export async function saveProperty(a:Actor,key:string,v:Row){
+ const b=await existing(a.db,'buildings','id',key),old=await one(a.db,'SELECT * FROM operations_properties WHERE building_id=?',key)||{building_id:key,property_type:'unverified',internal_notes:'',revision:1};
+ const rev=revision(v,old);
+ const after:Row={llc_name:v.llc_name===undefined?old.llc_name??null:text(v.llc_name,240),property_type:v.property_type===undefined?old.property_type:choice(v.property_type,['unverified','residential','commercial','mixed_use','condominium_unit','other']),internal_notes:v.internal_notes===undefined?old.internal_notes:text(v.internal_notes,5000)};
+ for(const [field,,kind] of propertyFactFields){
+  const value=v[field];
+  after[field]=value===undefined?old[field]??null:kind==='number'?number(value,0,field==='floor_count'?1000:100000,true,true):value===null||value===''?null:text(value,field==='stabilization_summary'?1000:240,true);
+ }
+ const keys=Object.keys(after);
+ await commit(a,[stmt(a.db,'INSERT OR IGNORE INTO operations_properties(building_id) VALUES(?)',key),stmt(a.db,`UPDATE operations_properties SET ${keys.map(k=>k+'=?').join(',')},revision=CASE WHEN revision=? THEN revision+1 ELSE -1 END WHERE building_id=?`,...Object.values(after),rev,b.id),auditStatement(a,'operations_property',key,old,after)]);
+ return {id:key,revision:rev+1};
+}
 
 export async function saveUnit(a:Actor,key:string|null,v:Row){const before=key?await existing(a.db,'units','id',key):null;const buildingId=id(before?.building_id||v.building_id);if(before&&v.building_id&&v.building_id!==buildingId)fail('A unit with history cannot be moved to another property.',409);await existing(a.db,'buildings','id',buildingId);const normalized={building_id:buildingId,unit_identifier:text(v.unit_identifier,50,true),floor_number:number(v.floor_number,-10,300,true,true),status:choice(v.status,['unverified','available_internal','occupied','under_construction','maintenance'],'unverified'),bedrooms:number(v.bedrooms,0,30),bathrooms:number(v.bathrooms,0,30),square_feet:number(v.square_feet,1,100000,true,true),vacancy_confirmed:bool(v.vacancy_confirmed),internal_notes:text(v.internal_notes,5000)};if(normalized.vacancy_confirmed&&await one(a.db,'SELECT id FROM tenant_assignments WHERE unit_id=? AND active=1 LIMIT 1',key||''))fail('An assigned unit cannot be marked confirmed vacant.',409);
  if(!key){const r=await receipt(a,v,'unit',normalized);if(r.duplicate)return {id:r.id,duplicate:true};await commit(a,[r.statement!,stmt(a.db,'INSERT INTO units(id,building_id,unit_identifier,floor_number,status) VALUES(?,?,?,?,?)',r.id,buildingId,normalized.unit_identifier,normalized.floor_number,normalized.status),stmt(a.db,'INSERT INTO operations_units(unit_id,bedrooms,bathrooms,square_feet,vacancy_confirmed,internal_notes) VALUES(?,?,?,?,?,?)',r.id,normalized.bedrooms,normalized.bathrooms,normalized.square_feet,normalized.vacancy_confirmed?1:0,normalized.internal_notes),auditStatement(a,'operations_unit',r.id,null,normalized,'created')]);return {id:r.id};}
