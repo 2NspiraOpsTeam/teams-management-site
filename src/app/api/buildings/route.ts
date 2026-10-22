@@ -19,8 +19,8 @@ export async function GET() {
       query_timestamp: new Date().toISOString()
     });
     
-  } catch (error) {
-    console.error('Public building list failed:', error);
+  } catch {
+    console.error('Public building list unavailable');
     return NextResponse.json(
       { 
         error: 'Service unavailable',

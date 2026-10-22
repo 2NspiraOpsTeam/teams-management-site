@@ -19,8 +19,8 @@ export async function GET(
     const building = await getPublicBuilding(slug);
     if (!building) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(building);
-  } catch (error) {
-    console.error('Building API error:', error);
+  } catch {
+    console.error('Building API unavailable');
     return NextResponse.json({ error: 'Service unavailable' }, { status: 503 });
   }
 }

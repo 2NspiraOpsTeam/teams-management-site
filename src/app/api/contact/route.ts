@@ -78,7 +78,7 @@ export async function POST(request: Request) {
     return reply({ received: true, id }, 201);
   } catch (error) {
     if (error instanceof BodyTooLarge) return reply({ error: 'Message is too long' }, 413);
-    console.error('Inquiry submission failed:', error);
+    console.error('Inquiry submission failed');
     return reply({ error: 'We could not save your inquiry. Please retry or use the email address on this page.' }, 503);
   }
 }
