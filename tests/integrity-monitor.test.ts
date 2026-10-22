@@ -65,3 +65,13 @@ it('recovers one transient provider failure, accepts empty errors arrays, and ne
   expect(attempts).toBe(2);expect(result.problems).toEqual([]);expect(result.metrics.rowsRead).toBe(12);expect(JSON.stringify(result)).not.toContain('private-provider-payload');
  }finally{fs.rmSync(dir,{recursive:true});}
 });
+
+ it('does not re-alert fixed-window historical errors at midnight or after downward revisions',()=>{
+ const first={...sample({resourceErrors:109,invocationErrors:109}),runtime:'worker@release',errorBaseline:0};
+ const baseline=evaluate(first);expect(baseline.fire).toBe(true);
+ const next={...first,day:'2026-10-21',at:'2026-10-21T00:30:00Z'};
+ const midnight=evaluate(next,baseline.state);expect(midnight.fire).toBe(false);
+ const revised=evaluate({...next,metrics:{resourceErrors:100,invocationErrors:100}},midnight.state);expect(revised.fire).toBe(false);
+ expect(evaluate(next,revised.state).fire).toBe(false);
+ expect(evaluate({...next,metrics:{resourceErrors:110,invocationErrors:110}},revised.state).message).toContain('1 new resourceErrors');
+ });

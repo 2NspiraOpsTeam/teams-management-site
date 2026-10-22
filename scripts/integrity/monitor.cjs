@@ -94,7 +94,10 @@ function evaluate(current,prior={}) {
   if(level){const key=current.day+':'+metric+':'+level;keys.push(key);if(!(prior.keys||[]).includes(key))notices.push(`${metric} reached ${level}% of conservative Free baseline (${value.toLocaleString()}/${limit.toLocaleString()})`);}
  }
  for(const metric of ['resourceErrors','invocationErrors']){
-  const previous=prior.day===current.day&&prior.runtime===current.runtime?prior.metrics?.[metric]??current.errorBaseline??current.metrics[metric]:current.errorBaseline??current.metrics[metric];
+  // Fixed release windows do not reset at UTC midnight. Preserve a high-water
+  // mark across delayed/downward analytics revisions and unavailable samples.
+  const sameWindow=prior.runtime===current.runtime&&(current.errorBaseline===0||prior.day===current.day);
+  const previous=sameWindow?prior.metrics?.[metric]??current.errorBaseline??current.metrics[metric]:current.errorBaseline??current.metrics[metric];
   const delta=current.metrics[metric]-previous;if(delta>0)notices.push(`${delta} new ${metric}`);
  }
  if(current.metrics.previousHourReads>500000 && (prior.metrics?.previousHourReads!==current.metrics.previousHourReads||prior.day!==current.day))notices.push('Read-rate warning: previous complete UTC hour exceeded 500,000 rows');
@@ -102,6 +105,9 @@ function evaluate(current,prior={}) {
  const onlyMonitoring=notices.length>0&&notices.every(p=>monitoring(p)||p.endsWith('monitoring restored'));
  const message=notices.length?(onlyMonitoring?'Teams monitoring notice: ':'Teams website integrity alert: ')+notices.join('; ')+(onlyMonitoring?'. This concerns monitoring visibility, not confirmed hacking or an outage.':'. '+current.usageCaveat):'';
  const metrics={...(prior.day===current.day&&prior.runtime===current.runtime?prior.metrics||{}:{}),...current.metrics};
+ for(const metric of ['resourceErrors','invocationErrors']){
+  if(prior.runtime===current.runtime&&(current.errorBaseline===0||prior.day===current.day)&&Number.isFinite(prior.metrics?.[metric]))metrics[metric]=Math.max(prior.metrics[metric],metrics[metric]??0);
+ }
  return {fire:notices.length>0,message,state:{...rate.state,day:current.day,runtime:current.runtime,keys:[...new Set([...(prior.day===current.day?prior.keys||[]:[]),...keys])],metrics,problems:current.problems,monitorIncidents:incidents,monitorLastNotified:lastNotified,diagnostics:current.diagnostics,lastChecked:current.at}};
 }
 module.exports={snapshot,evaluate};
