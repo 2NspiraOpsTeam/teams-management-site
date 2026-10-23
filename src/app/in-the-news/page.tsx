@@ -11,6 +11,7 @@ const articles = [
     summary: 'An archival feature by Alan S. Oser on Manhattan’s rental-building market, featuring Frank Pecora.',
     href: 'https://www.nytimes.com/2003/10/05/realestate/for-rental-buildings-a-rising-market.html',
     archiveHref: 'https://www.gmaloneco.com/oct5nyt.htm',
+    pdfHref: '/documents/news/nyt-rental-buildings-2003.pdf',
     image: '/images/news/nyt-rental-buildings-2003.jpg',
     imageAlt: 'New York Times Real Estate clipping showing Frank Pecora outside a Manhattan building and inside a stairwell.',
     imageCaption: 'The New York Times, October 5, 2003 · Article image via Georgia Malone & Company',
@@ -87,6 +88,7 @@ export default function NewsPage() {
           <div><h3 className="font-serif text-2xl leading-snug sm:text-3xl"><a href={article.href} target="_blank" rel="noopener noreferrer" className="decoration-[#B49355] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">{article.title}<span className="sr-only"> (opens in a new tab)</span></a></h3>
             <p className="mt-4 max-w-2xl leading-relaxed text-slate-600">{article.summary}</p>
             <div className="flex flex-wrap gap-x-6 gap-y-2"><a href={article.href} target="_blank" rel="noopener noreferrer" aria-label={`Read article: ${article.title} (opens in a new tab)`} className="mt-4 inline-flex min-h-11 items-center gap-2 border-b border-[#B49355] text-sm font-semibold hover:text-[#73551d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read article <span aria-hidden="true">↗</span></a>
+            {article.pdfHref && <a href={article.pdfHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 border-b border-[#B49355] text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">View full article (PDF, 128 KB)<span className="sr-only"> (opens in a new tab)</span></a>}
             {article.archiveHref && <a href={article.archiveHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm text-slate-600 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read available reprint <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>}</div>
           </div>
         </article>)}

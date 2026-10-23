@@ -49,3 +49,9 @@ At Jeffrey’s request, added the Bisnow deal sheet’s publisher-hosted lead im
 - Owner requested a larger top article image. Increased featured clipping maximum width from 393 to 768 pixels; full aspect ratio, attribution and links retained.
 - Application `2b18a6a`; private runtime version `ddd40a5c-236f-4274-9bde-d419bec7cc1b`; stable fingerprint `news-large-2b18a6a`. Gateway unchanged (`77dd7210-d38f-4ecb-ade2-ec014595bebe`). Prior runtime rollback: `f04df0ec-3314-4233-a056-b0c1d88e325c`.
 - OpenNext preview build, typecheck and diff checks passed. Local and hosted Chrome checks passed at 1440/768/390/320: images loaded, eight stories, no overflow or page exceptions, menu/Escape/focus and refresh passed. Rendered desktop clipping measured 768 pixels wide; desktop and mobile screenshots inspected. No production-company deployment or authentication changes.
+
+## Full featured article PDF — October 23, 2026
+
+Jeffrey confirmed republication permission and explicitly selected the top NYT article. Added a 128 KB, seven-page searchable text PDF sourced from the Georgia Malone copy, including author/date, original publisher and source links, copyright and published correction. This is a text reproduction, not a higher-resolution scan. Owner confirmation is the permission basis; no independent license-document review was performed.
+
+Build, typecheck and diff checks passed. Local and hosted Chrome QA passed at 1440/768/390/320, including refresh/menu/focus and no page exceptions. PDF first-page rendering inspected; hosted PDF returned 200 application/pdf and matched the local file byte-for-byte via browser fetch. Python HTTP fetch received 403; browser access passed. Release news-pdf-20261023; Worker version bc2e9471-bf34-4d08-8b4c-c4a72c038644. Gateway unchanged. Prior runtime rollback ddd40a5c-236f-4274-9bde-d419bec7cc1b. No company production, D1, mail, secrets or binding changes; authenticated workflows not tested.
