@@ -6,6 +6,14 @@ export const metadata = pageMetadata('/in-the-news', 'In the News | Teams Manage
 
 const articles = [
   {
+    publisher: 'The New York Times', date: '2003-10-05', displayDate: 'October 5, 2003',
+    title: 'For Rental Buildings, A Rising Market',
+    summary: 'An archival feature by Alan S. Oser on Manhattan’s rental-building market, featuring Frank Pecora.',
+    href: 'https://www.nytimes.com/2003/10/05/realestate/for-rental-buildings-a-rising-market.html',
+    archiveHref: 'https://www.gmaloneco.com/oct5nyt.htm',
+    image: '/images/news/nyt-rental-buildings-2003.jpg',
+  },
+  {
     publisher: 'Crain’s New York Business', date: '2026-08-25', displayDate: 'August 25, 2026',
     title: 'Former New York-Presbyterian dorm in Lower Manhattan sells at steep discount',
     summary: 'Coverage of the sale of 69 Gold Street in Lower Manhattan.',
@@ -29,13 +37,7 @@ const articles = [
     summary: 'Reporting on the Second Avenue subway extension in East Harlem, including the Pecora family’s property proceedings.',
     href: 'https://therealdeal.com/new-york/2025/06/25/mta-launches-next-eminent-domain-push-for-second-ave-subway/',
   },
-  {
-    publisher: 'The New York Times', date: '2003-10-05', displayDate: 'October 5, 2003',
-    title: 'For Rental Buildings, A Rising Market',
-    summary: 'An archival feature by Alan S. Oser on Manhattan’s rental-building market, featuring Frank Pecora.',
-    href: 'https://www.nytimes.com/2003/10/05/realestate/for-rental-buildings-a-rising-market.html',
-    archiveHref: 'https://archive.is/5K17U',
-  },
+
 ];
 
 export default function NewsPage() {
@@ -54,16 +56,17 @@ export default function NewsPage() {
         <p className="text-sm text-slate-600">From 2003 to today</p>
       </div>
       <div className="space-y-5">
-        {articles.map((article, index) => <article key={article.href} className="grid gap-5 border border-[#E8E5DF] bg-white p-6 sm:grid-cols-[9rem_1fr] sm:gap-8 sm:p-8">
-          <div><p className="text-sm font-semibold leading-relaxed text-[#73551d]">{article.publisher}</p><time dateTime={article.date} className="mt-2 block text-sm text-slate-600">{article.displayDate}</time>{index === 4 && <p className="mt-3 text-xs uppercase tracking-widest text-slate-500">From the archives</p>}</div>
+        {articles.map((article) => <article key={article.href} className="grid gap-5 border border-[#E8E5DF] bg-white p-6 sm:grid-cols-[9rem_1fr] sm:gap-8 sm:p-8">
+          {article.image && <figure className="sm:col-span-2 border-b border-[#E8E5DF] pb-6"><a href={article.archiveHref} target="_blank" rel="noopener noreferrer" aria-label="View the New York Times article reproduction (opens in a new tab)" className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]"><img src={article.image} width={393} height={312} alt="New York Times Real Estate clipping showing Frank Pecora outside a Manhattan building and inside a stairwell." className="mx-auto h-auto w-full max-w-[393px]" /></a><figcaption className="mt-4 text-center text-xs leading-relaxed text-slate-600">The New York Times, October 5, 2003 · Article image via Georgia Malone &amp; Company</figcaption></figure>}
+          <div><p className="text-sm font-semibold leading-relaxed text-[#73551d]">{article.publisher}</p><time dateTime={article.date} className="mt-2 block text-sm text-slate-600">{article.displayDate}</time>{article.image && <p className="mt-3 text-xs uppercase tracking-widest text-slate-500">Featured story</p>}</div>
           <div><h3 className="font-serif text-2xl leading-snug sm:text-3xl"><a href={article.href} target="_blank" rel="noopener noreferrer" className="decoration-[#B49355] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">{article.title}<span className="sr-only"> (opens in a new tab)</span></a></h3>
             <p className="mt-4 max-w-2xl leading-relaxed text-slate-600">{article.summary}</p>
             <div className="flex flex-wrap gap-x-6 gap-y-2"><a href={article.href} target="_blank" rel="noopener noreferrer" aria-label={`Read article: ${article.title} (opens in a new tab)`} className="mt-4 inline-flex min-h-11 items-center gap-2 border-b border-[#B49355] text-sm font-semibold hover:text-[#73551d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read article <span aria-hidden="true">↗</span></a>
-            {article.archiveHref && <a href={article.archiveHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm text-slate-600 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Archived copy <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>}</div>
+            {article.archiveHref && <a href={article.archiveHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm text-slate-600 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read archived article <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>}</div>
           </div>
         </article>)}
       </div>
-      <p className="mt-8 max-w-2xl text-sm leading-relaxed text-slate-600">Links open the original publisher’s website in a new tab. A subscription or sign-in may be required. Headlines and reporting belong to their respective publishers.</p>
+      <p className="mt-8 max-w-2xl text-sm leading-relaxed text-slate-600">Links open in a new tab. Original publisher links and an archived reproduction are provided. A subscription or sign-in may be required. Headlines and reporting belong to their respective publishers.</p>
     </section>
   </main><Footer /></>;
 }
