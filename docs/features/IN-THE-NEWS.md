@@ -43,3 +43,9 @@ At Jeffrey’s request, added the Bisnow deal sheet’s publisher-hosted lead im
 - Local and stable Chrome QA at 1440/768/390/320: eight stories, two loaded images, no overflow, safe external links, mobile menu/Escape/focus, refresh, zero page exceptions. Hosted desktop detail/mobile screenshots inspected.
 - Existing private runtime updated to `f04df0ec-3314-4233-a056-b0c1d88e325c`; stable served fingerprint `news-images-afea6f7`. Gateway remains `77dd7210-d38f-4ecb-ade2-ec014595bebe`; runtime rollback version `87d14b51-98f4-4b77-bada-e1912638a077`.
 - No Pages bindings, Access, database, credentials, mail or company-production changes. Protected candidate and fresh/authenticated login not tested for this public-page image change.
+
+## Featured image enlargement — October 23, 2026
+
+- Owner requested a larger top article image. Increased featured clipping maximum width from 393 to 768 pixels; full aspect ratio, attribution and links retained.
+- Application `2b18a6a`; private runtime version `ddd40a5c-236f-4274-9bde-d419bec7cc1b`; stable fingerprint `news-large-2b18a6a`. Gateway unchanged (`77dd7210-d38f-4ecb-ade2-ec014595bebe`). Prior runtime rollback: `f04df0ec-3314-4233-a056-b0c1d88e325c`.
+- OpenNext preview build, typecheck and diff checks passed. Local and hosted Chrome checks passed at 1440/768/390/320: images loaded, eight stories, no overflow or page exceptions, menu/Escape/focus and refresh passed. Rendered desktop clipping measured 768 pixels wide; desktop and mobile screenshots inspected. No production-company deployment or authentication changes.
