@@ -12,6 +12,10 @@ const articles = [
     href: 'https://www.nytimes.com/2003/10/05/realestate/for-rental-buildings-a-rising-market.html',
     archiveHref: 'https://www.gmaloneco.com/oct5nyt.htm',
     image: '/images/news/nyt-rental-buildings-2003.jpg',
+    imageAlt: 'New York Times Real Estate clipping showing Frank Pecora outside a Manhattan building and inside a stairwell.',
+    imageCaption: 'The New York Times, October 5, 2003 · Article image via Georgia Malone & Company',
+    imageWidth: 393, imageHeight: 312,
+    featured: true,
   },
   {
     publisher: 'Crain’s New York Business', date: '2026-08-25', displayDate: 'August 25, 2026',
@@ -24,6 +28,10 @@ const articles = [
     title: 'The New School Sells First Dorm To Hawkins Way Capital: The N.Y. Deal Sheet',
     summary: 'The roundup’s Top Sales section reports Kings Capital and Frank Pecora’s $30.1 million purchase of 69 Gold Street, with plans to expand the residential unit count.',
     href: 'https://www.bisnow.com/news/new-york/deal-sheet/hawkins-way-new-school-dorm-sale',
+    image: 'https://a-us.storyblok.com/f/571151439874644/1972x1138/f04e2e9aef/loeb-hall-the-new-school-hawkins-way-capital-manhattan.png/m/768x0/filters:format(webp):quality(80)',
+    imageAlt: 'The New School’s Loeb Hall at 135 East 12th Street, the lead property in Bisnow’s deal roundup.',
+    imageCaption: 'Lead article image: Loeb Hall, 135 E. 12th St. · Google Maps, via Bisnow. The Gold Street transaction appears separately in this deal sheet.',
+    imageWidth: 768, imageHeight: 443,
   },
   {
     publisher: 'PincusCo', date: '2026-08-24', displayDate: 'August 24, 2026',
@@ -74,8 +82,8 @@ export default function NewsPage() {
       </div>
       <div className="space-y-5">
         {articles.map((article) => <article key={article.href} className="grid gap-5 border border-[#E8E5DF] bg-white p-6 sm:grid-cols-[9rem_1fr] sm:gap-8 sm:p-8">
-          {article.image && <figure className="sm:col-span-2 border-b border-[#E8E5DF] pb-6"><a href={article.archiveHref} target="_blank" rel="noopener noreferrer" aria-label="View the New York Times article reproduction (opens in a new tab)" className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]"><img src={article.image} width={393} height={312} alt="New York Times Real Estate clipping showing Frank Pecora outside a Manhattan building and inside a stairwell." className="mx-auto h-auto w-full max-w-[393px]" /></a><figcaption className="mt-4 text-center text-xs leading-relaxed text-slate-600">The New York Times, October 5, 2003 · Article image via Georgia Malone &amp; Company</figcaption></figure>}
-          <div><p className="text-sm font-semibold leading-relaxed text-[#73551d]">{article.publisher}</p><time dateTime={article.date} className="mt-2 block text-sm text-slate-600">{article.displayDate}</time>{article.image && <p className="mt-3 text-xs uppercase tracking-widest text-slate-500">Featured story</p>}</div>
+          {article.image && <figure className="border-b border-[#E8E5DF] pb-6 sm:col-span-2"><a href={article.archiveHref || article.href} target="_blank" rel="noopener noreferrer" aria-label={`View article image: ${article.title} (opens in a new tab)`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]"><img src={article.image} width={article.imageWidth} height={article.imageHeight} loading={article.featured ? 'eager' : 'lazy'} decoding="async" referrerPolicy="no-referrer" alt={article.imageAlt} className={article.featured ? 'mx-auto h-auto w-full max-w-[393px]' : 'mx-auto h-auto w-full max-w-2xl'} /></a><figcaption className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-slate-600">{article.imageCaption}</figcaption></figure>}
+          <div><p className="text-sm font-semibold leading-relaxed text-[#73551d]">{article.publisher}</p><time dateTime={article.date} className="mt-2 block text-sm text-slate-600">{article.displayDate}</time>{article.featured && <p className="mt-3 text-xs uppercase tracking-widest text-slate-500">Featured story</p>}</div>
           <div><h3 className="font-serif text-2xl leading-snug sm:text-3xl"><a href={article.href} target="_blank" rel="noopener noreferrer" className="decoration-[#B49355] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">{article.title}<span className="sr-only"> (opens in a new tab)</span></a></h3>
             <p className="mt-4 max-w-2xl leading-relaxed text-slate-600">{article.summary}</p>
             <div className="flex flex-wrap gap-x-6 gap-y-2"><a href={article.href} target="_blank" rel="noopener noreferrer" aria-label={`Read article: ${article.title} (opens in a new tab)`} className="mt-4 inline-flex min-h-11 items-center gap-2 border-b border-[#B49355] text-sm font-semibold hover:text-[#73551d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read article <span aria-hidden="true">↗</span></a>
