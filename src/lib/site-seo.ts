@@ -7,7 +7,7 @@ export function pageMetadata(path:string,title:string,description:string):Metada
   return {title,description,alternates:{canonical:url},openGraph:{type:'website',siteName:'Teams Management',title,description,url},twitter:{card:'summary',title,description}};
 }
 export const publicPages = [
-  '/', '/about', '/properties', '/retail', '/rent-with-us', '/gallery', '/contact',
+  '/', '/about', '/in-the-news', '/properties', '/retail', '/rent-with-us', '/gallery', '/contact',
   '/tenant-services', '/services', '/dining', '/privacy-policy', '/terms-of-use',
   '/accessibility', '/fair-housing', '/copyright',
 ] as const;

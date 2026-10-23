@@ -18,6 +18,7 @@ export function Header() {
     { href: '/dining', label: <WebsiteText contentKey="header.text-3">Dining</WebsiteText> },
     { href: '/rent-with-us', label: <WebsiteText contentKey="header.text-4">Rent with Us</WebsiteText> },
     { href: '/about', label: <WebsiteText contentKey="header.text-5">About</WebsiteText> },
+    { href: '/in-the-news', label: 'In the News' },
     { href: '/contact', label: <WebsiteText contentKey="header.text-6">Contact</WebsiteText> },
   ];
 

@@ -37,6 +37,7 @@ export function Footer() {
               <li><Link prefetch={false} href="/dining" className="text-slate-300 hover:text-white text-sm"><WebsiteText contentKey="footer.text-8">Dining</WebsiteText></Link></li>
               <li><Link prefetch={false} href="/rent-with-us" className="text-slate-300 hover:text-white text-sm"><WebsiteText contentKey="footer.text-9">Rent with Us</WebsiteText></Link></li>
               <li><Link prefetch={false} href="/about" className="text-slate-300 hover:text-white text-sm"><WebsiteText contentKey="footer.text-10">About</WebsiteText></Link></li>
+              <li><Link prefetch={false} href="/in-the-news" className="text-slate-300 hover:text-white text-sm">In the News</Link></li>
               <li><Link prefetch={false} href="/tenant-services" className="text-slate-300 hover:text-white text-sm"><WebsiteText contentKey="footer.text-11">Tenant Services</WebsiteText></Link></li>
             </ul>
           </div>
