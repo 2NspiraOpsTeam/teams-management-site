@@ -34,3 +34,12 @@ Jeffrey explicitly requested publication to the stable preview after the candida
 - Prior rollback pair retained: Pages `5a67059c-ca38-485f-aea1-a8632cd1137a` with runtime `teams-preview-next16-20261020`, version `c7db359f-fba3-44b3-b2da-0be01095731b`. Restore the service binding too when recovering future uploads.
 
 This supersedes the earlier unpublished/stable-404 status. The protected candidate remains unverified behind Access; no Access policy or credentials were changed. Company production, database/schema, mail and credentials remain unchanged.
+
+## Article imagery — October 23, 2026
+
+At Jeffrey’s request, added the Bisnow deal sheet’s publisher-hosted lead image alongside the existing NYT clipping. Caption identifies Loeb Hall, not Gold Street, and preserves Google Maps/Bisnow attribution. Image links to the source article; 768-pixel WebP is approximately 74 KB, lazy-loaded with explicit dimensions and descriptive alt text. Other publishers denied image access; no substitute properties, invented imagery or paywall bypasses used. Publisher hosting/attribution is not an independent reuse-license verification.
+
+- Application `afea6f7`; build, typecheck and diff checks passed.
+- Local and stable Chrome QA at 1440/768/390/320: eight stories, two loaded images, no overflow, safe external links, mobile menu/Escape/focus, refresh, zero page exceptions. Hosted desktop detail/mobile screenshots inspected.
+- Existing private runtime updated to `f04df0ec-3314-4233-a056-b0c1d88e325c`; stable served fingerprint `news-images-afea6f7`. Gateway remains `77dd7210-d38f-4ecb-ade2-ec014595bebe`; runtime rollback version `87d14b51-98f4-4b77-bada-e1912638a077`.
+- No Pages bindings, Access, database, credentials, mail or company-production changes. Protected candidate and fresh/authenticated login not tested for this public-page image change.
