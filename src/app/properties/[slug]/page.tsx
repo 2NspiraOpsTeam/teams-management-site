@@ -86,10 +86,12 @@ async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }
         {previewPortfolioEnabled && slug === '61-gold-st' && <section className="mb-10 rounded-lg border border-stone-200 bg-[#f7f4ee] p-6 sm:p-8" aria-labelledby="gold-street-plans">
           <p className="text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">Coming soon</p>
           <h2 id="gold-street-plans" className="mt-2 font-serif text-3xl text-teams-ink">Planned residences at 61 Gold Street</h2>
-          <p className="mt-4 text-slate-700">Plans call for 90 residences, with studios, one-bedroom and two-bedroom homes, and luxury suites.</p>
+          <p className="mt-4 text-slate-700">Currently under gut renovation, the planned luxury rental building will include 109 apartments and two retail stores.</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned fitness</h3><p className="mt-1 text-sm text-slate-600">A gym for residents.</p></div>
-            <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned retail</h3><p className="mt-1 text-sm text-slate-600">Retail stores at the property.</p></div>
+            <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned retail</h3><p className="mt-1 text-sm text-slate-600">Two retail stores at the property.</p></div>
+            <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned services &amp; lounge</h3><p className="mt-1 text-sm text-slate-600">Doorman service and a tenant lounge.</p></div>
+            <div className="border border-stone-200 bg-white p-5"><h3 className="font-semibold text-teams-ink">Planned rooftop</h3><p className="mt-1 text-sm text-slate-600">Spectacular views of the Brooklyn Bridge, East River, and South Street Seaport.</p></div>
           </div>
           <p className="mt-5 text-sm text-slate-600">Details are planned and may change. Contact Teams Management for current information.</p>
         </section>}

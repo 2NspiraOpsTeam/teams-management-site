@@ -1,3 +1,4 @@
+import { approvedPropertyHighlights } from './approved-property-highlights';
 import type { BuildingPublic } from './database.types';
 
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
@@ -49,7 +50,7 @@ export const previewPortfolio: BuildingPublic[] = confirmedAddresses.map(([slug,
   name: street,
   slug,
   address: { street, city, state: 'NY', zip: '' },
-  description_public: null,
+  description_public: approvedPropertyHighlights[slug] ?? null,
   amenities_public: [],
   gallery: [],
   publication_state: 'draft',
@@ -57,8 +58,6 @@ export const previewPortfolio: BuildingPublic[] = confirmedAddresses.map(([slug,
   updated_at: '',
 }));
 
-const tremont = previewPortfolio.find(item => item.slug === '3425-east-tremont-bronx');
-if (tremont) tremont.description_public = 'A two-story commercial property on East Tremont Avenue in the Bronx, combining street-facing retail frontage with office space above.';
 
 // Building-level Sarasota portfolio entry; do not infer a management scope from its address.
 previewPortfolio.push({
