@@ -55,3 +55,13 @@ At Jeffrey’s request, added the Bisnow deal sheet’s publisher-hosted lead im
 Jeffrey confirmed republication permission and explicitly selected the top NYT article. Added a 128 KB, seven-page searchable text PDF sourced from the Georgia Malone copy, including author/date, original publisher and source links, copyright and published correction. This is a text reproduction, not a higher-resolution scan. Owner confirmation is the permission basis; no independent license-document review was performed.
 
 Build, typecheck and diff checks passed. Local and hosted Chrome QA passed at 1440/768/390/320, including refresh/menu/focus and no page exceptions. PDF first-page rendering inspected; hosted PDF returned 200 application/pdf and matched the local file byte-for-byte via browser fetch. Python HTTP fetch received 403; browser access passed. Release news-pdf-20261023; Worker version bc2e9471-bf34-4d08-8b4c-c4a72c038644. Gateway unchanged. Prior runtime rollback ddd40a5c-236f-4274-9bde-d419bec7cc1b. No company production, D1, mail, secrets or binding changes; authenticated workflows not tested.
+
+## All-story visuals and public interaction polish — October 23, 2026
+
+Owner requested an image for every article and tasteful modern public-site effects. All eight cards now have visuals: original NYT clipping, verified Bisnow lead photo, and six local, clearly labeled topic-specific editorial SVG illustrations. Publishers blocked source-photo access; illustrations do not claim to depict the actual properties. No new packages, external image service, or recurring cost. Desktop uses compact side-by-side image/text cards; tablet/mobile stack. Existing PDF and publisher links remain intact.
+
+Refined the existing progressive-enhancement motion system: softer heading entrance, subtle scrolled-header depth, gold card-edge hover/focus accents and restrained CTA lift. Public Header scope only; private Admin/resident layouts unchanged. Content stays visible without JavaScript; reduced-motion rules suppress transitions and transforms.
+
+Build, typecheck and diff checks passed. Local and hosted news Chrome QA passed at 1440/768/390/320: eight loaded images, no overflow, mobile menu/Escape/focus, refresh and no page exceptions. Hosted desktop/mobile screenshots inspected. Local Next home cannot resolve Cloudflare runtime data (500); local news checks passed, and cross-page checks are performed against the hosted runtime instead.
+
+Private runtime version: 727a94a0-647f-4633-91be-eecbbc6f8a02; served release news-visuals-20261023. Existing Pages gateway unchanged. Prior runtime rollback: bc2e9471-bf34-4d08-8b4c-c4a72c038644. Company production, D1, mail, credentials and bindings unchanged. Authenticated workflows and physical devices not tested.

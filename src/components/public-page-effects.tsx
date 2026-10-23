@@ -10,6 +10,10 @@ export function PublicPageEffects() {
     const main = document.querySelector('main');
     if (!main) return;
     main.classList.add('public-editorial');
+    const header = document.querySelector('header.public-site-header');
+    const updateHeader = () => header?.setAttribute('data-scrolled', String(window.scrollY > 24));
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const animations = new Set<Animation>();
     let observer: IntersectionObserver | undefined;
@@ -25,7 +29,7 @@ export function PublicPageEffects() {
           observer?.unobserve(entry.target);
           // Only text moves. Photography, maps, videos and form controls stay steady.
           const animation = entry.target.animate(
-            [{ opacity: .45, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
+            [{ opacity: .8, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
             { duration: 540, easing: 'cubic-bezier(.2,.7,.2,1)' },
           );
           animations.add(animation);
@@ -39,6 +43,8 @@ export function PublicPageEffects() {
       stop();
       preference.removeEventListener('change', stop);
       main.classList.remove('public-editorial');
+      window.removeEventListener('scroll', updateHeader);
+      header?.removeAttribute('data-scrolled');
     };
   }, [pathname]);
   return null;
