@@ -67,3 +67,11 @@ Build, typecheck and diff checks passed. Local and hosted news Chrome QA passed 
 Private runtime version: 727a94a0-647f-4633-91be-eecbbc6f8a02; served release news-visuals-20261023. Existing Pages gateway unchanged. Prior runtime rollback: bc2e9471-bf34-4d08-8b4c-c4a72c038644. Company production, D1, mail, credentials and bindings unchanged. Authenticated workflows and physical devices not tested.
 
 Hosted cross-page effects QA passed on Home, About, Contact, Rent with Us, Tenant Services and News at desktop/mobile (12 route/viewport checks): HTTP 200, no horizontal overflow, scroll-header feedback and reduced-motion cancellation, zero page exceptions. Each lazy news image was scrolled into view and decoded before asserting load. Initial reduced-motion assertion was corrected to await the browser media-change event; initial all-image check was corrected to request each lazy image, not assume scrolling directly to the final card loads skipped cards. No product change was needed for either harness issue.
+
+## Forest-green public footer — October 23, 2026
+
+Jeffrey requested replacing the black public footer with dark forest green. Shared public Footer background is now #12372A; gold accents, white/slate text, links and private layouts are unchanged. Only this footer color was released; article-photo candidates remain outside the public repository pending reuse permission.
+
+OpenNext preview build, TypeScript and diff checks passed. Local rendered footer checks passed at 1440/768/390/320; local logos are unavailable in Next dev, while hosted logos loaded. Hosted news footer checks passed at the same four widths with no horizontal overflow, 16 links and loaded logo. Desktop/mobile screenshots inspected; browser reported zero page exceptions. Hosted Home returned 200 with the intended release and green shared footer; footer focus check passed. Minimum contrast among existing footer text colors is 7.19:1 against the green. No authenticated workflow or physical-device tests were performed for this color-only change.
+
+Stable preview release: forest-footer-20261023. Private Worker version: 0dd6a4d0-9eab-4d0e-bca9-dd92683aa1c9. Existing Pages gateway remains unchanged. Prior runtime rollback: 727a94a0-647f-4633-91be-eecbbc6f8a02. Company production, database, mail, secrets, Access and bindings unchanged.
