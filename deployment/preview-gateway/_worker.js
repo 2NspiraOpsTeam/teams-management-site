@@ -7,11 +7,23 @@ const configurationNames = [
 ];
 export default {
   async fetch(request, env) {
-    if (!env.TEAMS_RUNTIME) return new Response('Preview temporarily unavailable', { status: 503 });
+    const unavailable = () => new Response('Temporarily unavailable. Please try again shortly.', {
+      status: 503,
+      headers: {'Cache-Control': 'private, no-store', 'Retry-After': '30', 'Content-Type': 'text/plain; charset=utf-8', 'X-Robots-Tag': 'noindex, nofollow'},
+    });
+    if (!env.TEAMS_RUNTIME) return unavailable();
     const configuration = {};
     for (const key of configurationNames) {
       if (typeof env[key] === 'string') configuration[key] = env[key];
     }
-    return env.TEAMS_RUNTIME.handleRequest(request, configuration);
+    try {
+      // Await inside the boundary: RPC failures include backend CPU termination.
+      // Never retry automatically: a failed write may already have committed.
+      return await env.TEAMS_RUNTIME.handleRequest(request, configuration);
+    } catch {
+      // Do not log exceptions, URLs, cookies, configuration or request bodies.
+      console.error(JSON.stringify({event: 'teams_runtime_unavailable', method: ['GET','HEAD','POST','PUT','PATCH','DELETE','OPTIONS'].includes(request.method) ? request.method : 'OTHER'}));
+      return unavailable();
+    }
   },
 };
