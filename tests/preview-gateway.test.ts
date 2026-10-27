@@ -3,7 +3,7 @@ import gateway from '../deployment/preview-gateway/_worker.js';
 
 describe('private preview runtime gateway', () => {
   it('fails closed when its private service binding is absent', async () => {
-    const response = await gateway.fetch(new Request('https://preview.test/admin'), {});
+    const response = await gateway.fetch(new Request('https://preview.test/admin',{headers:{cookie:'teams_admin_session=fixture'}}), {});
     expect(response.status).toBe(503);
   });
   it('keeps origin, session and body intact while forwarding only required runtime configuration over RPC', async () => {
