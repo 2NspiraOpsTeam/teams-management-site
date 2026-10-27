@@ -29,3 +29,12 @@ The gateway now awaits RPC failures inside a catch boundary and returns generic,
 - Require a multi-day monitored soak with no unexplained resource failures. A few HTTP 200s are not production reliability evidence.
 
 Production domain promotion, billing activation, real client communication and database changes are separate owner-authorized actions. Do not describe this gateway mitigation as permanent CPU prevention or production sign-off.
+
+## Zero-cost efficiency pass
+
+Owner deferred paid billing on October 27. Keep subscriptions unchanged.
+
+- Gateway reads Pages ASSETS first only for `/_next/static/`, `/images/`, `/brand/`, `/documents/news/` on GET/HEAD. Stage those public directories from the matched OpenNext build. Missing assets fall through to the runtime, preserving compatibility with newer immutable chunks. Do not copy `_photo-variants` or bypass live `/api/media` authorization/publication.
+- Audited `/in-the-news` uses source-only reporting, Header/Footer defaults, no account data and no D1 publication decisions. Anonymous query-free HTML GETs can use Cloudflare Cache API for 60 seconds. Cookie/Authorization/RSC/Next-router/Range/refresh requests bypass it. Only successful HTML without cookies, authentication challenges or private Vary is stored. All delivered HTML stays private/no-store in browsers; internal cache expiry is 60 seconds, scoped by hostname. Gateway does not retry failed calls. Changing content may take up to 60 seconds for anonymous HTML; explicit refresh bypasses. This intentionally overrides framework no-store only inside the audited policy, not globally. Do not expand to editable website pages or properties without separate review.
+- Default client-side RSC navigation and signed-in browsing still call the application; cache misses and new edge locations still render. Cache failure falls back to normal rendering. These are reductions, not proof the free CPU limit is sufficient.
+- Gateway-only candidate can preserve the serving application runtime and all credentials; do not swap in an older candidate runtime merely to test gateway changes.
