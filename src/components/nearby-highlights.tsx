@@ -1,3 +1,4 @@
+import { nearbyBusinessLogo } from '@/lib/nearby-business-logos';
 import {PublishedPhoto} from '@/components/published-photo';
 import { OfficialPlaceName } from './official-place-name';
 import type { BuildingPublic } from '@/lib/database.types';
@@ -15,10 +16,14 @@ const icons: Record<string, string> = {
 
 function FactCard({ item, address, slug, retail = false }: { item: Highlight; address: BuildingPublic['address']; slug: string; retail?: boolean }) {
   const links = nearbyPlaceLinks(item, address);
+  const logo = nearbyBusinessLogo(item);
   const category = retail && item.category === 'supermarket' ? 'Nearby retail' : item.label;
   const detail = [category, item.locationVerifiedAt ? 'Verified location' : null, item.distanceLabel, item.walkTimeLabel].filter(Boolean).join(' · ');
   return <li data-place-name={item.name} data-property-slug={slug} className="nearby-fact group min-w-0 rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
-    <span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl font-semibold text-teams-ink">{icons[item.category] || '•'}</span>
+    {logo ? <div className={`mb-5 flex h-28 items-center justify-center rounded-lg p-4 ${logo.background}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={logo.src} alt={logo.alt} width="240" height="80" loading="lazy" className="h-full w-full object-contain" />
+    </div> : <span aria-hidden="true" className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#f5edd8] text-xl font-semibold text-teams-ink">{icons[item.category] || '•'}</span>}
     <div className="min-w-0">
       <OfficialPlaceName name={item.name} website={links.nameUrl} className="nearby-place-name inline-flex min-h-11 items-center gap-2 break-words text-lg font-semibold leading-snug text-teams-ink" />
       <p className="mt-1 text-sm text-teams-secondary">{detail}</p>
