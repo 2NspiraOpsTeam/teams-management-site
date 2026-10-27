@@ -123,3 +123,5 @@ The eight additional NYC Parks destinations use the already sourced NYC Parks ar
 New Drug Loft’s official header contains the combined New Drug Loft and VLS Pharmacy mark; alt text names both brands. The official Manhattan location page confirms 1410 Second Avenue. C-Town uses the official CTown mark (not Bravo, which is another image on the same site); the New York State retailer directory separately lists C-Town Fresh Market at 1660 Madison Avenue. Artwork identifies the existing directory name and is not a new occupancy certification.
 
 Remaining text/icon cards were retained deliberately: unmatched legal-entity names and practitioners still lack verifiable standalone artwork; Manhattan Tattoos currently uses text identity, not a standalone logo; T.ology’s official page still lacks a usable authentic logo. No stock icons, AI-created logos, parent-university artwork, or booking-platform marks are substituted for those businesses.
+
+Visual preview QA found that the existing white Whole Foods wordmark was indistinct on white. Both the original NYC mapping and the new Sarasota mapping now use a dark green backing; artwork itself is unchanged.

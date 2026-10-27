@@ -31,7 +31,7 @@ const logos: Record<string, NearbyLogo> = {
   "Ramon Aponte Park": {"src": "/nearby-logos/parks.webp", "alt": "NYC Parks logo", "background": "bg-white"},
   "McCaffrey Playground": {"src": "/nearby-logos/parks.webp", "alt": "NYC Parks logo", "background": "bg-white"},
   "Chelsea Green": {"src": "/nearby-logos/parks.webp", "alt": "NYC Parks logo", "background": "bg-white"},
-  "Whole Foods Market — Sarasota": {"src": "/nearby-logos/whole-foods-market.svg", "alt": "Whole Foods Market logo", "background": "bg-white"},
+  "Whole Foods Market — Sarasota": {"src": "/nearby-logos/whole-foods-market.svg", "alt": "Whole Foods Market logo", "background": "bg-[#00674b]"},
 
   'The Well Coffee': { src: '/nearby-logos/well.webp', alt: 'The Well Coffee logo', background: 'bg-white' },
   'Murray Hill Playground': { src: '/nearby-logos/parks.webp', alt: 'NYC Parks logo', background: 'bg-white' },
@@ -39,7 +39,7 @@ const logos: Record<string, NearbyLogo> = {
   "Comic Strip Live": { src: "/nearby-logos/comic-strip-live.webp", alt: "Comic Strip Live logo", background: "bg-white" },
   "Madame Bont\u00e8 Caf\u00e9": { src: "/nearby-logos/madame-bont-caf.webp", alt: "Madame Bont\u00e8 Caf\u00e9 logo", background: "bg-white" },
   "Gristedes": { src: "/nearby-logos/gristedes.webp", alt: "Gristedes logo", background: "bg-white" },
-  "Whole Foods Market": { src: "/nearby-logos/whole-foods-market.svg", alt: "Whole Foods Market logo", background: "bg-white" },
+  "Whole Foods Market": { src: "/nearby-logos/whole-foods-market.svg", alt: "Whole Foods Market logo", background: "bg-[#00674b]" },
   "Times Square": { src: "/nearby-logos/times-square.svg", alt: "Times Square Alliance logo", background: "bg-[#242424]" },
   "Mcgoldrick": { src: "/nearby-logos/mcgoldrick.svg", alt: "Queens Public Library logo", background: "bg-white" },
   "Super Foodtown": { src: "/nearby-logos/super-foodtown.webp", alt: "Super Foodtown logo", background: "bg-white" },
