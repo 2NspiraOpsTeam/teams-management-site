@@ -1,3 +1,4 @@
+import rentalArticle from './rental-buildings-2003.json';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { pageMetadata } from '@/lib/site-seo';
@@ -12,10 +13,10 @@ const articles = [
     href: 'https://www.nytimes.com/2003/10/05/realestate/for-rental-buildings-a-rising-market.html',
     archiveHref: 'https://www.gmaloneco.com/oct5nyt.htm',
     pdfHref: '/documents/news/nyt-rental-buildings-2003.pdf',
-    image: '/images/news/nyt-rental-buildings-2003.jpg',
+    image: '/images/news/nyt-rental-buildings-2003-restored.webp',
     imageAlt: 'New York Times Real Estate clipping showing Frank Pecora outside a Manhattan building and inside a stairwell.',
     imageCaption: 'The New York Times, October 5, 2003 · Article image via Georgia Malone & Company',
-    imageWidth: 393, imageHeight: 312,
+    imageWidth: 1572, imageHeight: 1248,
     featured: true,
   },
   {
@@ -107,11 +108,22 @@ export default function NewsPage() {
       </div>
       <div className="space-y-5">
         {articles.map((article) => <article key={article.href} className={`news-story editorial-story-card grid gap-5 border border-[#E8E5DF] bg-white p-6 sm:grid-cols-[9rem_1fr] sm:gap-8 sm:p-8 ${article.featured ? 'news-story--featured' : 'news-story--standard'}`}>
-          {article.image && <figure className="border-b border-[#E8E5DF] pb-6 sm:col-span-2"><a href={article.archiveHref || article.href} target="_blank" rel="noopener noreferrer" aria-label={`View article image: ${article.title} (opens in a new tab)`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]"><img src={article.image} width={article.imageWidth} height={article.imageHeight} loading={article.featured ? 'eager' : 'lazy'} decoding="async" referrerPolicy="no-referrer" alt={article.imageAlt} className={article.featured ? 'mx-auto h-auto w-full max-w-3xl' : 'mx-auto h-auto w-full max-w-2xl'} /></a><figcaption className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-slate-600">Source: <a href={article.archiveHref || article.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-[#73551d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">{article.imageCaption}<span className="sr-only"> (opens in a new tab)</span></a></figcaption></figure>}
+          {article.image && <figure className="border-b border-[#E8E5DF] pb-6 sm:col-span-2"><a href={article.archiveHref || article.href} target="_blank" rel="noopener noreferrer" aria-label={`View article image: ${article.title} (opens in a new tab)`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]"><img src={article.image} width={article.imageWidth} height={article.imageHeight} loading={article.featured ? 'eager' : 'lazy'} decoding="async" referrerPolicy="no-referrer" alt={article.imageAlt} className={article.featured ? 'mx-auto h-auto w-full max-w-[40rem]' : 'mx-auto h-auto w-full max-w-2xl'} /></a><figcaption className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-slate-600">Source: <a href={article.archiveHref || article.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-[#73551d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">{article.imageCaption}<span className="sr-only"> (opens in a new tab)</span></a></figcaption></figure>}
           <div><p className="text-sm font-semibold leading-relaxed text-[#73551d]">{article.publisher}</p><time dateTime={article.date} className="mt-2 block text-sm text-slate-600">{article.displayDate}</time>{article.featured && <p className="mt-3 text-xs uppercase tracking-widest text-slate-500">Featured story</p>}</div>
           <div><h3 className="font-serif text-2xl leading-snug sm:text-3xl"><a href={article.href} target="_blank" rel="noopener noreferrer" className="decoration-[#B49355] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">{article.title}<span className="sr-only"> (opens in a new tab)</span></a></h3>
             <p className="mt-4 max-w-2xl leading-relaxed text-slate-600">{article.summary}</p>
+            {article.featured && <details id="rental-buildings-readable" className="mt-6 rounded-sm border border-[#B49355]/50 bg-[#fcfaf6] open:pb-6">
+              <summary className="min-h-12 cursor-pointer px-5 py-4 font-semibold text-[#73551d] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">Read full article — clear text</summary>
+              <div className="px-5 sm:px-7">
+                <p className="mb-5 text-sm leading-relaxed text-slate-600">The New York Times · October 5, 2003 · By Alan S. Oser<br />Text from the <a href={article.archiveHref} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Georgia Malone &amp; Company reprint<span className="sr-only"> (opens in a new tab)</span></a>. Includes the publisher’s October 12 correction.</p>
+                <div className="max-w-prose space-y-5 font-serif text-lg leading-[1.85] text-slate-800">
+                  {rentalArticle.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                </div>
+                <p className="mt-6 border-t border-[#E8E5DF] pt-4 text-sm text-slate-600">Copyright The New York Times, 2003.</p>
+              </div>
+            </details>}
             <div className="flex flex-wrap gap-x-6 gap-y-2"><a href={article.href} target="_blank" rel="noopener noreferrer" aria-label={`Read article: ${article.title} (opens in a new tab)`} className="mt-4 inline-flex min-h-11 items-center gap-2 border-b border-[#B49355] text-sm font-semibold hover:text-[#73551d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read article <span aria-hidden="true">↗</span></a>
+            {article.featured && <a href="/images/news/nyt-rental-buildings-2003.jpg" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm text-slate-600 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">View original clipping<span className="sr-only"> (opens in a new tab)</span></a>}
             {article.pdfHref && <a href={article.pdfHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 border-b border-[#B49355] text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">View full article (PDF, 128 KB)<span className="sr-only"> (opens in a new tab)</span></a>}
             {article.archiveHref && <a href={article.archiveHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm text-slate-600 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#73551d]">Read available reprint <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>}</div>
           </div>

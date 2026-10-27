@@ -28,7 +28,7 @@ export function Header() {
       <nav onKeyDown={event => { if (event.key === 'Escape' && menuOpen) { setMenuOpen(false); menuButton.current?.focus(); } }} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex items-center justify-between h-[88px] gap-4">
           <Link prefetch={false} href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">
-            <PublishedPhoto src="/brand/teams-management-logo.png" alt="" width="60" height="60" className="h-14 w-14 object-contain" />
+            <PublishedPhoto src="/brand/teams-management-logo.png" alt="" width="72" height="72" className="h-[72px] w-[72px] object-contain" />
             <span className="hidden sm:block text-lg font-serif font-semibold text-[#252525] leading-tight">
               <WebsiteText contentKey="header.text-7">Teams Management</WebsiteText></span>
           </Link>
