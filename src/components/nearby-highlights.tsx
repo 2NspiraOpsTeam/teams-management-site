@@ -16,7 +16,7 @@ const icons: Record<string, string> = {
 
 function FactCard({ item, address, slug, retail = false }: { item: Highlight; address: BuildingPublic['address']; slug: string; retail?: boolean }) {
   const links = nearbyPlaceLinks(item, address);
-  const logo = retail ? nearbyBusinessLogo(item) : undefined;
+  const logo = nearbyBusinessLogo(item);
   const category = retail && item.category === 'supermarket' ? 'Nearby retail' : item.label;
   const detail = [category, item.locationVerifiedAt ? 'Verified location' : null, item.distanceLabel, item.walkTimeLabel].filter(Boolean).join(' · ');
   return <li data-place-name={item.name} data-property-slug={slug} className="nearby-fact group min-w-0 rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">

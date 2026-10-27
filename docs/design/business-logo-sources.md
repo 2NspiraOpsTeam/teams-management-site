@@ -47,7 +47,7 @@ The separately labelled storage entry is not a business storefront and is not as
 
 ## Nearby businesses, anchors and transit
 
-Applied only to retail neighborhood cards. Existing names, addresses, verification dates, official destination links and directions are unchanged. Transit receives MTA artwork only for the existing New York MTA-source records. Institution artwork is labelled by organization (Queens Public Library, Times Square Alliance), not presented as a separate business within the property.
+Applied to retail neighborhood and residential “Living nearby” cards. Existing names, addresses, verification dates, official destination links and directions are unchanged. Transit receives MTA artwork only for the existing New York MTA-source records. Institution artwork is labelled by organization (Queens Public Library, Times Square Alliance), not presented as a separate business within the property.
 
 | Brand | Source | Artwork |
 | --- | --- | --- |
@@ -88,3 +88,9 @@ Existing category icons remain where a matching logo was not verified. In partic
 - NYPL, theatre, hotel and independent café cards without an accessible, matched asset retain their category icons; ticket-platform or parent-university logos are not substituted for venue logos.
 
 No nearby entity has been added as a tenant, and no occupancy/location data was changed by the logo pass.
+
+## Residential continuation — October 27, 2026
+
+Removed the retail-only rendering restriction so verified matching brands also appear on residential neighborhood cards. Added The Well Coffee from its official site at https://www.thewellcoffeeny.com/ (43-29 162nd Street matches the existing destination). Artwork: https://www.thewellcoffeeny.com/uploads/b/f1b81a0e7921cae47d3be2d7f120d237ef1d9cc24b73cee8557e287c03567bd1/The%20Well%20Coffee_1587399127.png .
+
+Murray Hill Playground uses clearly labelled NYC Parks organization artwork, not a fictional playground logo. Source: official NYC Parks files released under FOIL, mirrored at https://github.com/palewire/nyc-parks-logo (NYC_Parks_Green_PMS_c.png); provenance linked in that repository README. NYC Parks FY24 maintenance report lists Murray Hill Playground as Q437. This mapping is exact-name only; no generic parks or Florida destinations are assigned NYC artwork. Original source artwork retained privately; served copies are proportionally resized WebP files. Existing names, addresses, links and occupancy data are unchanged.

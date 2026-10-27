@@ -2,6 +2,8 @@ import type { NearbyPlace } from './nearby-place';
 
 export type NearbyLogo = { src: string; alt: string; background: string };
 const logos: Record<string, NearbyLogo> = {
+  'The Well Coffee': { src: '/nearby-logos/well.webp', alt: 'The Well Coffee logo', background: 'bg-white' },
+  'Murray Hill Playground': { src: '/nearby-logos/parks.webp', alt: 'NYC Parks logo', background: 'bg-white' },
   "Caf\u00e9 Maud": { src: "/nearby-logos/caf-maud.svg", alt: "Caf\u00e9 Maud logo", background: "bg-white" },
   "Comic Strip Live": { src: "/nearby-logos/comic-strip-live.webp", alt: "Comic Strip Live logo", background: "bg-white" },
   "Madame Bont\u00e8 Caf\u00e9": { src: "/nearby-logos/madame-bont-caf.webp", alt: "Madame Bont\u00e8 Caf\u00e9 logo", background: "bg-white" },
