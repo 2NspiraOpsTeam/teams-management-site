@@ -85,7 +85,7 @@ Existing category icons remain where a matching logo was not verified. In partic
 - Do not use the Chicago City Fresh Market artwork for New York City Fresh Market. The NYC network source is mycityfreshmarket.com.
 - Do not use Food Way artwork for the existing 55 Fulton Market listing without confirming the identity change.
 - Do not substitute Walgreens artwork for Duane Reade; the locator page's parent-brand header does not establish the correct storefront mark.
-- NYPL, theatre, hotel and independent café cards without an accessible, matched asset retain their category icons; ticket-platform or parent-university logos are not substituted for venue logos.
+- Theatre, hotel and independent café cards without an accessible, matched asset retain their category icons; ticket-platform or parent-university logos are not substituted for venue logos. NYPL branch cards now use the explicitly labelled library-system artwork documented below.
 
 No nearby entity has been added as a tenant, and no occupancy/location data was changed by the logo pass.
 
@@ -94,3 +94,32 @@ No nearby entity has been added as a tenant, and no occupancy/location data was 
 Removed the retail-only rendering restriction so verified matching brands also appear on residential neighborhood cards. Added The Well Coffee from its official site at https://www.thewellcoffeeny.com/ (43-29 162nd Street matches the existing destination). Artwork: https://www.thewellcoffeeny.com/uploads/b/f1b81a0e7921cae47d3be2d7f120d237ef1d9cc24b73cee8557e287c03567bd1/The%20Well%20Coffee_1587399127.png .
 
 Murray Hill Playground uses clearly labelled NYC Parks organization artwork, not a fictional playground logo. Source: official NYC Parks files released under FOIL, mirrored at https://github.com/palewire/nyc-parks-logo (NYC_Parks_Green_PMS_c.png); provenance linked in that repository README. NYC Parks FY24 maintenance report lists Murray Hill Playground as Q437. This mapping is exact-name only; no generic parks or Florida destinations are assigned NYC artwork. Original source artwork retained privately; served copies are proportionally resized WebP files. Existing names, addresses, links and occupancy data are unchanged.
+
+
+## All-property continuation — October 27, 2026
+
+Audited the complete existing residential and retail nearby datasets and the commercial directories against the exact-name artwork registries. Added artwork to 30 previously unmatched nearby destination names. No business listing, destination, address, link, occupancy assertion, or property map was changed. Original artwork is retained; raster copies are proportionally resized to at most 600 × 240 for local delivery. White artwork uses a dark backing.
+
+| Destination | Verified source | Artwork |
+| --- | --- | --- |
+| CVS Pharmacy | https://www.cvs.com/store-locator/new-york-ny-pharmacies/305-east-86th-st-new-york-ny-10028/storeid=10970 | https://www.cvs.com/content/dam/enterprise/headless/retail/nav/en/assets/logos/cvs-logo.svg |
+| Caligor Pharmacy | https://www.caligorpharmacy.com/ | https://static.spacecrafted.com/c4e805a60f6c406b8cb80b1f7d0058c9/i/a2e7268bd9d240ff9003e85484b73881/1/5feFb8zhrk/renditionDownload.png |
+| CityMD | https://www.citymd.com/urgent-care-locations/ny/west-42nd | https://www.citymd.com/sites/default/files/file/CMD_h_r_w.png |
+| Selby Library | https://scgovlibrary.librarymarket.com/branch/selby-library | https://scgovlibrary.librarymarket.com/sites/default/files/SCGov%20FYS%20Logo%20Lockup%20v2%20Blue_4.png |
+| Sarasota Opera House | https://www.sarasotaopera.org/directions | https://www.sarasotaopera.org/themes/custom/soa/assets/images/logo.png |
+| Marina Jack | https://www.marinajacks.com/contact.html | https://www.marinajacks.com/images/logo-top-new-02.svg |
+| The New York Society Library | https://www.nysoclib.org/ | https://www.nysoclib.org/sites/default/files/nysl-logo.svg |
+| C-Town | https://www.ctownsupermarkets.com/ | https://www.ctownsupermarkets.com/Portals/0/Images/logo.png?ver=aePlYloSviiNOSyef6KIGA%3d%3d |
+| Frisson Espresso | https://frissonespresso.co/ | https://frissonespresso.co/wp-content/uploads/2024/08/cropped-aod1tugxeitncpmjwozr-1.webp |
+| Marie Selby Botanical Gardens — Downtown Sarasota | https://selby.org/visit/ | https://s33944.pcdn.co/wp-content/uploads/Logo_01.png |
+| Hotel Scherman | https://www.hotelscherman.com/ | https://static.wixstatic.com/media/1c57ee_24737e46ee744168842ae4f3f4997486~mv2.png |
+| NYPL | https://nypl.github.io/NYPLBase/styleguide/styleguide__branding.html | https://raw.githubusercontent.com/NYPL/NYPLBase/master/img/main-logo.png |
+| New Drug Loft | https://newdrugloft.com/about-new-drug-loft/ | https://newdrugloft.com/wp-content/thesis/skins/ndl-vls/images/NDL-logo.svg |
+
+NYPL artwork is from the library’s own NYPL/NYPLBase repository, not a third-party redraw. The nine exact-name NYPL destinations above use this library-system artwork with alt text “New York Public Library logo”; their existing official nypl.org branch URLs establish the organization. Selby Library uses Sarasota County Libraries artwork from its own library calendar, explicitly labelled as the system mark. The New York Society Library retains its distinct mark.
+
+The eight additional NYC Parks destinations use the already sourced NYC Parks artwork, explicitly labelled “NYC Parks logo”, and only their existing exact names with official nycgovparks.org destinations are mapped. Titanic Memorial Park and Sarasota destinations do not receive NYC Parks artwork. Whole Foods Market — Sarasota reuses the existing authentic Whole Foods mark, matched to the existing official Sarasota store URL.
+
+New Drug Loft’s official header contains the combined New Drug Loft and VLS Pharmacy mark; alt text names both brands. The official Manhattan location page confirms 1410 Second Avenue. C-Town uses the official CTown mark (not Bravo, which is another image on the same site); the New York State retailer directory separately lists C-Town Fresh Market at 1660 Madison Avenue. Artwork identifies the existing directory name and is not a new occupancy certification.
+
+Remaining text/icon cards were retained deliberately: unmatched legal-entity names and practitioners still lack verifiable standalone artwork; Manhattan Tattoos currently uses text identity, not a standalone logo; T.ology’s official page still lacks a usable authentic logo. No stock icons, AI-created logos, parent-university artwork, or booking-platform marks are substituted for those businesses.
