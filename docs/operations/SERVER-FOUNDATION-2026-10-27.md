@@ -35,3 +35,13 @@ This eliminates framework-induced resource failures only for the identified earl
 ## Closure requirements
 
 Measure attributable cold/warm SSR and authenticated workloads, address observed framework CPU costs or approve sufficient capacity, then complete login/write/recovery checks and a monitored soak. A zero-error snapshot, gateway mitigation, stale-alert correction or successful page load does not establish full-site reliability. Workers Paid is a separate spending decision; no billing action is authorized by this document.
+
+## Stable rollout evidence
+
+- Gateway source commit `c2bd4ec`, branch `fix/server-foundation-20261027`, pushed to GitHub.
+- Stable Pages deployment `6644e3ca.teams-management-preview.pages.dev`, primary branch `preview`; prior rollback gateway `65da9a31-c2f9-40d5-bcff-5284a7267694` retained.
+- Stable browser verified anonymous session 401/guard, concealed Admin API 404, news 200 with unchanged application SHA `60f9552f563429dd8c7d7f1e577b73ee8fdb87d4`. Anonymous Admin navigates via `/access` to the application's existing unified `/tenant/login` flow.
+- Stable resident login rendered at 390/768/1440 with one sign-in button and no overflow; mobile screenshot inspected.
+- Existing half-hour monitor forced successfully after config correction; no notification was needed. This proves execution, not a completed soak.
+- Bounded current-day error-level telemetry queries for `2nspira-website`, `client-portal-v1` and `2nspira-service-reminders` each returned no matching rows. This does not prove those runtimes have no errors outside captured logs. Existing signed-in 2Nspira client-list API returned 200; no writes or emails performed.
+- Unresolved: CPU-heavy Teams SSR, attributable cold/warm headroom, positive authenticated Teams QA, approved writes and recovery/soak. No all-errors-fixed or production-readiness claim.
