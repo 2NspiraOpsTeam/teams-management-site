@@ -10,7 +10,7 @@ Both routes read the same scoped neighborhood data. Other property area mappings
 
 ## Requested video
 
-User supplied https://www.youtube.com/watch?v=4KHAC74CS3w&t=35s . YouTube oEmbed verified title Restaurant Row and channel Times Square NYC. At Jeffrey’s follow-up request, both context panels offer the same click-to-play privacy-enhanced embed from the beginning (0:00), with source link always available. No player request before activation, no page-load autoplay, Close removes playback, refresh resets closed. No apartment tour or property-photo assignments change.
+User supplied https://www.youtube.com/watch?v=4KHAC74CS3w&t=35s . YouTube oEmbed verified title Restaurant Row and channel Times Square NYC. The latest source sets start at the beginning. Jeffrey then explicitly requested the player be visible and paused rather than collapsed. Render a permanently open, lazy-loaded privacy-enhanced YouTube iframe with autoplay=0 and native Play/Pause controls; retain the source link. No application opener/hydration gate or Close control remains, so page-load timing cannot discard an opener click. No apartment tour or property-photo assignments change.
 
 ## 349–351 W 46th Retail anchor
 
@@ -19,7 +19,3 @@ User explicitly requested Restaurant Row in the Nearby businesses, anchors & tra
 ## Grand Central Terminal for 41 W 46th
 
 User requested Grand Central as a nearby location with directions. Official Visit page https://grandcentralterminal.com/visit/ rendered and verified in the managed browser: Grand Central Terminal, 89 E 42nd Street, New York, NY 10017. Browser evidence is distinct from shell/fetch403. NYC Tourism https://www.nyctourism.com/attractions-tours/grand-central-terminal/ corroborates identity/address. Add one shared nearby transit record for 41 W 46th so both Residential and Retail list it, with official-site name and Google Maps walking directions from the property. No claimed distance/time, fabricated coordinates/Place ID, or new entry on other properties.
-
-## First enabled video activation
-
-A fresh deployed desktop check reproduced an ignored first activation without page errors. Keep the server-rendered video opener disabled until its client handler mounts, with a loading label and permanent YouTube fallback. Test JavaScript-disabled initial state and fresh first enabled activation on desktop/mobile; do not hide the timing issue with arbitrary delays or a second click. Preserve the concurrently published logo work and the latest source change to video start-at-beginning (e9244ea) while applying this fix.
