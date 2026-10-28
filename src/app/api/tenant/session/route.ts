@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import { trackLoginEmail } from '@/lib/login-email-history';
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { NextResponse } from 'next/server';
@@ -31,7 +32,7 @@ export async function POST(request:Request){
     if((rates[0]?.count||0)>6||(rates[1]?.count||0)>30||!tenant) return reply(generic);
     const recent=await db.prepare("SELECT id FROM tenant_login_codes WHERE tenant_id=? AND created_at>datetime('now','-60 seconds') LIMIT 1").bind(tenant.id).first();
     if(recent) return reply(generic);
-    const code=String(crypto.getRandomValues(new Uint32Array(1))[0]%100000000).padStart(8,'0'),id=crypto.randomUUID();
+    const code=String(randomInt(100000000)).padStart(8,'0'),id=crypto.randomUUID();
     await db.prepare("UPDATE tenant_login_codes SET used_at=datetime('now') WHERE tenant_id=? AND used_at IS NULL").bind(tenant.id).run();
     await db.prepare("INSERT INTO tenant_login_codes (id,tenant_id,code_hash,expires_at) VALUES (?,?,?,datetime('now','+10 minutes'))").bind(id,tenant.id,await tenantCodeHash(tenant.id,code)).run();
     try{await trackLoginEmail(db, 'tenant', email, () => mail.sendTenantOtp(email,code));}catch{await db.prepare("UPDATE tenant_login_codes SET used_at=datetime('now') WHERE id=?").bind(id).run();return reply({error:'Tenant sign-in is temporarily unavailable. Please contact Teams Management.'},503);}

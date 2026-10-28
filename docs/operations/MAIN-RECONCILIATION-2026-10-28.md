@@ -49,7 +49,7 @@ moderate), despite the clean npm graph. Refreshed it against the existing
 manifest and updated transitive body-parser within its permitted range.
 Full npm, production npm and pnpm audits now report zero vulnerabilities.
 CI now explicitly audits the full npm graph and the pnpm graph in addition
-to the production npm graph. Canonical npm clean install, 491 tests / 58 files,
+to the production npm graph. Canonical npm clean install, 503 tests / 58 files,
 typecheck, six recovery checks, five release-gate checks and the OpenNext preview
 build pass; 1,333 generated photo variants are checksum-verified.
 
@@ -60,6 +60,15 @@ scanning alerts and push protection remains enabled. One legacy-main medium
 CodeQL stack-trace finding points at a route already replaced by the approved
 Admin-only report handler, which returns a generic error without a stack.
 Require fresh default-branch analysis after merge to establish its disposition.
+
+Fresh PR CodeQL analysis also identified three high-severity findings in the
+preview lineage: modulo-biased OTP generation in both session handlers and
+unescaped dots in referrer hostname classification. Both handlers now use
+Node's cryptographic `randomInt` API (uniform, exclusive upper bound), retaining
+the eight-digit code contract. All literal hostname dots are escaped. Twelve
+new regression cases cover delivered leading-zero/maximum codes and real versus
+lookalike/suffix referrer hosts. Require fresh CodeQL checks on this fixed head;
+the earlier failing analysis remains historical, not dismissed.
 
 Fresh signed-in Admin/Tenant workflow QA, off-device recovery and a cloud
 restore drill remain separate launch gates; this change does not claim them.

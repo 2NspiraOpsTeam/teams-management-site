@@ -19,6 +19,12 @@ const buildings=[{name:'Example property',slug:'example-property',has_retail:1,r
 const row=(count:number,dimensions:Record<string,string>,visits=0)=>({count,dimensions,sum:{visits}});
 const groups=()=>({daily:[row(10,{date:'2026-10-20'},3)],pages:[row(4,{requestPath:'/properties/example-property'}),row(2,{requestPath:'/retail/example-property'}),row(3,{requestPath:'/properties'}),row(1,{requestPath:'/'})],devices:[row(7,{deviceType:'Mobile'}),row(3,{deviceType:'Desktop'})],channels:[row(4,{refererHost:'www.google.com'}),row(2,{refererHost:'teams.example.com'}),row(4,{refererHost:''})]});
 describe('Cloudflare website intelligence',()=>{
+ it.each(['bing.com','duckduckgo.com','search.yahoo.com','facebook.com','instagram.com','linkedin.com','t.co','twitter.com','x.com','tiktok.com'])('matches literal referrer host boundaries for %s',host=>{
+  const channels=[row(1,{refererHost:host}),row(2,{refererHost:`www.${host}`}),row(4,{refererHost:host.replaceAll('.','X')}),row(8,{refererHost:`${host}.attacker.test`})];
+  const report=normalizeAnalytics({...groups(),channels},buildings,7,env.CF_ANALYTICS_HOST);
+  expect(report.channels).toContainEqual({label:/^(bing|duckduckgo|search)/.test(host)?'Search':'Social',views:3});
+  expect(report.channels).toContainEqual({label:'Other referrals',views:12});
+ });
  it('requires an isolated site, exact hostname and server credential',()=>{expect(analyticsConfig({})).toBeNull();expect(analyticsConfig({...env,CF_ANALYTICS_HOST:'https://example.com/'})).toBeNull();expect(analyticsConfig(env)?.host).toBe(env.CF_ANALYTICS_HOST);});
  it('scopes provider query to public paths and exact site/host',()=>{const query=analyticsQuery(analyticsConfig(env)!,buildings,7,new Date('2026-10-20T18:00:00Z'));expect(query).toContain('2026-10-14T00:00:00.000Z');expect(query).toContain('requestHost:"teams.example.com"');expect(query).toContain('siteTag:');expect(query).toContain('/retail/example-property');expect(query).not.toContain('/admin');expect(query).not.toContain('/tenant/login');expect(query).not.toContain(env.CF_ANALYTICS_API_TOKEN);});
  it('does not query unpublished retail paths',()=>{expect(analyticsQuery(analyticsConfig(env)!,[{...buildings[0],retail_published:0}],7)).not.toContain('/retail/example-property');});

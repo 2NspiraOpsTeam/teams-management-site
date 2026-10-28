@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import { trackLoginEmail } from '@/lib/login-email-history';
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { NextResponse } from 'next/server';
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
     if (!(await activeAdmin(email))) return reply(generic);
     const recent = await db.prepare("SELECT id FROM admin_login_codes WHERE email=? AND created_at > datetime('now','-60 seconds') ORDER BY created_at DESC LIMIT 1").bind(email).first();
     if (recent) return reply(generic);
-    const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 100000000).padStart(8, '0');
+    const code = String(randomInt(100000000)).padStart(8, '0');
     const id = crypto.randomUUID();
     await db.prepare("UPDATE admin_login_codes SET used_at=datetime('now') WHERE email=? AND used_at IS NULL").bind(email).run();
     await db.prepare("INSERT INTO admin_login_codes (id,email,code_hash,expires_at) VALUES (?,?,?,datetime('now','+10 minutes'))").bind(id, email, await codeHash(email, code)).run();

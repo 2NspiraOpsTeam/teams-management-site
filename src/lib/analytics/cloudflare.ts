@@ -38,7 +38,7 @@ export function normalizeAnalytics(groups: Groups, buildings: AnalyticsBuilding[
   const channels = new Map<string,number>();
   for (const row of groups.channels) {
     const ref = row.dimensions.refererHost;
-    const label = !ref ? 'Direct / unknown' : ref === host ? 'Internal navigation' : /(^|\.)(google\.[a-z.]+|bing.com|duckduckgo.com|search.yahoo.com)$/.test(ref) ? 'Search' : /(^|\.)(facebook.com|instagram.com|linkedin.com|t.co|twitter.com|x.com|tiktok.com)$/.test(ref) ? 'Social' : 'Other referrals';
+    const label = !ref ? 'Direct / unknown' : ref === host ? 'Internal navigation' : /(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|search\.yahoo\.com)$/.test(ref) ? 'Search' : /(^|\.)(facebook\.com|instagram\.com|linkedin\.com|t\.co|twitter\.com|x\.com|tiktok\.com)$/.test(ref) ? 'Social' : 'Other referrals';
     channels.set(label,(channels.get(label)||0)+row.count);
   }
   return {state:'ready',days,host,generatedAt:now.toISOString(),totals:{views:daily.reduce((s,r)=>s+r.views,0),visits:daily.reduce((s,r)=>s+r.visits,0),propertyViews:properties.reduce((s,r)=>s+r.views,0)},daily,countries:(groups.countries || []).map(r=>({label:r.dimensions.countryName || 'Unknown',views:r.count})).sort((a,b)=>b.views-a.views),segments,properties:properties.slice(0,10),pages:groups.pages.map(r=>({label:r.dimensions.requestPath,views:r.count})).sort((a,b)=>b.views-a.views).slice(0,8),devices:groups.devices.map(r=>({label:r.dimensions.deviceType || 'Unknown',views:r.count})),channels:[...channels].map(([label,views])=>({label,views})).sort((a,b)=>b.views-a.views)};
