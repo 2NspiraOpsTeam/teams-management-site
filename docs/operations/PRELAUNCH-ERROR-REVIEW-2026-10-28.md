@@ -50,3 +50,14 @@ Stable preview resolves through Pages deployment `a0d4c852-0258-4023-8610-600214
 - Reconciled source is committed for CI/review, not a new live deployment. Stable preview remains the independently verified f5a4e54 application.
 
 **Not verified / still required before launch:** default-branch reconciliation and alert closure, fresh authorized Admin/Tenant sign-in delivery and full authenticated workflow QA, off-device encrypted recovery plus actual cloud restore drill, and longer attributed reliability observation across the release. Unit recovery-safety tests are not a cloud restore drill. No real-client communication, record writes, D1 migration or production launch occurred.
+
+## Follow-up: feature-level resource question
+
+Joined current-runtime CPU invocation events to request-local sanitized D1 logs by provider request ID (internal join only; IDs not published). Query window starts at 16:44:38 UTC; 437 events returned, 117 CPU events could not be attributed to a usage log. Matched groups include mixed successful/canceled RPC requests and QA-heavy traffic, so these are consumed CPU observations, not complete-request cost or representative production load.
+
+- Prepared-photo pipeline: 37 attributed requests, 157 ms CPU total (~4.2 ms/request), max 13 ms; 111 rows read total.
+- Property detail page template: 31 attributed requests, 4,582 ms CPU total (~147.8 ms/request), max 562 ms; 4,575 rows read total.
+- Other one-segment public-page template: 39 attributed requests, 12,553 ms CPU total (~321.9 ms/request), max 1,120 ms. Current privacy classifier does not distinguish the specific page names.
+- No authenticated analytics-panel cohort was captured. Do not rank that feature based on this sample. YouTube playback is externally hosted; current public static assets use edge delivery; guarded D1 media keeps authorization and prepared variants.
+
+Direction: prioritize repeated public server rendering and repeated D1 queries; preserve media. Safely cached public data/HTML must retain personalization, publication, immediate refresh and tenant-isolation rules. Do not globally remove dynamic rendering or cache private responses. Avoid speculative analytics removal or paid limit changes. Separate route-specific completed/cold/warm/authenticated profiling is still needed to identify the single highest-cost feature.
