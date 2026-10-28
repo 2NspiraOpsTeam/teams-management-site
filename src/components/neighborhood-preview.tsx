@@ -1,3 +1,4 @@
+import { NeighborhoodVideo } from '@/components/neighborhood-video';
 import {PublishedPhoto} from '@/components/published-photo';
 import { previewRetailNeighborhood, previewResidenceNeighborhood } from '@/lib/retail-neighborhood-preview';
 
@@ -11,6 +12,7 @@ export function NeighborhoodPreview({ slug, residence = false }: { slug: string;
         <figcaption className="px-3 py-2 text-xs text-slate-600">Neighborhood scene, not the property. Photo: <a href={neighborhood.creditUrl} target="_blank" rel="noopener noreferrer" className="underline">{neighborhood.credit}</a> · {neighborhood.licenseUrl ? <a href={neighborhood.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{neighborhood.license}</a> : neighborhood.license}</figcaption>
       </figure>
       <div><p className="text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">The neighborhood</p><h2 className="mt-3 font-serif text-3xl text-teams-ink sm:text-4xl">Explore {neighborhood.name}</h2><p className="mt-5 text-lg leading-relaxed text-slate-700">{neighborhood.context}</p><a href={neighborhood.guide} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center border-b border-teams-ink font-semibold text-teams-ink">{neighborhood.guideLabel} ↗</a><p className="mt-2 text-xs text-slate-600">Area guide opens in a new tab; use the map for the exact property location.</p></div>
+      {neighborhood.video && <NeighborhoodVideo video={neighborhood.video} />}
     </div>
   </section>;
 }

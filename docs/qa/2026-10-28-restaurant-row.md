@@ -7,3 +7,7 @@ Times Square Alliance guide, checked 2026-10-28: https://www.timessquarenyc.org/
 Photo: Laslovarga, June 2007, https://commons.wikimedia.org/wiki/File:Restaurant_Row_0473New_York_City.JPG . Original JPEG retained unchanged (2592 × 1944); CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/ . Both presentations link photographer/source and license; date appears in descriptive alt text. This reusable street scene is not copied from the Times Square Alliance site or presented as a property photo. Existing property covers/galleries/assignments are unchanged.
 
 Both routes read the same scoped neighborhood data. Other property area mappings remain unchanged. No database, authentication, billing, or public company-domain changes.
+
+## Requested video
+
+User supplied https://www.youtube.com/watch?v=4KHAC74CS3w&t=35s . YouTube oEmbed verified title Restaurant Row and channel Times Square NYC. Both context panels offer the same click-to-play privacy-enhanced embed at 35 seconds, with source link always available. No player request before activation, no page-load autoplay, Close removes playback, refresh resets closed. No apartment tour or property-photo assignments change.
