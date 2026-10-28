@@ -12,7 +12,7 @@ describe('Neighborhood directions', () => {
       const origin = (origins as Record<string, { latitude: number; longitude: number }>)[slug];
       for (const place of places) {
         if (place.category === 'transit') {
-          expect(place.destinationQuery, `${slug}: transit needs a specific nearby access intersection`).toMatch(/& .+, (?:New York|Bronx|Flushing), NY \d{5}$/);
+          expect(place.destinationQuery, `${slug}: transit needs a specific entrance address or access intersection`).toMatch(/(?:& .+|\d+ [^,]+), (?:New York|Bronx|Flushing), NY \d{5}$/);
           transitChecked++;
         }
         if (!place.source.startsWith('https://www.openstreetmap.org/')) continue;
@@ -29,7 +29,7 @@ describe('Neighborhood directions', () => {
       }
     }
     expect(checked).toBe(110);
-    expect(transitChecked).toBe(18);
+    expect(transitChecked).toBe(19);
   });
 });
 

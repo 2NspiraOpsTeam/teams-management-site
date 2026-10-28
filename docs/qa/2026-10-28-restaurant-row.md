@@ -15,3 +15,11 @@ User supplied https://www.youtube.com/watch?v=4KHAC74CS3w&t=35s . YouTube oEmbed
 ## 349–351 W 46th Retail anchor
 
 User explicitly requested Restaurant Row in the Nearby businesses, anchors & transit list. Add a named dining destination linked to the same Times Square Alliance guide; directions use the property origin and verified West 46th Street / Eighth–Ninth Avenue boundary, without inventing a street number, point, walking time, traffic, or sales claim. Existing anchors are preserved; no Residential entry or gallery assignment is added for this property.
+
+## Grand Central Terminal for 41 W 46th
+
+User requested Grand Central as a nearby location with directions. Official Visit page https://grandcentralterminal.com/visit/ rendered and verified in the managed browser: Grand Central Terminal, 89 E 42nd Street, New York, NY 10017. Browser evidence is distinct from shell/fetch403. NYC Tourism https://www.nyctourism.com/attractions-tours/grand-central-terminal/ corroborates identity/address. Add one shared nearby transit record for 41 W 46th so both Residential and Retail list it, with official-site name and Google Maps walking directions from the property. No claimed distance/time, fabricated coordinates/Place ID, or new entry on other properties.
+
+## First enabled video activation
+
+A fresh deployed desktop check reproduced an ignored first activation without page errors. Keep the server-rendered video opener disabled until its client handler mounts, with a loading label and permanent YouTube fallback. Test JavaScript-disabled initial state and fresh first enabled activation on desktop/mobile; do not hide the timing issue with arbitrary delays or a second click. Preserve the concurrently published logo work and the latest source change to video start-at-beginning (e9244ea) while applying this fix.
