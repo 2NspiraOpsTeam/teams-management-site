@@ -645,6 +645,26 @@
       "destinationPlaceId": null,
       "placeIdVerifiedAt": null,
       "placeIdEvidenceUrl": null
+    },
+    {
+      "category": "landmark",
+      "label": "Dining destination",
+      "name": "Restaurant Row",
+      "source": "https://www.timessquarenyc.org/explore/restaurant-row",
+      "officialWebsiteUrl": "https://www.timessquarenyc.org/explore/restaurant-row",
+      "websiteVerifiedAt": "2026-10-28",
+      "websiteEvidenceUrl": "https://www.timessquarenyc.org/explore/restaurant-row",
+      "destinationAddress": "West 46th Street between Eighth and Ninth Avenues, New York, NY",
+      "addressDetail": "West 46th Street between Eighth and Ninth Avenues, New York, NY",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Restaurant Row, West 46th Street between Eighth and Ninth Avenues, New York, NY",
+      "locationEvidenceUrl": "https://www.timessquarenyc.org/explore/restaurant-row",
+      "locationVerifiedAt": "2026-10-28",
+      "destinationPlaceId": null,
+      "placeIdVerifiedAt": null,
+      "placeIdEvidenceUrl": null
     }
   ]
 }
