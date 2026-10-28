@@ -149,3 +149,7 @@ Duane Reade now uses its own official Duane Reade by Walgreens mark from the com
 GGMC's official location page and location JSON identify Knickerbocker Plaza Car Park at 240 E 92nd St; its artwork is explicitly labelled “GGMC Parking operator logo”, not a fictional location-specific logo. Dear Mama's official brand is matched to its existing coffee business, with historical East Harlem location corroborated by Columbia University's retail tenant reporting. Southbridge's official site confirms 80 Beekman St; Esco confirms 687 Ninth Avenue. The Joyce confirms 175 Eighth Avenue. Its official mark deliberately consists of five abstract colored shapes (also shown in its official travel brochures), not a conventional lettered wordmark. It uses the official white backing. Two gradient animation elements are omitted to serve a static, reduced-motion-safe version; geometry and colors are unchanged.
 
 All other existing marks were included in the repeated page/asset QA. This is artwork verification, not a fresh occupancy certification.
+
+### Existing-artwork corrections found in the full visual review
+
+PHIT Well / Caspare Physical Therapy Wellness P.C.: replaced the earlier email-list signup banner with the actual official white PHIT Well wordmark at https://phitwell.com/wp-content/uploads/sites/36/2021/12/phitwell-img.png, displayed in the header at https://www.phitwell.com/ . Dark backing retained. Café Grumpy’s original pale gray artwork is unchanged; its backing is now dark charcoal for contrast. No color editing or invented artwork.
