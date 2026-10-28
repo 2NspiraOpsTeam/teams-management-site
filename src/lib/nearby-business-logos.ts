@@ -2,6 +2,16 @@ import type { NearbyPlace } from './nearby-place';
 
 export type NearbyLogo = { src: string; alt: string; background: string };
 const logos: Record<string, NearbyLogo> = {
+  "Esco Pharmacy": {"src": "/nearby-logos/esco-pharmacy.webp", "alt": "Esco Pharmacy logo", "background": "bg-white"},
+  "Southbridge Pharmacy": {"src": "/nearby-logos/southbridge-pharmacy.webp", "alt": "Southbridge Pharmacy logo", "background": "bg-white"},
+  "Dear Mama Coffee": {"src": "/nearby-logos/dear-mama.webp", "alt": "Dear Mama Coffee logo", "background": "bg-white"},
+  "The Carlyle": {"src": "/nearby-logos/the-carlyle.svg", "alt": "The Carlyle logo", "background": "bg-white"},
+  "Hilton Garden Inn": {"src": "/nearby-logos/hilton-garden-inn.webp", "alt": "Hilton Garden Inn logo", "background": "bg-white"},
+  "Element": {"src": "/nearby-logos/element.webp", "alt": "Element by Westin logo", "background": "bg-white"},
+  "The Joyce Theater": {"src": "/nearby-logos/the-joyce-theater.svg", "alt": "The Joyce Theater abstract brand mark", "background": "bg-white"},
+  "InterContinental New York Times Square": {"src": "/nearby-logos/intercontinental.svg", "alt": "InterContinental New York Times Square logo", "background": "bg-white"},
+  "Knickerbocker Plaza Car Park": {"src": "/nearby-logos/ggmc-parking.svg", "alt": "GGMC Parking operator logo", "background": "bg-white"},
+  "Duane Reade": {"src": "/nearby-logos/duane-reade.webp", "alt": "Duane Reade by Walgreens logo", "background": "bg-white"},
   "CVS Pharmacy": {"src": "/nearby-logos/cvs-pharmacy.svg", "alt": "CVS Pharmacy logo", "background": "bg-white"},
   "Caligor Pharmacy": {"src": "/nearby-logos/caligor-pharmacy.webp", "alt": "Caligor Pharmacy logo", "background": "bg-white"},
   "CityMD": {"src": "/nearby-logos/citymd.webp", "alt": "CityMD logo", "background": "bg-[#242424]"},

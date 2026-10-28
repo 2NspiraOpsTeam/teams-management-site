@@ -1,0 +1,147 @@
+<svg id="logo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="330px" height="70px" viewBox="0 0 330 70" xml:space="preserve" class="logo-joyce" style="">
+
+  <defs>
+
+    <linearGradient id="purple-gradient" gradientUnits="userSpaceOnUse" x1="-700" x2="700" y1="35" y2="35">
+      <stop offset="0" stop-color="#EF173A"></stop>
+      <stop offset="0.25" stop-color="#6912FC"></stop>
+      <stop offset="0.5" stop-color="#EF173A"></stop>
+      <stop offset="0.75" stop-color="#6912FC"></stop>
+      <stop offset="1" stop-color="#EF173A"></stop>
+
+    </linearGradient>
+
+    <clipPath id="y-clip" class="letter">
+      <rect x="-700" y="2" width="1400" height="36">
+    </rect></clipPath>
+
+    <mask id="main-mask">
+      <!-- <rect fill="white" width="330px" height="70px"/> -->
+
+      <!-- J -->
+<g transform="translate(25,18)">
+  <g class="letter letter-j" stroke="white" fill="none" stroke-width="14">
+    <path id="j-shape-1" d="m 0 -20 l 0,41.1" style="stroke-dashoffset: 82.2; stroke-dasharray: 41.1, 41.1, 0.001, 20.551, 20.549;" class=" initial"></path>
+    <path id="j-shape-2" d="m 0 21
+         a 1 1 0 0 0 -14 0
+         a 1 1 0 0 0  14 0" style="stroke-dashoffset: 87.977; stroke-dasharray: 43.9885, 43.9885, 0.001, 21.9952, 21.9932;" class=" initial"></path>
+  </g>
+
+  <g transform="translate(-3,-0.5) scale(1.03)" class="snake snake-j">
+  <path id="j-snake-outer" stroke="black" fill="none" stroke-width="3" stroke-cap="butt" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+
+  <path id="j-snake-inner" stroke="white" fill="none" stroke-width="1" stroke-linecap="round" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+</g>
+
+
+</g>
+
+      <!-- O -->
+<g transform="translate(93,18)" stroke="white" fill="none" stroke-width="18">
+  <g class="letter letter-o">
+    <path id="o-shape" d="
+        m 0 9
+        a 9 9 0 1 1 0 18
+        a 9 9 0 1 1 0 -18" style="stroke-dashoffset: 113.113; stroke-dasharray: 56.5566, 0.001, 56.5566, 0, 56.5566;" class=" initial"></path>
+  </g>
+
+  <g transform="translate(-7,1) scale(1)" class="snake snake-j">
+  <path id="o-snake-outer" stroke="black" fill="none" stroke-width="3" stroke-cap="butt" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+
+  <path id="o-snake-inner" stroke="white" fill="none" stroke-width="1" stroke-linecap="round" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+</g>
+
+
+</g>
+
+      <!-- Y -->
+<g transform="translate(169,18)" stroke="white" fill="none" stroke-width="12" clip-path="url(#y-clip)">
+
+  <g class="letter letter-y">
+    <path id="y-shape-1" d="m -14 -5 l25,40" style="stroke-dashoffset: 94.3398; stroke-dasharray: 47.1699, 47.1719, 25.9434;" class=" initial"></path>
+    <path id="y-shape-2" d="m 14 -5 l-25,40" style="stroke-dashoffset: 94.3398; stroke-dasharray: 47.1699, 47.1719, 25.9434;" class=" initial"></path>
+    <path id="y-shape-3" d="m 0 0 l0,36" style="stroke-dashoffset: 72; stroke-dasharray: 36, 36, 0.001, 0.001, 35.999;" class=" initial"></path>
+  </g>
+
+  <g transform="translate(-3,-3) scale(1.15)" class="snake snake-j">
+  <path id="y-snake-outer" stroke="black" fill="none" stroke-width="3" stroke-cap="butt" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+
+  <path id="y-snake-inner" stroke="white" fill="none" stroke-width="1" stroke-linecap="round" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+</g>
+
+
+</g>
+
+      <!-- C -->
+<g transform="translate(242,18)" stroke="white" fill="none" stroke-width="18">
+  <g class="letter letter-c">
+    <path id="c-shape" d="
+        m 0 9
+        a 9 9 0 1 1 0 18
+        a 9 9 0 1 1 0 -18" style="stroke-dashoffset: 113.113; stroke-dasharray: 56.5566, 18.1001, 48.6387, 7.91793, 56.5566;" class=" initial"></path>
+  </g>
+
+  <g transform="translate(-7,-0.5) scale(1.05)" class="snake snake-j">
+  <path id="c-snake-outer" stroke="black" fill="none" stroke-width="3" stroke-cap="butt" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+
+  <path id="c-snake-inner" stroke="white" fill="none" stroke-width="1" stroke-linecap="round" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+</g>
+
+
+</g>
+
+      <!-- E -->
+<g transform="translate(301,18)" stroke="white" fill="none">
+  <g class="letter letter-e">
+    <path id="e-shape-1" stroke-width="10" d="m -10  8 l 45,0" style="stroke-dashoffset: 90; stroke-dasharray: 45, 58.502, 13.5;" class=" initial"></path>
+    <path id="e-shape-2" stroke-width="10.5" d="m -10 18 l 45,0" style="stroke-dashoffset: 90; stroke-dasharray: 45, 58.502, 18;" class=" initial"></path>
+    <path id="e-shape-3" stroke-width="12" d="m -10 29 l 45,0" style="stroke-dashoffset: 90; stroke-dasharray: 45, 58.502, 22.5;" class=" initial"></path>
+  </g>
+
+  <g transform="translate(8,2) scale(1)" class="snake snake-j">
+  <path id="e-snake-outer" stroke="black" fill="none" stroke-width="3" stroke-cap="butt" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+
+  <path id="e-snake-inner" stroke="white" fill="none" stroke-width="1" stroke-linecap="round" d="M0,0.5
+    c0,0,1.2,2.3-0.3,6.8
+    c-2.4,6.7,3.1,6.2,0,14.4
+    c-1.5,4,2.4,6.7,0.4,12.8" style="stroke-dashoffset: 69.681; stroke-dasharray: 34.8405, 34.8405, 0.001, 0.001, 34.8395;" class=" initial"></path>
+</g>
+
+
+</g>
+
+
+    </mask>
+
+  </defs>
+
+  <rect id="logo-bg" width="330px" height="70px" fill="url(#purple-gradient)" mask="url(#main-mask)"></rect>
+
+</svg>

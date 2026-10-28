@@ -125,3 +125,27 @@ New Drug Loft’s official header contains the combined New Drug Loft and VLS Ph
 Remaining text/icon cards were retained deliberately: unmatched legal-entity names and practitioners still lack verifiable standalone artwork; Manhattan Tattoos currently uses text identity, not a standalone logo; T.ology’s official page still lacks a usable authentic logo. No stock icons, AI-created logos, parent-university artwork, or booking-platform marks are substituted for those businesses.
 
 Visual preview QA found that the existing white Whole Foods wordmark was indistinct on white. Both the original NYC mapping and the new Sarasota mapping now use a dark green backing; artwork itself is unchanged.
+
+
+## Second full review — October 28, 2026
+
+Rechecked all 30 previously unmatched nearby names and all 11 text-only commercial/Primo Plaza names. Added ten locally served authentic marks. No listings, links, property data, or other identities were removed or changed. Raster copies preserve proportions and brand colors. SVG geometry and colors are retained from official files.
+
+| Existing destination | Official source | Original artwork |
+| --- | --- | --- |
+| Esco Pharmacy | https://escopharmacy.nyc/ | https://escopharmacy.nyc/cdn/shop/files/ESCO_HEAD_LOGO_TM_d79d45dd-3055-4b39-960b-bccf9fff5f66.jpg?v=1614373017 |
+| Southbridge Pharmacy | https://www.southbridgepharmacy.com/ | https://www.southbridgepharmacy.com/wp-content/themes/southbridgva304/images/main-logo.png |
+| Dear Mama Coffee | https://www.dearmamacoffee.com/ | https://images.squarespace-cdn.com/content/v1/5ce6a14df8e77000012b3d76/ed61236c-9235-4d9c-a9fe-3b3b56f0dc68/DMNYC-horizontal-colors.png?format=750w |
+| The Carlyle | https://www.rosewoodhotels.com/en/the-carlyle-new-york | https://www.rosewoodhotels.com/content/dam/rosewoodhotels/svg-icons/RWCAR%20Wordmark%20black%20FA.svg |
+| Hilton Garden Inn | https://stories.hilton.com/brands/hilton-garden-inn | https://stories-editor.hilton.com/wp-content/uploads/2022/04/HGI-Brand-Logo_Color.png |
+| Element | https://www.marriott.com/brands.mi | https://cache.marriott.com/is/image/marriotts7prod/el-mi-brand-page-el-log88561-34161 |
+| The Joyce Theater | https://www.joyce.org/ | https://www.joyce.org/images/logo.svg |
+| InterContinental New York Times Square | https://www.ihgplc.com/en/our-brands/intercontinental | https://www.ihgplc.com/~/media/Images/I/Ihg-Plc/images/brands/intercontinental.svg |
+| Knickerbocker Plaza Car Park | https://www.ggmcparking.com/locations/knickerbocker-plaza-car-park | https://www.ggmcparking.com/assets/images/logo-top.svg |
+| Duane Reade | https://www.walgreens.com/topic/logos/walgreens-logo.jsp | https://www.walgreens.com/images/adaptive/sp/waglogo/DR_WAG-PNG.zip |
+
+Duane Reade now uses its own official Duane Reade by Walgreens mark from the company's downloadable PNG ZIP, not the generic Walgreens mark. The Carlyle uses its property-specific wordmark. Hilton Garden Inn and Element use their specific hotel-brand marks, not the parent Hilton/Marriott logos. Element's location is confirmed at 311 West 39th Street by https://www.marriott.com/en-us/hotels/nycel-element-new-york-times-square-west/overview/ . InterContinental's Times Square location is confirmed by its interconny.com redirect to the official IHG nychc location; the mark is the InterContinental brand, not the parent IHG mark.
+
+GGMC's official location page and location JSON identify Knickerbocker Plaza Car Park at 240 E 92nd St; its artwork is explicitly labelled “GGMC Parking operator logo”, not a fictional location-specific logo. Dear Mama's official brand is matched to its existing coffee business, with historical East Harlem location corroborated by Columbia University's retail tenant reporting. Southbridge's official site confirms 80 Beekman St; Esco confirms 687 Ninth Avenue. The Joyce confirms 175 Eighth Avenue. Its official mark deliberately consists of five abstract colored shapes (also shown in its official travel brochures), not a conventional lettered wordmark. It uses the official white backing. Two gradient animation elements are omitted to serve a static, reduced-motion-safe version; geometry and colors are unchanged.
+
+All other existing marks were included in the repeated page/asset QA. This is artwork verification, not a fresh occupancy certification.
