@@ -1,3 +1,4 @@
+import { NeighborhoodVideo } from '@/components/neighborhood-video';
 import { nearbyBusinessLogo } from '@/lib/nearby-business-logos';
 import {PublishedPhoto} from '@/components/published-photo';
 import { OfficialPlaceName } from './official-place-name';
@@ -62,6 +63,7 @@ export function RetailNeighborhood({ slug, street, address }: { slug: string; st
       <div><p className="max-w-3xl text-lg leading-relaxed text-slate-700">{area.context} Use the address, mapped transit, surrounding businesses, and local anchors below to assess the area. These are points of context, not measurements of activity at this storefront or a prediction of sales.</p><a href={area.guide} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center font-semibold underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teams-ink">{area.guideLabel} ↗</a></div>
       <figure className="min-w-0 overflow-hidden bg-stone-200"><PublishedPhoto src={area.image} alt={area.imageAlt} loading="lazy" className="aspect-[16/10] w-full object-cover"/><figcaption className="px-3 py-2 text-xs text-slate-600">{area.name} area · Photo: <a href={area.creditUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{area.credit}</a> · {area.licenseUrl ? <a href={area.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{area.license}</a> : area.license}. Area image, not the property.</figcaption></figure>
     </div>
+    {area.video && <NeighborhoodVideo video={area.video} />}
     <div className="mt-8 grid gap-4 border-y border-stone-400/50 py-6 sm:grid-cols-2">
       <div><p className="text-xs font-bold uppercase tracking-wider text-teams-secondary">Street setting</p><p className="mt-2 font-semibold">{street}</p></div>
       <div><p className="text-xs font-bold uppercase tracking-wider text-teams-secondary">Transit reference</p><p className="mt-2 font-semibold">{transit.length ? transit.map(item => item.name).join(' · ') : 'See property map'}</p></div>
