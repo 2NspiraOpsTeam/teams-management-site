@@ -18,7 +18,8 @@ yarn-error.log*
 
 .open-next/
 
-.wrangler/tmp/
+# Local Wrangler state can contain database records and cache metadata.
+.wrangler/
 
 # Private importer artifacts never belong in source control.
 __pycache__/
