@@ -10,7 +10,7 @@ Both routes read the same scoped neighborhood data. Other property area mappings
 
 ## Requested video
 
-User supplied https://www.youtube.com/watch?v=4KHAC74CS3w&t=35s . YouTube oEmbed verified title Restaurant Row and channel Times Square NYC. Both context panels offer the same click-to-play privacy-enhanced embed at 35 seconds, with source link always available. No player request before activation, no page-load autoplay, Close removes playback, refresh resets closed. No apartment tour or property-photo assignments change.
+User supplied https://www.youtube.com/watch?v=4KHAC74CS3w&t=35s . YouTube oEmbed verified title Restaurant Row and channel Times Square NYC. At Jeffrey’s follow-up request, both context panels offer the same click-to-play privacy-enhanced embed from the beginning (0:00), with source link always available. No player request before activation, no page-load autoplay, Close removes playback, refresh resets closed. No apartment tour or property-photo assignments change.
 
 ## 349–351 W 46th Retail anchor
 
