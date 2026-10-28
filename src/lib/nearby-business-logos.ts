@@ -54,7 +54,7 @@ const logos: Record<string, NearbyLogo> = {
   "Mcgoldrick": { src: "/nearby-logos/mcgoldrick.svg", alt: "Queens Public Library logo", background: "bg-white" },
   "Super Foodtown": { src: "/nearby-logos/super-foodtown.webp", alt: "Super Foodtown logo", background: "bg-white" },
   "Fairway Market": { src: "/nearby-logos/fairway-market.webp", alt: "Fairway Market logo", background: "bg-white" },
-  "Caf\u00e9 Grumpy": { src: "/nearby-logos/caf-grumpy.webp", alt: "Caf\u00e9 Grumpy logo", background: "bg-white" },
+  "Caf\u00e9 Grumpy": { src: "/nearby-logos/caf-grumpy.webp", alt: "Caf\u00e9 Grumpy logo", background: "bg-[#242424]" },
   "Joe Coffee Company": { src: "/nearby-logos/joe-coffee-company.webp", alt: "Joe Coffee Company logo", background: "bg-[#242424]" },
   "Birch Coffee": { src: "/nearby-logos/birch-coffee.webp", alt: "Birch Coffee logo", background: "bg-white" },
   "D'Agostino": { src: "/nearby-logos/d-agostino.webp", alt: "D\u2019Agostino logo", background: "bg-white" },
