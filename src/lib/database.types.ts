@@ -55,9 +55,9 @@ export interface UnitInternal {
   id: string;
   building_id: string;
   unit_identifier: string;
-  floor_number: number;
+  floor_number: number | null;
   layout_id: string;
-  status: 'available_internal' | 'occupied' | 'under_construction' | 'maintenance';
+  status: 'unverified' | 'available_internal' | 'occupied' | 'under_construction' | 'maintenance';
   specifications?: {
     square_footage?: number;
     ceiling_height_feet?: number;

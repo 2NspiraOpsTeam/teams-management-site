@@ -35,7 +35,7 @@ export default function BuildingMapAdmin() {
       setMessage(clear ? 'Location cleared; no public marker.' : verified ? 'Verified location saved. Eligible published properties can display a marker.' : 'Candidate saved privately; no public marker.');
     } catch (error) { setMessage(String(error)); } finally { setBusy(false); }
   }
-  return <main className="mx-auto max-w-3xl p-6 sm:p-10">
+  return <main id="main-content" className="mx-auto max-w-3xl p-6 sm:p-10">
     <Link href="/admin/buildings" className="text-sm underline">← Buildings</Link>
     <h1 className="mt-6 font-serif text-3xl text-teams-ink">Property map locations</h1>
     <p className="mt-3 max-w-2xl text-slate-600">Enter candidate coordinates from a geocoding source, compare the pin against the street address, then explicitly verify it. Geocoding alone never publishes a marker.</p>

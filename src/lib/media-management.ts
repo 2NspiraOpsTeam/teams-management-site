@@ -1,16 +1,16 @@
 import type { D1Database } from '@cloudflare/workers-types';
+import existingWebsitePhotos from './existing-website-photos.json';
 import { goldStreetGallery } from './preview-portfolio';
 
-export type MediaRow = { id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; slot?:string };
-const numberedPreviewMedia = (slug:string,count:number) => Array.from(
-  { length: count },
-  (_,index) => `/preview-properties/${slug}/image-${String(index + 1).padStart(2,'0')}.jpg`,
-);
+export type MediaRow = { photo_number?:number; id:string; storage_key:string; file_type:string; width:number|null; height:number|null; size_bytes:number|null; checksum:string|null; visibility:string; created_at:string; alt_text?:string|null; caption?:string|null; published?:number; is_cover?:number; order_index?:number; assignment_id?:string; in_gallery?:number; slot?:string; property_name?:string|null; property_slug?:string|null; unit_identifier?:string|null };
+const numberedPreviewMedia = (slug:string,count:number) => Array.from({ length: count }, (_,index) => `/preview-properties/${slug}/image-${String(index + 1).padStart(2,'0')}.jpg`);
 const deliverableStaticMedia = new Set([
   '/preview-properties/42-70-156th-street.jpg',
   '/preview-properties/3425-east-tremont-ave.jpg',
   '/preview-properties/166-e-118th-street.jpg',
   ...goldStreetGallery,
+  '/preview-properties/61-gold-st/twilight-skyline-original.png',
+  ...existingWebsitePhotos.map(photo=>photo.src),
   ...numberedPreviewMedia('1374-1st-ave',10),
   ...numberedPreviewMedia('225-e-83rd-st',13),
   ...numberedPreviewMedia('171-e-74th-st',7),
@@ -18,16 +18,22 @@ const deliverableStaticMedia = new Set([
   ...numberedPreviewMedia('1365-1st-ave',8),
   ...numberedPreviewMedia('42-70-156th-st-flushing',14),
 ]);
-export const isDeliverablePublicMedia = (item:MediaRow) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
-export const mediaUrl = (id:string) => `/api/media/${encodeURIComponent(id)}`;
-export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/preview-properties/') ? item.storage_key : mediaUrl(item.id);
+export const isDeliverablePublicMedia = (item:Pick<MediaRow,'storage_key'>) => !item.storage_key.startsWith('/preview-properties/') || deliverableStaticMedia.has(item.storage_key);
+export const mediaUrl = (id:string,checksum?:string|null) => `/api/media/${encodeURIComponent(id)}${checksum&&/^[a-f0-9]{64}$/.test(checksum)?'?v='+checksum:''}`;
+export const publicMediaSrc = (item:MediaRow) => item.storage_key.startsWith('/') ? item.storage_key : mediaUrl(item.id,item.checksum);
 export const mediaPreviewUrl = (id:string) => `/api/admin/media/${encodeURIComponent(id)}/file`;
 export async function propertyMedia(db:D1Database,slug:string,includeDraft=false) {
- const query = `SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,m.id AS assignment_id,m.is_cover,m.order_index,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(m.caption,''),a.caption) AS caption,COALESCE(p.published,0) AS published FROM media_assignments m JOIN media_assets a ON a.id=m.asset_id JOIN buildings b ON b.id=m.building_id LEFT JOIN media_publications p ON p.assignment_id=m.id WHERE b.slug=? ${includeDraft?'':"AND a.visibility='public' AND COALESCE(p.published,0)=1"} ORDER BY m.order_index,m.created_at`;
- return (await db.prepare(query).bind(slug).all<MediaRow>()).results;
+ const coverExpression=includeDraft?'m.is_cover':"CASE WHEN s.building_id IS NULL THEN m.is_cover WHEN s.cover_asset_id=a.id THEN 1 ELSE 0 END";
+ const orderExpression=includeDraft?'m.order_index':'COALESCE(g.order_index,m.order_index)';
+ const query = `SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,m.id AS assignment_id,${coverExpression} AS is_cover,CASE WHEN s.building_id IS NULL OR g.asset_id IS NOT NULL THEN 1 ELSE 0 END AS in_gallery,${orderExpression} AS order_index,u.unit_identifier,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(m.caption,''),a.caption) AS caption,COALESCE(p.published,0) AS published FROM media_assignments m JOIN media_assets a ON a.id=m.asset_id JOIN buildings b ON b.id=m.building_id LEFT JOIN units u ON u.id=m.unit_id LEFT JOIN media_publications p ON p.assignment_id=m.id LEFT JOIN media_presentation_settings s ON s.building_id=b.id AND s.context='residential' LEFT JOIN media_presentation_gallery g ON g.building_id=b.id AND g.context='residential' AND g.asset_id=a.id WHERE b.slug=? ${includeDraft?'':"AND b.publication_state!='archived' AND m.unit_id IS NULL AND a.visibility='public' AND COALESCE(p.published,0)=1 AND (s.building_id IS NULL OR g.asset_id IS NOT NULL OR s.cover_asset_id=a.id)"} ORDER BY m.unit_id,${orderExpression},m.created_at`;
+ return (await db.prepare(query).bind(slug).all<MediaRow>()).results.filter(isDeliverablePublicMedia);
+}
+export async function propertyUnitMedia(db:D1Database,slug:string) {
+ const rows=await db.prepare("SELECT u.unit_identifier,a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,m.id AS assignment_id,m.order_index,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(m.caption,''),a.caption) AS caption,COALESCE(p.published,0) AS published FROM media_assignments m JOIN units u ON u.id=m.unit_id JOIN buildings b ON b.id=u.building_id AND b.id=m.building_id JOIN media_assets a ON a.id=m.asset_id JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 WHERE b.slug=? AND b.publication_state!='archived' AND a.visibility='public' ORDER BY u.unit_identifier,m.order_index,m.created_at").bind(slug).all<MediaRow & {unit_identifier:string}>();
+ return rows.results.filter(isDeliverablePublicMedia);
 }
 export async function homeMedia(db:D1Database,includeDraft=false) {
- return (await db.prepare(`SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,h.id AS assignment_id,h.slot,h.order_index,COALESCE(NULLIF(h.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(h.caption,''),a.caption) AS caption,h.published FROM media_home_assignments h JOIN media_assets a ON a.id=h.asset_id ${includeDraft?'':"WHERE h.published=1 AND a.visibility='public'"} ORDER BY CASE h.slot WHEN 'hero' THEN 0 WHEN 'featured' THEN 1 ELSE 2 END,h.order_index`).all<MediaRow>()).results;
+ return (await db.prepare(`SELECT a.id,a.storage_key,a.file_type,a.width,a.height,a.size_bytes,a.checksum,a.visibility,a.created_at,h.id AS assignment_id,h.slot,h.order_index,COALESCE(NULLIF(h.alt_text,''),a.alt_text) AS alt_text,COALESCE(NULLIF(h.caption,''),a.caption) AS caption,h.published,(SELECT b.name FROM media_assignments m JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN buildings b ON b.id=m.building_id WHERE m.asset_id=a.id ORDER BY m.created_at LIMIT 1) AS property_name,(SELECT b.slug FROM media_assignments m JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN buildings b ON b.id=m.building_id WHERE m.asset_id=a.id ORDER BY m.created_at LIMIT 1) AS property_slug FROM media_home_assignments h JOIN media_assets a ON a.id=h.asset_id ${includeDraft?'':"WHERE h.published=1 AND a.visibility='public'"} ORDER BY CASE h.slot WHEN 'hero' THEN 0 WHEN 'featured' THEN 1 ELSE 2 END,h.order_index`).all<MediaRow>()).results.filter(isDeliverablePublicMedia);
 }
 export function imageDimensions(bytes:Uint8Array,mime:string):{width:number;height:number}|null {
  const d=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);

@@ -1,0 +1,13 @@
+# Offline photo preparation
+
+Uses the existing pinned Sharp/libvips bundled with Next, locally, with no API key, external image service, inference endpoint or paid transform. Run `prepare.cjs --inventory <private-approved-public-media-inventory.json>` only against sources independently confirmed public/published. Never pass resident uploads, identity documents or private assets. Input source paths and exported database content stay outside this public repository.
+
+The source inventory contains `assets` with id, original_url, storage_key, checksum, source_file and cover; `missing` must be empty. Originals are retained unchanged. Generated `photo-variants.json` contains only public image identifiers, original checksums and derivative metadata—not database records, credentials or private filesystem paths.
+
+Preparation auto-orients, preserves aspect ratio, resamples with Lanczos3, applies mild sharpening only to enlarged copies, and creates responsive WebP sizes. It does not generate architectural detail, replace text/people/objects, change lighting, retouch property condition or promise real detail absent from a screenshot. Native high-resolution originals remain preferable. Logos use lossless encoding. Existing image credits/licenses remain attached to their original page uses; processed files are resized/re-encoded derivatives of those same originals. Paper/grain textures remain at their existing native tile scale.
+
+`build:preview:worker` builds OpenNext then calls `stage.cjs`; staging checks each derivative checksum. The normal production build does NOT stage preview derivatives, and consumers use original URLs outside preview scope. Do not bypass this separation in future release scripts.
+
+D1-linked derivatives are staged under an HTTP-blocked `_photo-variants` namespace. Public requests must use `/api/media/:id?v=<source-sha>&w=<prepared-width>`; existing live publication/property/unit/visibility gates still apply before bytes load, and source metadata must match the prepared version. Only exact prepared widths are accepted; no on-request image processing or arbitrary fetch. Versioned public cache entries separate widths, release and publication scope with the existing maximum 60-second revalidation window. Direct/encoded private namespace requests must 404. Static public brand/neighborhood derivatives retain the original static-public distribution scope.
+
+When a saved photo changes, stale derivatives are rejected rather than applied to new source bytes. Newly uploaded/unprepared sources keep their existing original path; re-inventory and prepare after approval. No cover, gallery, ordering, caption, property/unit assignment or original stored bytes should be changed by this workflow.

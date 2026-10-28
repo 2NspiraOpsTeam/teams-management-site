@@ -1,0 +1,251 @@
+{
+  "source": "NYC Department of City Planning PLUTO official NYC Open Data dataset 64uk-42ks",
+  "checked_date": "2026-10-14",
+  "records": [
+    {
+      "slug": "42-70-156th-st-flushing",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D4053860020&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "42-70 156 STREET",
+          "bbl": "4053860020.00000000",
+          "zipcode": "11355",
+          "borough": "QN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "3425-east-tremont-bronx",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=address+in+%28%273425+EAST+TREMONT+AVENUE%27%29&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [],
+      "supplementary_query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=borough%3D%27BX%27+AND+address+like+%273425%25%27&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=50",
+      "supplementary_results": [
+        {
+          "address": "3425 BOLLER AVENUE",
+          "bbl": "2052590029.00000000",
+          "zipcode": "10475",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 DE REIMER AVENUE",
+          "bbl": "2052570029.00000000",
+          "zipcode": "10475",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 DEKALB AVENUE",
+          "bbl": "2033270139.00000000",
+          "zipcode": "10467",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 EDSON AVENUE",
+          "bbl": "2048860029.00000000",
+          "zipcode": "10469",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 ELY AVENUE",
+          "bbl": "2048840030.00000000",
+          "zipcode": "10469",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 GATES PLACE",
+          "bbl": "2033240019.00000000",
+          "zipcode": "10467",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 GUNTHER AVENUE",
+          "bbl": "2047290052.00000000",
+          "zipcode": "10469",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 HUNTER AVENUE",
+          "bbl": "2052600017.00000000",
+          "zipcode": "10475",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 KINGSBRIDGE AVENUE",
+          "bbl": "2057610444.00000000",
+          "zipcode": "10463",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 KNOX PLACE",
+          "bbl": "2033240082.00000000",
+          "zipcode": "10467",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 OLINVILLE AVENUE",
+          "bbl": "2046270034.00000000",
+          "zipcode": "10467",
+          "borough": "BX"
+        },
+        {
+          "address": "3425 TIBBETT AVENUE",
+          "bbl": "2057630554.00000000",
+          "zipcode": "10463",
+          "borough": "BX"
+        }
+      ],
+      "assessment": "Exact property address not returned; do not apply candidate ZIP from this query."
+    },
+    {
+      "slug": "166-e-118th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1016450044&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "166 EAST 118 STREET",
+          "bbl": "1016450044.00000000",
+          "zipcode": "10035",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "170-e-118th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1016450041&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "170 EAST 118 STREET",
+          "bbl": "1016450041.00000000",
+          "zipcode": "10035",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "71-e-110th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1016160030&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "71 EAST 110 STREET",
+          "bbl": "1016160030.00000000",
+          "zipcode": "10029",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "173-e-91st-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1015200034&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "173 EAST 91 STREET",
+          "bbl": "1015200034.00000000",
+          "zipcode": "10128",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "1626-2nd-ave",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1015470002&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "1626 2 AVENUE",
+          "bbl": "1015470002.00000000",
+          "zipcode": "10028",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "225-e-83rd-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1015290014&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "225 EAST 83 STREET",
+          "bbl": "1015290014.00000000",
+          "zipcode": "10028",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "171-e-74th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1014090031&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "171 EAST 74 STREET",
+          "bbl": "1014090031.00000000",
+          "zipcode": "10021",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "1365-1st-ave",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1014480025&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "1365 1 AVENUE",
+          "bbl": "1014480025.00000000",
+          "zipcode": "10021",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "41-w-46th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1012620018&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "41 WEST 46 STREET",
+          "bbl": "1012620018.00000000",
+          "zipcode": "10036",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "307-w-39th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1007630031&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "307 WEST 39 STREET",
+          "bbl": "1007630031.00000000",
+          "zipcode": "10018",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "235-w-18th-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1007680017&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [
+        {
+          "address": "235 WEST 18 STREET",
+          "bbl": "1007680017.00000000",
+          "zipcode": "10011",
+          "borough": "MN"
+        }
+      ],
+      "assessment": "Existing exact BBL yields one official PLUTO row; source address matches canonical property street after abbreviation normalization."
+    },
+    {
+      "slug": "61-gold-st",
+      "query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=address+in+%28%2761+GOLD+STREET%27%29&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=20",
+      "results": [],
+      "supplementary_query": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=borough%3D%27MN%27+AND+address+like+%27%25GOLD%25%27+AND+%28address+like+%2761+%25%27+OR+address+like+%2759+%25%27+OR+address+like+%2763+%25%27%29&%24select=address%2Cbbl%2Czipcode%2Cborough&%24limit=50",
+      "supplementary_results": [],
+      "assessment": "Exact property address not returned; do not apply candidate ZIP from this query."
+    }
+  ]
+}

@@ -1,0 +1,2347 @@
+[
+  {
+    "id": "home",
+    "name": "Home",
+    "path": "/",
+    "fields": [
+      {
+        "key": "home.text-1",
+        "label": "Description · Teams Management · New York City",
+        "section": "Page introduction / hero",
+        "default": "Teams Management · New York City",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-2",
+        "label": "Heading · New York properties. People-first management.",
+        "section": "Welcome / hero",
+        "default": "New York properties. People-first management.",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-3",
+        "label": "Description · We care for residential and retail properties across the city, he",
+        "section": "Welcome / hero",
+        "default": "We care for residential and retail properties across the city, helping residents, prospective renters, and businesses connect with the right place and the right team.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-4",
+        "label": "Button / link label · Explore Our Properties",
+        "section": "Welcome / hero",
+        "default": "Explore Our Properties ",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-5",
+        "label": "Button / link label · Rent With Us",
+        "section": "Welcome / hero",
+        "default": "Rent With Us ",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-6",
+        "label": "Description · Discover",
+        "section": "Welcome / hero",
+        "default": "Discover",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-7",
+        "label": "Heading · Residential Properties",
+        "section": "Residential Properties",
+        "default": "Residential Properties",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-8",
+        "label": "Description · Explore the places we manage across New York.",
+        "section": "Residential Properties",
+        "default": "Explore the places we manage across New York.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-9",
+        "label": "Text · Explore properties ↗",
+        "section": "Residential Properties",
+        "default": "Explore properties ↗",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-10",
+        "label": "Description · Discover",
+        "section": "Residential Properties",
+        "default": "Discover",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-11",
+        "label": "Heading · Retail & Commercial",
+        "section": "Retail & Commercial",
+        "default": "Retail & Commercial",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-12",
+        "label": "Description · View the commercial side of our portfolio.",
+        "section": "Retail & Commercial",
+        "default": "View the commercial side of our portfolio.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-13",
+        "label": "Text · Explore retail ↗",
+        "section": "Retail & Commercial",
+        "default": "Explore retail ↗",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-14",
+        "label": "Description · Discover",
+        "section": "Retail & Commercial",
+        "default": "Discover",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-15",
+        "label": "Heading · Dining Destination",
+        "section": "Dining Destination",
+        "default": "Dining Destination",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-16",
+        "label": "Description · Meet Delizia 73 and explore its neighborhood story.",
+        "section": "Dining Destination",
+        "default": "Meet Delizia 73 and explore its neighborhood story.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-17",
+        "label": "Text · Explore dining ↗",
+        "section": "Dining Destination",
+        "default": "Explore dining ↗",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-18",
+        "label": "Description · Rooted in New York. Built to Last.",
+        "section": "Dining Destination",
+        "default": "Rooted in New York. Built to Last.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-19",
+        "label": "Heading · A New York story, carried forward across generations.",
+        "section": "A New York story, carried forward across generations.",
+        "default": "A New York story, carried forward across generations.",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-20",
+        "label": "Description · Our founder came to New York from Italy and built his first chapt",
+        "section": "A New York story, carried forward across generations.",
+        "default": "Our founder came to New York from Italy and built his first chapter through construction — learning the value of hard work, craftsmanship, and creating something that endures.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-21",
+        "label": "Description · That same entrepreneurial drive later led the family into New Yor",
+        "section": "A New York story, carried forward across generations.",
+        "default": "That same entrepreneurial drive later led the family into New York real estate and the founding of Teams Management.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-22",
+        "label": "Description · Today, the next generation carries that work forward with the sam",
+        "section": "A New York story, carried forward across generations.",
+        "default": "Today, the next generation carries that work forward with the same belief that has always guided us: buildings matter, but the people who live, work, and build their lives within them matter more.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-23",
+        "label": "Button / link label · Discover Our Story",
+        "section": "A New York story, carried forward across generations.",
+        "default": "Discover Our Story ",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-24",
+        "label": "Description · New York City, up close",
+        "section": "A New York story, carried forward across generations.",
+        "default": "New York City, up close",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-25",
+        "label": "Heading · A portfolio shaped by place.",
+        "section": "A portfolio shaped by place.",
+        "default": "A portfolio shaped by place.",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-26",
+        "label": "Description · Every address is part of a neighborhood, shaped by the people and",
+        "section": "A portfolio shaped by place.",
+        "default": "Every address is part of a neighborhood, shaped by the people and places around it. Explore our properties across Manhattan, the Bronx, and Queens.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-27",
+        "label": "Button / link label · Explore the portfolio",
+        "section": "A portfolio shaped by place.",
+        "default": "Explore the portfolio ",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-28",
+        "label": "Text · Manhattan",
+        "section": "A portfolio shaped by place.",
+        "default": "Manhattan",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-29",
+        "label": "Text · The Bronx",
+        "section": "A portfolio shaped by place.",
+        "default": "The Bronx",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-30",
+        "label": "Text · Queens",
+        "section": "A portfolio shaped by place.",
+        "default": "Queens",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-31",
+        "label": "Description · The portfolio",
+        "section": "A portfolio shaped by place.",
+        "default": "The portfolio",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-32",
+        "label": "Heading · Featured properties",
+        "section": "Featured properties",
+        "default": "Featured properties",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-33",
+        "label": "Description · A closer look at selected addresses in our portfolio.",
+        "section": "Featured properties",
+        "default": "A closer look at selected addresses in our portfolio.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-34",
+        "label": "Description · Explore the properties currently available to view.",
+        "section": "Featured properties",
+        "default": "Explore the properties currently available to view.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-35",
+        "label": "Button / link label · View All Properties ↗",
+        "section": "Featured properties",
+        "default": "View All Properties ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-36",
+        "label": "Button / link label · View All Properties",
+        "section": "Featured properties",
+        "default": "View All Properties ",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-37",
+        "label": "Description · Your next step",
+        "section": "Featured properties",
+        "default": "Your next step",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-38",
+        "label": "Heading · Rent With Us",
+        "section": "Rent With Us",
+        "default": "Rent With Us",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-39",
+        "label": "Description · See our rental pathway and how to get in touch.",
+        "section": "Rent With Us",
+        "default": "See our rental pathway and how to get in touch.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-40",
+        "label": "Button / link label · Rent With Us ↗",
+        "section": "Rent With Us",
+        "default": "Rent With Us ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-41",
+        "label": "Button / link label · Start Rental Inquiry ↗",
+        "section": "Rent With Us",
+        "default": "Start Rental Inquiry ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-42",
+        "label": "Description · Discover more",
+        "section": "Rent With Us",
+        "default": "Discover more",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-43",
+        "label": "Heading · Across the city",
+        "section": "Across the city",
+        "default": "Across the city",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-44",
+        "label": "Button / link label · Browse all ↗",
+        "section": "Across the city",
+        "default": "Browse all ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-45",
+        "label": "Description · For our residents",
+        "section": "Across the city",
+        "default": "For our residents",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-46",
+        "label": "Heading · Here for the everyday.",
+        "section": "Here for the everyday.",
+        "default": "Here for the everyday.",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-47",
+        "label": "Description · Find resident information, maintenance guidance, and the right wa",
+        "section": "Here for the everyday.",
+        "default": "Find resident information, maintenance guidance, and the right way to reach our team when you need us.",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-48",
+        "label": "Button / link label · Explore Tenant Services",
+        "section": "Here for the everyday.",
+        "default": "Explore Tenant Services ",
+        "maxLength": 120
+      },
+      {
+        "key": "home.text-49",
+        "label": "Description · Get in touch",
+        "section": "Here for the everyday.",
+        "default": "Get in touch",
+        "maxLength": 3000
+      },
+      {
+        "key": "home.text-50",
+        "label": "Heading · Let’s start a conversation.",
+        "section": "Let’s start a conversation.",
+        "default": "Let’s start a conversation.",
+        "maxLength": 250
+      },
+      {
+        "key": "home.text-51",
+        "label": "Button / link label · Contact Teams ↗",
+        "section": "Let’s start a conversation.",
+        "default": "Contact Teams ↗",
+        "maxLength": 120
+      }
+    ]
+  },
+  {
+    "id": "about",
+    "name": "About",
+    "path": "/about",
+    "fields": [
+      {
+        "key": "about.text-1",
+        "label": "Description · About Teams Management",
+        "section": "Page introduction / hero",
+        "default": "About Teams Management",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-2",
+        "label": "Heading · Places matter. People make them meaningful.",
+        "section": "Places matter. People make them meaningful.",
+        "default": "Places matter. People make them meaningful.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-3",
+        "label": "Description · We care for a New York property portfolio with a simple belief: a",
+        "section": "Places matter. People make them meaningful.",
+        "default": "We care for a New York property portfolio with a simple belief: a well-run place should make everyday life easier and help people feel they belong.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-4",
+        "label": "Description · Our roots",
+        "section": "Places matter. People make them meaningful.",
+        "default": "Our roots",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-5",
+        "label": "Heading · Built in New York. Carried forward across generations.",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "Built in New York. Carried forward across generations.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-6",
+        "label": "Description · Our founder came from Italy to New York City and began his entrep",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "Our founder came from Italy to New York City and began his entrepreneurial journey in construction, learning firsthand the value of craftsmanship, perseverance, and building things meant to last.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-7",
+        "label": "Description · Over time, that experience evolved into New York real estate and ",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "Over time, that experience evolved into New York real estate and the founding of Teams Management.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-8",
+        "label": "Description · Today, the next generation carries that legacy forward — bringing",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "Today, the next generation carries that legacy forward — bringing together decades of experience with a thoughtful, modern approach to property stewardship.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-9",
+        "label": "Description · We believe the true value of a building is measured not only by t",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "We believe the true value of a building is measured not only by the structure itself, but by the lives, businesses, relationships, and communities it supports.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-10",
+        "label": "Description · Every Building Has a Story. Every Person Matters.",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "Every Building Has a Story. Every Person Matters.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-11",
+        "label": "Description · People · Trust · Relationships · Community",
+        "section": "Built in New York. Carried forward across generations.",
+        "default": "People · Trust · Relationships · Community",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-12",
+        "label": "Heading · Care you can see in the details.",
+        "section": "Care you can see in the details.",
+        "default": "Care you can see in the details.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-13",
+        "label": "Description · We believe good property management begins with respect and trust",
+        "section": "Care you can see in the details.",
+        "default": "We believe good property management begins with respect and trust, then shows itself in the everyday details that matter to people.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-14",
+        "label": "Description · Our New York portfolio",
+        "section": "Care you can see in the details.",
+        "default": "Our New York portfolio",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-15",
+        "label": "Heading · Every address has a story.",
+        "section": "Every address has a story.",
+        "default": "Every address has a story.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-16",
+        "label": "Description · Explore our properties across Flushing, the Bronx, and Manhattan.",
+        "section": "Every address has a story.",
+        "default": "Explore our properties across Flushing, the Bronx, and Manhattan. Each has its own character, setting, and role in the city.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-17",
+        "label": "Button / link label · Explore properties",
+        "section": "Every address has a story.",
+        "default": "Explore properties ",
+        "maxLength": 120
+      },
+      {
+        "key": "about.text-18",
+        "label": "Heading · Let’s talk about what you need.",
+        "section": "Let’s talk about what you need.",
+        "default": "Let’s talk about what you need.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-19",
+        "label": "Description · Looking for a property, have a question, or need to reach our tea",
+        "section": "Let’s talk about what you need.",
+        "default": "Looking for a property, have a question, or need to reach our team? Start the conversation here.",
+        "maxLength": 3000
+      },
+      {
+        "key": "about.text-21",
+        "label": "Text · For residents",
+        "section": "Supporting text and form labels",
+        "default": "For residents",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-22",
+        "label": "Text · Know where to turn when something needs attention.",
+        "section": "Supporting text and form labels",
+        "default": "Know where to turn when something needs attention.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-23",
+        "label": "Text · For people looking for a place",
+        "section": "Supporting text and form labels",
+        "default": "For people looking for a place",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-24",
+        "label": "Text · Find clear information to help picture what comes next.",
+        "section": "Supporting text and form labels",
+        "default": "Find clear information to help picture what comes next.",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-25",
+        "label": "Text · For our neighborhoods",
+        "section": "Supporting text and form labels",
+        "default": "For our neighborhoods",
+        "maxLength": 250
+      },
+      {
+        "key": "about.text-26",
+        "label": "Text · See each address as part of a larger community.",
+        "section": "Supporting text and form labels",
+        "default": "See each address as part of a larger community.",
+        "maxLength": 250
+      }
+    ]
+  },
+  {
+    "id": "properties",
+    "name": "Residences",
+    "path": "/properties",
+    "fields": [
+      {
+        "key": "properties.text-1",
+        "label": "Heading · Our Portfolio",
+        "section": "Our Portfolio",
+        "default": "Our Portfolio",
+        "maxLength": 250
+      },
+      {
+        "key": "properties.text-2",
+        "label": "Description · Explore the properties and individual residences in our portfolio",
+        "section": "Our Portfolio",
+        "default": "Explore the properties and individual residences in our portfolio.",
+        "maxLength": 3000
+      },
+      {
+        "key": "properties.text-3",
+        "label": "Heading · All properties",
+        "section": "All properties",
+        "default": "All properties",
+        "maxLength": 250
+      },
+      {
+        "key": "properties.text-4",
+        "label": "Description · Select a property to jump to its listing.",
+        "section": "All properties",
+        "default": "Select a property to jump to its listing.",
+        "maxLength": 3000
+      },
+      {
+        "key": "properties.text-5",
+        "label": "Button / link label · All Properties on Map →",
+        "section": "All properties",
+        "default": "All Properties on Map →",
+        "maxLength": 120
+      },
+      {
+        "key": "properties.text-6",
+        "label": "Description · Contact our team to ask about a property.",
+        "section": "All properties",
+        "default": "Contact our team to ask about a property.",
+        "maxLength": 3000
+      },
+      {
+        "key": "properties.text-7",
+        "label": "Description · Questions about a property or our management services?",
+        "section": "All properties",
+        "default": "Questions about a property or our management services?",
+        "maxLength": 3000
+      },
+      {
+        "key": "properties.text-8",
+        "label": "Button / link label · Contact Teams Management",
+        "section": "All properties",
+        "default": "Contact Teams Management",
+        "maxLength": 120
+      }
+    ]
+  },
+  {
+    "id": "retail",
+    "name": "Retail",
+    "path": "/retail",
+    "fields": [
+      {
+        "key": "retail.text-1",
+        "label": "Description · Property",
+        "section": "Page introduction / hero",
+        "default": "Property ",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-2",
+        "label": "Text · Planned Retail",
+        "section": "Page introduction / hero",
+        "default": "Planned Retail",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-3",
+        "label": "Button / link label · View Retail Property →",
+        "section": "Page introduction / hero",
+        "default": "View Retail Property →",
+        "maxLength": 120
+      },
+      {
+        "key": "retail.text-4",
+        "label": "Button / link label · View on Map ↗",
+        "section": "Page introduction / hero",
+        "default": "View on Map ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "retail.text-5",
+        "label": "Button / link label · Explore Street View ↗",
+        "section": "Page introduction / hero",
+        "default": "Explore Street View ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "retail.text-6",
+        "label": "Button / link label · Retail Inquiry ↗",
+        "section": "Page introduction / hero",
+        "default": "Retail Inquiry ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "retail.text-7",
+        "label": "Description · Teams Management portfolio",
+        "section": "Page introduction / hero",
+        "default": "Teams Management portfolio",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-8",
+        "label": "Heading · Retail & commercial properties",
+        "section": "Retail & commercial properties",
+        "default": "Retail & commercial properties",
+        "maxLength": 250
+      },
+      {
+        "key": "retail.text-9",
+        "label": "Description · Explore retail and commercial properties. For property-specific q",
+        "section": "Retail & commercial properties",
+        "default": "Explore retail and commercial properties. For property-specific questions, connect directly with our team.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-10",
+        "label": "Button / link label · Retail & Commercial Inquiries →",
+        "section": "Retail & commercial properties",
+        "default": "Retail & Commercial Inquiries →",
+        "maxLength": 120
+      },
+      {
+        "key": "retail.text-11",
+        "label": "Description · Retail & commercial",
+        "section": "Retail & commercial properties",
+        "default": "Retail & commercial",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-12",
+        "label": "Heading · Across the portfolio",
+        "section": "Across the portfolio",
+        "default": "Across the portfolio",
+        "maxLength": 250
+      },
+      {
+        "key": "retail.text-13",
+        "label": "Description · Explore our retail and commercial locations. Contact us for detai",
+        "section": "Across the portfolio",
+        "default": "Explore our retail and commercial locations. Contact us for details about a property.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-14",
+        "label": "Heading · All retail properties",
+        "section": "All retail properties",
+        "default": "All retail properties",
+        "maxLength": 250
+      },
+      {
+        "key": "retail.text-15",
+        "label": "Description · Select a property to jump to its listing.",
+        "section": "All retail properties",
+        "default": "Select a property to jump to its listing.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-16",
+        "label": "Text · (Planned)",
+        "section": "All retail properties",
+        "default": "(Planned)",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-17",
+        "label": "Button / link label · All Properties on Map →",
+        "section": "All retail properties",
+        "default": "All Properties on Map →",
+        "maxLength": 120
+      },
+      {
+        "key": "retail.text-18",
+        "label": "Description · Contact our team about retail properties.",
+        "section": "All retail properties",
+        "default": "Contact our team about retail properties.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-19",
+        "label": "Description · Contact our team about retail properties.",
+        "section": "All retail properties",
+        "default": "Contact our team about retail properties.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-20",
+        "label": "Description · Across the portfolio",
+        "section": "All retail properties",
+        "default": "Across the portfolio",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-21",
+        "label": "Heading · Planned retail",
+        "section": "Planned retail",
+        "default": "Planned retail",
+        "maxLength": 250
+      },
+      {
+        "key": "retail.text-22",
+        "label": "Description · Planned Retail components are shown separately from current comme",
+        "section": "Planned retail",
+        "default": "Planned Retail components are shown separately from current commercial properties.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-23",
+        "label": "Heading · Questions about a property?",
+        "section": "Questions about a property?",
+        "default": "Questions about a property?",
+        "maxLength": 250
+      },
+      {
+        "key": "retail.text-24",
+        "label": "Description · Reach the Teams Management team using the published contact detai",
+        "section": "Questions about a property?",
+        "default": "Reach the Teams Management team using the published contact details.",
+        "maxLength": 3000
+      },
+      {
+        "key": "retail.text-25",
+        "label": "Button / link label · Retail & Commercial Inquiries →",
+        "section": "Questions about a property?",
+        "default": "Retail & Commercial Inquiries →",
+        "maxLength": 120
+      }
+    ]
+  },
+  {
+    "id": "dining",
+    "name": "Dining",
+    "path": "/dining",
+    "fields": [
+      {
+        "key": "dining.text-1",
+        "label": "Description · Featured dining destination",
+        "section": "Page introduction / hero",
+        "default": "Featured dining destination",
+        "maxLength": 3000
+      },
+      {
+        "key": "dining.text-2",
+        "label": "Text · View Menu",
+        "section": "Page introduction / hero",
+        "default": "View Menu",
+        "maxLength": 3000
+      },
+      {
+        "key": "dining.text-3",
+        "label": "Text · Reservations",
+        "section": "Page introduction / hero",
+        "default": "Reservations",
+        "maxLength": 3000
+      },
+      {
+        "key": "dining.text-4",
+        "label": "Text · Order Online",
+        "section": "Page introduction / hero",
+        "default": "Order Online",
+        "maxLength": 3000
+      },
+      {
+        "key": "dining.text-5",
+        "label": "Button / link label · Get Directions",
+        "section": "Page introduction / hero",
+        "default": "Get Directions ",
+        "maxLength": 120
+      },
+      {
+        "key": "dining.text-6",
+        "label": "Heading · Delizia 73",
+        "section": "Delizia 73",
+        "default": "Delizia 73",
+        "maxLength": 250
+      },
+      {
+        "key": "dining.text-7",
+        "label": "Description · A taste of the neighborhood",
+        "section": "Delizia 73",
+        "default": "A taste of the neighborhood",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "rent-with-us",
+    "name": "Rent with Us",
+    "path": "/rent-with-us",
+    "fields": [
+      {
+        "key": "rent-with-us.text-1",
+        "label": "Button / link label · NYC HPD",
+        "section": "Page introduction / hero",
+        "default": "NYC HPD",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-2",
+        "label": "Button / link label · NYC Buildings",
+        "section": "Page introduction / hero",
+        "default": "NYC Buildings",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-3",
+        "label": "Button / link label · NYC HPD detector guidance",
+        "section": "Page introduction / hero",
+        "default": "NYC HPD detector guidance",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-4",
+        "label": "Button / link label · NYC Health",
+        "section": "Page introduction / hero",
+        "default": "NYC Health",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-5",
+        "label": "Button / link label · NYC assistance-animal guidance",
+        "section": "Page introduction / hero",
+        "default": "NYC assistance-animal guidance",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-6",
+        "label": "Button / link label · NYC Sanitation",
+        "section": "Page introduction / hero",
+        "default": "NYC Sanitation",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-7",
+        "label": "Button / link label · NYS HCR",
+        "section": "Page introduction / hero",
+        "default": "NYS HCR",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-8",
+        "label": "Button / link label · NYC Good Cause guidance",
+        "section": "Page introduction / hero",
+        "default": "NYC Good Cause guidance",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-9",
+        "label": "Button / link label · NY law",
+        "section": "Page introduction / hero",
+        "default": "NY law",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-10",
+        "label": "Button / link label · NY Attorney General",
+        "section": "Page introduction / hero",
+        "default": "NY Attorney General",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-11",
+        "label": "Button / link label · NY security-deposit law",
+        "section": "Page introduction / hero",
+        "default": "NY security-deposit law",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-12",
+        "label": "Description · Rent with Us",
+        "section": "Page introduction / hero",
+        "default": "Rent with Us",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-13",
+        "label": "Heading · Find Your Place in New York.",
+        "section": "Find Your Place in New York.",
+        "default": "Find Your Place in New York.",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-14",
+        "label": "Description · Finding the right place is about more than four walls. Explore ou",
+        "section": "Find Your Place in New York.",
+        "default": "Finding the right place is about more than four walls. Explore our properties and the neighborhoods around them, then start a conversation about the location that interests you.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-15",
+        "label": "Button / link label · Start rental inquiry ↗",
+        "section": "Find Your Place in New York.",
+        "default": "Start rental inquiry ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-16",
+        "label": "Heading · Find your starting point",
+        "section": "Find your starting point",
+        "default": "Find your starting point",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-17",
+        "label": "Description · Browse our published property profiles for verified building info",
+        "section": "Find your starting point",
+        "default": "Browse our published property profiles for verified building information. The portfolio is not an availability or apartment listings feed.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-18",
+        "label": "Button / link label · Explore properties",
+        "section": "Find your starting point",
+        "default": "Explore properties",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-19",
+        "label": "Heading · Ask about a property",
+        "section": "Ask about a property",
+        "default": "Ask about a property",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-20",
+        "label": "Description · For a rental question, include the property address and what you ",
+        "section": "Ask about a property",
+        "default": "For a rental question, include the property address and what you would like to know. Availability, pricing, applications, and requirements are confirmed directly when information is available.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-21",
+        "label": "Button / link label · Start rental inquiry",
+        "section": "Ask about a property",
+        "default": "Start rental inquiry",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-22",
+        "label": "Description · The rental pathway",
+        "section": "Ask about a property",
+        "default": "The rental pathway",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-23",
+        "label": "Heading · A clear next step",
+        "section": "A clear next step",
+        "default": "A clear next step",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-24",
+        "label": "Text · 01 · Explore",
+        "section": "A clear next step",
+        "default": "01 · Explore",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-25",
+        "label": "Text · Find a property that interests you. Portfolio profiles do not con",
+        "section": "A clear next step",
+        "default": "Find a property that interests you. Portfolio profiles do not confirm current availability.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-26",
+        "label": "Text · 02 · Inquire",
+        "section": "A clear next step",
+        "default": "02 · Inquire",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-27",
+        "label": "Text · Send your contact details and a brief rental question. No documen",
+        "section": "A clear next step",
+        "default": "Send your contact details and a brief rental question. No documents are needed here.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-28",
+        "label": "Text · 03 · Connect",
+        "section": "A clear next step",
+        "default": "03 · Connect",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-29",
+        "label": "Text · Teams will confirm the appropriate leasing or broker application ",
+        "section": "A clear next step",
+        "default": "Teams will confirm the appropriate leasing or broker application process.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-30",
+        "label": "Heading · Download the rental application",
+        "section": "A clear next step",
+        "default": "Download the rental application",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-31",
+        "label": "Description · The fillable PDF is available to review or complete. Teams or the",
+        "section": "A clear next step",
+        "default": "The fillable PDF is available to review or complete. Teams or the leasing broker will confirm where to return it. Please do not send identity or income documents through the rental inquiry form.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-32",
+        "label": "Button / link label · Download application (PDF) ↗",
+        "section": "A clear next step",
+        "default": "Download application (PDF) ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "rent-with-us.text-33",
+        "label": "Heading · Broker application handoff",
+        "section": "A clear next step",
+        "default": "Broker application handoff",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-34",
+        "label": "Description · Applications are handled through the approved broker destination,",
+        "section": "A clear next step",
+        "default": "Applications are handled through the approved broker destination, not this website.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-35",
+        "label": "Description · Start here",
+        "section": "A clear next step",
+        "default": "Start here",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-36",
+        "label": "Heading · Start a rental inquiry",
+        "section": "Start a rental inquiry",
+        "default": "Start a rental inquiry",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-37",
+        "label": "Description · Tell us which property interests you. We’ll help identify the nex",
+        "section": "Start a rental inquiry",
+        "default": "Tell us which property interests you. We’ll help identify the next step and broker contact when applicable.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-38",
+        "label": "Description · Resident information",
+        "section": "Start a rental inquiry",
+        "default": "Resident information",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-39",
+        "label": "Heading · Frequently Asked Questions",
+        "section": "Frequently Asked Questions",
+        "default": "Frequently Asked Questions",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-40",
+        "label": "Description · Your lease and applicable law govern where they differ from this ",
+        "section": "Frequently Asked Questions",
+        "default": "Your lease and applicable law govern where they differ from this general guidance.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-41",
+        "label": "Text · When is rent due?",
+        "section": "Rental questions & answers",
+        "default": "When is rent due?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-42",
+        "label": "Answer · Rent is due on the first day of each month unless your lease prov",
+        "section": "Rental questions & answers",
+        "default": "Rent is due on the first day of each month unless your lease provides otherwise. Where permitted by your lease and applicable law, a late fee may apply only after the five-day grace period. The fee cannot exceed $50 or 5% of your monthly rent, whichever is less.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-43",
+        "label": "Answer · Make checks payable to the building entity identified in your lea",
+        "section": "Rental questions & answers",
+        "default": "Make checks payable to the building entity identified in your lease. Mailed payments should be sent to Teams Management, 1374 First Avenue, Suite 1A, New York, NY 10021. Contact the office with payment questions.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-44",
+        "label": "Text · What if I don’t receive my monthly rent bill?",
+        "section": "Rental questions & answers",
+        "default": "What if I don’t receive my monthly rent bill?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-45",
+        "label": "Answer · Rent bills are provided for convenience. Please pay the rent due ",
+        "section": "Rental questions & answers",
+        "default": "Rent bills are provided for convenience. Please pay the rent due under your lease on time even if a bill does not arrive. If you are unsure of the amount or notice a billing discrepancy, contact the office promptly.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-46",
+        "label": "Text · What should I do if I lose my keys or have a lock problem?",
+        "section": "Rental questions & answers",
+        "default": "What should I do if I lose my keys or have a lock problem?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-47",
+        "label": "Answer · You will receive keys when you move in. Contact management if you",
+        "section": "Rental questions & answers",
+        "default": "You will receive keys when you move in. Contact management if you lose a key, need a replacement, or have a broken lock. We will explain the appropriate replacement or locksmith procedure and any lawful charges. Report damaged building-entry or apartment locks promptly. If you change an apartment lock, provide management with a duplicate key as required by law. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-48",
+        "label": "Text · Can I install an air conditioner?",
+        "section": "Rental questions & answers",
+        "default": "Can I install an air conditioner?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-49",
+        "label": "Answer · Contact management before installation to confirm the building’s ",
+        "section": "Rental questions & answers",
+        "default": "Contact management before installation to confirm the building’s requirements, including professional installation and insurance documentation. The unit must be safely secured and installed according to manufacturer instructions and applicable rules.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-50",
+        "label": "Answer · Never block a fire-escape window or another exit. Keep fire escap",
+        "section": "Rental questions & answers",
+        "default": "Never block a fire-escape window or another exit. Keep fire escapes, hallways and other exit routes clear. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-51",
+        "label": "Text · Can I decorate my apartment?",
+        "section": "Rental questions & answers",
+        "default": "Can I decorate my apartment?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-52",
+        "label": "Answer · Yes. Check your lease and obtain written approval before painting",
+        "section": "Rental questions & answers",
+        "default": "Yes. Check your lease and obtain written approval before painting or making alterations that require permission. At move-out, remove your belongings and leave the apartment clean. You may be responsible for damage beyond ordinary wear and tear or for restoring unauthorized alterations. Security-deposit deductions must comply with applicable law.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-53",
+        "label": "Text · Who maintains smoke and carbon monoxide alarms?",
+        "section": "Rental questions & answers",
+        "default": "Who maintains smoke and carbon monoxide alarms?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-54",
+        "label": "Answer · The owner provides and installs required alarms and replaces them",
+        "section": "Rental questions & answers",
+        "default": "The owner provides and installs required alarms and replaces them when their useful life expires. Residents must maintain and test alarms, replace replaceable batteries according to device instructions, and never disable or remove them. Contact management promptly about a missing or malfunctioning alarm.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-55",
+        "label": "Answer · If an alarm indicates a possible fire or carbon monoxide emergenc",
+        "section": "Rental questions & answers",
+        "default": "If an alarm indicates a possible fire or carbon monoxide emergency, leave the affected area and call 911. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-56",
+        "label": "Text · What utilities are included?",
+        "section": "Rental questions & answers",
+        "default": "What utilities are included?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-57",
+        "label": "Answer · Heat and hot water are included unless your apartment’s lease or ",
+        "section": "Rental questions & answers",
+        "default": "Heat and hot water are included unless your apartment’s lease or applicable requirements provide otherwise. Check your lease for responsibility for electricity, cooking gas, internet and other services. Contact management if you need clarification before opening utility accounts.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-58",
+        "label": "Text · Do I need window guards?",
+        "section": "Rental questions & answers",
+        "default": "Do I need window guards?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-59",
+        "label": "Answer · In covered NYC buildings, approved window guards are required whe",
+        "section": "Rental questions & answers",
+        "default": "In covered NYC buildings, approved window guards are required when a child age 10 or younger lives in the apartment. You may also request guards even if no child lives there.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-60",
+        "label": "Answer · Management arranges installation in eligible windows; fire-escape",
+        "section": "Rental questions & answers",
+        "default": "Management arranges installation in eligible windows; fire-escape windows have different requirements. Complete the annual window-guard notice and report household changes promptly. Any permitted charge depends on your apartment’s status; rent-stabilized or rent-controlled apartments have a maximum charge of $10 per guard. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-61",
+        "label": "Text · Do you allow pets?",
+        "section": "Rental questions & answers",
+        "default": "Do you allow pets?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-62",
+        "label": "Answer · Contact management before bringing a pet into the apartment to co",
+        "section": "Rental questions & answers",
+        "default": "Contact management before bringing a pet into the apartment to confirm the policy for your building and lease, including any size or insurance requirements. Residents must prevent excessive noise and unsafe behavior and clean up after their animals. Service and emotional-support animals are handled through the reasonable-accommodation process rather than ordinary pet restrictions. Contact management to request an accommodation. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-63",
+        "label": "Text · Where should I dispose of garbage?",
+        "section": "Rental questions & answers",
+        "default": "Where should I dispose of garbage?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-64",
+        "label": "Answer · Use your building’s designated disposal areas and labeled contain",
+        "section": "Rental questions & answers",
+        "default": "Use your building’s designated disposal areas and labeled containers. Separate trash, recyclables and compostable material, including food scraps and food-soiled paper, according to NYC rules. Keep corridors and exits clear. Contact management before disposing of bulky items, electronics or hazardous materials. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-65",
+        "label": "Text · Can I renew my lease?",
+        "section": "Rental questions & answers",
+        "default": "Can I renew my lease?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-66",
+        "label": "Answer · Contact management about renewal options before your lease expire",
+        "section": "Rental questions & answers",
+        "default": "Contact management about renewal options before your lease expires. Renewal rights and notice requirements depend on your apartment’s status and applicable law.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-67",
+        "label": "Answer · For NYC rent-stabilized apartments, renewal offers generally must",
+        "section": "Rental questions & answers",
+        "default": "For NYC rent-stabilized apartments, renewal offers generally must be delivered 90–150 days before expiration, with 60 days to respond. Other apartments may have protections under Good Cause Eviction and applicable notice rules. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-68",
+        "label": "Answer · If you plan to move, give written notice consistent with your lea",
+        "section": "Rental questions & answers",
+        "default": "If you plan to move, give written notice consistent with your lease and applicable law. Management will coordinate inspections and reasonable access for showings, with appropriate notice.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-69",
+        "label": "Text · Can I end my lease early?",
+        "section": "Rental questions & answers",
+        "default": "Can I end my lease early?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-70",
+        "label": "Answer · Contact management as soon as possible to discuss your circumstan",
+        "section": "Rental questions & answers",
+        "default": "Contact management as soon as possible to discuss your circumstances and available options. Moving out does not automatically end your lease obligations, but lawful early-termination rights may apply. New York law also requires residential landlords to take reasonable, good-faith steps to re-rent an apartment and reduce losses. Obtain any agreed release in writing. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-71",
+        "label": "Text · When will my security deposit be returned?",
+        "section": "Rental questions & answers",
+        "default": "When will my security deposit be returned?",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-72",
+        "label": "Answer · Provide your forwarding address and return all keys when you move",
+        "section": "Rental questions & answers",
+        "default": "Provide your forwarding address and return all keys when you move out. Deposits are subject only to lawful deductions, such as unpaid rent or damage beyond ordinary wear and tear.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-73",
+        "label": "Answer · For apartments that are not rent-regulated, the remaining deposit",
+        "section": "Rental questions & answers",
+        "default": "For apartments that are not rent-regulated, the remaining deposit and any itemized deductions generally must be provided within 14 days after you vacate. Rent-regulated apartments follow different return requirements. Ask management about your applicable deadline and any pre-move-out inspection rights. Do not treat the deposit as your last month’s rent without a written agreement. ",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-74",
+        "label": "Text · Rental inquiry received",
+        "section": "Supporting text and form labels",
+        "default": "Rental inquiry received",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-75",
+        "label": "Text · Teams Management has your inquiry and will follow up about the ap",
+        "section": "Supporting text and form labels",
+        "default": "Teams Management has your inquiry and will follow up about the appropriate leasing or broker next step. This is not a rental application or an availability confirmation.",
+        "maxLength": 3000
+      },
+      {
+        "key": "rent-with-us.text-76",
+        "label": "Text · Reference:",
+        "section": "Supporting text and form labels",
+        "default": "Reference: ",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-77",
+        "label": "Text · Send another inquiry",
+        "section": "Supporting text and form labels",
+        "default": "Send another inquiry",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-78",
+        "label": "Text · Name",
+        "section": "Supporting text and form labels",
+        "default": "Name ",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-79",
+        "label": "Text · Email",
+        "section": "Supporting text and form labels",
+        "default": "Email ",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-80",
+        "label": "Text · Phone",
+        "section": "Supporting text and form labels",
+        "default": "Phone ",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-81",
+        "label": "Text · Property or address of interest",
+        "section": "Supporting text and form labels",
+        "default": "Property or address of interest ",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-82",
+        "label": "Text · How can we help?",
+        "section": "Supporting text and form labels",
+        "default": "How can we help? ",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-83",
+        "label": "Text · Website",
+        "section": "Supporting text and form labels",
+        "default": "Website",
+        "maxLength": 250
+      },
+      {
+        "key": "rent-with-us.text-84",
+        "label": "Text · No application or sensitive documents are collected here. Teams w",
+        "section": "Supporting text and form labels",
+        "default": "No application or sensitive documents are collected here. Teams will confirm availability and the next step, which may be handled by a broker.",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "tenant-services",
+    "name": "Tenant Services",
+    "path": "/tenant-services",
+    "fields": [
+      {
+        "key": "tenant-services.text-1",
+        "label": "Heading · Tenant Services",
+        "section": "Tenant Services",
+        "default": "Tenant Services",
+        "maxLength": 250
+      },
+      {
+        "key": "tenant-services.text-2",
+        "label": "Description · Support and useful information for the people who call our proper",
+        "section": "Tenant Services",
+        "default": "Support and useful information for the people who call our properties home.",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-3",
+        "label": "Heading · How can we help?",
+        "section": "How can we help?",
+        "default": "How can we help?",
+        "maxLength": 250
+      },
+      {
+        "key": "tenant-services.text-4",
+        "label": "Description · Choose the right way to reach us. For urgent property needs, cont",
+        "section": "How can we help?",
+        "default": "Choose the right way to reach us. For urgent property needs, continue using your established building-management or emergency contact method.",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-5",
+        "label": "Text · 01 / RESIDENT ACCESS",
+        "section": "How can we help?",
+        "default": "01 / RESIDENT ACCESS",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-6",
+        "label": "Heading · Your tenant account",
+        "section": "How can we help?",
+        "default": "Your tenant account",
+        "maxLength": 250
+      },
+      {
+        "key": "tenant-services.text-7",
+        "label": "Description · Sign in to access your available resident services.",
+        "section": "How can we help?",
+        "default": "Sign in to access your available resident services.",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-8",
+        "label": "Button / link label · Tenant Login",
+        "section": "How can we help?",
+        "default": "Tenant Login ",
+        "maxLength": 120
+      },
+      {
+        "key": "tenant-services.text-9",
+        "label": "Text · 02 / GENERAL QUESTIONS",
+        "section": "How can we help?",
+        "default": "02 / GENERAL QUESTIONS",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-10",
+        "label": "Heading · Contact the team",
+        "section": "How can we help?",
+        "default": "Contact the team",
+        "maxLength": 250
+      },
+      {
+        "key": "tenant-services.text-11",
+        "label": "Description · Get in touch directly for general questions or guidance.",
+        "section": "How can we help?",
+        "default": "Get in touch directly for general questions or guidance.",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-12",
+        "label": "Button / link label · More contact information",
+        "section": "How can we help?",
+        "default": "More contact information ",
+        "maxLength": 120
+      },
+      {
+        "key": "tenant-services.text-13",
+        "label": "Description · Tenant Portal access is for authorized tenants only. Keep sign-in",
+        "section": "How can we help?",
+        "default": "Tenant Portal access is for authorized tenants only. Keep sign-in codes private and access only records assigned to you. Teams may suspend access if an account is misused or security is at risk.",
+        "maxLength": 3000
+      },
+      {
+        "key": "tenant-services.text-14",
+        "label": "Description · For emergencies involving immediate danger to life or property, c",
+        "section": "How can we help?",
+        "default": "For emergencies involving immediate danger to life or property, call 911 or the appropriate emergency service. Do not rely on the Tenant Portal for emergency response.",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "services",
+    "name": "Services",
+    "path": "/services",
+    "fields": [
+      {
+        "key": "services.text-1",
+        "label": "Heading · Services",
+        "section": "Services",
+        "default": "Services",
+        "maxLength": 250
+      },
+      {
+        "key": "services.text-2",
+        "label": "Description · Contact Teams Management for information specific to your propert",
+        "section": "Services",
+        "default": "Contact Teams Management for information specific to your property.",
+        "maxLength": 3000
+      },
+      {
+        "key": "services.text-3",
+        "label": "Heading · Support that starts with your property",
+        "section": "Support that starts with your property",
+        "default": "Support that starts with your property",
+        "maxLength": 250
+      },
+      {
+        "key": "services.text-4",
+        "label": "Description · Every property has its own needs and arrangements. Tell us which ",
+        "section": "Support that starts with your property",
+        "default": "Every property has its own needs and arrangements. Tell us which address you are asking about, and we can point you toward the information and contact most relevant to you.",
+        "maxLength": 3000
+      },
+      {
+        "key": "services.text-5",
+        "label": "Button / link label · Contact Teams Management",
+        "section": "Support that starts with your property",
+        "default": "Contact Teams Management",
+        "maxLength": 120
+      }
+    ]
+  },
+  {
+    "id": "contact",
+    "name": "Contact",
+    "path": "/contact",
+    "fields": [
+      {
+        "key": "contact.text-1",
+        "label": "Description · Contact Teams Management",
+        "section": "Page introduction / hero",
+        "default": "Contact Teams Management",
+        "maxLength": 3000
+      },
+      {
+        "key": "contact.text-2",
+        "label": "Heading · Let’s Start a Conversation.",
+        "section": "Let’s Start a Conversation.",
+        "default": "Let’s Start a Conversation.",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-3",
+        "label": "Description · Whether you’re looking for a home, exploring a business opportuni",
+        "section": "Let’s Start a Conversation.",
+        "default": "Whether you’re looking for a home, exploring a business opportunity, or have a question about one of our properties, we’re here to connect.",
+        "maxLength": 3000
+      },
+      {
+        "key": "contact.text-4",
+        "label": "Heading · Contact information",
+        "section": "Contact information",
+        "default": "Contact information",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-5",
+        "label": "Heading · How can we help?",
+        "section": "How can we help?",
+        "default": "How can we help?",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-6",
+        "label": "Description · Find the right starting point for your question.",
+        "section": "How can we help?",
+        "default": "Find the right starting point for your question.",
+        "maxLength": 3000
+      },
+      {
+        "key": "contact.text-7",
+        "label": "Topic · General",
+        "section": "Supporting text and form labels",
+        "default": "General",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-8",
+        "label": "Topic · Questions about Teams Management.",
+        "section": "Supporting text and form labels",
+        "default": "Questions about Teams Management.",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-9",
+        "label": "Topic · Property Inquiry",
+        "section": "Supporting text and form labels",
+        "default": "Property Inquiry",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-10",
+        "label": "Topic · Ask about a specific published property or address.",
+        "section": "Supporting text and form labels",
+        "default": "Ask about a specific published property or address.",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-11",
+        "label": "Topic · Rent With Us",
+        "section": "Supporting text and form labels",
+        "default": "Rent With Us",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-12",
+        "label": "Topic · Prospective renter questions.",
+        "section": "Supporting text and form labels",
+        "default": "Prospective renter questions.",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-13",
+        "label": "Topic · Owner/Business",
+        "section": "Supporting text and form labels",
+        "default": "Owner/Business",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-14",
+        "label": "Topic · Company and business inquiries.",
+        "section": "Supporting text and form labels",
+        "default": "Company and business inquiries.",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-15",
+        "label": "Topic · Tenant Services",
+        "section": "Supporting text and form labels",
+        "default": "Tenant Services",
+        "maxLength": 250
+      },
+      {
+        "key": "contact.text-16",
+        "label": "Topic · Current resident questions and guidance.",
+        "section": "Supporting text and form labels",
+        "default": "Current resident questions and guidance.",
+        "maxLength": 250
+      }
+    ]
+  },
+  {
+    "id": "gallery",
+    "name": "Gallery",
+    "path": "/gallery",
+    "fields": [
+      {
+        "key": "gallery.text-1",
+        "label": "Description · The portfolio in view",
+        "section": "Page introduction / hero",
+        "default": "The portfolio in view",
+        "maxLength": 3000
+      },
+      {
+        "key": "gallery.text-2",
+        "label": "Heading · Gallery",
+        "section": "Gallery",
+        "default": "Gallery",
+        "maxLength": 250
+      },
+      {
+        "key": "gallery.text-3",
+        "label": "Description · Explore the places that shape our portfolio.",
+        "section": "Gallery",
+        "default": "Explore the places that shape our portfolio.",
+        "maxLength": 3000
+      },
+      {
+        "key": "gallery.text-4",
+        "label": "Heading · Explore the portfolio",
+        "section": "Explore the portfolio",
+        "default": "Explore the portfolio",
+        "maxLength": 250
+      },
+      {
+        "key": "gallery.text-5",
+        "label": "Description · Browse our published properties and discover their place in New Y",
+        "section": "Explore the portfolio",
+        "default": "Browse our published properties and discover their place in New York.",
+        "maxLength": 3000
+      },
+      {
+        "key": "gallery.text-6",
+        "label": "Button / link label · View properties",
+        "section": "Explore the portfolio",
+        "default": "View properties",
+        "maxLength": 120
+      }
+    ]
+  },
+  {
+    "id": "privacy-policy",
+    "name": "Privacy Policy",
+    "path": "/privacy-policy",
+    "fields": [
+      {
+        "key": "privacy-policy.page-title",
+        "label": "Page heading",
+        "section": "Page introduction / hero",
+        "default": "Privacy Policy",
+        "maxLength": 200
+      },
+      {
+        "key": "privacy-policy.text-1",
+        "label": "Heading · What we receive",
+        "section": "What we receive",
+        "default": "What we receive",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-2",
+        "label": "Description · When you contact us or inquire about a property, we receive the d",
+        "section": "What we receive",
+        "default": "When you contact us or inquire about a property, we receive the details you provide, such as your name, email address, phone number, property of interest, and message. If you use an authorized tenant or administrator account, we also process your account email, sign-in activity, assigned property or unit, and information you submit through that account. Tenant maintenance requests may include descriptions of an issue and a preferred contact method.",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-3",
+        "label": "Heading · How we use it",
+        "section": "How we use it",
+        "default": "How we use it",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-4",
+        "label": "Description · We use information to answer inquiries, manage property and tenan",
+        "section": "How we use it",
+        "default": "We use information to answer inquiries, manage property and tenant services, route maintenance requests, administer accounts, and operate and protect the website. We may also use it to meet applicable recordkeeping or legal obligations.",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-5",
+        "label": "Heading · Website and account information",
+        "section": "Website and account information",
+        "default": "Website and account information",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-6",
+        "label": "Description · Cloudflare hosts this website and its application database. Its i",
+        "section": "Website and account information",
+        "default": "Cloudflare hosts this website and its application database. Its infrastructure may process technical information such as IP address, browser details, and request logs for delivery, troubleshooting, and security. The site uses functional cookies for signed-in sessions and to manage the display of featured properties during a visit. Sign-in codes and session records support authorized access.",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-7",
+        "label": "Heading · Email and service providers",
+        "section": "Email and service providers",
+        "default": "Email and service providers",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-8",
+        "label": "Description · Messages sent to our published email address may be handled throu",
+        "section": "Email and service providers",
+        "default": "Messages sent to our published email address may be handled through Google Workspace. When configured, site-generated messages may be delivered through Gmail. Service providers that support hosting, email, and website operations may process information on our behalf for those purposes. We may also disclose information when required by law.",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-9",
+        "label": "Heading · Security and retention",
+        "section": "Security and retention",
+        "default": "Security and retention",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-10",
+        "label": "Description · We limit account areas to authorized users and use access control",
+        "section": "Security and retention",
+        "default": "We limit account areas to authorized users and use access controls and session protections. No online service can guarantee absolute security. We keep information for as long as reasonably needed for the purposes above, subject to applicable legal, operational, and recordkeeping needs. Retention can vary by type of record; this site does not promise automatic deletion on a fixed schedule.",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-11",
+        "label": "Heading · External sites",
+        "section": "External sites",
+        "default": "External sites",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-12",
+        "label": "Description · Restaurant, map, transit, public-data, and other external links t",
+        "section": "External sites",
+        "default": "Restaurant, map, transit, public-data, and other external links take you to services operated by third parties. Their content and privacy practices are governed by those services, not this policy.",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-13",
+        "label": "Heading · Questions and updates",
+        "section": "Questions and updates",
+        "default": "Questions and updates",
+        "maxLength": 250
+      },
+      {
+        "key": "privacy-policy.text-14",
+        "label": "Description · To ask about information you submitted or request a correction, c",
+        "section": "Questions and updates",
+        "default": "To ask about information you submitted or request a correction, contact ",
+        "maxLength": 3000
+      },
+      {
+        "key": "privacy-policy.text-15",
+        "label": "Description · . We may update this policy as our site and services change. The ",
+        "section": "Questions and updates",
+        "default": ". We may update this policy as our site and services change. The date above identifies this version.",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "terms-of-use",
+    "name": "Terms of Use",
+    "path": "/terms-of-use",
+    "fields": [
+      {
+        "key": "terms-of-use.page-title",
+        "label": "Page heading",
+        "section": "Page introduction / hero",
+        "default": "Terms of Use",
+        "maxLength": 200
+      },
+      {
+        "key": "terms-of-use.text-1",
+        "label": "Heading · About this website",
+        "section": "About this website",
+        "default": "About this website",
+        "maxLength": 250
+      },
+      {
+        "key": "terms-of-use.text-2",
+        "label": "Description · This site provides general information about Teams Management, it",
+        "section": "About this website",
+        "default": "This site provides general information about Teams Management, its properties, and its services. It is not a lease, an offer to rent, a brokerage agreement, legal advice, or a guarantee that any space is available. A property shown here may have no residential unit or retail space currently available. Any transaction is governed by its own signed documents.",
+        "maxLength": 3000
+      },
+      {
+        "key": "terms-of-use.text-3",
+        "label": "Heading · Confirm property details",
+        "section": "Confirm property details",
+        "default": "Confirm property details",
+        "maxLength": 250
+      },
+      {
+        "key": "terms-of-use.text-4",
+        "label": "Description · Descriptions, dimensions, amenities, photographs, maps, neighborh",
+        "section": "Confirm property details",
+        "default": "Descriptions, dimensions, amenities, photographs, maps, neighborhood information, and other details may change or contain errors. Please confirm information important to your decision directly with Teams Management and, where appropriate, through an independent inspection.",
+        "maxLength": 3000
+      },
+      {
+        "key": "terms-of-use.text-5",
+        "label": "Heading · Third-party information and links",
+        "section": "Third-party information and links",
+        "default": "Third-party information and links",
+        "maxLength": 250
+      },
+      {
+        "key": "terms-of-use.text-6",
+        "label": "Description · Maps, transit references, nearby businesses, restaurant informati",
+        "section": "Third-party information and links",
+        "default": "Maps, transit references, nearby businesses, restaurant information, and public datasets may come from others and can change. External websites are operated by third parties; Teams Management does not control their content, privacy practices, or availability.",
+        "maxLength": 3000
+      },
+      {
+        "key": "terms-of-use.text-7",
+        "label": "Heading · Use the site responsibly",
+        "section": "Use the site responsibly",
+        "default": "Use the site responsibly",
+        "maxLength": 250
+      },
+      {
+        "key": "terms-of-use.text-8",
+        "label": "Description · Do not attempt unauthorized access, interfere with the site, intr",
+        "section": "Use the site responsibly",
+        "default": "Do not attempt unauthorized access, interfere with the site, introduce malware, impersonate another person, misuse sign-in systems, or use the site to harm others. Access to tenant and administrator areas is limited to authorized users.",
+        "maxLength": 3000
+      },
+      {
+        "key": "terms-of-use.text-9",
+        "label": "Heading · Content and availability",
+        "section": "Content and availability",
+        "default": "Content and availability",
+        "maxLength": 250
+      },
+      {
+        "key": "terms-of-use.text-10",
+        "label": "Description · Teams Management and its licensors retain their respective rights",
+        "section": "Content and availability",
+        "default": "Teams Management and its licensors retain their respective rights in the branding, original copy, design, photography, and other media used here. Third-party maps, public datasets, restaurant materials, and licensed assets remain subject to their owners’ rights. The site may be changed, corrected, interrupted, or updated.",
+        "maxLength": 3000
+      },
+      {
+        "key": "terms-of-use.text-11",
+        "label": "Heading · Questions",
+        "section": "Questions",
+        "default": "Questions",
+        "maxLength": 250
+      },
+      {
+        "key": "terms-of-use.text-12",
+        "label": "Description · For questions about this site, contact",
+        "section": "Questions",
+        "default": "For questions about this site, contact ",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "accessibility",
+    "name": "Accessibility",
+    "path": "/accessibility",
+    "fields": [
+      {
+        "key": "accessibility.page-title",
+        "label": "Page heading",
+        "section": "Page introduction / hero",
+        "default": "Accessibility",
+        "maxLength": 200
+      },
+      {
+        "key": "accessibility.text-1",
+        "label": "Heading · Our approach",
+        "section": "Our approach",
+        "default": "Our approach",
+        "maxLength": 250
+      },
+      {
+        "key": "accessibility.text-2",
+        "label": "Description · Teams Management is working to provide an accessible digital expe",
+        "section": "Our approach",
+        "default": "Teams Management is working to provide an accessible digital experience. We aim to make the site usable with a keyboard, readable at different screen sizes, and understandable with assistive technology. We continue to review and improve content and functionality.",
+        "maxLength": 3000
+      },
+      {
+        "key": "accessibility.text-3",
+        "label": "Heading · Tell us about a barrier",
+        "section": "Tell us about a barrier",
+        "default": "Tell us about a barrier",
+        "maxLength": 250
+      },
+      {
+        "key": "accessibility.text-4",
+        "label": "Description · If you have difficulty using any part of this site or need inform",
+        "section": "Tell us about a barrier",
+        "default": "If you have difficulty using any part of this site or need information in another format, email ",
+        "maxLength": 3000
+      },
+      {
+        "key": "accessibility.text-5",
+        "label": "Description · or call",
+        "section": "Tell us about a barrier",
+        "default": " or call ",
+        "maxLength": 3000
+      },
+      {
+        "key": "accessibility.text-6",
+        "label": "Description · . Please tell us the page or feature involved and a way to reach ",
+        "section": "Tell us about a barrier",
+        "default": ". Please tell us the page or feature involved and a way to reach you. We will work with you to provide the information or service.",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "fair-housing",
+    "name": "Fair Housing & Equal Housing Opportunity",
+    "path": "/fair-housing",
+    "fields": [
+      {
+        "key": "fair-housing.page-title",
+        "label": "Page heading",
+        "section": "Page introduction / hero",
+        "default": "Fair Housing / Equal Housing Opportunity",
+        "maxLength": 200
+      },
+      {
+        "key": "fair-housing.text-1",
+        "label": "Heading · Equal housing opportunity",
+        "section": "Equal housing opportunity",
+        "default": "Equal housing opportunity",
+        "maxLength": 250
+      },
+      {
+        "key": "fair-housing.text-2",
+        "label": "Description · Teams Management is committed to equal housing opportunity and to",
+        "section": "Equal housing opportunity",
+        "default": "Teams Management is committed to equal housing opportunity and to complying with applicable federal, New York State, and New York City fair-housing requirements. We do not discriminate in housing because of a protected characteristic or a lawful source of income, including eligible housing assistance or vouchers.",
+        "maxLength": 3000
+      },
+      {
+        "key": "fair-housing.text-3",
+        "label": "Heading · Questions or accommodation requests",
+        "section": "Questions or accommodation requests",
+        "default": "Questions or accommodation requests",
+        "maxLength": 250
+      },
+      {
+        "key": "fair-housing.text-4",
+        "label": "Description · If you have a question about fair housing, need a reasonable acco",
+        "section": "Questions or accommodation requests",
+        "default": "If you have a question about fair housing, need a reasonable accommodation, or believe you experienced a barrier in our housing process, contact ",
+        "maxLength": 3000
+      },
+      {
+        "key": "fair-housing.text-5",
+        "label": "Description · . We will review your concern and respond through the appropriate",
+        "section": "Questions or accommodation requests",
+        "default": ". We will review your concern and respond through the appropriate process.",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "copyright",
+    "name": "Copyright",
+    "path": "/copyright",
+    "fields": [
+      {
+        "key": "copyright.page-title",
+        "label": "Page heading",
+        "section": "Page introduction / hero",
+        "default": "Copyright",
+        "maxLength": 200
+      },
+      {
+        "key": "copyright.text-1",
+        "label": "Heading · Website content",
+        "section": "Website content",
+        "default": "Website content",
+        "maxLength": 250
+      },
+      {
+        "key": "copyright.text-2",
+        "label": "Description · Copyright ©",
+        "section": "Website content",
+        "default": "Copyright © ",
+        "maxLength": 3000
+      },
+      {
+        "key": "copyright.text-3",
+        "label": "Description · Teams Management. Unless otherwise indicated, original text, desi",
+        "section": "Website content",
+        "default": " Teams Management. Unless otherwise indicated, original text, design, and other content created for this website are reserved by Teams Management. Property photographs and third-party materials may belong to their respective owners and are used with permission or under an applicable license.",
+        "maxLength": 3000
+      },
+      {
+        "key": "copyright.text-4",
+        "label": "Heading · Permitted use",
+        "section": "Permitted use",
+        "default": "Permitted use",
+        "maxLength": 250
+      },
+      {
+        "key": "copyright.text-5",
+        "label": "Description · You may view this website for personal, noncommercial purposes. P",
+        "section": "Permitted use",
+        "default": "You may view this website for personal, noncommercial purposes. Please request permission before reproducing, distributing, or adapting its content, except where permitted by law. Nothing on this page transfers rights in third-party content.",
+        "maxLength": 3000
+      },
+      {
+        "key": "copyright.text-6",
+        "label": "Heading · Copyright concerns",
+        "section": "Copyright concerns",
+        "default": "Copyright concerns",
+        "maxLength": 250
+      },
+      {
+        "key": "copyright.text-7",
+        "label": "Description · If you believe content on this website infringes your rights, ema",
+        "section": "Copyright concerns",
+        "default": "If you believe content on this website infringes your rights, email ",
+        "maxLength": 3000
+      },
+      {
+        "key": "copyright.text-8",
+        "label": "Description · with the page URL, identification of the work, your contact infor",
+        "section": "Copyright concerns",
+        "default": " with the page URL, identification of the work, your contact information, and an explanation of your concern so we can review it.",
+        "maxLength": 3000
+      }
+    ]
+  },
+  {
+    "id": "footer",
+    "name": "Footer & site-wide links",
+    "path": "/",
+    "fields": [
+      {
+        "key": "footer.text-1",
+        "label": "Description · Teams Management property portfolio in New York City.",
+        "section": "Website footer",
+        "default": "Teams Management property portfolio in New York City.",
+        "maxLength": 3000
+      },
+      {
+        "key": "footer.text-2",
+        "label": "Button / link label · Connect with our team ↗",
+        "section": "Website footer",
+        "default": "Connect with our team ↗",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-3",
+        "label": "Description · © 2026 Teams Management. All rights reserved.",
+        "section": "Website footer",
+        "default": "© 2026 Teams Management. All rights reserved.",
+        "maxLength": 3000
+      },
+      {
+        "key": "footer.text-4",
+        "label": "Heading · Explore",
+        "section": "Website footer",
+        "default": "Explore",
+        "maxLength": 250
+      },
+      {
+        "key": "footer.text-5",
+        "label": "Button / link label · Home",
+        "section": "Website footer",
+        "default": "Home",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-6",
+        "label": "Button / link label · Residences",
+        "section": "Website footer",
+        "default": "Residences",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-7",
+        "label": "Button / link label · Retail",
+        "section": "Website footer",
+        "default": "Retail",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-8",
+        "label": "Button / link label · Dining",
+        "section": "Website footer",
+        "default": "Dining",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-9",
+        "label": "Button / link label · Rent with Us",
+        "section": "Website footer",
+        "default": "Rent with Us",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-10",
+        "label": "Button / link label · About",
+        "section": "Website footer",
+        "default": "About",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-11",
+        "label": "Button / link label · Tenant Services",
+        "section": "Website footer",
+        "default": "Tenant Services",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-12",
+        "label": "Heading · Get in touch",
+        "section": "Website footer",
+        "default": "Get in touch",
+        "maxLength": 250
+      },
+      {
+        "key": "footer.text-13",
+        "label": "Button / link label · Privacy Policy",
+        "section": "Website footer",
+        "default": "Privacy Policy",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-14",
+        "label": "Button / link label · Terms of Use",
+        "section": "Website footer",
+        "default": "Terms of Use",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-15",
+        "label": "Button / link label · Accessibility",
+        "section": "Website footer",
+        "default": "Accessibility",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-16",
+        "label": "Button / link label · Fair Housing & Equal Housing Opportunity",
+        "section": "Website footer",
+        "default": "Fair Housing & Equal Housing Opportunity",
+        "maxLength": 120
+      },
+      {
+        "key": "footer.text-17",
+        "label": "Button / link label · Copyright",
+        "section": "Website footer",
+        "default": "Copyright",
+        "maxLength": 120
+      }
+    ]
+  },
+  {
+    "id": "header",
+    "name": "Header & navigation",
+    "path": "/",
+    "fields": [
+      {
+        "key": "header.text-1",
+        "label": "Text · Residences",
+        "section": "Website navigation",
+        "default": "Residences",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-2",
+        "label": "Text · Retail",
+        "section": "Website navigation",
+        "default": "Retail",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-3",
+        "label": "Text · Dining",
+        "section": "Website navigation",
+        "default": "Dining",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-4",
+        "label": "Text · Rent with Us",
+        "section": "Website navigation",
+        "default": "Rent with Us",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-5",
+        "label": "Text · About",
+        "section": "Website navigation",
+        "default": "About",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-6",
+        "label": "Text · Contact",
+        "section": "Website navigation",
+        "default": "Contact",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-7",
+        "label": "Text · Teams Management",
+        "section": "Website navigation",
+        "default": "Teams Management",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-8",
+        "label": "Text · Tenant Services",
+        "section": "Website navigation",
+        "default": "Tenant Services",
+        "maxLength": 250
+      },
+      {
+        "key": "header.text-9",
+        "label": "Text · Tenant Services",
+        "section": "Website navigation",
+        "default": "Tenant Services",
+        "maxLength": 250
+      }
+    ]
+  }
+]

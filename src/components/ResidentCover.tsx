@@ -1,0 +1,4 @@
+'use client';
+import {PublishedPhoto} from '@/components/published-photo';
+import {useEffect,useRef,useState} from 'react';
+export function ResidentCover({src,alt,building,apartment}:{src:string;alt:string;building:string;apartment:string}){const [failed,setFailed]=useState(false),image=useRef<HTMLImageElement>(null);useEffect(()=>{if(image.current?.complete&&image.current.naturalWidth===0)setFailed(true);},[src]);if(failed)return <div className="resident-home-mark" aria-hidden="true"><div/><span>YOUR HOME.<br/>OUR COMMITMENT.</span></div>;return <figure className="resident-building-cover"><PublishedPhoto ref={image} src={src} alt={alt} fetchPriority="high" onError={()=>setFailed(true)}/><figcaption><span>Your place in the city</span><strong>{building}</strong><span>Apartment {apartment}</span></figcaption></figure>;}

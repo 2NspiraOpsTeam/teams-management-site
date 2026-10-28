@@ -1,56 +1,61 @@
 'use client';
+import {PublishedPhoto} from '@/components/published-photo';
+import { WebsiteText } from '@/components/website-text';
+import { PublicPageEffects } from '@/components/public-page-effects';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
   const navItems = [
-    { href: '/about', label: 'About Us' },
-    { href: '/properties', label: 'Properties' },
-    { href: '/retail', label: 'Retail' },
-    { href: '/rent-with-us', label: 'Rent with Us' },
-    { href: '/gallery', label: 'Gallery' },
-    { href: '/contact', label: 'Contact' },
-    { href: '/tenant-services', label: 'Tenant Services' },
+    { href: '/properties', label: <WebsiteText contentKey="header.text-1">Residences</WebsiteText> },
+    { href: '/retail', label: <WebsiteText contentKey="header.text-2">Retail</WebsiteText> },
+    { href: '/dining', label: <WebsiteText contentKey="header.text-3">Dining</WebsiteText> },
+    { href: '/rent-with-us', label: <WebsiteText contentKey="header.text-4">Rent with Us</WebsiteText> },
+    { href: '/about', label: <WebsiteText contentKey="header.text-5">About</WebsiteText> },
+    { href: '/in-the-news', label: 'In the News' },
+    { href: '/contact', label: <WebsiteText contentKey="header.text-6">Contact</WebsiteText> },
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-teams-charcoal/95 backdrop-blur-md border-b border-white/10 text-white transition-colors">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-        <div className="flex items-center justify-between min-h-20 gap-4">
-          <Link href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">
-            <img src="/brand/teams-management-logo.png" alt="" width="60" height="60" className="h-14 w-14 object-contain" />
-            <span className="hidden sm:block text-lg font-serif font-semibold text-white leading-tight">
-              Teams Management
-            </span>
+    <header className="public-site-header sticky top-0 z-50 border-b border-[#E8E5DF] bg-white text-[#252525]">
+      <PublicPageEffects />
+      <nav onKeyDown={event => { if (event.key === 'Escape' && menuOpen) { setMenuOpen(false); menuButton.current?.focus(); } }} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+        <div className="flex items-center justify-between h-[88px] gap-4">
+          <Link prefetch={false} href="/" className="flex items-center gap-3 shrink-0 rounded-sm" onClick={() => setMenuOpen(false)} aria-label="Teams Management home">
+            <PublishedPhoto src="/brand/teams-management-logo.png" alt="" width="72" height="72" className="h-[72px] w-[72px] object-contain" />
+            <span className="hidden sm:block text-lg font-serif font-semibold text-[#252525] leading-tight">
+              <WebsiteText contentKey="header.text-7">Teams Management</WebsiteText></span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
             {navItems.map((item) => (
-              <Link
+              <Link prefetch={false}
                 key={item.href}
                 href={item.href}
                 aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined}
-                className={`text-sm font-medium border-b-2 py-2 transition-colors ${
+                className={`text-sm font-medium border-b py-2 transition-colors ${
                   pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/'))
-                    ? 'text-white border-teams-gold'
-                    : 'text-white/80 border-transparent hover:text-white hover:border-slate-400'
+                    ? 'text-[#252525] border-[#B49355]'
+                    : 'text-[#252525] border-transparent hover:text-[#8b681f]'
                 }`}
               >
                 {item.label}
               </Link>
             ))}
+            <Link prefetch={false} href="/tenant-services" aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-[5px] bg-teams-gold px-4 py-3 text-sm font-semibold text-teams-ink transition-colors hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
           </div>
 
           {/* Mobile menu button */}
-          <button 
+          <button ref={menuButton}
             type="button"
-            className="xl:hidden p-2 text-white hover:text-slate-200"
+            className="xl:hidden flex h-11 w-11 items-center justify-center rounded text-[#252525] hover:text-[#8b681f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
@@ -61,8 +66,9 @@ export function Header() {
             </svg>
           </button>
         </div>
-        {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-slate-700 py-3 flex flex-col gap-1">
-          {navItems.map(item => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className={`rounded px-3 py-3 text-white hover:bg-white/10 aria-[current=page]:border-l-2 aria-[current=page]:border-teams-gold`}>{item.label}</Link>)}
+        {menuOpen && <div id="mobile-navigation" className="xl:hidden border-t border-[#E8E5DF] py-3 flex flex-col gap-1">
+          {navItems.map(item => <Link prefetch={false} key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href || (item.href === '/properties' && pathname.startsWith('/properties/')) ? 'page' : undefined} className="border-l-2 border-transparent px-3 py-3 text-[#252525] hover:text-[#8b681f] aria-[current=page]:border-[#B49355]">{item.label}</Link>)}
+          <Link prefetch={false} href="/tenant-services" onClick={() => setMenuOpen(false)} aria-current={pathname === '/tenant-services' ? 'page' : undefined} className="mt-2 inline-flex min-h-11 items-center justify-center self-start rounded-[5px] bg-teams-gold px-5 py-3 font-semibold text-teams-ink hover:bg-teams-gold-highlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B49355]">Tenant Services</Link>
         </div>}
       </nav>
     </header>

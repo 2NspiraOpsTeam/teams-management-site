@@ -1,0 +1,12 @@
+import {it,expect} from 'vitest';
+import {readiness,appendEvent,type ReviewBundle,type ReviewDraft} from '../src/lib/operations/import-review';
+import {proposeContactChanges} from '../src/lib/operations/contact-sync-review';
+const row={record_id:'r',property_map_key:'m',tenant_name_proposed:'Synthetic Tenant',unit_proposals:[{id:'u',building_id:'p'}],flags:[],existing_assignments:[],missing:['email']};
+const b={properties:[{id:'p',name:'Synthetic Property'}],aliases:[{property_map_key:'m'}],records:[row],repeat_groups:[],bundle_sha256:'hash'} as unknown as ReviewBundle;
+const d:ReviewDraft={format:'teams-review-draft-1',bundle_sha256:'hash',events:[]};
+const approved=appendEvent(b,d,'alias:m',{outcome:'mapping_approved',property_id:'p',reviewer:'QA',note:'Verified synthetic inventory'});
+it('requires staff-verified mapping but not email; never approves a candidate',()=>{expect(readiness(b,d,row).ready).toBe(false);expect(readiness(b,approved,row).label).toBe('Ready for Review');expect(readiness(b,approved,{...row,unit_proposals:[]}).ready).toBe(false);expect(readiness(b,approved,{...row,tenant_name_proposed:''}).ready).toBe(false);});
+it('holds repeats, conflicting labels, existing assignments and staff holds',()=>{for(const bundle of [{...b,repeat_groups:[{record_ids:['r']}]},{...b,label_conflicts:[['r']]}])expect(readiness(bundle,approved,row).ready).toBe(false);expect(readiness(b,approved,{...row,existing_assignments:[{id:'a'}]}).ready).toBe(false);const held=appendEvent(b,approved,'record:r',{outcome:'hold',property_id:'',reviewer:'QA',note:'Hold'});expect(readiness(b,held,row).ready).toBe(false);});
+it('does not treat a unit in another building or ambiguous source as ready',()=>{expect(readiness(b,approved,{...row,unit_proposals:[{building_id:'other'}]}).ready).toBe(false);expect(readiness(b,approved,{...row,flags:['property_separation_required']}).ready).toBe(false);});
+const source={sourceVerified:true,sourceAuthorityApproved:true,propertyMappingsApproved:true,approvedFields:['email'] as ('email')[],driveId:'d',itemId:'i'};
+it('gates source proposals and never includes login or assignment changes',()=>{expect(()=>proposeContactChanges({...source,sourceAuthorityApproved:false},{},{email:'qa@example.test'})).toThrow();expect(proposeContactChanges(source,{email:'old'},{email:'new',login:'activate',unit:'u'})).toEqual([{field:'email',before:'old',proposed:'new',status:'review_required'}]);expect(()=>proposeContactChanges({...source,approvedFields:['login'] as any},{},{})).toThrow();});

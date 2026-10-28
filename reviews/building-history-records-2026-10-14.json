@@ -1,0 +1,266 @@
+{
+  "source": "NYC Planning PLUTO",
+  "checkedDate": "2026-10-14",
+  "records": [
+    {
+      "slug": "42-70-156th-st-flushing",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D4053860020&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "42-70 156 STREET",
+          "bbl": "4053860020.00000000",
+          "yearbuilt": "1926",
+          "yearalter1": "0",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "4.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "166-e-118th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1016450044&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "166 EAST 118 STREET",
+          "bbl": "1016450044.00000000",
+          "yearbuilt": "1910",
+          "yearalter1": "1988",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "6.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "170-e-118th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1016450041&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "170 EAST 118 STREET",
+          "bbl": "1016450041.00000000",
+          "yearbuilt": "1910",
+          "yearalter1": "1985",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "6.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "71-e-110th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1016160030&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "71 EAST 110 STREET",
+          "bbl": "1016160030.00000000",
+          "yearbuilt": "2014",
+          "yearalter1": "0",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "7.0000000",
+          "bldgclass": "D3"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "173-e-91st-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1015200034&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "173 EAST 91 STREET",
+          "bbl": "1015200034.00000000",
+          "yearbuilt": "1910",
+          "yearalter1": "1996",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "1626-2nd-ave",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1015470002&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "1626 2 AVENUE",
+          "bbl": "1015470002.00000000",
+          "yearbuilt": "1920",
+          "yearalter1": "2007",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "225-e-83rd-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1015290014&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "225 EAST 83 STREET",
+          "bbl": "1015290014.00000000",
+          "yearbuilt": "1925",
+          "yearalter1": "0",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "171-e-74th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1014090031&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "171 EAST 74 STREET",
+          "bbl": "1014090031.00000000",
+          "yearbuilt": "1910",
+          "yearalter1": "1989",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "1374-1st-ave",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1014680003&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "1374 1 AVENUE",
+          "bbl": "1014680003.00000000",
+          "yearbuilt": "1910",
+          "yearalter1": "1982",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "1365-1st-ave",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1014480025&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "1365 1 AVENUE",
+          "bbl": "1014480025.00000000",
+          "yearbuilt": "1910",
+          "yearalter1": "1984",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "4.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "41-w-46th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1012620018&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "41 WEST 46 STREET",
+          "bbl": "1012620018.00000000",
+          "yearbuilt": "1920",
+          "yearalter1": "2000",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "307-w-39th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1007630031&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "307 WEST 39 STREET",
+          "bbl": "1007630031.00000000",
+          "yearbuilt": "1920",
+          "yearalter1": "0",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "235-w-18th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=bbl%3D1007680017&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "235 WEST 18 STREET",
+          "bbl": "1007680017.00000000",
+          "yearbuilt": "1901",
+          "yearalter1": "0",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "5.0000000",
+          "bldgclass": "C7"
+        }
+      ],
+      "assessment": "Exact address and previously verified BBL, single recorded building. Alteration year is not a last-renovation claim."
+    },
+    {
+      "slug": "349-w-46th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=address%3D%27349+WEST+46+STREET%27&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [
+        {
+          "address": "349 WEST 46 STREET",
+          "bbl": "1010370010.00000000",
+          "yearbuilt": "1920",
+          "yearalter1": "1985",
+          "yearalter2": "0",
+          "numbldgs": "1",
+          "numfloors": "3.0000000",
+          "bldgclass": "C5"
+        }
+      ],
+      "assessment": "Omitted: 349 and 351 share BBL 1010370010 but have distinct DOB BINs 1025047 and 1091066; parcel dates do not establish separate building dates."
+    },
+    {
+      "slug": "351-w-46th-st",
+      "url": "https://data.cityofnewyork.us/resource/64uk-42ks.json?%24where=address%3D%27351+WEST+46+STREET%27&%24select=address%2Cbbl%2Cyearbuilt%2Cyearalter1%2Cyearalter2%2Cnumbldgs%2Cnumfloors%2Cbldgclass&%24limit=10",
+      "rows": [],
+      "assessment": "Omitted: 349 and 351 share BBL 1010370010 but have distinct DOB BINs 1025047 and 1091066; parcel dates do not establish separate building dates."
+    }
+  ],
+  "supplementary": [
+    {
+      "slug": "609-golden-gate-pt-unit-402",
+      "url": "https://www.sarasotapropertyappraiser.gov/propertysearch/parcel/details/2010098006",
+      "excerpt": "Situs 609 GOLDEN GATE PT #402; UNIT 402, THE PEARL; Year Built 2019; Effective Year Built 2019.",
+      "assessment": "Official exact unit parcel matched; effective year is not a renovation completion date."
+    },
+    {
+      "slug": "3425-east-tremont-bronx",
+      "assessment": "DOB maps to shared parcel 2054190114 / 2900 Bruckner Boulevard. No building-specific construction/renovation date established; omitted."
+    },
+    {
+      "slug": "61-gold-st",
+      "assessment": "Planned development; parcel-wide historic date cannot establish construction date of planned residences. Omitted."
+    }
+  ]
+}

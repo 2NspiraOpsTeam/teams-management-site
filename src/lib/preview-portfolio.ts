@@ -1,3 +1,4 @@
+import { approvedPropertyHighlights } from './approved-property-highlights';
 import type { BuildingPublic } from './database.types';
 
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
@@ -49,10 +50,78 @@ export const previewPortfolio: BuildingPublic[] = confirmedAddresses.map(([slug,
   name: street,
   slug,
   address: { street, city, state: 'NY', zip: '' },
-  description_public: null,
+  description_public: approvedPropertyHighlights[slug] ?? null,
   amenities_public: [],
   gallery: [],
   publication_state: 'draft',
   created_at: '',
   updated_at: '',
 }));
+
+
+// Building-level Sarasota portfolio entry; do not infer a management scope from its address.
+previewPortfolio.push({
+  id: 'preview-609-golden-gate-pt',
+  name: '609 Golden Gate Pt',
+  slug: '609-golden-gate-pt',
+  address: { street: '609 Golden Gate Point', city: 'Sarasota', state: 'FL', zip: '34236' },
+  description_public: 'The Pearl is a condominium building at 609 Golden Gate Point in Sarasota, Florida, near the waterfront and downtown Sarasota.',
+  amenities_public: [
+    { id: 'sarasota-pool', name: 'Building pool and spa', category: 'wellness' },
+  ],
+  gallery: [],
+  publication_state: 'draft',
+  created_at: '',
+  updated_at: '',
+});
+
+// Owner-supplied historical listing photos. Do not imply that furnishings or access are current.
+export const sarasotaBuildingPhotos = [
+  { src: '/preview-properties/609-golden-gate-pt/building-waterfront.webp', alt: 'Aerial view of The Pearl and nearby waterfront', caption: 'The Pearl and surroundings' },
+  { src: '/preview-properties/609-golden-gate-pt/living-room.webp', alt: 'Living area opening onto a terrace', caption: 'Living area' },
+  { src: '/preview-properties/609-golden-gate-pt/bathroom.webp', alt: 'Bathroom with double vanity and glass shower', caption: 'Bathroom' },
+  { src: '/preview-properties/609-golden-gate-pt/shower.webp', alt: 'Glass-enclosed shower and bathroom', caption: 'Shower' },
+  { src: '/preview-properties/609-golden-gate-pt/bathroom-tub.webp', alt: 'Bathroom with double vanity and freestanding tub', caption: 'Bathroom and tub' },
+  { src: '/preview-properties/609-golden-gate-pt/bedroom.webp', alt: 'Bedroom with tall windows', caption: 'Bedroom' },
+  { src: '/preview-properties/609-golden-gate-pt/pearl-entrance.webp', alt: 'The Pearl condominium entrance', caption: 'Building entrance' },
+  { src: '/preview-properties/609-golden-gate-pt/kitchen-living.webp', alt: 'Open kitchen and living area', caption: 'Kitchen and living area' },
+  { src: '/preview-properties/609-golden-gate-pt/kitchen-dining.webp', alt: 'Kitchen island, cooktop, and dining area', caption: 'Kitchen and dining area' },
+  { src: '/preview-properties/609-golden-gate-pt/kitchen-to-living.webp', alt: 'View from the kitchen toward the living area and terrace', caption: 'Open living area' },
+  { src: '/preview-properties/609-golden-gate-pt/interior-terrace.webp', alt: 'Interior room beside a terrace', caption: 'Interior and terrace' },
+  { src: '/preview-properties/609-golden-gate-pt/interior-reverse.webp', alt: 'Interior room and adjoining bathroom', caption: 'Interior room' },
+  { src: '/preview-properties/609-golden-gate-pt/building-pool.webp', alt: 'Aerial view of The Pearl and pool area', caption: 'The Pearl and pool area' },
+  { src: '/preview-properties/609-golden-gate-pt/pool.webp', alt: 'The Pearl condominium pool', caption: 'Building pool' },
+  { src: '/preview-properties/609-golden-gate-pt/pool-deck.webp', alt: 'The Pearl condominium pool deck', caption: 'Pool deck' },
+  { src: '/preview-properties/609-golden-gate-pt/waterfront-view.webp', alt: 'Waterfront near Golden Gate Point', caption: 'Golden Gate Point waterfront' },
+  { src: '/preview-properties/609-golden-gate-pt/terrace-view.webp', alt: 'Terrace overlooking the waterfront', caption: 'Terrace' },
+  { src: '/preview-properties/609-golden-gate-pt/laundry.webp', alt: 'Laundry room with washer and dryer', caption: 'Laundry room' },
+  { src: '/preview-properties/609-golden-gate-pt/office.webp', alt: 'Office area', caption: 'Office' },
+];
+
+// Owner-supplied Apartment 1B images. Keep unit imagery scoped to this preview detail page.
+export const east110UnitPhotos = [
+  { src: '/preview-properties/71-e-110th-st/living-wide.jpg', alt: 'Wide view of the living area in Apartment 1B', caption: 'Apartment 1B · Living area' },
+  { src: '/preview-properties/71-e-110th-st/kitchen.jpg', alt: 'Kitchen with wood cabinets and stainless-steel appliances in Apartment 1B', caption: 'Apartment 1B · Kitchen' },
+  { src: '/preview-properties/71-e-110th-st/bedroom-one.jpg', alt: 'Bedroom with a window and wood flooring in Apartment 1B', caption: 'Apartment 1B · Bedroom' },
+  { src: '/preview-properties/71-e-110th-st/bedroom-two.jpg', alt: 'Second bedroom view with mirrored closet doors in Apartment 1B', caption: 'Apartment 1B · Bedroom' },
+  { src: '/preview-properties/71-e-110th-st/bathroom.jpg', alt: 'Bathroom with tub, vanity, and laundry appliance in Apartment 1B', caption: 'Apartment 1B · Bathroom' },
+];
+
+// Owner-supplied Penthouse A images; never present its terrace as shared grounds.
+export const east110PenthousePhotos = [
+  { src: '/preview-properties/71-e-110th-st/penthouse-living.jpg', alt: 'Living area and city-facing windows in Penthouse A', caption: 'Penthouse A · Living area' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-kitchen.jpg', alt: 'Open kitchen and adjoining living area in Penthouse A', caption: 'Penthouse A · Kitchen and living area' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-bedroom.jpg', alt: 'Room with mirrored closet and terrace door in Penthouse A', caption: 'Penthouse A · Interior room' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-bathroom.jpg', alt: 'Bathroom with tub and laundry appliance in Penthouse A', caption: 'Penthouse A · Bathroom' },
+  { src: '/preview-properties/71-e-110th-st/penthouse-terrace.jpg', alt: 'Private terrace photographed from Penthouse A', caption: 'Penthouse A · Terrace' },
+];
+
+// County parcel 2010098006 verifies Unit 402's situs address. Google Maps' exact
+// 609 Golden Gate Point result identifies The Pearl at this building point (2026-10-13).
+// This is a building-address pin, not a statement about management scope.
+export const sarasotaBuildingMapLocation = {
+  latitude: 27.33404,
+  longitude: -82.5499352,
+  geocode_status: 'verified',
+  map_verified: 1,
+} as const;

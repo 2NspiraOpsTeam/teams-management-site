@@ -1,0 +1,4 @@
+import {it,expect} from 'vitest';
+import {calendarDate,daysBetween,isMonthToMonth,monthKeys} from '../src/lib/operations/renewal-rules';
+it('accepts only actual calendar dates without timezone drift',()=>{for(const v of ['RC','D','month/month','2026-02-30','2027-02-29','11/30/2026',null,'2026-1-01'])expect(calendarDate(v)).toBeNull();expect(calendarDate('2028-02-29')).toBe('2028-02-29');expect(daysBetween('2026-11-15','2026-10-16')).toBe(30);expect(daysBetween('2026-10-15','2026-10-16')).toBe(-1);});
+it('recognizes explicit month-to-month only and rolls calendar months across years',()=>{for(const s of ['Month to Month','month/month','M/M','month-to-month'])expect(isMonthToMonth(s)).toBe(true);expect(isMonthToMonth('RC')).toBe(false);expect(monthKeys('2026-12-31')).toHaveLength(12);expect(monthKeys('2026-12-31')[1]).toBe('2027-01');expect(monthKeys('2026-12-31')[11]).toBe('2027-11');});

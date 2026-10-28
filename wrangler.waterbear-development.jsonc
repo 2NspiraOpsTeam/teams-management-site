@@ -1,0 +1,33 @@
+{
+  "name": "teams-development-runtime",
+  "account_id": "8fbe09502d38e82ab1b3d51f8eb7a1c6",
+  "main": "deployment/preview-runtime/entry.mjs",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "NEXT_PUBLIC_ENVIRONMENT": "development",
+    "PROPERTY_OPERATIONS_ENABLED": "1",
+    "TENANT_LEASES_ENABLED": "0",
+    "TEAMS_RELEASE_SHA": "d22a754a05219e4540c64def8bf99862cf23722d",
+    "TENANT_MANUAL_IMPORT_DATABASE_ID": "29dfe758-69b1-4465-b74e-101d48c53f7e"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "teams-development-db",
+      "database_id": "29dfe758-69b1-4465-b74e-101d48c53f7e"
+    }
+  ],
+  "$schema": "node_modules/wrangler/config-schema.json"
+}

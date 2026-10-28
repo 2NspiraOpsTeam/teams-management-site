@@ -1,0 +1,9 @@
+allowBuilds:
+  esbuild: true
+  workerd: true
+
+# Match npm's security overrides; pnpm does not apply package.json overrides.
+overrides:
+  next>postcss: 8.5.30
+  next>sharp: 0.35.5
+  '@node-minify/core>glob': 10.5.0

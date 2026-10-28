@@ -1,0 +1,10 @@
+{
+  "name": "teams-qa-local-only",
+  "main": "scripts/d1/local-worker.mjs",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "d1_databases": [{"binding":"DB","database_name":"teams-qa-local","database_id":"00000000-0000-0000-0000-000000000019"}],
+  "assets": {"directory":".open-next/assets","binding":"ASSETS"},
+  "vars": {"PROPERTY_OPERATIONS_ENABLED":"1","TENANT_LEASES_ENABLED":"1","TEAMS_RELEASE_SHA":"local-qa-only"}
+}

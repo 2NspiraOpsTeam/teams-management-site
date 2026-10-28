@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server';
 import { audit, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 const states = ['draft','internal_review','published','archived'];
 const fail = (status = 400) => NextResponse.json({ error: status === 409 ? 'Conflict' : 'Invalid request' }, { status });
 export async function GET(request: Request) {
   const admin = await requireAdmin(); if (!admin) return unauthorized();
   const q = new URL(request.url).searchParams.get('q')?.trim().slice(0,100) || '';
   const includeArchived = new URL(request.url).searchParams.get('include_archived') === '1';
-  const rows = await admin.db.prepare("SELECT id,name,slug,address_json,latitude,longitude,geocode_status,map_verified,has_retail,retail_status,retail_notes,retail_published,publication_state,created_at,updated_at FROM buildings WHERE (name LIKE ? OR slug LIKE ?) AND (? = 1 OR publication_state != 'archived') ORDER BY name LIMIT 100").bind(`%${q}%`,`%${q}%`,includeArchived ? 1 : 0).all();
-  return NextResponse.json(rows.results, { headers: { 'Cache-Control': 'no-store' } });
+  const pageValue=new URL(request.url).searchParams.get('page');
+  const page=Number(pageValue||0),size=pageValue===null?100:50;
+  if(!Number.isSafeInteger(page)||page<0||page>10000)return fail();
+  const rows = await admin.db.prepare("SELECT id,name,slug,address_json,latitude,longitude,geocode_status,map_verified,has_retail,retail_status,retail_notes,retail_published,publication_state,created_at,updated_at FROM buildings WHERE (name LIKE ? OR slug LIKE ?) AND (? = 1 OR publication_state != 'archived') ORDER BY name COLLATE NOCASE,id LIMIT ? OFFSET ?").bind(`%${q}%`,`%${q}%`,includeArchived ? 1 : 0,size+1,page*size).all();
+  const total = await admin.db.prepare("SELECT COUNT(*) AS total FROM buildings WHERE (name LIKE ? OR slug LIKE ?) AND (?=1 OR publication_state!='archived')").bind(`%${q}%`,`%${q}%`,includeArchived?1:0).first<{total:number}>();
+  return NextResponse.json(rows.results.slice(0,size), { headers: { 'Cache-Control': 'no-store', 'X-Teams-Total-Buildings': String(total?.total||0), 'X-Teams-Next-Page': rows.results.length>size?String(page+1):'' } });
 }
 export async function POST(request: Request) {
   const admin = await requireAdmin(); if (!admin) return unauthorized(); if (!sameOrigin(request)) return unauthorized();

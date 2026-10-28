@@ -1,11 +1,10 @@
 .next/
 .vercel/
-node_modules/
+node_modules
 .env
 .env.local
 .env.*.local
-public/bu
-uildings/*.jpg
+public/buildings/*.jpg
 public/buildings/*.webp
 public/layouts/*.pdf
 public/private/*
@@ -14,3 +13,14 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*.tsbuildinfo
+
+.open-next/
+
+# Local Wrangler state can contain database records and cache metadata.
+.wrangler/
+
+# Private importer artifacts never belong in source control.
+__pycache__/
+*.pyc
