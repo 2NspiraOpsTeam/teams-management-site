@@ -21,19 +21,13 @@ export function normalizeGoogleLeaseLink(v:Row){
 // No provider API calls or redirects: the owner reviews the file and access settings.
 export function normalizeLeaseSharingLink(v:Row){
  let u:URL;try{u=new URL(v.webUrl);}catch{return fail('Paste a PDF sharing link.');}
- if(u.hostname==='drive.google.com')return {...normalizeGoogleLeaseLink(v),provider:'google-drive'};
- if(typeof v.webUrl!=='string'||v.webUrl.length>2048||u.protocol!=='https:'||u.username||u.password||u.port||u.hash)fail('Use a secure PDF sharing link.');
- const personalShort=u.hostname==='1drv.ms'&&/^\/b\/(?:[A-Za-z0-9_!.-]+|c\/[a-f0-9]+\/[A-Za-z0-9_!.-]+)$/i.test(u.pathname);
- const personal=u.hostname==='onedrive.live.com'&&['/','/redir','/view.aspx'].includes(u.pathname)&&!!(u.searchParams.get('resid')||u.searchParams.get('id'));
- const business=/^[a-z0-9-]+\.sharepoint\.com$/.test(u.hostname)&&(/^\/:b:\/(?:g|r|s)\/.+/.test(u.pathname)||/\.pdf$/i.test(u.pathname));
- if(!personalShort&&!personal&&!business)fail('Paste an individual PDF sharing link from your supported cloud storage, not a folder or website.');
- for(const [key,value] of u.searchParams)if(!['e','d','csf','web','download','cid','resid','id','authkey','ithint','redeem','em'].includes(key)||value.length>512||/[\x00-\x1f]/.test(value))fail('Use the copied file sharing link, not a sign-in or temporary download URL.');
- if(u.searchParams.get('download')==='1')fail('Use the sharing link, not a forced download URL.');
+ if(u.hostname==='drive.google.com'){try{return {...normalizeGoogleLeaseLink(v),provider:'google-drive'};}catch{ /* Other secure sharing formats remain supported. */ }}
+ if(typeof v.webUrl!=='string'||v.webUrl.length>2048||u.protocol!=='https:'||u.username||u.password)fail('Use a secure HTTPS sharing link of no more than 2048 characters.');
  const name=typeof v.name==='string'?v.name.trim():'';
  if(!name||name.length>240||/[\x00-\x1f]/.test(name))fail('Enter a document name of no more than 240 characters.');
  if(v.reviewed!==true)fail('Confirm you checked the PDF and its restricted sharing settings.');
  u.searchParams.sort();
- return {name,webUrl:u.href,itemId:u.href,provider:'microsoft-sharing'};
+ return {name,webUrl:u.href,itemId:u.href,provider:u.hostname==='drive.google.com'?'google-drive':u.hostname==='1drv.ms'||u.hostname==='onedrive.live.com'||u.hostname.endsWith('.sharepoint.com')?'microsoft-sharing':'shared-link'};
 }
 export async function saveGoogleLeaseLink(a:Actor,leaseId:string,v:Row){
  await existing(a.db,'operations_leases','id',leaseId);

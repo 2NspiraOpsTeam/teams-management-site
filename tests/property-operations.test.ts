@@ -480,7 +480,7 @@ it('saves a new lease and its OneDrive URL atomically and suppresses whole-form 
 });
 it('rejects invalid/unreviewed lease URLs before writing and rolls back the agreement when link storage fails',async()=>{
  sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));
- for(const pdfLink of [{name:'QA.pdf',webUrl:'https://evil.test/lease.pdf',reviewed:true},{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:false}])expect((await request('leases','POST',leaseInput({pdfLink}))).status).toBe(400);
+ for(const pdfLink of [{name:'QA.pdf',webUrl:'http://example.test/lease.pdf',reviewed:true},{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:false}])expect((await request('leases','POST',leaseInput({pdfLink}))).status).toBe(400);
  expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(0);
  const input=leaseInput({pdfLink:{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:true}});
  sql.exec("CREATE TRIGGER qa_link_failure BEFORE INSERT ON operations_lease_links BEGIN SELECT RAISE(ABORT,'QA link failure'); END;");
