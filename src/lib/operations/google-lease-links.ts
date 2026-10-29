@@ -12,7 +12,7 @@ export function normalizeGoogleLeaseLink(v:Row){
  const resourceKeys=u.searchParams.getAll('resourcekey');
  if(resourceKeys.length>1||resourceKeys.some(k=>! /^[\w-]{1,200}$/.test(k)))fail('The Drive resource key is invalid.');
  const name=typeof v.name==='string'?v.name.trim():'';
- if(!name.toLowerCase().endsWith('.pdf')||name.length>240||/[\x00-\x1f]/.test(name))fail('Enter a document name ending in .pdf.');
+ if(!name||name.length>240||/[\x00-\x1f]/.test(name))fail('Enter a document name of no more than 240 characters.');
  if(v.reviewed!==true)fail('Confirm you checked the PDF and its restricted sharing settings.');
  const canonical=new URL(`https://drive.google.com/file/d/${itemId}/view`);
  if(resourceKeys[0])canonical.searchParams.set('resourcekey',resourceKeys[0]);
@@ -30,7 +30,7 @@ export function normalizeLeaseSharingLink(v:Row){
  for(const [key,value] of u.searchParams)if(!['e','d','csf','web','download','cid','resid','id','authkey','ithint','redeem','em'].includes(key)||value.length>512||/[\x00-\x1f]/.test(value))fail('Use the copied file sharing link, not a sign-in or temporary download URL.');
  if(u.searchParams.get('download')==='1')fail('Use the sharing link, not a forced download URL.');
  const name=typeof v.name==='string'?v.name.trim():'';
- if(!name.toLowerCase().endsWith('.pdf')||name.length>240||/[\x00-\x1f]/.test(name))fail('Enter a document name ending in .pdf.');
+ if(!name||name.length>240||/[\x00-\x1f]/.test(name))fail('Enter a document name of no more than 240 characters.');
  if(v.reviewed!==true)fail('Confirm you checked the PDF and its restricted sharing settings.');
  u.searchParams.sort();
  return {name,webUrl:u.href,itemId:u.href,provider:'microsoft-sharing'};
