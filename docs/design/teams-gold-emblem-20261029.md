@@ -12,3 +12,7 @@ Jeffrey supplied and approved the replacement artwork on October 29, 2026. This 
 Release baseline is the actually serving private Worker commit `066f2c281ba57991350ef9ddad5032b934545ec1`, not stale main. The previous Pages gateway metadata identifies `f8772939d1741cd9cbdb9973c5955bae0d2122b8`, an ancestor of the serving runtime. Preserve all newer sign-in and mail diagnostics.
 
 Existing sign-in emails cannot be recalled or rewritten. Their legacy image URL now resolves to the replacement logo after deployment. Authenticated dashboard visual QA requires an authorized session; source coverage must not be represented as signed-in runtime validation.
+
+## Owner-requested image timing
+
+Residence and retail shared galleries advance every 8 seconds (previously 4). Homepage Across the City now holds each card for 8 seconds before advancing one card, as explicitly confirmed by Jeffrey. Pause, focus, reduced-motion and manual controls are preserved. Dining timing is unchanged.
