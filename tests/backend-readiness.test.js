@@ -76,6 +76,7 @@ import * as tenantPhotos from "../src/app/api/tenant/maintenance/photos/[id]/rou
 import * as adminPhotos from "../src/app/api/admin/tenant-maintenance/photos/[id]/route";
 import * as retryNotice from "../src/app/api/admin/tenant-maintenance/[id]/retry/route";
 import * as admin from "../src/app/api/admin/session/route";
+import * as passwords from "../src/app/api/admin/password/route";
 import * as tenant from "../src/app/api/tenant/session/route";
 import * as maintenance from "../src/app/api/tenant/maintenance/route";
 import * as contact from "../src/app/api/contact/route";
@@ -135,6 +136,7 @@ beforeEach(() => {
     "schema.sql",
     "admin-phase1.sql",
     "admin-otp.sql",
+    "admin-passwords.sql",
     "tenant-portal.sql",
     "work-orders-mvp.sql",
     "property-operations.sql",
@@ -1114,4 +1116,22 @@ it('disables property archiving even for a stale Admin page while allowing an au
  const update=state=>PATCH(new Request(origin+'/api/admin/buildings/b1',{method:'PATCH',headers:{origin,'content-type':'application/json'},body:JSON.stringify({publication_state:state})}),ctx('b1'));
  expect((await update('archived')).status).toBe(409);expect(sql.prepare("SELECT publication_state FROM buildings WHERE id='b1'").get().publication_state).toBe('draft');
  sql.exec("UPDATE buildings SET publication_state='archived' WHERE id='b1'");expect((await update('draft')).status).toBe(200);expect(sql.prepare("SELECT publication_state FROM buildings WHERE id='b1'").get().publication_state).toBe('draft');expect(sql.prepare("SELECT building_id FROM units WHERE id='u1'").get().building_id).toBe('b1');
+});
+
+it("fresh verified email-code login bootstraps a password; password login cannot bypass step-up or tenant isolation", async () => {
+  await signIn(admin, "qa-admin@example.test", "teams_admin_session");
+  const password = "Isolated initial passphrase 42";
+  const save = () => new Request(origin + "/api/admin/password", {method:"PUT",headers:{origin,"content-type":"application/json"},body:JSON.stringify({email:"qa-admin@example.test",password})});
+  expect((await passwords.PUT(save())).status).toBe(200);
+  state.cookies.clear();
+  const response = await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}));
+  expect(response.status).toBe(200);
+  state.cookies.set("teams_admin_session",response.headers.get("set-cookie").split(";")[0].split("=")[1]);
+  expect(await currentAdmin()).toBe("qa-admin@example.test");
+  expect(await currentTenant()).toBeNull();
+  expect((await passwords.PUT(save())).status).toBe(403);
+  state.cookies.clear();
+  await signIn(tenant, "one@example.test", "teams_tenant_session");
+  expect((await passwords.GET()).status).toBe(401);
+  expect((await passwords.PUT(save())).status).toBe(401);
 });
