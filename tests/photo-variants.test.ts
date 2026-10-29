@@ -4,7 +4,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 afterEach(()=>{vi.unstubAllEnvs();vi.resetModules();});
 it('prepares every inventoried public photo with distinct bounded renditions and matching stored checksums',()=>{
- expect(photos.length).toBe(268);expect(photos.filter(p=>p.cover)).toHaveLength(23);
+ expect(photos.length).toBe(269);expect(photos.filter(p=>p.cover)).toHaveLength(23);
  for(const p of photos){
   expect(new Set(p.variants.map(v=>v.width)).size).toBe(p.variants.length);
   expect(p.variants.map(v=>v.width)).toEqual([...p.variants.map(v=>v.width)].sort((a,b)=>a-b));

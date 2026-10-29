@@ -39,7 +39,7 @@ it('includes the correct canonical portal in each role’s actual OTP email, wit
     expect(decoded[0].split(code)).toHaveLength(2);
     expect(parts[0]).toContain('text/plain');
     expect(parts[1]).toContain('text/html');
-    expect(decoded[1]).toContain('/brand/teams-management-logo.png');
+    expect(decoded[1]).toContain('/brand/teams-management-gold-emblem.png');
     expect(decoded[1]).toContain(messages.length === 0 ? 'Welcome back.' : 'Welcome home.');
     expect(decoded[1]).toContain(messages.length === 0 ? '00000000' : '00000001');
     for (const part of parts) for (const line of part.split('\r\n\r\n')[1].trim().split('\r\n')) expect(line.length).toBeLessThanOrEqual(76);
