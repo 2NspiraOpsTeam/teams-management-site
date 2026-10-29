@@ -444,3 +444,67 @@ it('shows only the selected building-wide cover in property lists and detail wit
  expect((await(await request('properties/b2')).json()).cover_asset_id).toBeNull();
  expect(sql.prepare('SELECT COUNT(*) AS n FROM media_assignments').get()?.n).toBe(2);
 });
+
+it('keeps current and earlier tenant agreements separate and paginates newest first without another occupant’s leases',async()=>{
+ const current=await createLease();
+ const before=sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(current.id);
+ const earlier=await createLease({lease_start:'2020-01-01',lease_end:'2020-12-31',status:'expired'});
+ await createLease({lease_start:'2019-01-01',lease_end:'2019-12-31',status:'expired',holders:[holder('t2')]});
+ const history=await(await request('leases?tenantId=t1&sort=recent')).json();
+ expect(history.items.map((l:any)=>l.id)).toEqual([current.id,earlier.id]);
+ expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(current.id)).toEqual(before);
+ expect(sql.prepare('SELECT predecessor_id FROM operations_leases WHERE id=?').get(earlier.id)?.predecessor_id).toBeNull();
+ const duplicate=await request('leases','POST',leaseInput({lease_start:'2020-01-01',lease_end:'2020-12-31',status:'expired'}));
+ expect(duplicate.status).toBe(409);
+ expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(current.id)).toEqual(before);
+});
+
+it('finds lease-editor tenants by surname and email fragments, preserves literal wildcard handling and does not require a residence match',async()=>{
+ sql.prepare("UPDATE tenant_accounts SET display_name='Longterm ExampleSurname',email='longterm@example.test' WHERE id='t1'").run();
+ const surname=await(await request('tenants?q=ExampleSurname&match=contains')).json();expect(surname.items.map((t:any)=>t.id)).toEqual(['t1']);
+ const email=await(await request('tenants?q=term%40example&match=contains')).json();expect(email.items.map((t:any)=>t.id)).toEqual(['t1']);
+ expect((await(await request('tenants?q=ExampleSurname')).json()).items).toHaveLength(0);
+ expect((await(await request('tenants?q=%25&match=contains')).json()).items).toHaveLength(0);
+ expect((await(await request('tenants?q=not-found&match=contains')).json()).items).toHaveLength(0);
+});
+
+it('saves a new lease and its OneDrive URL atomically and suppresses whole-form retries',async()=>{
+ sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));
+ const assignments=sql.prepare('SELECT * FROM tenant_assignments ORDER BY id').all();
+ const l=await createLease({pdfLink:{name:'QA lease.pdf',webUrl:'https://1drv.ms/b/s!qa_lease?e=abc',reviewed:true}});
+ const link=sql.prepare('SELECT lease_id,file_name,drive_id FROM operations_lease_links').get();expect(link).toMatchObject({lease_id:l.id,file_name:'QA lease.pdf',drive_id:'microsoft-sharing'});
+ expect((await request('leases','POST',l.data)).status).toBe(200);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(1);expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_lease_links').get()?.n).toBe(1);
+ expect(sql.prepare('SELECT * FROM tenant_assignments ORDER BY id').all()).toEqual(assignments);
+ expect(JSON.stringify(sql.prepare('SELECT record_after_json FROM audit_log').all())).not.toContain('https://');
+});
+it('rejects invalid/unreviewed lease URLs before writing and rolls back the agreement when link storage fails',async()=>{
+ sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));
+ for(const pdfLink of [{name:'QA.pdf',webUrl:'http://example.test/lease.pdf',reviewed:true},{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:false}])expect((await request('leases','POST',leaseInput({pdfLink}))).status).toBe(400);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(0);
+ const input=leaseInput({pdfLink:{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:true}});
+ sql.exec("CREATE TRIGGER qa_link_failure BEFORE INSERT ON operations_lease_links BEGIN SELECT RAISE(ABORT,'QA link failure'); END;");
+ expect((await request('leases','POST',input)).status).toBe(409);
+ for(const table of ['operations_leases','operations_leaseholders','operations_lease_links','operations_mutation_receipts','audit_log'])expect(sql.prepare('SELECT COUNT(*) AS n FROM '+table).get()?.n).toBe(0);
+ sql.exec('DROP TRIGGER qa_link_failure');expect((await request('leases','POST',input)).status).toBe(201);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_lease_links').get()?.n).toBe(1);
+});
+
+it('saves and edits a lease with an unknown start, keeps validation and safe retry',async()=>{
+ const input=leaseInput({lease_start:'',portal_published:false});const created=await request('leases','POST',input);expect(created.status).toBe(201);const {id}=await created.json();
+ expect(sql.prepare('SELECT lease_start FROM operations_leases WHERE id=?').get(id)?.lease_start).toBe('');
+ const retried=await request('leases','POST',input);expect(retried.status).toBe(200);expect((await retried.json()).duplicate).toBe(true);
+ const detail=await (await request('leases/'+id)).json();expect(detail.lease_start).toBe('');
+ const updated=await request('leases/'+id,'PATCH',{...input,revision:detail.revision,lease_start:'2026-02-01'});expect(updated.status).toBe(200);
+ const known=await (await request('leases/'+id)).json();expect(known.lease_start).toBe('2026-02-01');
+ expect((await request('leases/'+id,'PATCH',{...input,revision:known.revision,lease_start:'2026-02-30'})).status).toBe(400);
+ expect((await request('leases/'+id,'PATCH',{...input,revision:known.revision,lease_start:'2028-01-01'})).status).toBe(400);
+ expect((await request('leases/'+id,'PATCH',{...input,revision:known.revision,lease_start:''})).status).toBe(200);
+ expect(sql.prepare('SELECT lease_start FROM operations_leases WHERE id=?').get(id)?.lease_start).toBe('');
+});
+
+it('removes a lease link through the authenticated handler with same-origin and lease scoping',async()=>{
+ sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));const created=await (await request('leases','POST',leaseInput())).json();sql.exec("INSERT INTO operations_lease_links(id,lease_id,drive_id,item_id,file_name,web_url,created_by) VALUES('qa-remove','"+created.id+"','shared-link','qa-item','Test','https://example.test/test','qa@example.test')");
+ const denied=await request('leases/'+created.id+'/links/qa-remove','DELETE',{}, {origin:'https://elsewhere.test'});expect(denied.status).toBe(401);
+ const removed=await request('leases/'+created.id+'/links/qa-remove','DELETE');expect(removed.status).toBe(200);expect(sql.prepare("SELECT id FROM operations_lease_links WHERE id='qa-remove'").get()).toBeUndefined();expect((await request('leases/'+created.id+'/links/qa-remove','DELETE')).status).toBe(200);
+});

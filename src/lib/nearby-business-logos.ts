@@ -2,6 +2,7 @@ import type { NearbyPlace } from './nearby-place';
 
 export type NearbyLogo = { src: string; alt: string; background: string };
 const logos: Record<string, NearbyLogo> = {
+  "Grand Central Terminal": { src: "/nearby-logos/grand-central-terminal.png", alt: "Grand Central Terminal logo", background: "bg-[#242424]" },
   "Esco Pharmacy": {"src": "/nearby-logos/esco-pharmacy.webp", "alt": "Esco Pharmacy logo", "background": "bg-white"},
   "Southbridge Pharmacy": {"src": "/nearby-logos/southbridge-pharmacy.webp", "alt": "Southbridge Pharmacy logo", "background": "bg-white"},
   "Dear Mama Coffee": {"src": "/nearby-logos/dear-mama.webp", "alt": "Dear Mama Coffee logo", "background": "bg-white"},

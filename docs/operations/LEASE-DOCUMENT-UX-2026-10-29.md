@@ -1,0 +1,22 @@
+# Tenant-context lease documents
+
+The tenant detail page now puts current and earlier lease agreements directly below its heading. Each agreement opens an inline OneDrive/Google Drive PDF sharing-link form. The saved tenant ID scopes the agreement list; shared apartments cannot pull another tenant’s agreements into the history. Current agreements sort first, then newer expiration dates. Older pages load explicitly. PDF metadata is fetched only when a period is opened.
+
+Add current / earlier lease actions carry the saved apartment and tenant into the existing editor and lock the property/unit selectors. Earlier entries default to expired, have no predecessor and do not renew or overwrite the current agreement. Users must enter verified dates and rent; this change does not infer missing agreement terms. Existing date-range duplicate prevention remains in force. Historical residence assignments remain available, labelled separately. File links remain Admin-only with unchanged provider permissions, validation and retry receipts.
+
+No migrations, tenant edits, provider permission changes or actual PDF accesses are part of implementation QA. The tenant name/property supplied by the owner is not test fixture data and must not be committed. Controlled browser fixtures cover desktop/tablet/mobile, inline entry, scoped saves, refresh, error/retry, earlier-entry prefilled context and cancel. Existing form QA covers clear, failed-save draft retention, retry and double-click protection. Actual hosted signed-in QA requires access to the owner-confirmed portal URL. Do not report simulated APIs as hosted persistence.
+
+## Quick entry and tenant lookup
+New-lease entry shows start, expiration and monthly rent first; deposit, status, renewal state, publication and notes are expandable. The selected tenant remains visible, with co-tenant search and role/access controls expandable. Saving opens the new agreement’s inline PDF form (or the document anchor from the full directory). Saving without a PDF remains allowed.
+
+Lease-editor tenant lookup accepts name/email fragments through an explicit `match=contains` API option. Other directory prefix searches retain their existing behavior. Wildcards remain escaped. Lookup searches the full tenant directory rather than silently requiring a matching residence assignment. Enter triggers lookup, not lease submission; repeating the same query reissues it. Loading, result count, no-match, backend failure and retry are visible. Selection still requires an explicit existing tenant; lookup never assigns an apartment or creates a tenant.
+
+## Apartment-first entry
+The scoped apartment Add lease action carries the property/unit and confirmed current tenant assignments into the editor. The full Add lease form also loads saved occupants when a unit is selected; switching units clears the previous selection and cancels stale reads. Current roles are displayed for confirmation, deduplicated by tenant ID, with document/rent permissions off. Inactive/proposed assignments and workbook-only names are not converted into leaseholders. Failure blocks save with retry. This adds no occupancy writes, invitation or publication.
+
+Setup feedback: Add lease scrolls to the editor, focuses its first input and disables the opener with ‘Lease form open below’. Cancel restores the opener. A missing agreement is labelled ‘No saved lease yet’, distinct from source expiration evidence.
+
+## PDF URL directly in Add lease
+The optional OneDrive / Google Drive lease PDF URL is visible in the new-agreement form before Save. A supplied URL reveals its PDF name and required file/period/access-review acknowledgement. The server reuses the existing sharing-link validator and saves the new agreement, leaseholders, link metadata and audit statements in one D1 batch. Invalid links fail before any write; link/audit failure rolls back the whole agreement. The retry fingerprint covers the canonical optional PDF metadata, not a second independent operation. No URL is copied to audit summaries. Blank URLs preserve document-optional lease entry. Existing agreements continue to use the dedicated PDF-link form.
+
+Apartment detail embeds the current/latest agreement’s PDF sharing-link form directly and displays each saved URL beneath its document name. Missing agreements show an explicit ‘Lease PDF URL: not added yet’ state and open the context-preserving Add lease form. No tenant or public projection gains these private URLs.

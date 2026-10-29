@@ -153,3 +153,11 @@ All other existing marks were included in the repeated page/asset QA. This is ar
 ### Existing-artwork corrections found in the full visual review
 
 PHIT Well / Caspare Physical Therapy Wellness P.C.: replaced the earlier email-list signup banner with the actual official white PHIT Well wordmark at https://phitwell.com/wp-content/uploads/sites/36/2021/12/phitwell-img.png, displayed in the header at https://www.phitwell.com/ . Dark backing retained. Café Grumpy’s original pale gray artwork is unchanged; its backing is now dark charcoal for contrast. No color editing or invented artwork.
+
+## Grand Central Terminal — 2026-10-28
+
+- Official source: https://grandcentralterminal.com/
+- Original artwork: https://grandcentralterminal.com/wp-content/uploads/2023/07/GCTLogoWhite.png
+- Local asset: `public/nearby-logos/grand-central-terminal.png` (unaltered official white horizontal logo).
+- Charcoal backing preserves white-artwork contrast; contain sizing preserves proportions.
+- Shared destination-card mapping covers `/properties/41-w-46th-st` and `/retail/41-w-46th-st`; existing destination details and links remain unchanged.
