@@ -47,7 +47,7 @@ export default function RootLayout({
           '@type': 'Organization',
           '@id': `${siteOrigin}/#organization`,
           url: siteOrigin,
-          logo: `${siteOrigin}/brand/teams-management-logo.png`,
+          logo: `${siteOrigin}/brand/teams-management-gold-emblem.png`,
           name: 'Teams Management',
           email: siteContact.email,
           telephone: siteContact.phone,

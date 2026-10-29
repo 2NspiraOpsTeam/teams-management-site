@@ -6,7 +6,7 @@ export function signInEmail(role: 'admin' | 'tenant', code: string) {
   const admin = role === 'admin';
   const label = admin ? 'Admin portal' : 'Tenant portal';
   const url = portalUrl(role);
-  const logo = new URL('/brand/teams-management-logo.png', url).href;
+  const logo = new URL('/brand/teams-management-gold-emblem.png', url).href;
   // Lead with the uninterrupted code so truncated mobile notifications retain it.
   const subject = `${code} — Sign-in code`;
   const preview = 'Expires in 10 minutes. Never share this code.';

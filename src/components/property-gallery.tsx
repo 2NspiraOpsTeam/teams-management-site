@@ -25,7 +25,7 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
   }, []);
   useEffect(() => {
     if (!activity.active || images.length < 2 || paused || manuallyPaused || (reducedMotion && !motionOptIn)) return;
-    const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 4000);
+    const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 8000);
     return () => window.clearInterval(timer);
   }, [activity.active, images.length, paused, manuallyPaused, reducedMotion, motionOptIn]);
 

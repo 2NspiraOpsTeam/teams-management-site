@@ -33,23 +33,17 @@ export function AcrossCityRail({ items }: { items: CityCard[] }) {
   useEffect(() => {
     const element = rail.current;
     if (!element || reducedMotion || paused || engaged || !visible || items.length < 2) return;
-    let frame = 0;
-    let last = 0;
-    let position = element.scrollLeft;
-    const tick = (now: number) => {
-      if (!document.hidden) {
-        const first = element.children[0] as HTMLElement;
-        const repeat = element.children[items.length] as HTMLElement;
-        const loopWidth = repeat.offsetLeft - first.offsetLeft;
-        position += last ? Math.min(now - last, 40) * .028 : 0;
-        if (loopWidth > 0 && position >= loopWidth) position -= loopWidth;
-        element.scrollLeft = position;
-      }
-      last = now;
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    const timer = window.setInterval(() => {
+      if (document.hidden) return;
+      const first = element.children[0] as HTMLElement;
+      const second = element.children[1] as HTMLElement;
+      const step = second.offsetLeft - first.offsetLeft;
+      if (step <= 0) return;
+      const current = Math.round(element.scrollLeft / step) % items.length;
+      const next = (current + 1) % items.length;
+      element.scrollTo({ left: next * step, behavior: next === 0 ? 'instant' : 'smooth' });
+    }, 8000);
+    return () => window.clearInterval(timer);
   }, [reducedMotion, paused, engaged, visible, items.length]);
 
   const show = useCallback((next: number, smooth = true) => {
