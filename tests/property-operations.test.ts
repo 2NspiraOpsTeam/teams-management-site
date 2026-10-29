@@ -489,3 +489,22 @@ it('rejects invalid/unreviewed lease URLs before writing and rolls back the agre
  sql.exec('DROP TRIGGER qa_link_failure');expect((await request('leases','POST',input)).status).toBe(201);
  expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_lease_links').get()?.n).toBe(1);
 });
+
+it('saves and edits a lease with an unknown start, keeps validation and safe retry',async()=>{
+ const input=leaseInput({lease_start:'',portal_published:false});const created=await request('leases','POST',input);expect(created.status).toBe(201);const {id}=await created.json();
+ expect(sql.prepare('SELECT lease_start FROM operations_leases WHERE id=?').get(id)?.lease_start).toBe('');
+ const retried=await request('leases','POST',input);expect(retried.status).toBe(200);expect((await retried.json()).duplicate).toBe(true);
+ const detail=await (await request('leases/'+id)).json();expect(detail.lease_start).toBe('');
+ const updated=await request('leases/'+id,'PATCH',{...input,revision:detail.revision,lease_start:'2026-02-01'});expect(updated.status).toBe(200);
+ const known=await (await request('leases/'+id)).json();expect(known.lease_start).toBe('2026-02-01');
+ expect((await request('leases/'+id,'PATCH',{...input,revision:known.revision,lease_start:'2026-02-30'})).status).toBe(400);
+ expect((await request('leases/'+id,'PATCH',{...input,revision:known.revision,lease_start:'2028-01-01'})).status).toBe(400);
+ expect((await request('leases/'+id,'PATCH',{...input,revision:known.revision,lease_start:''})).status).toBe(200);
+ expect(sql.prepare('SELECT lease_start FROM operations_leases WHERE id=?').get(id)?.lease_start).toBe('');
+});
+
+it('removes a lease link through the authenticated handler with same-origin and lease scoping',async()=>{
+ sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));const created=await (await request('leases','POST',leaseInput())).json();sql.exec("INSERT INTO operations_lease_links(id,lease_id,drive_id,item_id,file_name,web_url,created_by) VALUES('qa-remove','"+created.id+"','shared-link','qa-item','Test','https://example.test/test','qa@example.test')");
+ const denied=await request('leases/'+created.id+'/links/qa-remove','DELETE',{}, {origin:'https://elsewhere.test'});expect(denied.status).toBe(401);
+ const removed=await request('leases/'+created.id+'/links/qa-remove','DELETE');expect(removed.status).toBe(200);expect(sql.prepare("SELECT id FROM operations_lease_links WHERE id='qa-remove'").get()).toBeUndefined();expect((await request('leases/'+created.id+'/links/qa-remove','DELETE')).status).toBe(200);
+});
