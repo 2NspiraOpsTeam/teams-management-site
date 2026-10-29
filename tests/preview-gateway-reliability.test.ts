@@ -1,5 +1,5 @@
 import {afterEach,expect,it,vi} from 'vitest';
-import gateway from '../deployment/preview-gateway/_worker.js';
+import gateway, {publicLogoVariants} from '../deployment/preview-gateway/_worker.js';
 afterEach(()=>vi.restoreAllMocks());
 it('contains asynchronous backend failure without retrying a potentially committed write or leaking secrets',async()=>{
  const log=vi.spyOn(console,'error').mockImplementation(()=>{});
@@ -76,7 +76,7 @@ it.each(['/_next/static/chunks/hashed.js','/images/news/clipping.webp','/brand/l
  expect(await gateway.fetch(new Request('https://site.test'+path),{ASSETS:{fetch:async()=>asset},TEAMS_RUNTIME:{handleRequest}})).toBe(asset);
  expect(handleRequest).not.toHaveBeenCalled();
 });
-it.each(['/_photo-variants/private.webp','/api/media/private','/api/admin/media/private','/tenant/lease.pdf'])('never uses direct assets for private or publication-gated paths (%s)',async path=>{
+it.each(['/photo-variants/not-a-logo.webp','/_photo-variants/private.webp','/api/media/private','/api/admin/media/private','/tenant/lease.pdf'])('never uses direct assets for private or publication-gated paths (%s)',async path=>{
  const fetch=vi.fn();const handleRequest=vi.fn(async()=>new Response('guarded',{status:401}));
  expect((await gateway.fetch(new Request('https://site.test'+path,{headers:{cookie:'teams_admin_session=fixture'}}),{ASSETS:{fetch},TEAMS_RUNTIME:{handleRequest}})).status).toBe(401);
  expect(fetch).not.toHaveBeenCalled();
@@ -85,4 +85,15 @@ it('falls back once for a missing newer static chunk',async()=>{
  const handleRequest=vi.fn(async()=>new Response('new chunk'));
  const response=await gateway.fetch(new Request('https://site.test/_next/static/new.js'),{ASSETS:{fetch:async()=>new Response('missing',{status:404})},TEAMS_RUNTIME:{handleRequest}});
  expect(await response.text()).toBe('new chunk');expect(handleRequest).toHaveBeenCalledTimes(1);
+});
+
+it.each([...publicLogoVariants])('delivers public logo derivative from gateway branding assets (%s)',async file=>{
+ const handleRequest=vi.fn();const fetch=vi.fn(async(request:Request)=>{expect(new URL(request.url).pathname).toBe('/brand/variants/'+file);return new Response('logo',{headers:{'Content-Type':'image/webp'}});});
+ const response=await gateway.fetch(new Request('https://site.test/photo-variants/'+file),{ASSETS:{fetch},TEAMS_RUNTIME:{handleRequest}});
+ expect(await response.text()).toBe('logo');expect(response.headers.get('Content-Type')).toBe('image/webp');expect(handleRequest).not.toHaveBeenCalled();
+});
+it('retains runtime fallback when a public logo derivative is absent',async()=>{
+ const file=[...publicLogoVariants][0];const handleRequest=vi.fn(async()=>new Response('fallback'));
+ expect(await (await gateway.fetch(new Request('https://site.test/photo-variants/'+file),{ASSETS:{fetch:async()=>new Response('missing',{status:404})},TEAMS_RUNTIME:{handleRequest}})).text()).toBe('fallback');
+ expect(handleRequest).toHaveBeenCalledTimes(1);
 });

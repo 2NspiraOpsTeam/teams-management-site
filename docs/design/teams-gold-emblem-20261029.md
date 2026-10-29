@@ -16,3 +16,7 @@ Existing sign-in emails cannot be recalled or rewritten. Their legacy image URL 
 ## Owner-requested image timing
 
 Residence and retail shared galleries advance every 8 seconds (previously 4). Homepage Across the City now holds each card for 8 seconds before advancing one card, as explicitly confirmed by Jeffrey. Pause, focus, reduced-motion and manual controls are preserved. Dining timing is unchanged.
+
+## Preview logo-delivery repair
+
+A subsequent shared-login runtime deployment (56bfee21) served the new logo HTML but returned 404 for its four responsive logo derivatives. The original public brand PNG remained available. Route only these four public logo hashes through Pages branding assets, staging checksum-verified copies under `/brand/variants/`. Other derivative and media paths retain runtime publication checks. This gateway-only repair preserves the shared-login runtime and its newer client bundles (existing missing-chunk fallback), with no binding, database or secret changes.
