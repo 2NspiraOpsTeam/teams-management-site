@@ -13,3 +13,5 @@ Lease-editor tenant lookup accepts name/email fragments through an explicit `mat
 
 ## Apartment-first entry
 The scoped apartment Add lease action carries the property/unit and confirmed current tenant assignments into the editor. The full Add lease form also loads saved occupants when a unit is selected; switching units clears the previous selection and cancels stale reads. Current roles are displayed for confirmation, deduplicated by tenant ID, with document/rent permissions off. Inactive/proposed assignments and workbook-only names are not converted into leaseholders. Failure blocks save with retry. This adds no occupancy writes, invitation or publication.
+
+Setup feedback: Add lease scrolls to the editor, focuses its first input and disables the opener with ‘Lease form open below’. Cancel restores the opener. A missing agreement is labelled ‘No saved lease yet’, distinct from source expiration evidence.
