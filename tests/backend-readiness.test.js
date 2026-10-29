@@ -75,8 +75,9 @@ import * as adminOrderDetail from "../src/app/api/admin/tenant-maintenance/[id]/
 import * as tenantPhotos from "../src/app/api/tenant/maintenance/photos/[id]/route";
 import * as adminPhotos from "../src/app/api/admin/tenant-maintenance/photos/[id]/route";
 import * as retryNotice from "../src/app/api/admin/tenant-maintenance/[id]/retry/route";
-import * as admin from "../src/app/api/admin/session/route";
-import * as tenant from "../src/app/api/tenant/session/route";
+import * as admin from "../src/lib/admin-code-session";
+import * as passwords from "../src/app/api/admin/password/route";
+import * as tenant from "../src/lib/tenant-code-session";
 import * as maintenance from "../src/app/api/tenant/maintenance/route";
 import * as contact from "../src/app/api/contact/route";
 import * as reports from "../src/app/api/buildings/data-report/route";
@@ -135,6 +136,8 @@ beforeEach(() => {
     "schema.sql",
     "admin-phase1.sql",
     "admin-otp.sql",
+    "admin-passwords.sql",
+    "remembered-browsers.sql",
     "tenant-portal.sql",
     "work-orders-mvp.sql",
     "property-operations.sql",
@@ -532,6 +535,7 @@ it("every Admin API handler enforces session authorization and mutations reject 
     const handlers = await load();
     for (const method of ["GET", "POST", "PATCH", "PUT", "DELETE"]) {
       if (typeof handlers[method] !== "function") continue;
+      if (path.endsWith("/admin/password/route.ts") && method === "POST") continue; // Public sign-in only; GET/PUT still require sessions.
       const request = new Request(origin + "/api/admin/qa", {
         method,
         headers: {
@@ -1113,4 +1117,26 @@ it('disables property archiving even for a stale Admin page while allowing an au
  const update=state=>PATCH(new Request(origin+'/api/admin/buildings/b1',{method:'PATCH',headers:{origin,'content-type':'application/json'},body:JSON.stringify({publication_state:state})}),ctx('b1'));
  expect((await update('archived')).status).toBe(409);expect(sql.prepare("SELECT publication_state FROM buildings WHERE id='b1'").get().publication_state).toBe('draft');
  sql.exec("UPDATE buildings SET publication_state='archived' WHERE id='b1'");expect((await update('draft')).status).toBe(200);expect(sql.prepare("SELECT publication_state FROM buildings WHERE id='b1'").get().publication_state).toBe('draft');expect(sql.prepare("SELECT building_id FROM units WHERE id='u1'").get().building_id).toBe('b1');
+});
+
+it("fresh verified email-code login bootstraps a password; password login cannot bypass step-up or tenant isolation", async () => {
+  await signIn(admin, "qa-admin@example.test", "teams_admin_session");
+  const password = "Isolated initial passphrase 42";
+  const save = () => new Request(origin + "/api/admin/password", {method:"PUT",headers:{origin,"content-type":"application/json"},body:JSON.stringify({email:"qa-admin@example.test",password})});
+  expect((await passwords.PUT(save())).status).toBe(200);
+  state.cookies.clear();
+  expect((await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}))).status).toBe(401);
+  // Simulate browser enrollment only after the separately exercised verified OTP.
+  const browserToken = "b".repeat(64);
+  sql.prepare("INSERT INTO admin_remembered_browsers(token_hash,email,expires_at) VALUES (?,'qa-admin@example.test',datetime('now','+1 day'))").run(await hash(browserToken));
+  const response = await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}, {cookie:"__Host-teams_browser="+browserToken}));
+  expect(response.status).toBe(200);
+  state.cookies.set("teams_admin_session",response.headers.get("set-cookie").split(";")[0].split("=")[1]);
+  expect(await currentAdmin()).toBe("qa-admin@example.test");
+  expect(await currentTenant()).toBeNull();
+  expect((await passwords.PUT(save())).status).toBe(403);
+  state.cookies.clear();
+  await signIn(tenant, "one@example.test", "teams_tenant_session");
+  expect((await passwords.GET()).status).toBe(401);
+  expect((await passwords.PUT(save())).status).toBe(401);
 });

@@ -8,7 +8,7 @@ vi.mock('../src/lib/admin-auth', () => ({
  currentAdmin: vi.fn(), cookieName: 'test', unauthorized: () => new Response(null,{status:401}),
 }));
 vi.mock('../src/lib/mail-service', () => ({ MailService: class { configured(){return true;} sendAdminOtp = state.send; } }));
-import { POST } from '../src/app/api/admin/session/route';
+import { POST } from '../src/lib/admin-code-session';
 const request = () => new Request('https://example.test/api/admin/session', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({action:'request',email:'qa@example.test'}) });
 beforeEach(() => { state.counts=[300,1]; state.sql=[]; vi.clearAllMocks(); state.active.mockResolvedValue(true);state.randomInt.mockReturnValue(12345678); });
 it.each([[0,'00000000'],[99999999,'99999999']])('delivers an eight-digit code at the uniform random range boundary %s',async(value,code)=>{

@@ -22,6 +22,11 @@ describe('login email history', () => {
     const {db} = database(2); const send = vi.fn().mockResolvedValue('provider-1');
     expect(await trackLoginEmail(db,'admin','qa@example.test',send)).toBe('provider-1'); expect(send).toHaveBeenCalledTimes(1);
   });
+  it.each(['gmail_token_http_400','gmail_send_http_403','gmail_not_configured'])('retains only allowlisted transport classification %s', async (failure) => {
+    const {db,writes} = database();
+    await expect(trackLoginEmail(db,'admin','qa@example.test',async () => {throw new Error(failure);})).rejects.toThrow();
+    expect(JSON.parse(writes[1][0] as string)).toMatchObject({status:'unknown',failure});
+  });
   it('marks provider errors unknown without persisting sensitive errors', async () => {
     const {db,writes} = database();
     await expect(trackLoginEmail(db,'tenant','qa@example.test',async () => {throw new Error('private provider payload');})).rejects.toThrow();

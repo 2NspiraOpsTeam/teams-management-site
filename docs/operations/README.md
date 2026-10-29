@@ -2,6 +2,7 @@
 
 Start with the [current development handoff](WATERBEAR-DEVELOPMENT.md). It replaces the initial synthetic-only setup status and identifies the working build, migration results, and acceptance checks.
 
+- [Admin passwords](ADMIN-PASSWORDS.md): shared sign-in, admin-only setup and peer reset, email-code recovery.
 - [Optional Google Drive lease PDF links](GOOGLE-DRIVE-LEASE-PDFS.md): restricted paste-link flow, no duplicate storage, Admin-only scope.
 - [Optional OneDrive lease PDFs](ONEDRIVE-LEASE-PDFS.md): metadata-only picker, Microsoft registration, no R2/billing, release prerequisites.
 - [Resident home, household roster, contacts and lease summaries](RESIDENT-HOME-2026-10-18.md): three-user limit, approved cover photography, release verification and remaining document/data readiness.

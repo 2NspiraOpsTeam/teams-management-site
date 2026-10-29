@@ -4,8 +4,8 @@ import {middleware} from '../src/middleware';
 const mocks=vi.hoisted(()=>({db:vi.fn(()=>{throw Error('Database must not be reached');})}));
 vi.mock('../src/lib/admin-auth',()=>({adminDb:mocks.db,adminEnv:mocks.db,activeAdmin:mocks.db,currentAdmin:mocks.db,hash:mocks.db,cookieName:'teams_admin_session',sameOrigin:(r:Request)=>r.headers.get('origin')===new URL(r.url).origin,unauthorized:()=>new Response('{}',{status:401})}));
 vi.mock('../src/lib/tenant-auth',()=>({tenantDb:mocks.db,currentTenant:mocks.db,tenantCodeHash:mocks.db,randomHex:mocks.db,tenantCookie:'teams_tenant_session'}));
-import {POST as adminLogin} from '../src/app/api/admin/session/route';
-import {POST as tenantLogin} from '../src/app/api/tenant/session/route';
+import {POST as adminLogin} from '../src/lib/admin-code-session';
+import {POST as tenantLogin} from '../src/lib/tenant-code-session';
 it.each([adminLogin,tenantLogin])('bounds sign-in bodies before parsing or querying, including chunked bodies',async post=>{
  for(const chunked of [false,true]){
   const raw='{"email":"'+ 'x'.repeat(5000)+'"}';
@@ -22,4 +22,8 @@ it.each([adminLogin,tenantLogin])('rejects cross-origin, malformed and non-JSON 
 it('keeps private/API routes non-indexable and private data uncached without blocking public services',()=>{
  for(const path of ['/admin','/api/admin/session','/api/tenant/session','/tenant/login','/access']){const r=middleware(new NextRequest('https://site.test'+path));expect(r.headers.get('x-robots-tag')).toContain('noindex');expect(r.headers.get('cache-control')).toContain('no-store');expect(r.headers.get('content-security-policy')).toContain("object-src 'none'");}
  const r=middleware(new NextRequest('https://site.test/tenant-services',{headers:{cookie:'teams_feature_visit=0'}}));expect(r.headers.get('x-robots-tag')).toBeNull();expect(r.headers.get('x-frame-options')).toBe('SAMEORIGIN');
+});
+it('exposes only password sign-in POST to anonymous users, not password management',()=>{
+ const post=middleware(new NextRequest('https://site.test/api/admin/password',{method:'POST'}));expect(post.status).toBe(200);expect(post.headers.get('cache-control')).toContain('no-store');
+ for(const method of ['GET','PUT'])expect(middleware(new NextRequest('https://site.test/api/admin/password',{method})).status).toBe(404);
 });
