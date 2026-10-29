@@ -1682,6 +1682,28 @@
       "placeIdVerifiedAt": null,
       "placeIdEvidenceUrl": null,
       "addressDetail": "476 5th Avenue, New York, NY 10018"
+    },
+    {
+      "category": "landmark",
+      "label": "Landmark",
+      "name": "Times Square",
+      "source": "https://www.timessquarenyc.org/",
+      "mapQuery": "Times Square, Manhattan, New York, NY",
+      "destinationQuery": "Times Square, Manhattan, New York, NY",
+      "addressDetail": "Manhattan, New York, NY",
+      "officialWebsiteUrl": "https://www.timessquarenyc.org/",
+      "websiteVerifiedAt": "2026-10-14",
+      "websiteEvidenceUrl": "https://www.timessquarenyc.org/",
+      "destinationAddress": "Manhattan, New York, NY",
+      "destinationCoordinates": null,
+      "distanceLabel": null,
+      "walkTimeLabel": null,
+      "directionsDestination": "Times Square, Manhattan, New York, NY",
+      "locationEvidenceUrl": "https://www.timessquarenyc.org/",
+      "locationVerifiedAt": "2026-10-14",
+      "destinationPlaceId": null,
+      "placeIdVerifiedAt": null,
+      "placeIdEvidenceUrl": null
     }
   ],
   "349-w-46th-st": [
