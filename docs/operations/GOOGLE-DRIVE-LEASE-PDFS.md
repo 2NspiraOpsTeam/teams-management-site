@@ -1,22 +1,15 @@
-# Optional Google Drive lease PDF links
+# Optional lease sharing links
 
-The Admin lease detail now offers the same paste-a-Drive-file-link pattern used for property videos. PDFs remain optional; saving lease information never requires a document. OneDrive remains available under Other option.
+## Current Admin workflow (29 October 2026)
 
-## Privacy and scope
+Lease information can be saved without a document. Paste an optional HTTPS lease sharing URL when adding an agreement or on its detail page. Document labels and links do not need a `.pdf` suffix; secure links are accepted regardless of provider or file/folder pattern. Embedded credentials and non-HTTPS schemes are rejected. Existing Google Drive file identities retain canonical normalization and resource keys.
 
-Unlike public video tours, lease files must stay Restricted in Google Drive. The Admin opens the file and confirms the PDF, apartment, lease period and restricted sharing before saving. This is an explicit human check, not a Google API permission or MIME-type verification. No OAuth/app registration, Drive API, sharing changes, file downloads, uploads or paid storage are introduced. Existing Drive storage and hosting/database quotas still apply.
+At the owner's request, instructions now say **Share → Anyone with the link → Can view → Copy link** for future sharing with tenants. The review checkbox asks staff to verify the apartment, lease period and view access. This is a human review, not provider permission verification. The portal does not change OneDrive/Drive permissions or automatically publish links to tenants. Admin authentication, same-origin write checks and private/no-store responses remain unchanged.
 
-Links are Admin-only. No tenant endpoint, tenant grant or publication behavior changes. Tenant viewing remains separate work requiring verified lease associations and Google file permissions. Google sign-in can be required; file deletion or revoked access is resolved with the file owner. Never make lease PDFs public to imitate video playback.
+Use **Open link** to check the URL in a new tab without saving. **Clear** clears the unsaved draft. **Remove link** next to a saved link asks for confirmation, removes only that lease/link metadata association, and atomically records an audit event without the URL. It does not delete the original file or lease. Repeat removal is a safe no-op; failed removal retains the displayed link for retry. The direct PDF upload controls and unavailable-storage notices have been removed; existing backend document storage is not deleted.
 
-## Storage and release
+## Storage and verification
 
-Reuses `operations_lease_links` from `lease-onedrive-links.sql`: `drive_id='google-drive'` namespaces Google references and `item_id` is the Drive file ID. No additional schema migration is introduced. Existing tables are not renamed or rebuilt. Runtime requires that prior link table; inspect target schema and follow normal recovery/ledger gates before any application of its pending migration. No remote database changes were performed for local implementation.
+Reuses `operations_lease_links`; no schema migration, paid storage, provider API call, OAuth or file upload is introduced. Save batches metadata and audit atomically, with lease-scoped duplicate detection and safe retry. Removal uses an authenticated same-origin DELETE route scoped to both lease and link ID.
 
-Only HTTPS drive.google.com individual file URLs are allowed; folders, alternate hosts, credentials, fragments and unrecognized query parameters are rejected. Canonical links retain optional Drive resourcekey values, which may be necessary for access, but drop tracking `usp`. Metadata is served only through authenticated Admin routes with private/no-store responses. Same-origin writes use existing authorization. Save batches metadata and audit atomically, scopes duplicate detection to lease/provider/file, and retains the receipt when retrying a failed save. Audit excludes the URL/resource key. Google and Microsoft lists filter by provider so Google links are not mislabeled as OneDrive.
-
-## Local verification
-
-424 tests passed across 55 files, including normalization, restricted-sharing acknowledgement, unsafe-link rejection, metadata/audit contract and duplicate-save handling. Responsive rendered checks at 1440/768/390px used simulated APIs: empty/disabled states, clear, backend error retaining draft, same-receipt retry, double-click single write, refresh persistence and no horizontal overflow. This does not establish real Google access, hosted persistence, tenant isolation for Google documents or deployed availability. Verify hosted behavior using an approved QA PDF before client acceptance.
-
-## Provider-neutral sharing links (21 October update)
-The primary form is now “PDF sharing link — optional”, with no provider branding. It accepts Google Drive file links and Microsoft personal OneDrive PDF short links, OneDrive live file references, and SharePoint/OneDrive for Business PDF sharing links. The pasted-link route is `/sharing-links`; `/google-links` remains a compatibility alias. Existing links remain visible in one list. Microsoft sharing references use `drive_id=microsoft-sharing`; picker references remain intact. No migration, OAuth, redirect resolution or permission changes are required. Admin must verify the PDF, lease and specific-people access. A pasted URL cannot establish actual MIME type, provider permissions or deduplicate different sharing URLs pointing to the same Microsoft file.
+Regression tests cover normalization, unsafe inputs, metadata/audit, duplicate save, selected-link removal, missing-link retries and SQLite transaction rollback. Responsive fixture-browser QA covers removed upload UI, sharing instructions, removal cancel/error/retry/success and refresh. Hosted checks and real provider access must be reported separately from fixture-browser and local database results.
