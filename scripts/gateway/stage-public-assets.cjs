@@ -7,6 +7,7 @@ if(!source||!output)throw Error('Expected OpenNext assets and disposable gateway
 const input=path.resolve(source),out=path.resolve(output);
 if(out===input||out.startsWith(input+path.sep)||input.startsWith(out+path.sep))throw Error('Use separate staging and asset directories');
 if(fs.existsSync(out)&&fs.readdirSync(out).length)throw Error('Output must be empty to avoid retaining private or stale files');
+require('../images/assert-staged.cjs').verify(process.cwd(),input);
 fs.mkdirSync(out,{recursive:true});
 for(const relative of ['_next/static','images','brand','documents/news']){
  const from=path.join(input,relative);if(!fs.existsSync(from))continue;

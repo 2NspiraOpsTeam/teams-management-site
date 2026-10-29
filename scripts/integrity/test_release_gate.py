@@ -2,9 +2,13 @@
 import pathlib
 import tempfile
 import unittest
-from check_release import verify_fingerprint
+from check_release import verify_fingerprint, Page
 
 class ReleaseGateTests(unittest.TestCase):
+ def test_photo_sources_are_checked_separately_from_html(self):
+  page=Page('<img src="/api/media/example?v=abc&amp;w=480"><img src="/photo-variants/hash.webp"><img src="https://outside.test/private">')
+  self.assertEqual(page.images,['/api/media/example?v=abc&w=480','/photo-variants/hash.webp'])
+
  def test_wrong_application_revision_is_never_accepted(self):
   with self.assertRaises(AssertionError):
    verify_fingerprint('/',200,{'X-Teams-Release':'old'},b'page','current')
@@ -19,6 +23,11 @@ class ReleaseGateTests(unittest.TestCase):
     verify_fingerprint('/_next/static/chunks/test.js',200,{},b'old','sha',directory)
    with self.assertRaises(AssertionError):
     verify_fingerprint('/_next/static/chunks/test.js',200,{},b'current','sha')
+ def test_edge_photo_requires_exact_artifact_bytes(self):
+  with tempfile.TemporaryDirectory() as directory:
+   asset=pathlib.Path(directory)/'photo-variants/test.webp';asset.parent.mkdir();asset.write_bytes(b'prepared')
+   verify_fingerprint('/photo-variants/test.webp',200,{},b'prepared','sha',directory)
+   with self.assertRaises(AssertionError):verify_fingerprint('/photo-variants/test.webp',200,{},b'wrong','sha',directory)
  def test_asset_cannot_escape_artifact(self):
   with tempfile.TemporaryDirectory() as directory:
    with self.assertRaises(AssertionError):
