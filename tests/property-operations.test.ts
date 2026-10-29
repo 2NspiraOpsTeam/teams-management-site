@@ -444,3 +444,26 @@ it('shows only the selected building-wide cover in property lists and detail wit
  expect((await(await request('properties/b2')).json()).cover_asset_id).toBeNull();
  expect(sql.prepare('SELECT COUNT(*) AS n FROM media_assignments').get()?.n).toBe(2);
 });
+
+it('keeps current and earlier tenant agreements separate and paginates newest first without another occupant’s leases',async()=>{
+ const current=await createLease();
+ const before=sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(current.id);
+ const earlier=await createLease({lease_start:'2020-01-01',lease_end:'2020-12-31',status:'expired'});
+ await createLease({lease_start:'2019-01-01',lease_end:'2019-12-31',status:'expired',holders:[holder('t2')]});
+ const history=await(await request('leases?tenantId=t1&sort=recent')).json();
+ expect(history.items.map((l:any)=>l.id)).toEqual([current.id,earlier.id]);
+ expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(current.id)).toEqual(before);
+ expect(sql.prepare('SELECT predecessor_id FROM operations_leases WHERE id=?').get(earlier.id)?.predecessor_id).toBeNull();
+ const duplicate=await request('leases','POST',leaseInput({lease_start:'2020-01-01',lease_end:'2020-12-31',status:'expired'}));
+ expect(duplicate.status).toBe(409);
+ expect(sql.prepare('SELECT * FROM operations_leases WHERE id=?').get(current.id)).toEqual(before);
+});
+
+it('finds lease-editor tenants by surname and email fragments, preserves literal wildcard handling and does not require a residence match',async()=>{
+ sql.prepare("UPDATE tenant_accounts SET display_name='Longterm ExampleSurname',email='longterm@example.test' WHERE id='t1'").run();
+ const surname=await(await request('tenants?q=ExampleSurname&match=contains')).json();expect(surname.items.map((t:any)=>t.id)).toEqual(['t1']);
+ const email=await(await request('tenants?q=term%40example&match=contains')).json();expect(email.items.map((t:any)=>t.id)).toEqual(['t1']);
+ expect((await(await request('tenants?q=ExampleSurname')).json()).items).toHaveLength(0);
+ expect((await(await request('tenants?q=%25&match=contains')).json()).items).toHaveLength(0);
+ expect((await(await request('tenants?q=not-found&match=contains')).json()).items).toHaveLength(0);
+});
