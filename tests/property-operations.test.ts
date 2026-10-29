@@ -467,3 +467,25 @@ it('finds lease-editor tenants by surname and email fragments, preserves literal
  expect((await(await request('tenants?q=%25&match=contains')).json()).items).toHaveLength(0);
  expect((await(await request('tenants?q=not-found&match=contains')).json()).items).toHaveLength(0);
 });
+
+it('saves a new lease and its OneDrive URL atomically and suppresses whole-form retries',async()=>{
+ sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));
+ const assignments=sql.prepare('SELECT * FROM tenant_assignments ORDER BY id').all();
+ const l=await createLease({pdfLink:{name:'QA lease.pdf',webUrl:'https://1drv.ms/b/s!qa_lease?e=abc',reviewed:true}});
+ const link=sql.prepare('SELECT lease_id,file_name,drive_id FROM operations_lease_links').get();expect(link).toMatchObject({lease_id:l.id,file_name:'QA lease.pdf',drive_id:'microsoft-sharing'});
+ expect((await request('leases','POST',l.data)).status).toBe(200);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(1);expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_lease_links').get()?.n).toBe(1);
+ expect(sql.prepare('SELECT * FROM tenant_assignments ORDER BY id').all()).toEqual(assignments);
+ expect(JSON.stringify(sql.prepare('SELECT record_after_json FROM audit_log').all())).not.toContain('https://');
+});
+it('rejects invalid/unreviewed lease URLs before writing and rolls back the agreement when link storage fails',async()=>{
+ sql.exec(readFileSync('src/lib/migrations/lease-onedrive-links.sql','utf8'));
+ for(const pdfLink of [{name:'QA.pdf',webUrl:'https://evil.test/lease.pdf',reviewed:true},{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:false}])expect((await request('leases','POST',leaseInput({pdfLink}))).status).toBe(400);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_leases').get()?.n).toBe(0);
+ const input=leaseInput({pdfLink:{name:'QA.pdf',webUrl:'https://1drv.ms/b/qa',reviewed:true}});
+ sql.exec("CREATE TRIGGER qa_link_failure BEFORE INSERT ON operations_lease_links BEGIN SELECT RAISE(ABORT,'QA link failure'); END;");
+ expect((await request('leases','POST',input)).status).toBe(409);
+ for(const table of ['operations_leases','operations_leaseholders','operations_lease_links','operations_mutation_receipts','audit_log'])expect(sql.prepare('SELECT COUNT(*) AS n FROM '+table).get()?.n).toBe(0);
+ sql.exec('DROP TRIGGER qa_link_failure');expect((await request('leases','POST',input)).status).toBe(201);
+ expect(sql.prepare('SELECT COUNT(*) AS n FROM operations_lease_links').get()?.n).toBe(1);
+});
