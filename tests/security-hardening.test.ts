@@ -4,8 +4,8 @@ import {middleware} from '../src/middleware';
 const mocks=vi.hoisted(()=>({db:vi.fn(()=>{throw Error('Database must not be reached');})}));
 vi.mock('../src/lib/admin-auth',()=>({adminDb:mocks.db,adminEnv:mocks.db,activeAdmin:mocks.db,currentAdmin:mocks.db,hash:mocks.db,cookieName:'teams_admin_session',sameOrigin:(r:Request)=>r.headers.get('origin')===new URL(r.url).origin,unauthorized:()=>new Response('{}',{status:401})}));
 vi.mock('../src/lib/tenant-auth',()=>({tenantDb:mocks.db,currentTenant:mocks.db,tenantCodeHash:mocks.db,randomHex:mocks.db,tenantCookie:'teams_tenant_session'}));
-import {POST as adminLogin} from '../src/app/api/admin/session/route';
-import {POST as tenantLogin} from '../src/app/api/tenant/session/route';
+import {POST as adminLogin} from '../src/lib/admin-code-session';
+import {POST as tenantLogin} from '../src/lib/tenant-code-session';
 it.each([adminLogin,tenantLogin])('bounds sign-in bodies before parsing or querying, including chunked bodies',async post=>{
  for(const chunked of [false,true]){
   const raw='{"email":"'+ 'x'.repeat(5000)+'"}';

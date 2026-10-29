@@ -1,2 +1,2 @@
 import { redirect } from 'next/navigation';
-export default function AdminLogin(){redirect('/tenant/login?method=password');}
+export default function AdminLogin(){redirect('/tenant/login');}

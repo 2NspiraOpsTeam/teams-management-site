@@ -1,3 +1,4 @@
+import { rememberedBrowser, browserToken } from '@/lib/remembered-browser';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { adminDb, cookieName, hash, requireAdmin, sameOrigin, unauthorized } from '@/lib/admin-auth';
@@ -27,14 +28,16 @@ export async function POST(request:Request) {
   const value=await input(request),email=emailValue(value.email);
   if(!/^[^\s@]{1,64}@[^\s@]{1,190}$/.test(email)||typeof value.password!=='string'||value.password.length>128||!value.password)return reply({error:'Enter your email address and password.'},400);
   const blocked=await limit(request,email);if(blocked)return blocked;
+  if(!await rememberedBrowser(request,email))return reply({error:'Verify your email with a sign-in code on this browser.'},401);
   const db=adminDb();
+  const browserHash=await hash(browserToken(request));
   const row=await db.prepare('SELECT p.password_hash,p.version FROM admin_passwords p JOIN admin_identities a ON a.email=p.email WHERE p.email=? AND a.active=1').bind(email).first<{password_hash:string;version:string}>();
   if(!await verifyPassword(value.password,row?.password_hash??null)||!row)return reply({error:'Email or password is incorrect. You can also sign in with an email code.'},401);
   const token=randomSession(),tokenHash=await hash(token);
   // Recheck credential version and active identity inside the session write to
   // prevent a concurrent reset/disable from issuing a stale authenticated session.
   const result=await db.batch([
-   db.prepare("INSERT INTO admin_sessions (token_hash,email,expires_at) SELECT ?,p.email,datetime('now','+24 hours') FROM admin_passwords p JOIN admin_identities a ON a.email=p.email WHERE p.email=? AND p.version=? AND a.active=1").bind(tokenHash,email,row.version),
+   db.prepare("INSERT INTO admin_sessions (token_hash,email,expires_at) SELECT ?,p.email,datetime('now','+24 hours') FROM admin_passwords p JOIN admin_identities a ON a.email=p.email WHERE p.email=? AND p.version=? AND a.active=1 AND EXISTS (SELECT 1 FROM admin_remembered_browsers b WHERE b.token_hash=? AND b.email=p.email AND b.revoked_at IS NULL AND b.expires_at>datetime('now'))").bind(tokenHash,email,row.version,browserHash),
    db.prepare('INSERT INTO admin_password_sessions (token_hash) SELECT token_hash FROM admin_sessions WHERE token_hash=?').bind(tokenHash),
   ]);
   if(result[0].meta.changes!==1)return unauthorized();
@@ -69,6 +72,7 @@ export async function PUT(request:Request) {
   const encoded=await encodePassword(value.password as string),version=crypto.randomUUID();
   const event=JSON.stringify({targetEmail:target,changedBy:admin.email});
   await db.batch([
+   db.prepare("UPDATE admin_remembered_browsers SET revoked_at=datetime('now') WHERE email=? AND revoked_at IS NULL").bind(target),
    db.prepare("INSERT INTO admin_passwords (email,password_hash,version) VALUES (?,?,?) ON CONFLICT(email) DO UPDATE SET password_hash=excluded.password_hash,version=excluded.version,updated_at=datetime('now')").bind(target,encoded,version),
    db.prepare("UPDATE admin_sessions SET revoked_at=datetime('now') WHERE email=? AND token_hash<>? AND revoked_at IS NULL").bind(target,tokenHash),
    db.prepare("INSERT INTO audit_log (id,action,entity_type,entity_id,record_after_json,user_actor) VALUES (?,'admin_password_changed','admin_identity',?,?,?)").bind(crypto.randomUUID(),target,event,admin.email),

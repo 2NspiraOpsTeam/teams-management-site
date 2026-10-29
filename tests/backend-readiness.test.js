@@ -75,9 +75,9 @@ import * as adminOrderDetail from "../src/app/api/admin/tenant-maintenance/[id]/
 import * as tenantPhotos from "../src/app/api/tenant/maintenance/photos/[id]/route";
 import * as adminPhotos from "../src/app/api/admin/tenant-maintenance/photos/[id]/route";
 import * as retryNotice from "../src/app/api/admin/tenant-maintenance/[id]/retry/route";
-import * as admin from "../src/app/api/admin/session/route";
+import * as admin from "../src/lib/admin-code-session";
 import * as passwords from "../src/app/api/admin/password/route";
-import * as tenant from "../src/app/api/tenant/session/route";
+import * as tenant from "../src/lib/tenant-code-session";
 import * as maintenance from "../src/app/api/tenant/maintenance/route";
 import * as contact from "../src/app/api/contact/route";
 import * as reports from "../src/app/api/buildings/data-report/route";
@@ -137,6 +137,7 @@ beforeEach(() => {
     "admin-phase1.sql",
     "admin-otp.sql",
     "admin-passwords.sql",
+    "remembered-browsers.sql",
     "tenant-portal.sql",
     "work-orders-mvp.sql",
     "property-operations.sql",
@@ -1124,7 +1125,11 @@ it("fresh verified email-code login bootstraps a password; password login cannot
   const save = () => new Request(origin + "/api/admin/password", {method:"PUT",headers:{origin,"content-type":"application/json"},body:JSON.stringify({email:"qa-admin@example.test",password})});
   expect((await passwords.PUT(save())).status).toBe(200);
   state.cookies.clear();
-  const response = await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}));
+  expect((await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}))).status).toBe(401);
+  // Simulate browser enrollment only after the separately exercised verified OTP.
+  const browserToken = "b".repeat(64);
+  sql.prepare("INSERT INTO admin_remembered_browsers(token_hash,email,expires_at) VALUES (?,'qa-admin@example.test',datetime('now','+1 day'))").run(await hash(browserToken));
+  const response = await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}, {cookie:"__Host-teams_browser="+browserToken}));
   expect(response.status).toBe(200);
   state.cookies.set("teams_admin_session",response.headers.get("set-cookie").split(";")[0].split("=")[1]);
   expect(await currentAdmin()).toBe("qa-admin@example.test");
