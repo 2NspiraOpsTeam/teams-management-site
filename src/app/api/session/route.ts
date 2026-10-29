@@ -3,7 +3,7 @@ import { activeAdmin, adminDb, hash, sameOrigin } from '@/lib/admin-auth';
 import { boundedBody, BodyTooLarge } from '@/lib/request-body';
 import { POST as adminSignIn } from '@/lib/admin-code-session';
 import { POST as tenantSignIn } from '@/lib/tenant-code-session';
-import { rememberedBrowser, rememberBrowser } from '@/lib/remembered-browser';
+import { rememberBrowser } from '@/lib/remembered-browser';
 
 export const runtime = 'nodejs';
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -33,8 +33,6 @@ export async function POST(request: Request) {
  try {
   const blocked = await limited(request,email,input.action);
   if (input.action === 'request') {
-   // Only an existing server-issued browser credential may disclose a password option.
-   if (!blocked && input.sendCode !== true && await rememberedBrowser(request,email)) return reply({ passwordAvailable: true });
    // Atomically claim a one-minute dispatch window before scheduling. Concurrent
    // retries/double clicks cannot race the role-specific recent-code lookup.
    const cooldown = !blocked ? await adminDb().prepare("INSERT INTO admin_login_throttle (key_hash,window_start,count) VALUES (?,datetime('now'),1) ON CONFLICT(key_hash) DO UPDATE SET count=CASE WHEN window_start<=datetime('now','-60 seconds') THEN 1 ELSE count+1 END,window_start=CASE WHEN window_start<=datetime('now','-60 seconds') THEN datetime('now') ELSE window_start END RETURNING count").bind(await hash(`shared:dispatch:${email}`)).first<{count:number}>() : null;
