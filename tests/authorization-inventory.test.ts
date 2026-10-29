@@ -16,6 +16,7 @@ for(const [path,load] of Object.entries(routes)){
     const module=await load() as Record<string,Function>;
     for(const [method,handler] of Object.entries(module)){
       if(!['GET','POST','PUT','PATCH','DELETE'].includes(method))continue;
+      if(path.endsWith('/admin/password/route.ts') && method==='POST')continue; // Public credential sign-in; dedicated password suite. All management methods remain inventoried.
       const url='https://site.test/'+path.split('../src/app/')[1].replace('/route.ts','');
       const request=new Request(url,{method,headers:{origin:'https://site.test','content-type':'application/json',cookie:'teams_admin_session=forged; teams_tenant_session=forged'},...(!['GET','HEAD'].includes(method)?{body:'{}'}:{})});
       const response=await handler(request,{params:Promise.resolve({id:'00000000-0000-4000-8000-000000000001',page:'home',path:['overview']})});

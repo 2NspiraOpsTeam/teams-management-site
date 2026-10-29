@@ -532,6 +532,7 @@ it("every Admin API handler enforces session authorization and mutations reject 
     const handlers = await load();
     for (const method of ["GET", "POST", "PATCH", "PUT", "DELETE"]) {
       if (typeof handlers[method] !== "function") continue;
+      if (path.endsWith("/admin/password/route.ts") && method === "POST") continue; // Public sign-in only; GET/PUT still require sessions.
       const request = new Request(origin + "/api/admin/qa", {
         method,
         headers: {

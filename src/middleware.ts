@@ -42,7 +42,7 @@ export function middleware(request: NextRequest) {
     }
     return protect(NextResponse.next(), path === '/tenant' || path.startsWith('/tenant/') || path.startsWith('/api/tenant/') || path === '/access');
   }
-  if (path === '/api/admin/session') return protect(NextResponse.next(), true);
+  if (path === '/api/admin/session' || path === '/api/admin/password' && request.method === 'POST') return protect(NextResponse.next(), true);
   if (!request.cookies.get('teams_admin_session')?.value) {
     return protect(path === '/admin' || path.startsWith('/admin/') ? NextResponse.redirect(new URL('/access', request.url)) : new NextResponse('Not found', { status: 404 }), true);
   }

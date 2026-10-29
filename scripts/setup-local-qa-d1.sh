@@ -9,6 +9,7 @@ for schema_file in \
   "$media_schema_file" \
   src/lib/migrations/admin-phase1.sql \
   src/lib/migrations/admin-otp.sql \
+  src/lib/migrations/admin-passwords.sql \
   src/lib/migrations/tenant-portal.sql \
   src/lib/migrations/work-orders-mvp.sql \
   src/lib/migrations/media-read-indexes.sql \

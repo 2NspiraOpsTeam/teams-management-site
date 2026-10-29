@@ -23,3 +23,7 @@ it('keeps private/API routes non-indexable and private data uncached without blo
  for(const path of ['/admin','/api/admin/session','/api/tenant/session','/tenant/login','/access']){const r=middleware(new NextRequest('https://site.test'+path));expect(r.headers.get('x-robots-tag')).toContain('noindex');expect(r.headers.get('cache-control')).toContain('no-store');expect(r.headers.get('content-security-policy')).toContain("object-src 'none'");}
  const r=middleware(new NextRequest('https://site.test/tenant-services',{headers:{cookie:'teams_feature_visit=0'}}));expect(r.headers.get('x-robots-tag')).toBeNull();expect(r.headers.get('x-frame-options')).toBe('SAMEORIGIN');
 });
+it('exposes only password sign-in POST to anonymous users, not password management',()=>{
+ const post=middleware(new NextRequest('https://site.test/api/admin/password',{method:'POST'}));expect(post.status).toBe(200);expect(post.headers.get('cache-control')).toContain('no-store');
+ for(const method of ['GET','PUT'])expect(middleware(new NextRequest('https://site.test/api/admin/password',{method})).status).toBe(404);
+});
