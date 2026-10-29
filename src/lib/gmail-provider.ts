@@ -17,7 +17,14 @@ export async function sendGmail(env: MailEnv, from: string, to: string, subject:
     method: 'POST', signal: AbortSignal.timeout(10000), headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ client_id: env.GOOGLE_CLIENT_ID!, client_secret: env.GOOGLE_CLIENT_SECRET!, refresh_token: env.GOOGLE_REFRESH_TOKEN!, grant_type: 'refresh_token' }),
   });
-  if (!tokenResponse.ok) throw new Error(`gmail_token_http_${tokenResponse.status}`);
+  if (!tokenResponse.ok) {
+    let category = '';
+    try {
+      const detail = await tokenResponse.json() as {error?: unknown};
+      if (typeof detail.error === 'string' && ['invalid_grant','invalid_client','unauthorized_client','access_denied','temporarily_unavailable'].includes(detail.error)) category = `_${detail.error}`;
+    } catch { /* Status remains useful when the provider returns no JSON. */ }
+    throw new Error(`gmail_token_http_${tokenResponse.status}${category}`);
+  }
   const token = await tokenResponse.json() as { access_token?: string };
   if (!token.access_token) throw new Error('gmail_token_missing');
   const encodePart = (value: string) => base64(value).match(/.{1,76}/g)?.join('\r\n') || '';
