@@ -11,7 +11,9 @@ export function Footer() {
           
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <PublishedPhoto src="/brand/teams-management-gold-emblem.png" alt="Teams Management" width="224" height="224" className="mb-4 h-48 w-48 sm:h-56 sm:w-56 object-contain" />
+            <Link prefetch={false} href="/" aria-label="Teams Management home" className="mb-4 inline-flex rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D8BD86]">
+            <PublishedPhoto src="/brand/teams-management-gold-emblem.png" alt="" width="224" height="224" className="h-48 w-48 sm:h-56 sm:w-56 object-contain" />
+            </Link>
             <p className="text-slate-300 text-sm leading-relaxed max-w-md"><WebsiteText contentKey="footer.text-1">
               Teams Management property portfolio in New York City.
             </WebsiteText></p>

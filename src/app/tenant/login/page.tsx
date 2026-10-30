@@ -33,7 +33,7 @@ export default function TenantLogin() {
   finally {locked.current = false;setBusy(false);}
  }
  return <main id="main-content" className="resident-login"><div className="resident-login-card">
-  <div className="mb-7 border-b border-stone-200 pb-6"><PortalBrand href="/tenant/login" label="Sign in"/></div>
+  <div className="mb-7 border-b border-stone-200 pb-6"><PortalBrand label="Sign in"/></div>
   <h1 className="text-3xl font-serif font-semibold text-teams-ink">Welcome back.</h1>
   <p className="mt-2 text-slate-600">Enter your email address to sign in.</p>
   <form onSubmit={event=>{event.preventDefault();if(step==='email'){setStep('options');setMessage('');}else if(step!=='options'){void submit(step==='password'?'password':'verify');}}} className="mt-6 space-y-4">
