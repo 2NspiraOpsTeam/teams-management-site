@@ -8,9 +8,10 @@ from html.parser import HTMLParser
 
 class Page(HTMLParser):
  def __init__(self,html):
-  super().__init__(convert_charrefs=True);self.metas={};self.canonicals=[];self.links=[];self.scripts=[];self.assets=[];self.title='';self.h1=0;self.active=None;self.script='';self.feed(html)
+  super().__init__(convert_charrefs=True);self.metas={};self.canonicals=[];self.links=[];self.scripts=[];self.assets=[];self.images=[];self.title='';self.h1=0;self.active=None;self.script='';self.feed(html)
  def handle_starttag(self,tag,attrs):
   a=dict(attrs)
+  if tag=='img' and a.get('src','').startswith(('/api/media/','/photo-variants/')):self.images.append(a['src'])
   if tag=='meta':self.metas.setdefault(a.get('name',a.get('property','')),[]).append(a.get('content',''))
   if tag=='link' and a.get('rel')=='canonical':self.canonicals.append(a.get('href'))
   if tag=='a':self.links.append(a.get('href',''))
@@ -36,7 +37,7 @@ def verify_fingerprint(path, status, headers, body, release, asset_root=None):
  if actual is not None:
   assert actual==release,f'{path}: runtime fingerprint mismatch'
   return
- if path.startswith('/_next/static/'):
+ if path.startswith(('/_next/static/','/photo-variants/')):
   assert asset_root is not None,f'{path}: edge asset requires --asset-root for byte verification'
   root=pathlib.Path(asset_root).resolve();local=(root/path.lstrip('/')).resolve()
   assert local.is_relative_to(root) and local.is_file(),f'{path}: expected release asset missing locally'
@@ -48,7 +49,7 @@ def verify_fingerprint(path, status, headers, body, release, asset_root=None):
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--origin',required=True);p.add_argument('--release',required=True);p.add_argument('--scope',choices=['preview','production'],required=True);p.add_argument('--full',action='store_true');p.add_argument('--output');p.add_argument('--asset-root',help='Exact deployed OpenNext asset directory; required for edge-served asset byte verification');p.add_argument('--access-file',help='Private diagnostic service token; scoped to this project only');a=p.parse_args()
- contract=json.loads(pathlib.Path(__file__).with_name('release_contract.json').read_text());origin=a.origin.rstrip('/');canonical=contract['canonical_'+a.scope];count=0;pages=[];seen=set();assets=set()
+ contract=json.loads(pathlib.Path(__file__).with_name('release_contract.json').read_text());origin=a.origin.rstrip('/');canonical=contract['canonical_'+a.scope];count=0;pages=[];seen=set();assets=set();images=set()
  access={}
  if a.access_file:
   host=urllib.parse.urlparse(origin).hostname
@@ -85,12 +86,23 @@ def main():
   if path=='/':
    assert page.title==contract['home_title'] and page.meta('description')==contract['home_description'],'Approved sharing copy changed'
    assert not any(s in page.title+page.meta('description')+page.meta('og:title') for s in contract['forbidden_home_copy']),'Superseded sharing copy'
-   assets.update(page.assets[:6])
+   assets.update(page.assets[:6]);images.update(page.images[:6])
   if a.full:
    for link in page.links:
     if re.fullmatch(r'/(properties|retail)/[^/?#]+',link) and link not in seen and link not in queue:queue.append(link)
   pages.append({'path':path,'title':page.title})
  assert len({x['title'] for x in pages})==len(pages),'Duplicate page titles'
+ # Photo availability is a release gate, independent of successful page HTML.
+ manifest=json.loads(pathlib.Path(__file__).parents[2].joinpath('src/lib/generated/photo-variants.json').read_text())
+ expected={}
+ for photo in manifest:
+  for variant in photo['variants']:
+   key=(f"/api/media/{urllib.parse.quote(photo['id'])}?v={photo['sourceSha256']}&w={variant['width']}" if photo['kind']=='media' else '/photo-variants/'+variant['file'])
+   expected[key]=variant['sha256']
+ for path in sorted(images):
+  status,headers,body=get(path)
+  assert status==200 and headers.get('Content-Type','').startswith('image/'),f'Missing public photograph: {path}'
+  assert path in expected and hashlib.sha256(body).hexdigest()==expected[path],f'Photo artifact mismatch: {path}'
  for path in sorted(assets):
   status,headers,body=get(path);assert status==200 and len(body)>0,f'Missing release asset: {path}'
  for path in contract['protected_paths']:

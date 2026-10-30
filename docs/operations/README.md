@@ -7,6 +7,7 @@ Start with the [current development handoff](WATERBEAR-DEVELOPMENT.md). It repla
 - [Optional OneDrive lease PDFs](ONEDRIVE-LEASE-PDFS.md): metadata-only picker, Microsoft registration, no R2/billing, release prerequisites.
 - [Resident home, household roster, contacts and lease summaries](RESIDENT-HOME-2026-10-18.md): three-user limit, approved cover photography, release verification and remaining document/data readiness.
 - [Resident portal and household access](TENANT-PORTAL-2026-10-18.md): current feature scope, permissions and QA.
+- [Photo delivery incident and mandatory packaging gates](PHOTO-INCIDENT-2026-10-29.md): recovery, full-image release checks and live monitoring.
 - [Published photo quality and zero-cost delivery](PHOTO-QUALITY-2026-10-19.md): full image inventory, source fidelity, responsive delivery, stable verification and limits.
 - [Integrity hardening and release gates](INTEGRITY-HARDENING-2026-10-19.md): verified preview protections, monitoring, recovery proof and remaining limits.
 - [Backup and restore procedure](BACKUP-AND-RESTORE.md): capture, verify, recover, and prove the result.

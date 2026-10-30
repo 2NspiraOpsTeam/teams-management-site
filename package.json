@@ -12,7 +12,8 @@
     "test": "vitest run",
     "qa:d1:local": "bash scripts/setup-local-qa-d1.sh",
     "build:worker": "opennextjs-cloudflare build --config wrangler.worker.jsonc",
-    "build:preview:worker": "NEXT_PUBLIC_PREVIEW_PORTFOLIO=1 opennextjs-cloudflare build --config wrangler.worker.jsonc && node scripts/images/stage.cjs"
+    "build:preview:worker": "NEXT_PUBLIC_PREVIEW_PORTFOLIO=1 opennextjs-cloudflare build --config wrangler.worker.jsonc && node scripts/images/stage.cjs",
+    "verify:photos:artifact": "node scripts/images/assert-staged.cjs"
   },
   "dependencies": {
     "@azure/msal-browser": "^5.25.1",

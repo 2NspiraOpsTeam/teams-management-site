@@ -11,11 +11,7 @@ let sql:DatabaseSync;
 const origin='https://example.test';
 function adapter(){return {prepare(query:string){let args:any[]=[];const p={bind(...v:any[]){args=v;return p;},async first(){return sql.prepare(query).get(...args)||null;},async all(){return {results:sql.prepare(query).all(...args)};},async run(){return {meta:{changes:Number(sql.prepare(query).run(...args).changes)}};}};return p;},async batch(statements:any[]){sql.exec('BEGIN');try{const out=[];for(const s of statements)out.push(await s.run());sql.exec('COMMIT');return out;}catch(e){sql.exec('ROLLBACK');throw e;}}};}
 const req=(body:unknown,method='POST',source=origin)=>new Request(origin+'/api/admin/password',{method,headers:{origin:source,'content-type':'application/json'},body:JSON.stringify(body)});
-async function login(body:any) {
- const token='b'.repeat(64);
- if(sql.prepare('SELECT email FROM admin_identities WHERE email=?').get(String(body.email).trim().toLowerCase()))sql.prepare("INSERT OR REPLACE INTO admin_remembered_browsers(token_hash,email,expires_at) VALUES (?,?,datetime('now','+1 day'))").run(await hash(token),String(body.email).trim().toLowerCase());
- const request=req(body);request.headers.set('cookie','__Host-teams_browser='+token);return POST(request);
-}
+async function login(body:any) {return POST(req(body));}
 const password='Synthetic-only long passphrase 42';
 beforeEach(async()=>{
  sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');
@@ -81,13 +77,19 @@ it('rolls back credential and session changes when auditing fails',async()=>{
 });
 it('applies the new migration repeatedly without changing preexisting identities and sessions',()=>{sql.exec(readFileSync('src/lib/migrations/admin-passwords.sql','utf8'));expect(sql.prepare('SELECT count(*) n FROM admin_identities').get()?.n).toBe(3);expect(sql.prepare('SELECT count(*) n FROM admin_sessions').get()?.n).toBe(1);expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);});
 
-it('requires a valid browser credential even for the correct password; reset revokes it',async()=>{
+it('accepts an existing admin password on a new browser and rejects the old password after reset',async()=>{
  await PUT(req({email:'admin@example.test',password},'PUT'));
- expect((await POST(req({email:'admin@example.test',password}))).status).toBe(401);
- expect((await login({email:'admin@example.test',password})).status).toBe(200);
- const request=req({email:'admin@example.test',password});request.headers.set('cookie','__Host-teams_browser='+'b'.repeat(64));
- sql.exec("UPDATE admin_remembered_browsers SET expires_at=datetime('now','-1 second')");expect((await POST(request)).status).toBe(401);
- await login({email:'admin@example.test',password});
+ expect((await POST(req({email:'admin@example.test',password}))).status).toBe(200);
  await PUT(req({email:'admin@example.test',password:password+' new'},'PUT'));
- expect(sql.prepare('SELECT count(*) n FROM admin_remembered_browsers WHERE revoked_at IS NULL').get()?.n).toBe(0);
+ expect((await POST(req({email:'admin@example.test',password}))).status).toBe(401);
+ expect((await POST(req({email:'admin@example.test',password:password+' new'}))).status).toBe(200);
+});
+it('returns identical failures for unknown, inactive, no-password and incorrect-password identities',async()=>{
+ await PUT(req({email:'admin@example.test',password},'PUT'));
+ const bodies:unknown[]=[];
+ for(const email of ['missing@example.test','disabled@example.test','other@example.test','admin@example.test']) {
+  const response=await POST(req({email,password:'incorrect passphrase'}));
+  expect(response.status).toBe(401);expect(response.headers.get('set-cookie')).toBeNull();bodies.push(await response.json());
+ }
+ expect(bodies.every(body=>JSON.stringify(body)===JSON.stringify(bodies[0]))).toBe(true);
 });

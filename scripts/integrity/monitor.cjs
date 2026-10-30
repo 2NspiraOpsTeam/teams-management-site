@@ -46,6 +46,14 @@ async function snapshot(config,fetcher=fetch,now=new Date()) {
   authHealth(),
  ]);
  const problems=[],metrics={};
+ // Bounded independent byte checks: a healthy HTML response cannot hide photos.
+ if(config.photo_probes?.length){
+  const {check}=require('../images/live-gate.cjs');
+  const results=await Promise.allSettled(config.photo_probes.slice(0,3).map(p=>check(config.origin,p,config.expected_release,fetcher)));
+  metrics.photosChecked=results.length;metrics.photosFailed=results.filter(r=>r.status==='rejected').length;
+  if(metrics.photosFailed)problems.push('Public photograph delivery failed');
+ }
+
  if(d1.status==='fulfilled'){
   const rows=d1.value.d1AnalyticsAdaptiveGroups; if(rows.length>=20)problems.push('D1 analytics truncated; totals are incomplete');
   metrics.rowsRead=rows.reduce((n,r)=>n+r.sum.rowsRead,0);metrics.rowsWritten=rows.reduce((n,r)=>n+r.sum.rowsWritten,0);

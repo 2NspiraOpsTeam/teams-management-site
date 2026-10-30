@@ -1125,11 +1125,8 @@ it("fresh verified email-code login bootstraps a password; password login cannot
   const save = () => new Request(origin + "/api/admin/password", {method:"PUT",headers:{origin,"content-type":"application/json"},body:JSON.stringify({email:"qa-admin@example.test",password})});
   expect((await passwords.PUT(save())).status).toBe(200);
   state.cookies.clear();
-  expect((await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}))).status).toBe(401);
-  // Simulate browser enrollment only after the separately exercised verified OTP.
-  const browserToken = "b".repeat(64);
-  sql.prepare("INSERT INTO admin_remembered_browsers(token_hash,email,expires_at) VALUES (?,'qa-admin@example.test',datetime('now','+1 day'))").run(await hash(browserToken));
-  const response = await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}, {cookie:"__Host-teams_browser="+browserToken}));
+  // An existing password works on a fresh browser without revealing account status.
+  const response = await passwords.POST(post("/api/admin/password", {email:"qa-admin@example.test",password}));
   expect(response.status).toBe(200);
   state.cookies.set("teams_admin_session",response.headers.get("set-cookie").split(";")[0].split("=")[1]);
   expect(await currentAdmin()).toBe("qa-admin@example.test");

@@ -65,7 +65,7 @@ it('issues only a hashed, expiring, secure browser credential after successful a
  for(const flag of ['HttpOnly','Secure','SameSite=strict','Max-Age=2592000','Path=/'])expect(cookies).toContain(flag);
  const issued=cookies.match(/__Host-teams_browser=([a-f0-9]{64})/)![1];
  const row=sql.prepare('SELECT * FROM admin_remembered_browsers').get()!;expect(row.token_hash).toBe(await hash(issued));expect(JSON.stringify(row)).not.toContain(issued);expect(row.expires_at).toBeTruthy();
- const recognized=await POST(request({action:'request',email},'__Host-teams_browser='+issued));expect(await recognized.json()).toEqual({passwordAvailable:true});expect(state.pending).toHaveLength(0);
+ const recognized=await POST(request({action:'request',email},'__Host-teams_browser='+issued));expect(await recognized.json()).toEqual({message:'If this email is authorized, a sign-in code has been sent.'});expect(state.pending).toHaveLength(1);
 });
 it('does not accept flags, guessed cookies, another email, expiry, revocation or disabled identity',async()=>{
  await enroll();

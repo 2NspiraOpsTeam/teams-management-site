@@ -1,12 +1,16 @@
 # Private email-first sign-in and optional passwords
 
-Everyone enters `/tenant/login` through **Email address → Continue**. There is
-no public role selector, password button, admin copy or query-string shortcut.
-`/access` and `/admin-login` redirect to the neutral page. Legacy role-specific
-session POST URLs delegate to the same shared handler rather than exposing a
-second account-discovery surface.
+Everyone enters `/tenant/login` through **Email address → Continue**. Continue
+shows the same **Use a password / Email me a code** choices for every valid email,
+without an account lookup or automatic mail request. No Admin label or role selector
+is shown. `/access` and `/admin-login` redirect here. Password failures use identical
+status/copy for unknown, inactive, tenant, unset-password and incorrect-password
+accounts, with dummy password derivation and rate limits. Password login requires
+an existing active-admin credential; tenants remain email-code-only. Server-side
+permissions determine the destination. This owner-approved policy replaces the
+previous remembered-browser prerequisite on 29 October 2026.
 
-The first unrecognized-browser request returns identical status, headers and
+An explicit email-code request returns identical status, headers and
 neutral copy for admin, tenant and unknown addresses. Account lookup and mail
 sending run using Next `after`/Workers `waitUntil`, after that response. Provider
 failures, account cooldowns and role-specific limits do not alter the public
@@ -21,27 +25,11 @@ Successful code verification immediately creates the appropriate server session
 and redirects to its portal. A password is never an additional step. Roles and
 destinations are determined only on the server, not by caller input.
 
-**Remember this browser for 30 days** is optional and unchecked by default. It is
-shown neutrally during code entry for everyone, but only successful active-admin
-verification issues a discovery credential. The credential is a random 256-bit
-opaque token in a `__Host-` Secure/HttpOnly/SameSite=Strict cookie, with no Domain
-and Path=/; only its SHA-256 hash, email, fixed expiry and revocation state are
-stored in `admin_remembered_browsers`. It is not an authenticated session and is
-never accepted by admin authorization. It is neither a local-storage flag nor a
-self-asserted role. It only allows **Sign in with password / Send sign-in code**
-following Continue for the same active identity with a saved password. Password
-login itself requires that credential and rechecks it, active role and password
-revision inside the session INSERT. An unrecognized, expired, revoked, tampered
-or other-account token never reveals the options. Tokens do not renew on use.
-**Forget this browser** revokes the current token on the server and clears its
-cookie. Every password change/reset revokes all of the target's remembered
-browsers, in the same transaction as the credential change and audit event.
-After setting/changing a password, use a fresh code login with Remember checked
-to opt in again. Disabling an identity makes its tokens unusable immediately.
-
-Migration: apply only `remembered-browsers.sql` additively after backup, actual
-schema/ledger inspection and populated restore rehearsal; do not bulk-apply
-unrelated legacy migrations. Existing password prerequisites remain below.
+The login UI no longer asks users to remember a browser: password access does not
+require enrollment or a discovery token. Legacy remembered-browser records are not
+authentication and cannot grant access. Existing revocation/Forget endpoints remain
+compatible; password changes/resets still revoke legacy discovery credentials.
+No schema migration or real password reset is required for this update.
 
 In the Admin navigation, **Passwords** lets any active admin set/change their own
 password or reset another active admin team member's password. This matches the
