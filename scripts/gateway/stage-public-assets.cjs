@@ -15,3 +15,16 @@ for(const relative of ['_next/static','images','brand','documents/news']){
 }
 for(const name of ['_worker.js','_routes.json'])fs.copyFileSync(path.join(__dirname,'../../deployment/preview-gateway',name),path.join(out,name));
 console.log('Public-only gateway staged; guarded photo derivatives excluded.');
+
+// Logo derivatives are public brand assets, independent of the private runtime bundle.
+const crypto=require('node:crypto');
+const photos=JSON.parse(fs.readFileSync(path.join(__dirname,'../../src/lib/generated/photo-variants.json'),'utf8'));
+const logo=photos.find(photo=>photo.originalSrc==='/brand/teams-management-gold-emblem.png');
+if(!logo||logo.kind==='media')throw Error('Expected public gold emblem manifest');
+for(const variant of logo.variants){
+ const bytes=fs.readFileSync(path.join(__dirname,'../../generated/photo-variants/public',variant.file));
+ if(crypto.createHash('sha256').update(bytes).digest('hex')!==variant.sha256)throw Error('Logo derivative checksum mismatch');
+ const destination=path.join(out,'brand/variants',variant.file);
+ fs.mkdirSync(path.dirname(destination),{recursive:true});fs.writeFileSync(destination,bytes);
+}
+console.log(`Staged ${logo.variants.length} verified public logo derivatives.`);

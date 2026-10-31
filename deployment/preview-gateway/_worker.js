@@ -1,3 +1,10 @@
+// Public branding only; never broaden this allowlist to portfolio or private photos.
+export const publicLogoVariants = new Set([
+  "467604fe5b91383d1a9a48ad2a65b442c230df3c1045447d86ee5db93888a66f.webp",
+  "70b5032c1b6dc06f0f8475136d2d8fe73fd07c2be05d88bbc058b035522ae45c.webp",
+  "1669269de9d5b4c2164df18e40a560bb2861bef984945b65aca3bf10cdea0bf6.webp",
+  "b478a2b2e82d9d3bbea28662197c06990e96d0fecda62fbfae68721d0735805e.webp"
+]);
 const configurationNames = [
   'ADMIN_AUTH_FROM', 'ADMIN_AUTH_REPLY_TO', 'ADMIN_OTP_PEPPER',
   'TENANT_AUTH_FROM', 'TENANT_OTP_PEPPER', 'GOOGLE_CLIENT_ID',
@@ -62,6 +69,15 @@ export default {
     // Pages serves copied public assets without starting the application runtime.
     // A missing file falls back to the matched runtime (e.g. a newer chunk).
     const path = new URL(request.url).pathname;
+    if (['GET','HEAD'].includes(request.method) && env.ASSETS &&
+        path.startsWith('/photo-variants/') && publicLogoVariants.has(path.slice('/photo-variants/'.length))) {
+      try {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = '/brand/variants/' + path.slice('/photo-variants/'.length);
+        const asset = await env.ASSETS.fetch(new Request(assetUrl, request));
+        if (asset.status !== 404) return asset;
+      } catch { /* Preserve the existing runtime fallback. */ }
+    }
     if (['GET','HEAD'].includes(request.method) && env.ASSETS &&
         ['/_next/static/','/images/','/brand/','/documents/news/'].some(prefix => path.startsWith(prefix))) {
       try {
