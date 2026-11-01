@@ -61,13 +61,28 @@ evidence directory, and 2–120 cycles; it targets only localhost:8797. Start th
 built local Worker on that port using the same state before running it. Sessions
 are deliberately local fixture sessions: never copy them to hosted environments.
 
+### Larger photo upload on the patched built Worker
+
+A separate local check submitted four valid 450×450 random-pixel PNGs, each
+609,112 bytes, in a 3,249,012-byte JSON request. Submission succeeded; all four
+protected downloads matched their original SHA-256; replaying the same receipt
+returned duplicate success and retained exactly four photos. The whole local
+HTTP scenario took 304 ms. This is one synthetic built-runtime observation, not
+hosted CPU/memory headroom, a throughput benchmark or a maximum-limit guarantee.
+No mail credentials were configured. Test servers were stopped afterward.
+
+Clean GitHub push and PR integrity jobs passed for implementation commit
+`33a0140`: clean npm install, full tests, TypeScript, both Python suites, full and
+production npm audits, pnpm audit, canonical build and photo staging. This does
+not substitute for final-release-ref CodeQL/security analysis or hosted QA.
+
 ## Production sign-off remains withheld
 
 This is local backend verification, not preview deployment or production proof.
 The patch is not deployed. A short repeated operational run does not prove a
 normal-day hosted soak, account quotas, maximum-size photo throughput, multi-region
-availability or long-term memory/CPU headroom. The one-pixel valid photo proves
-persistence/retry behavior, not realistic upload performance.
+availability or long-term memory/CPU headroom. The repeated run uses a one-pixel valid photo; the separate larger-photo check
+adds local near-limit-size coverage, not realistic hosted upload performance.
 
 Still required: exact production release/configuration and compute entitlement;
 fresh approved-QA Admin/Tenant OTP provider/inbox/consumption/logout checks;
