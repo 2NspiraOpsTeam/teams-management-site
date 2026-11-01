@@ -929,23 +929,23 @@ describe("work-order full lifecycle and failure safety (real SQLite, mail stubbe
       ),
     ).not.toContain("Office only");
   });
-  it("a failed atomic write cannot create false submission success or leave partial children", async () => {
+  it("a failed atomic write leaves no partial children and the same receipt recovers exactly once", async () => {
+    state.env.WORK_ORDER_NOTIFY_TO = "office@example.test";
     await signIn(tenant, "one@example.test", "teams_tenant_session");
     sql.exec(
       "CREATE TRIGGER qa_fail_outbox BEFORE INSERT ON work_order_notifications BEGIN SELECT RAISE(ABORT,'qa failure'); END;",
     );
-    const r = await maintenance.POST(
-      post("/order", {
-        idempotencyKey: crypto.randomUUID(),
-        assignmentId: "a1",
-        category: "general",
-        description: "Atomic failure test only",
-        urgency: "routine",
-        preferredContact: "email",
-        permissionToEnter: true,
-        photos: [png],
-      }),
-    );
+    const payload = {
+      idempotencyKey: crypto.randomUUID(),
+      assignmentId: "a1",
+      category: "general",
+      description: "Atomic failure test only",
+      urgency: "routine",
+      preferredContact: "email",
+      permissionToEnter: true,
+      photos: [png],
+    };
+    const r = await maintenance.POST(post("/order", payload));
     expect(r.status).toBe(503);
     for (const table of [
       "tenant_maintenance_requests",
@@ -955,6 +955,24 @@ describe("work-order full lifecycle and failure safety (real SQLite, mail stubbe
       "work_order_notifications",
     ])
       expect(sql.prepare("SELECT COUNT(*) AS n FROM " + table).get().n).toBe(0);
+    expect(state.jobs).toHaveLength(0);
+    sql.exec("DROP TRIGGER qa_fail_outbox");
+    const recovered = await Promise.all([
+      maintenance.POST(post("/order", payload)),
+      maintenance.POST(post("/order", payload)),
+    ]);
+    expect(recovered.map(r => r.status).sort()).toEqual([200, 201]);
+    const receipts = await Promise.all(recovered.map(r => r.json()));
+    expect(receipts[0].number).toBe(receipts[1].number);
+    for (const table of ["tenant_maintenance_requests", "work_order_details", "work_order_events", "work_order_photos"])
+      expect(sql.prepare("SELECT COUNT(*) AS n FROM " + table).get().n).toBe(1);
+    expect(sql.prepare("SELECT COUNT(*) AS n FROM work_order_notifications").get().n).toBe(2);
+    await drain();
+    const delivered = state.mail.filter(m => m.workOrder).length;
+    expect(delivered).toBe(2);
+    expect((await maintenance.POST(post("/order", payload))).status).toBe(200);
+    await drain();
+    expect(state.mail.filter(m => m.workOrder)).toHaveLength(delivered);
   });
 });
 

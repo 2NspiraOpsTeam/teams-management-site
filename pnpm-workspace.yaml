@@ -6,4 +6,7 @@ allowBuilds:
 overrides:
   next>postcss: 8.5.30
   next>sharp: 0.35.5
-  '@node-minify/core>glob': 10.5.0
+  '@node-minify/core>glob': 14.0.3
+  '@opennextjs/cloudflare>glob': 14.0.3
+  glob: 14.0.3
+  minimatch: 11.0.3
