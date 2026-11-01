@@ -2,6 +2,8 @@
 
 Start with the [current development handoff](WATERBEAR-DEVELOPMENT.md). It replaces the initial synthetic-only setup status and identifies the working build, migration results, and acceptance checks.
 
+- [November 1 backend readiness](BACKEND-READINESS-2026-11-01.md): dependency remediation, transaction recovery, isolated operational checks and outstanding launch gates.
+
 - [October 30 prelaunch hardening](PRELAUNCH-HARDENING-2026-10-30.md): capacity scenarios, exact verification boundaries, recovery proof and outstanding production launch gates.
 
 - [Admin passwords](ADMIN-PASSWORDS.md): shared sign-in, admin-only setup and peer reset, email-code recovery.
