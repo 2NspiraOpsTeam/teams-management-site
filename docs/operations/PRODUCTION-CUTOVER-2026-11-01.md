@@ -227,6 +227,19 @@ proof and browser evidence remain private outside this public repository.
 
 ### Remaining operational verification (not claimed complete)
 
+### Former preview URL retirement — 1 November Pacific
+
+At Jeffrey's explicit request, the stable `teams-management-preview.pages.dev`
+address now permanently redirects (308) to `https://www.teamsmanagement.com`,
+preserving paths and query strings. Source: `deployment/preview-redirect/`.
+Pages deployment `782adb33-8cc2-43b1-b573-1a883fb8ad49`, production environment,
+actual primary branch `preview`; direct upload. No binding, secret, DNS, runtime
+or database changes. Prior preview deployment
+`e9f7f966-e703-4c81-91fa-f3699cc67105` and its private runtime remain recoverable
+through Pages rollback. The stable preview is intentionally no longer an
+independent application entry point. Existing preview sessions do not transfer
+to the production hostname. Production application readiness limits below remain.
+
 Fresh Admin/Tenant emailed-code receipt and consumption on www, authenticated Tenant
 business flows, hosted realistic uploads/longer normal-day soak, explicit compute
 entitlement evidence, encrypted off-device backup destination/retention/RPO/RTO and
