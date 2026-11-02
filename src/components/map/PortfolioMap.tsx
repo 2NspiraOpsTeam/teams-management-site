@@ -32,7 +32,7 @@ export function PortfolioMap({ buildings }: { buildings: BuildingPublic[] }) {
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">Explore the portfolio</p>
       <h2 id="portfolio-map-heading" className="mb-4 font-serif text-3xl text-teams-ink sm:text-4xl">Property map</h2>
       <p className="mb-8 max-w-2xl text-slate-600">Browse verified locations. Every property profile also offers address-based directions.</p>
-      {loading ? <div className="min-h-[280px] animate-pulse rounded-sm bg-stone-100" aria-label="Loading property map" /> : verified.length ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm">{LeafletMap ? <LeafletMap buildings={verified} /> : <div className="h-[360px] bg-stone-100" aria-label="Loading property map" />}</div> :
+      {loading ? <div className="min-h-[280px] animate-pulse rounded-sm bg-stone-100" role="status" aria-label="Loading property map" /> : verified.length ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm">{LeafletMap ? <LeafletMap buildings={verified} /> : <div className="h-[360px] bg-stone-100" role="status" aria-label="Loading property map" />}</div> :
         <div className="flex min-h-[280px] flex-col justify-center rounded-sm border border-stone-200 bg-white px-6 py-12 text-center sm:min-h-[340px]">
           <span className="mb-4 text-3xl text-teams-gold" aria-hidden="true">⌖</span>
           <h3 className="font-serif text-2xl text-teams-ink">Explore by address</h3>
