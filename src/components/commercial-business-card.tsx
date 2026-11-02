@@ -17,7 +17,7 @@ export function CommercialBusinessCard({ entry }: { entry: CommercialSpace }) {
         <h3 className="mt-3 font-serif text-2xl">{entry.name}</h3>
         {entry.area && <p className="mt-3 text-sm leading-relaxed text-teams-secondary">{entry.area}</p>}
         {entry.note && <p className="mt-3 text-sm leading-relaxed text-teams-secondary">{entry.note}</p>}
-        {entry.website && <a href={entry.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${entry.name} website (opens in a new tab)`} className="mt-5 inline-flex min-h-11 items-center justify-between gap-4 border-t border-stone-300 pt-3 font-semibold hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-ink">Visit website <span aria-hidden="true">↗</span></a>}
+        {entry.website && <a href={entry.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit website for ${entry.name} (opens in a new tab)`} className="mt-5 inline-flex min-h-11 items-center justify-between gap-4 border-t border-stone-300 pt-3 font-semibold hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-ink">Visit website <span aria-hidden="true">↗</span></a>}
       </div>
     </article>
   );

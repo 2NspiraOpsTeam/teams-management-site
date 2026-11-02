@@ -27,7 +27,7 @@ export function TremontBusinesses() {
             <p className="mt-3 text-lg font-semibold text-teams-ink">The Learning Experience — Throggs Neck</p>
             <p className="mt-3 max-w-xl leading-relaxed text-teams-secondary">Daycare and preschool right upstairs at Primo Plaza, with early education programs for infants, toddlers, and preschoolers.</p>
             <p className="mt-4 text-sm font-medium">3425 E Tremont Ave · Second floor · Bronx, NY</p>
-            <a href="https://thelearningexperience.com/centers/throggs-neck/" target="_blank" rel="noopener noreferrer" aria-label="Explore The Learning Experience Throggs Neck center (opens in a new tab)" className="mt-6 inline-flex min-h-11 items-center rounded-lg bg-[#174b70] px-5 py-3 font-semibold text-white hover:bg-[#10364f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-ink">Explore the center ↗</a>
+            <a href="https://thelearningexperience.com/centers/throggs-neck/" target="_blank" rel="noopener noreferrer" aria-label="Explore the center — The Learning Experience Throggs Neck (opens in a new tab)" className="mt-6 inline-flex min-h-11 items-center rounded-lg bg-[#174b70] px-5 py-3 font-semibold text-white hover:bg-[#10364f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-ink">Explore the center ↗</a>
           </div>
         </article>
 
@@ -47,7 +47,7 @@ export function TremontBusinesses() {
                   <p className="text-xs font-semibold uppercase tracking-widest text-teams-secondary">{store.description}</p>
                   <h4 className="mt-3 font-serif text-2xl">{store.name}</h4>
                   <p className="mt-2 text-sm leading-relaxed text-teams-secondary">{store.address} · Bronx, NY</p>
-                  {store.website && <a href={store.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${store.name} website (opens in a new tab)`} className="mt-5 inline-flex min-h-11 items-center justify-between gap-4 border-t border-stone-300 pt-3 font-semibold hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-ink">Visit website <span aria-hidden="true">↗</span></a>}
+                  {store.website && <a href={store.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit website for ${store.name} (opens in a new tab)`} className="mt-5 inline-flex min-h-11 items-center justify-between gap-4 border-t border-stone-300 pt-3 font-semibold hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teams-ink">Visit website <span aria-hidden="true">↗</span></a>}
                 </div>
               </article>
             ))}

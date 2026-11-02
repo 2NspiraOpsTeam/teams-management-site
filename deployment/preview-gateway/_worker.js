@@ -5,24 +5,6 @@ const configurationNames = [
   'INQUIRY_FROM', 'INQUIRY_NOTIFY_TO', 'INQUIRY_QA_TO', 'INQUIRY_QA_ID',
   'WORK_ORDER_FROM', 'WORK_ORDER_NOTIFY_TO', 'NEXT_PUBLIC_GOOGLE_MAPS_API_KEY',
 ];
-// Audited source-only public page. Never extend to portfolios or account routes
-// without reviewing publication, personalization and invalidation contracts.
-export function publicPageRequest(request) {
-  const url = new URL(request.url);
-  return request.method === 'GET' && url.pathname === '/in-the-news' && !url.search &&
-    request.headers.get('accept')?.includes('text/html') &&
-    !['cookie','authorization','rsc','next-router-state-tree','next-router-prefetch','next-router-segment-prefetch','range'].some(key => request.headers.has(key)) &&
-    !/no-cache|no-store|max-age\s*=\s*0/i.test(request.headers.get('cache-control') || '') &&
-    !request.headers.has('pragma');
-}
-function deliverPublic(response, state) {
-  const result = new Response(response.body, response);
-  // Cache only inside this bounded edge policy, not in browsers/intermediaries.
-  result.headers.set('Cache-Control', 'private, no-store');
-  result.headers.set('X-Teams-Public-Cache', state);
-  result.headers.delete('X-Teams-Request-Id');
-  return result;
-}
 // Rejection only: never authenticate at the gateway. A present cookie always
 // reaches the application's authoritative session/role/assignment checks.
 export function anonymousGuard(request) {
@@ -75,31 +57,9 @@ export default {
       if (typeof env[key] === 'string') configuration[key] = env[key];
     }
     try {
-      let cache, key;
-      if (publicPageRequest(request) && typeof caches !== 'undefined') {
-        try {
-          cache = await caches.open('teams-source-only-news-v1');
-          key = new Request(request.url);
-          const hit = await cache.match(key);
-          if (hit) return deliverPublic(hit, 'HIT');
-        } catch { cache = undefined; }
-      }
-      // Await inside the boundary: RPC failures include backend CPU termination.
-      // Never retry automatically: a failed write may already have committed.
-      const response = await env.TEAMS_RUNTIME.handleRequest(request, configuration);
-      if (cache && response.status === 200 && response.headers.get('content-type')?.includes('text/html') &&
-          !response.headers.has('set-cookie') && !response.headers.has('www-authenticate') &&
-          !/(?:^|,)\s*(?:\*|cookie|authorization)\s*(?:,|$)/i.test(response.headers.get('vary') || '')) {
-        const stored = new Response(response.clone().body, response);
-        // Framework no-store is intentional for dynamic siblings; only this
-        // audited, anonymous source-only page is eligible for 60 seconds.
-        stored.headers.set('Cache-Control', 'public, max-age=60');
-        stored.headers.delete('Vary');
-        stored.headers.delete('X-Teams-Request-Id');
-        try { await cache.put(key, stored); } catch { /* Cache is optional. */ }
-        return deliverPublic(response, 'MISS');
-      }
-      return response;
+      // News now uses the same live, publication-gated daily header plan as
+      // the portfolio. Do not retain source-only HTML across plan changes.
+      return await env.TEAMS_RUNTIME.handleRequest(request, configuration);
     } catch {
       // Do not log exceptions, URLs, cookies, configuration or request bodies.
       const family = path.startsWith('/api/admin/') ? 'admin-api' : path.startsWith('/api/tenant/') ? 'tenant-api' : path.startsWith('/api/') ? 'public-api' : 'page';

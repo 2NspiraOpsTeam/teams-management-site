@@ -2,6 +2,9 @@ import rentalArticle from './rental-buildings-2003.json';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { pageMetadata } from '@/lib/site-seo';
+import { dailyHeroStyle } from '@/lib/daily-hero-style';
+
+export const runtime = 'nodejs';
 
 export const metadata = pageMetadata('/in-the-news', 'In the News | Teams Management', 'Selected reporting on Frank Pecora, Peter Pecora, Teams Management, and related New York real estate transactions, with original publisher links.');
 
@@ -91,14 +94,15 @@ const articles = [
   },
 ];
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const heroStyle = await dailyHeroStyle('in-the-news');
   return <><Header /><main id="main-content" className="bg-[#f7f4ee] text-teams-ink">
-    <section className="border-b border-[#B49355]/40 bg-white py-16 sm:py-24">
+    <section style={heroStyle} className="gold-street-hero gold-street-hero--news border-b border-[#B49355]/40 py-16 text-white sm:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="mb-6 h-px w-14 bg-[#B49355]" />
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">The press collection</p>
+        <div className="mb-6 h-px w-14 bg-white/50" />
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[.2em] text-slate-200">The press collection</p>
         <h1 className="font-serif text-5xl sm:text-7xl">In the News</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-700">Selected reporting on Frank Pecora, Peter Pecora, Teams Management, and the properties and transactions connected to their New York real estate story.</p>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-100">Selected reporting on Frank Pecora, Peter Pecora, Teams Management, and the properties and transactions connected to their New York real estate story.</p>
       </div>
     </section>
     <section aria-labelledby="coverage-title" className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">

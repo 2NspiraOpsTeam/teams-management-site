@@ -18,5 +18,8 @@ export async function dailyHeroStyle(page:DailyHeroPage):Promise<CSSProperties> 
     retail.filter(item=>published.has(item.property_id)),
   )[page];
   // Versioned offline-prepared source; original files and cover selections are retained.
-  return {'--gold-street-photo':photo?`url(${JSON.stringify(highResolutionPhoto(photo.image))})`:'none'} as CSSProperties;
+  return {
+    '--gold-street-photo':photo?`url(${JSON.stringify(highResolutionPhoto(photo.image))})`:'none',
+    '--gold-street-photo-mobile':photo?`url(${JSON.stringify(highResolutionPhoto(photo.image,960))})`:'none',
+  } as CSSProperties;
 }
