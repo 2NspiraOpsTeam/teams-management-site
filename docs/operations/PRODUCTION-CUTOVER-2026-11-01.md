@@ -1,8 +1,8 @@
 # Production preparation — 1 November 2026
 
-Status: preparation started at Jeffrey's request. No deployment, domain move,
-database mutation, mail send, billing change or secret change has occurred.
-This is not a production sign-off or an executable migration configuration.
+Status: www cutover completed at Jeffrey's request; verified evidence is recorded
+below. Earlier inventory/preparation sections are historical. This is not blanket
+backend/operational production-readiness sign-off.
 
 ## Observed live inventory
 
@@ -176,3 +176,61 @@ not Waterbear credentials. New production-only OTP peppers do not change preview
 peppers or password hashes; existing shared database records are preserved.
 Off-device encrypted recovery and normal-day observation remain separate
 operational readiness gaps and must not be presented as completed.
+
+
+## Production cutover — completed 1 November Pacific / 2 November UTC
+
+- Application source: `02b3cfa3733c55805e4ea9e2dd0dba0b54011ced`.
+- Private runtime `teams-production-runtime-20261101`, active 100% version
+  `f32d3b33-819b-4e8d-ba89-ef82b7e59531`; no public workers.dev route.
+- Tested Pages candidate `4940300a.teams-management-coming-soon.pages.dev`,
+  preview environment / `production-candidate-20261101` branch. Initial superseded
+  candidate `8624e099` had mistyped commit metadata; the replacement's exact
+  commit and application fingerprint were verified before promotion.
+- Production Pages `f4173ba9-5dc6-4cb9-96bb-73ce0752efb6`, production environment,
+  actual primary branch `main`; metadata and served application match source above.
+  `https://www.teamsmanagement.com/` now serves the application, not Coming Soon.
+- Existing domain attachment/DNS preserved. Preview gateway/runtime and existing
+  credentials remain unchanged; preview still serves `b7692be8af06aaee80e424de068e9dd565946b97`.
+- Retained DB unchanged in place: 17 published / 3 archived properties verified.
+  No schema migration, tenant import, record reset or production database swap.
+  A previously approved synthetic QA Admin/password was temporarily recreated for
+  candidate and www login checks, then its password, sessions and identity removed.
+  No real tenant/property/lease/maintenance records were edited by this release.
+- Production sender credentials were configured from the owner-controlled existing
+  2Nspira sender grant; OAuth refresh succeeded. Credentials were not printed or
+  committed. Separate production OTP peppers leave preview credentials unchanged.
+- Fresh full checkpoint restored twice with matching schema/typed-data fingerprints,
+  integrity and foreign-key checks; 117 portable batches retained privately.
+- Both GitHub integrity runs at the application source succeeded. 542 application
+  tests, 13 recovery/release tests, typecheck, production build, npm/pnpm audits and
+  1,336-rendition artifact checks passed.
+- Candidate AND www: all 269 prepared-source photo checks passed exact bytes and
+  checksums; 15 rendered page/viewport combinations each passed (Home, properties,
+  retail, dining, 1365 detail at desktop/tablet/mobile), with no page exceptions,
+  broken decoded images or overflow and correct production canonical metadata.
+- www: 33 public routes including all 17 property detail URLs returned the expected
+  application release. Production robots/sitemap, unauthenticated role guards,
+  guarded-photo denial, ordinary header/property/contact navigation and refresh
+  passed. Visually inspected the delivered mobile homepage and property directory.
+- Candidate AND www: fresh synthetic Admin password sign-in, authenticated Admin,
+  property, tenants and maintenance pages, tenant-role denial, logout revocation
+  and cross-origin rejection passed. These are NOT fresh OTP/inbox or authenticated
+  Tenant workflow proof.
+
+Rollback: retained Coming Soon Pages deployment
+`b3b6e676-f5d4-41fc-bd3f-48dad4260d1d` remains the holding-page recovery target.
+Rolling it back does not undo DB writes or produce a resident portal. Preserve the
+production runtime version and its asset/config pair for application recovery.
+Exact project/settings inventories, checkpoints, OAuth recovery material, image
+proof and browser evidence remain private outside this public repository.
+
+### Remaining operational verification (not claimed complete)
+
+Fresh Admin/Tenant emailed-code receipt and consumption on www, authenticated Tenant
+business flows, hosted realistic uploads/longer normal-day soak, explicit compute
+entitlement evidence, encrypted off-device backup destination/retention/RPO/RTO and
+isolated cloud restoration remain unverified. The Gmail inbox CLI grant used for
+QA reading returned invalid_grant; production sender OAuth refresh separately
+passed. No real client messages were sent as a workaround. Site publication is
+complete; these gaps prevent blanket production-readiness sign-off.
