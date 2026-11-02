@@ -127,3 +127,52 @@ tables; this is not a complete column/index/ledger compatibility certification.
 No production build, candidate deployment, browser QA, production sign-in,
 complete schema compatibility review, database restore or live cutover was
 completed in this preparation pass.
+
+## Authorized property publication — completed
+
+Jeffrey explicitly requested publishing all 17 active properties (Telegram message
+15829). Applied to the retained database on 2 November UTC / 1 November Pacific:
+17 draft buildings are now `published`; all 3 archived buildings and every other
+building field except the active records' `updated_at` were verified unchanged.
+Recorded 17 per-property audit entries with the actual requester and message.
+A fresh full pre-change SQL snapshot was restored locally with integrity `ok`
+and zero foreign-key violations; snapshot, exact ID-scoped guarded SQL, checksum
+and read-back evidence are private, outside Git. No deployment or domain change.
+
+This supersedes the earlier zero-published inventory and missing-publication-
+approval gate only. The preview build's draft-only `page-showcase.ts` eligibility
+must be made compatible with published properties in the reviewed release;
+HTTP 200 on preview/www does not verify photo-showcase rendering. Remaining
+production release, recovery and hosted-flow gates are unchanged.
+
+## Continued cutover authorization and candidate preparation
+
+Jeffrey subsequently instructed continuing until the production URL works with
+preview content. This authorizes the www gateway cutover described above; retain
+the preview database in place, existing preview runtime and Coming Soon rollback.
+No billing change, DNS change, tenant import or destructive recovery is included.
+
+Production build now has an explicit `build:production:worker` script: production
+canonical/portal origin, preview/draft access off, approved portfolio presentation
+on, and all 1,336 prepared images staged with checksum verification. Presentation
+is distinct from publication eligibility. Canonical portfolio fixtures require a
+matching published live building in production; archived/missing/draft rows are
+excluded. The preview showcase supports published as well as draft buildings.
+
+Read-only fresh live-schema comparison found all columns for the 64 application
+schema tables present (68 live tables total). No migration is proposed. This is
+column coverage, not certification of every index/constraint or all data semantics.
+542 application tests, 13 recovery/release tests, typecheck, npm and pnpm audits
+passed. Local production-artifact browser QA passed Home, properties, retail,
+dining and one property detail at 1440/768/390 widths, decoded images with no broken
+images, no overflow/page exceptions, and www canonicals. Local public portfolio
+fixture excludes private tenant/auth/session/contact data. Hosted verification and
+cutover identifiers will be recorded after execution; local QA is not live proof.
+
+Target private runtime: `teams-production-runtime-20261101`; Pages target remains
+`teams-management-coming-soon`, actual primary branch `main`. Bind the retained
+D1 in place. Use the existing owner-controlled 2Nspira Google sender credentials,
+not Waterbear credentials. New production-only OTP peppers do not change preview
+peppers or password hashes; existing shared database records are preserved.
+Off-device encrypted recovery and normal-day observation remain separate
+operational readiness gaps and must not be presented as completed.

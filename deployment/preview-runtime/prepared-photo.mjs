@@ -7,8 +7,9 @@ import {browserSecurityHeaders} from '../../src/lib/security-headers.ts';
 export function preparedPhotoRequest(request){return request.method==='GET'&&/^\/api\/media\/[^/]+$/.test(new URL(request.url).pathname)&&new URL(request.url).searchParams.has('w');}
 export async function preparedPhotoResponse(request,env){
  const url=new URL(request.url),preview=env.NEXT_PUBLIC_ENVIRONMENT==='preview';
+ const prepared=preview||env.PORTFOLIO_PRESENTATION_ENABLED==='1';
  let id;try{id=decodeURIComponent(url.pathname.slice('/api/media/'.length));}catch{return new Response('Not found',{status:404});}
- const selected=requestedMediaVariant(id,url.searchParams.get('v'),Number(url.searchParams.get('w')),preview);
+ const selected=requestedMediaVariant(id,url.searchParams.get('v'),Number(url.searchParams.get('w')),prepared);
  let response;
  if(!selected||url.searchParams.get('w')!==String(selected.variant.width))response=new Response('Not found',{status:404,headers:{'Cache-Control':'no-store'}});
  else response=await publicImageCache(request,env.TEAMS_RELEASE_SHA,preview,()=>mediaResponse(env.DB,id,false,preview,undefined,async asset=>{

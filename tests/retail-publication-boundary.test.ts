@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DatabaseSync } from 'node:sqlite';
 const state = vi.hoisted(() => ({ db: null as any, preview: false }));
 vi.mock('@opennextjs/cloudflare', () => ({ getCloudflareContext: () => ({ env: { DB: state.db } }) }));
-vi.mock('@/lib/preview-portfolio', () => ({ get previewPortfolioEnabled() { return state.preview; } }));
+vi.mock('@/lib/preview-portfolio', () => ({ get previewPortfolioEnabled() { return state.preview; }, portfolioPresentationEnabled: true }));
 import { listPublicRetail, getPublicRetail } from '@/lib/public-retail';
 function fixture() {
  const sqlite = new DatabaseSync(':memory:');
