@@ -20,7 +20,7 @@ export const runtime = 'nodejs';
 export const metadata = pageMetadata('/', 'Teams Management | New York Property Management', 'Teams Management cares for residential and retail properties across Manhattan, the Bronx, and Queens. Explore our portfolio, rental guidance, and resident services.');
 
 type Feature = { building: BuildingPublic; image: MediaRow };
-const photo = (image: MediaRow, label: string, eager = false) => <PublishedPhoto src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} className="home-photo h-full w-full object-cover" />;
+const photo = (image: MediaRow, label: string, eager = false) => <PublishedPhoto src={publicMediaSrc(image)} alt={image.alt_text || label} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} sizes={eager ? '100vw' : undefined} className="home-photo h-full w-full object-cover" />;
 const location = (building: BuildingPublic) => addressLabel(building.address);
 
 async function Home() {
