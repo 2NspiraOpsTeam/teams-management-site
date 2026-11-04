@@ -77,3 +77,28 @@ Read-only mobile Lighthouse checks covered all 48 sitemap URLs plus `/access` an
 - Production build and image staging/checksum gate run against the candidate source.
 
 No database mutations, credential changes, DNS/mail changes, real client communication or billing changes are included. Full preview metrics and release identity are recorded separately after verification.
+
+## First production release and follow-up finding
+
+Owner explicitly authorized production publication without requiring a separate
+preview step. PR44 merged as `e15bcc4c5c47d5304abb5e9b2ce2c1f97fec332e`;
+Pages production `46b2cc4b-6926-47e2-88e7-bac6b5e3f9c6` (primary `main`) serves
+that SHA through `teams-performance-runtime-20261103`, Worker version
+`88c68b8f-42e1-4882-aca6-434436b7e6ab`. Previous production gateway/runtime remain
+available as the rollback pair. Existing credential/configuration entries were
+preserved; no database write or DNS change was performed.
+
+Early live mobile Lighthouse results: Home98, Properties99, Retail97;
+all three accessibility/best-practices/SEO100 and CLS0. Thirty-two live responsive
+views passed and 406 largest/changed photograph responses matched exact bytes.
+The full mobile audit continues through every public page.
+
+The remaining Rent With Us header used a newer, already-public corrected photo
+that was absent from the original prepared-image inventory. The baseline and
+first production audit both requested its 552,345-byte original JPEG. A read-only
+publication/visibility/source-checksum check confirmed the exact currently rendered
+asset. Append its unchanged original to the guarded derivative pipeline: the
+960px WebP is103,608bytes (81% smaller). No image selection, caption, source bytes,
+publication record or database field is changed. Inventory becomes270images,
+24covers and1,346renditions. Large views remain native-capped and the original is
+retained. This follow-up is limited to that missing delivery entry and tooling.
