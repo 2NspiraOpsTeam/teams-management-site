@@ -29,3 +29,11 @@ production builds regenerate the index before compiling, then stage and checksum
 all public and guarded renditions. Production portfolio presentation is explicitly
 enabled by `build:production:worker`; ordinary non-portfolio consumers retain their
 original URLs. Never place guarded media derivatives in the public Pages gateway.
+
+For a newly published public image absent from the original inventory, use
+`add-approved-media.cjs --inventory <private-inventory.json>`. Every entry must have
+its public publication verified by the existing read-only publication query, an
+unchanged original-file checksum, source file, storage key and original public URL.
+The tool refuses to overwrite existing media and never edits D1. It appends native-
+capped WebP widths and regenerates the small browser index. Retain the original
+outside Git; rerun tests, the canonical build and the full artifact gate.
