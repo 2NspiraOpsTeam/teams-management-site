@@ -16,6 +16,9 @@ export function RetainedGalleryPhoto({active,preload=false,retry=0,onReady,onFai
  useEffect(()=>{const node=image.current;if(node?.complete){if(node.naturalWidth)ready();else if(node.currentSrc)callbacks.current.onFailure?.();}},[visited,active,preload,props.src,retry]);
  if(!active&&!preload&&!visited)return null;
  const delivered=typeof props.src==='string'?photoAttributes(props.src,props.sizes):{src:props.src,srcSet:undefined};
+ const retryUrl=(value:string|undefined)=>{if(!value||!retry||/^(data:|blob:)/.test(value))return value;const [base,fragment]=value.split('#',2);return `${base}${base.includes('?')?'&':'?'}image_retry=${retry}${fragment?'#'+fragment:''}`;};
+ const candidates=props.srcSet||delivered.srcSet;
+ const retriedCandidates=retry?candidates?.split(',').map(candidate=>{const [url,...descriptor]=candidate.trim().split(/\s+/);return [retryUrl(url),...descriptor].join(' ');}).join(', '):candidates;
  const unavailable=failed||failedSources.has(props.src||'');
- return <img {...props} {...delivered} ref={image} key={retry} src={unavailable?undefined:delivered.src} srcSet={unavailable?undefined:(props.srcSet||delivered.srcSet)} loading={preload?'eager':props.loading} onLoad={event=>{props.onLoad?.(event);ready();}} onError={event=>{if(props.src){if(failedSources.size>=500)failedSources.clear();failedSources.add(props.src);}setFailed(true);callbacks.current.onFailure?.();props.onError?.(event);}} hidden={!active} className={`${props.className||''}${active?'':' hidden'}`} />;
+ return <img {...props} {...delivered} ref={image} key={retry} src={unavailable?undefined:retryUrl(typeof delivered.src==='string'?delivered.src:undefined)} srcSet={unavailable?undefined:retriedCandidates} loading={preload?'eager':props.loading} onLoad={event=>{props.onLoad?.(event);ready();}} onError={event=>{if(props.src){if(failedSources.size>=500)failedSources.clear();failedSources.add(props.src);}setFailed(true);callbacks.current.onFailure?.();props.onError?.(event);}} hidden={!active} className={`${props.className||''}${active?'':' hidden'}`} />;
 }
