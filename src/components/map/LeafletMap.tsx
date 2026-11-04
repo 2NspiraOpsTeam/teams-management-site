@@ -22,7 +22,7 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
       maxZoom: 19,
       errorTileUrl: mapTileFallback,
       attribution: 'Tiles &copy; Esri and its data providers',
-    }).on('tileerror', () => setTilesFailed(true)).addTo(map);
+    }).on('tileerror', () => setTilesFailed(true));
     const aerial = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
       errorTileUrl: mapTileFallback,
@@ -60,9 +60,11 @@ export default function LeafletMap({ buildings }: { buildings: VerifiedBuilding[
     const current = layers.current;
     if (!current) return;
     if (view === 'aerial') {
+      current.map.removeLayer(current.streets);
       current.aerial.addTo(current.map);
       current.labels.addTo(current.map);
     } else {
+      current.streets.addTo(current.map);
       current.map.removeLayer(current.aerial);
       current.map.removeLayer(current.labels);
     }

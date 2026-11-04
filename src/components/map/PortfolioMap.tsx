@@ -3,14 +3,17 @@
 import { useEffect, useState } from 'react';
 import type { BuildingPublic } from '@/lib/database.types';
 import { verifiedLocation } from '@/lib/map-location';
+import {useMapVisibility} from './use-map-visibility';
 
 type MapComponent = typeof import('./LeafletMap').default;
 
 export function PortfolioMap({ buildings }: { buildings: BuildingPublic[] }) {
+  const visibility = useMapVisibility();
   const [LeafletMap, setLeafletMap] = useState<MapComponent | null>(null);
   const [verified, setVerified] = useState<(BuildingPublic & { latitude: number; longitude: number })[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    if (!visibility.visible) return;
     let alive = true;
     fetch('/api/buildings/map', { cache: 'no-store' }).then(response => response.ok ? response.json() as Promise<{slug:string;latitude:number;longitude:number}[]> : Promise.resolve([] as {slug:string;latitude:number;longitude:number}[])).then((rows: {slug:string;latitude:number;longitude:number}[]) => {
       if (alive) setVerified(buildings.flatMap(building => {
@@ -20,19 +23,19 @@ export function PortfolioMap({ buildings }: { buildings: BuildingPublic[] }) {
       }));
     }).catch(() => {}).finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [buildings]);
+  }, [buildings, visibility.visible]);
   useEffect(() => {
     if (!verified.length) return;
     let alive = true;
     void import('./LeafletMap').then(module => { if (alive) setLeafletMap(() => module.default); }).catch(() => {});
     return () => { alive = false; };
   }, [verified.length]);
-  return <section aria-labelledby="portfolio-map-heading" className="bg-stone-50 py-16 sm:py-20">
+  return <section ref={visibility.ref} aria-labelledby="portfolio-map-heading" className="bg-stone-50 py-16 sm:py-20">
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">Explore the portfolio</p>
       <h2 id="portfolio-map-heading" className="mb-4 font-serif text-3xl text-teams-ink sm:text-4xl">Property map</h2>
       <p className="mb-8 max-w-2xl text-slate-600">Browse verified locations. Every property profile also offers address-based directions.</p>
-      {loading ? <div className="min-h-[280px] animate-pulse rounded-sm bg-stone-100" role="status" aria-label="Loading property map" /> : verified.length ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm">{LeafletMap ? <LeafletMap buildings={verified} /> : <div className="h-[360px] bg-stone-100" role="status" aria-label="Loading property map" />}</div> :
+      {loading ? <div className="h-[362px] animate-pulse rounded-sm bg-stone-100 sm:h-[462px]" role="status" aria-label="Loading property map" /> : verified.length ? <div className="overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm">{LeafletMap ? <LeafletMap buildings={verified} /> : <div className="h-[360px] bg-stone-100 sm:h-[460px]" role="status" aria-label="Loading property map" />}</div> :
         <div className="flex min-h-[280px] flex-col justify-center rounded-sm border border-stone-200 bg-white px-6 py-12 text-center sm:min-h-[340px]">
           <span className="mb-4 text-3xl text-teams-gold" aria-hidden="true">⌖</span>
           <h3 className="font-serif text-2xl text-teams-ink">Explore by address</h3>

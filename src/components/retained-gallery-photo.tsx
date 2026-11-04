@@ -1,5 +1,5 @@
 'use client';
-import {photoAttributes} from '@/lib/photo-variants';
+import {photoAttributes} from '@/lib/photo-delivery';
 import {useEffect,useState,type ImgHTMLAttributes} from 'react';
 const failedSources=new Set<string|Blob>();
 
