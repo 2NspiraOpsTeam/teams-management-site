@@ -24,6 +24,8 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.2;
+  /* Preserve long heading words under narrow viewports and user text spacing. */
+  overflow-wrap: anywhere;
 }
 
 p {
