@@ -29,10 +29,10 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
     return () => query.removeEventListener('change', update);
   }, []);
   useEffect(() => {
-    if (!activity.active || images.length < 2 || paused || manuallyPaused || (reducedMotion && !motionOptIn)) return;
+    if (!activity.active || images.length < 2 || !readyPhotos.has(images[index % images.length]?.src) || paused || manuallyPaused || (reducedMotion && !motionOptIn)) return;
     const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 8000);
     return () => window.clearInterval(timer);
-  }, [activity.active, images.length, paused, manuallyPaused, reducedMotion, motionOptIn]);
+  }, [activity.active, images.length, index, readyPhotos, paused, manuallyPaused, reducedMotion, motionOptIn]);
 
   const selectedIndex = index % Math.max(images.length, 1);
   const displayed = displayedIndex % Math.max(images.length, 1);
