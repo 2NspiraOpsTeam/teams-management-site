@@ -14,6 +14,7 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
   const [readyPhotos, setReadyPhotos] = useState<Set<string>>(() => new Set());
   const [failedPhotos, setFailedPhotos] = useState<Set<string>>(() => new Set());
   const [retries, setRetries] = useState<Record<string,number>>({});
+  const [slowSrc, setSlowSrc] = useState<string | null>(null);
   const [paused, setPaused] = useState(false);
   const [manuallyPaused, setManuallyPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(true);
@@ -36,6 +37,14 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
   const selectedIndex = index % Math.max(images.length, 1);
   const displayed = displayedIndex % Math.max(images.length, 1);
   const requestedSrc = images[selectedIndex]?.src;
+  const requestedReady = !!requestedSrc && readyPhotos.has(requestedSrc);
+  const retryAttempt = requestedSrc ? retries[requestedSrc] || 0 : 0;
+  useEffect(() => {
+    setSlowSrc(null);
+    if (!requestedSrc || requestedReady) return;
+    const timer = window.setTimeout(() => setSlowSrc(requestedSrc), 10000);
+    return () => window.clearTimeout(timer);
+  }, [requestedSrc, requestedReady, retryAttempt]);
   useEffect(() => {
     if (requestedSrc && readyPhotos.has(requestedSrc)) setDisplayedIndex(selectedIndex);
   }, [requestedSrc, selectedIndex, readyPhotos]);
@@ -50,7 +59,7 @@ export function PropertyGallery({ images, name, compact = false, hero = false, h
   return <figure className="min-w-0" onMouseEnter={() => { if (!hero) setPaused(true); }} onMouseLeave={() => { if (!hero) setPaused(false); }} onFocusCapture={event => setPaused(!hero || event.target.matches(':focus-visible'))} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}>
     <div className={`relative overflow-hidden ${hero ? "" : "border border-slate-200"} bg-slate-100`}>
       {href ? <a href={href} aria-label={`View Residential Property: ${name}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-teams-gold">{photo}</a> : photo}
-      {requestedSrc && !readyPhotos.has(requestedSrc) && <div role="status" className="absolute left-3 right-3 bottom-16 rounded bg-teams-charcoal/90 px-3 py-2 text-sm text-white">{failedPhotos.has(requestedSrc) ? <><span>Photo unavailable. {readyPhotos.has(current.src) ? 'Showing the previous photo.' : ''}</span><button type="button" className="ml-3 min-h-11 underline" onClick={() => {setFailedPhotos(value=>{const next=new Set(value);next.delete(requestedSrc);return next;});setRetries(value=>({...value,[requestedSrc]:(value[requestedSrc]||0)+1}));}}>Retry photo</button></> : `Loading photo ${selectedIndex+1}…`}</div>}
+      {requestedSrc && !readyPhotos.has(requestedSrc) && <div role="status" className="absolute left-3 right-3 bottom-16 rounded bg-teams-charcoal/90 px-3 py-2 text-sm text-white">{failedPhotos.has(requestedSrc) || slowSrc===requestedSrc ? <><span>{failedPhotos.has(requestedSrc) ? 'Photo unavailable.' : 'Photo is taking longer than expected.'} {readyPhotos.has(current.src) ? 'Showing the previous photo.' : ''}</span><button type="button" className="ml-3 min-h-11 underline" onClick={() => {setSlowSrc(null);setFailedPhotos(value=>{const next=new Set(value);next.delete(requestedSrc);return next;});setRetries(value=>({...value,[requestedSrc]:(value[requestedSrc]||0)+1}));}}>Retry photo</button></> : `Loading photo ${selectedIndex+1}…`}</div>}
       {hero && address && <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent px-4 pb-20 pt-6 text-white sm:px-8 sm:pt-10 lg:px-12">
         <h1 className="font-serif text-3xl font-semibold leading-tight sm:text-5xl lg:text-6xl">{name}</h1>
         <address className="mt-3 not-italic text-sm font-medium leading-relaxed sm:text-lg">{address}</address>
