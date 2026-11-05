@@ -6,6 +6,11 @@ export const contentPage = (id: string) => websitePages.find(page => page.id ===
 export function defaultContent(id: string): ContentValues {
   return Object.fromEntries((contentPage(id)?.fields || []).map(field => [field.key,field.default]));
 }
+// Saved versions can predate removed or added text slots. Keep current fields
+// only, without discarding staff's saved wording or mutating stored history.
+export function currentContent(id: string, values: ContentValues): ContentValues {
+  return Object.fromEntries((contentPage(id)?.fields || []).map(field => [field.key, values[field.key] ?? field.default]));
+}
 export function validateContent(id: string, input: unknown): ContentValues {
   const page = contentPage(id);
   if (!page || !input || typeof input !== 'object' || Array.isArray(input)) throw new ContentValidationError('Choose a website page and complete its text fields.');
