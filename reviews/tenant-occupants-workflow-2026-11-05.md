@@ -32,3 +32,11 @@ Base: `release/production-preparation-20261101` at `5ae5f357ab180a2d9c493e011143
 Local production-target Worker artifact verified. Hosted preview, authenticated hosted save/delete/refresh and production behavior are **not verified**. PR is for review, not automatic publication. Repository AGENTS requires concrete owner approval for production release. Before any approved release, inspect actual production bindings/schema, checkpoint/rollback state, run the configured production build and verify the resulting live identifier and affected rendered routes. Do not delete Jeffrey's test record on his behalf.
 
 Private synthetic screenshots, scripts and logs are outside Git. Source diff contains only the intended UI, handler/mutations, tests and this review record; no dependency/configuration/media changes.
+
+## Interface clarity follow-up
+
+- Explicit Buildings → Apartments → Tenants / occupants guidance and current-view marker.
+- Separate person-details and optional residence-assignment sections; explicit save-without-apartment action.
+- Residence and occupant table cells retain readable widths in horizontal-scroll tables.
+- Follow-up verification: 566 tests, typecheck and production Worker build passed; synthetic desktop/tablet/mobile flow and accessibility checks passed.
+- Jeffrey approved publication on November 5; retain production data and credentials, no schema migration.
