@@ -1,9 +1,9 @@
 import type { D1Database } from '@cloudflare/workers-types';
-import { ContentValidationError, contentPage, defaultContent, validateContent, type ContentValues } from './website-content';
+import { ContentValidationError, contentPage, currentContent, defaultContent, validateContent, type ContentValues } from './website-content';
 export type ContentRow = { page_id:string; revision:string; draft_json:string; published_json:string; previous_json:string|null; published_at:string|null; updated_at:string; updated_by:string };
 export async function readContent(db:D1Database,id:string) {
   const row=await db.prepare('SELECT * FROM website_content WHERE page_id=?').bind(id).first<ContentRow>();
-  return {page:id,revision:row?.revision??null,draft:row?JSON.parse(row.draft_json) as ContentValues:defaultContent(id),published:row?JSON.parse(row.published_json) as ContentValues:defaultContent(id),previous:row?.previous_json?JSON.parse(row.previous_json) as ContentValues:null,publishedAt:row?.published_at??null,updatedAt:row?.updated_at??null,updatedBy:row?.updated_by??null};
+  return {page:id,revision:row?.revision??null,draft:row?currentContent(id,JSON.parse(row.draft_json)):defaultContent(id),published:row?currentContent(id,JSON.parse(row.published_json)):defaultContent(id),previous:row?.previous_json?currentContent(id,JSON.parse(row.previous_json)):null,publishedAt:row?.published_at??null,updatedAt:row?.updated_at??null,updatedBy:row?.updated_by??null};
 }
 export class ContentConflict extends Error {}
 export async function mutateContent(db:D1Database,id:string,actor:string,input:{action:unknown;revision:unknown;operationId:unknown;values?:unknown;approved?:unknown}) {
@@ -32,7 +32,7 @@ export async function mutateContent(db:D1Database,id:string,actor:string,input:{
 export async function publishedWebsiteContent(db:D1Database):Promise<ContentValues> {
   try {
     const rows=await db.prepare('SELECT page_id,published_json FROM website_content').all<{page_id:string;published_json:string}>();
-    return Object.assign({},...rows.results.filter(row=>contentPage(row.page_id)).map(row=>JSON.parse(row.published_json)));
+    return Object.assign({},...rows.results.filter(row=>contentPage(row.page_id)).map(row=>currentContent(row.page_id,JSON.parse(row.published_json))));
   } catch(error) {
     // A staged build remains identical to the approved site before the additive migration.
     if(error instanceof Error && /no such table.*website_content/.test(error.message))return {};
