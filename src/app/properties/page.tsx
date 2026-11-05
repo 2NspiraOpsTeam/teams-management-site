@@ -17,7 +17,7 @@ export const runtime = 'nodejs';
 
 async function PropertiesPage() {
   const heroStyle = await dailyHeroStyle('properties');
-  const sourceBuildings = (portfolioPresentationEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings()).filter(building => building.slug !== '3425-east-tremont-bronx');
+  const sourceBuildings = (portfolioPresentationEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings());
   const previewLocations = portfolioPresentationEnabled ? await adminDb().prepare("SELECT slug, latitude, longitude FROM buildings WHERE map_verified=1 AND geocode_status='verified' AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180").all<{ slug: string; latitude: number; longitude: number }>() : null;
   const locationsBySlug = new Map(previewLocations?.results.map(row => [row.slug, row]));
   const buildings = sourceBuildings.map(building => {
