@@ -7,6 +7,7 @@ export async function phoneList(a:Actor,url:URL){
  CASE WHEN a.active=1 THEN 'Current' ELSE 'Historical' END AS occupancy,
  COALESCE((SELECT group_concat(value_raw,'; ') FROM tenant_contacts c WHERE c.tenant_id=t.id AND c.archived=0 AND c.contact_type='phone'),p.phone) AS phones,
  (SELECT group_concat(value_raw,'; ') FROM tenant_contacts c WHERE c.tenant_id=t.id AND c.archived=0 AND c.contact_type='email') AS emails,
+ (SELECT json_group_array(json_object('id',c.id,'contact_type',c.contact_type,'value_raw',c.value_raw,'label',c.label,'is_primary',c.is_primary,'revision',c.revision)) FROM (SELECT * FROM tenant_contacts WHERE tenant_id=t.id AND archived=0 ORDER BY contact_type,is_primary DESC,id) c) AS contacts_json,
  p.preferred_contact
  FROM tenant_assignments a JOIN units u ON u.id=a.unit_id AND u.building_id=a.building_id JOIN buildings b ON b.id=u.building_id JOIN tenant_accounts t ON t.id=a.tenant_id LEFT JOIN operations_tenants p ON p.tenant_id=t.id
  WHERE ${building?'a.building_id=?':'1=1'} ${occupancy==='current'?'AND a.active=1':occupancy==='historical'?'AND a.active=0':''}

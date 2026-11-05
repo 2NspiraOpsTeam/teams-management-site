@@ -508,3 +508,44 @@ it('removes a lease link through the authenticated handler with same-origin and 
  const denied=await request('leases/'+created.id+'/links/qa-remove','DELETE',{}, {origin:'https://elsewhere.test'});expect(denied.status).toBe(401);
  const removed=await request('leases/'+created.id+'/links/qa-remove','DELETE');expect(removed.status).toBe(200);expect(sql.prepare("SELECT id FROM operations_lease_links WHERE id='qa-remove'").get()).toBeUndefined();expect((await request('leases/'+created.id+'/links/qa-remove','DELETE')).status).toBe(200);
 });
+
+it('round-trips inline phone/email updates, preserves all other tenant fields and detects stale contact snapshots',async()=>{
+ const {contactsFor,contactUpdate}=await import('../src/components/operations/inline-contacts');
+ expect((await request('tenants/t1','PATCH',{revision:1,display_name:'QA One',directory_status:'inactive',internal_notes:'Retain private note',preferred_language:'Spanish',contacts:[{contact_type:'phone',value_raw:'Judith: 212-555-0100; ext 4',label:'daughter',is_primary:true},{contact_type:'email',value_raw:'contact@example.test',label:'home',is_primary:true}]})).status).toBe(200);
+ const row=(await(await request('phone-list?buildingId=b1')).json()).items[0];
+ const phones=contactsFor(row,'phone'),emails=contactsFor(row,'email');expect(phones[0].value_raw).toBe('Judith: 212-555-0100; ext 4');
+ const details=async()=>await(await request('tenants/t1')).json();
+ const phoneUpdate=contactUpdate(await details(),'phone',phones,[{...phones[0],value_raw:'212-555-0199'},{contact_type:'phone',value_raw:'212-555-0188',label:'work',is_primary:false}]);
+ expect((await request('tenants/t1/contacts','PATCH',phoneUpdate)).status).toBe(200);
+ // A second edited cell remains valid even though saving the first advances all revisions.
+ const emailUpdate=contactUpdate(await details(),'email',emails,[{...emails[0],value_raw:'updated@example.test'}]);
+ expect((await request('tenants/t1/contacts','PATCH',emailUpdate)).status).toBe(200);
+ expect((await request('tenants/t1/contacts','PATCH',emailUpdate)).status).toBe(409);
+ const saved=await details();expect(saved).toMatchObject({email:'one@example.test',active:1,directory_status:'inactive',internal_notes:'Retain private note',preferred_language:'Spanish'});
+ expect(saved.contacts.map((c:any)=>c.value_raw)).toEqual(expect.arrayContaining(['212-555-0199','212-555-0188','updated@example.test']));
+ expect(()=>contactUpdate(saved,'phone',phones,phones)).toThrow('changed');
+ const cleared=contactUpdate(saved,'email',contactsFor(saved,'email'),[]);expect((await request('tenants/t1/contacts','PATCH',cleared)).status).toBe(200);
+ expect((await details()).contacts.filter((c:any)=>c.contact_type==='email')).toEqual([]);
+ expect(sql.prepare("SELECT archived FROM tenant_contacts WHERE id=?").get(emails[0].id)?.archived).toBe(1);
+ expect(sql.prepare("SELECT COUNT(*) n FROM audit_log WHERE entity_type='operations_tenant'").get()?.n).toBe(4);
+ expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+});
+
+it('retains legacy phone text when inline email editing materializes directory contacts',async()=>{
+ const {contactUpdate}=await import('../src/components/operations/inline-contacts');
+ sql.exec("INSERT INTO operations_tenants(tenant_id,phone) VALUES('t1','Office: 212-555-0100')");
+ const current=await(await request('tenants/t1')).json();
+ const update=contactUpdate(current,'email',[],[{contact_type:'email',value_raw:'new@example.test'}]);
+ expect((await request('tenants/t1/contacts','PATCH',update)).status).toBe(200);
+ const saved=(await(await request('phone-list?buildingId=b1')).json()).items[0];
+ expect(saved).toMatchObject({phones:'Office: 212-555-0100',emails:'new@example.test'});
+});
+
+it('limits the inline endpoint to contacts, preserving names and rejecting unauthorized requests',async()=>{
+ sql.exec("INSERT INTO operations_tenants(tenant_id,first_name,last_name,internal_notes,directory_status) VALUES('t1','Different','Profile','Keep notes','inactive')");
+ const data={revision:1,contacts:[{contact_type:'email',value_raw:'directory@example.test'}],display_name:'Do not apply',email:'intruder@example.test',active:false,internal_notes:'Do not apply'};
+ expect((await request('tenants/t1/contacts','PATCH',data,{origin:'https://foreign.example'})).status).toBe(401);
+ expect((await request('tenants/t1/contacts','PATCH',data)).status).toBe(200);
+ const saved=await(await request('tenants/t1')).json();expect(saved).toMatchObject({display_name:'QA One',first_name:'Different',last_name:'Profile',email:'one@example.test',active:1,internal_notes:'Keep notes',directory_status:'inactive'});
+ state.actor=null;expect((await request('tenants/t1/contacts','PATCH',{revision:2,contacts:[]})).status).toBe(401);
+});
