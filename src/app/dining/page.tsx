@@ -11,7 +11,7 @@ import { listPublicDining, type DiningVenue } from '@/lib/public-dining';
 import { DiningPropertyRotation, type DiningProperty } from '@/components/dining-property-rotation';
 import { adminDb } from '@/lib/admin-auth';
 import { featuredPropertyService } from '@/lib/featured-property-service';
-import { previewPortfolioEnabled } from '@/lib/preview-portfolio';
+import { portfolioPresentationEnabled } from '@/lib/preview-portfolio';
 
 export const runtime = 'nodejs';
 export const metadata = pageMetadata('/dining', 'Dining | Teams Management', 'Explore dining at Teams Management properties, beginning with Delizia 73 on the Upper East Side.');
@@ -54,7 +54,7 @@ async function DiningPage() {
     name: item.property_name,
     image: item.image,
     alt: item.alt_text || `Photograph of ${item.property_name}`,
-    href: previewPortfolioEnabled && item.property_slug === '3425-east-tremont-bronx' ? `/retail/${item.property_slug}` : `/properties/${item.property_slug}`,
+    href: portfolioPresentationEnabled && item.property_slug === '3425-east-tremont-bronx' ? `/retail/${item.property_slug}` : `/properties/${item.property_slug}`,
   }));
   return <><Header /><main id="main-content" className="bg-[#f7f4ee] text-teams-ink">
     <section className="relative h-[calc(100svh-89px)] min-h-[360px] w-full overflow-hidden bg-teams-charcoal" aria-label="Delizia 73 film">

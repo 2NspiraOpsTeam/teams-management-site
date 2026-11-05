@@ -23,7 +23,7 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-[.16em] text-[#D8BD86] mb-4"><WebsiteText contentKey="footer.text-4">Explore</WebsiteText></h4>
+            <h2 className="text-sm font-semibold uppercase tracking-[.16em] text-[#D8BD86] mb-4"><WebsiteText contentKey="footer.text-4">Explore</WebsiteText></h2>
             <ul className="space-y-2">
               <li>
                 <Link prefetch={false} href="/" className="text-slate-300 hover:text-white text-sm transition-colors"><WebsiteText contentKey="footer.text-5">
@@ -44,7 +44,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div><h4 className="text-sm font-semibold uppercase tracking-[.16em] text-[#D8BD86] mb-4"><WebsiteText contentKey="footer.text-12">Get in touch</WebsiteText></h4><ContactDetails dark /></div>
+          <div><h2 className="text-sm font-semibold uppercase tracking-[.16em] text-[#D8BD86] mb-4"><WebsiteText contentKey="footer.text-12">Get in touch</WebsiteText></h2><ContactDetails dark /></div>
 
         </div>
 

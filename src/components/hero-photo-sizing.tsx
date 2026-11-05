@@ -1,5 +1,5 @@
 'use client';
-import {highResolutionPhoto} from '@/lib/photo-variants';
+import {highResolutionPhoto} from '@/lib/photo-delivery';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 

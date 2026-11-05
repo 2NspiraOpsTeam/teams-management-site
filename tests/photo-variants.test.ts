@@ -4,7 +4,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 afterEach(()=>{vi.unstubAllEnvs();vi.resetModules();});
 it('prepares every inventoried public photo with distinct bounded renditions and matching stored checksums',()=>{
- expect(photos.length).toBe(269);expect(photos.filter(p=>p.cover)).toHaveLength(23);
+ expect(photos.length).toBe(294);expect(photos.filter(p=>p.cover)).toHaveLength(38);
  for(const p of photos){
   expect(new Set(p.variants.map(v=>v.width)).size).toBe(p.variants.length);
   expect(p.variants.map(v=>v.width)).toEqual([...p.variants.map(v=>v.width)].sort((a,b)=>a-b));
@@ -20,4 +20,12 @@ it('gives browsers responsive choices without transforming unknown/private sourc
 });
 it('keeps preview-derived media out of the normal production consumer',async()=>{
  vi.stubEnv('NEXT_PUBLIC_PREVIEW_PORTFOLIO','0');const {photoAttributes,requestedMediaVariant}=await import('../src/lib/photo-variants');const p=photos[0];expect(photoAttributes(p.originalSrc)).toEqual({src:p.originalSrc});expect(requestedMediaVariant(p.id,p.sourceSha256,p.variants[0].width)).toBeNull();
+});
+
+it('delivers the selected Gold Street cover responsively without enlarging or changing its original',()=>{
+ const gold=photos.find(p=>p.id==='4deb0e16-9f65-45a1-bd6d-f71743ad773d')!;
+ expect(gold.originalBytes).toBe(552345);expect(gold.upscaled).toBe(false);
+ expect(gold.variants.every(v=>v.width<=gold.originalWidth)).toBe(true);
+ expect(gold.variants.find(v=>v.width===480)!.bytes).toBeLessThan(50000);
+ expect(gold.variants.at(-1)!.bytes).toBeLessThan(gold.originalBytes/2);
 });

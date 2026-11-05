@@ -508,3 +508,100 @@ it('removes a lease link through the authenticated handler with same-origin and 
  const denied=await request('leases/'+created.id+'/links/qa-remove','DELETE',{}, {origin:'https://elsewhere.test'});expect(denied.status).toBe(401);
  const removed=await request('leases/'+created.id+'/links/qa-remove','DELETE');expect(removed.status).toBe(200);expect(sql.prepare("SELECT id FROM operations_lease_links WHERE id='qa-remove'").get()).toBeUndefined();expect((await request('leases/'+created.id+'/links/qa-remove','DELETE')).status).toBe(200);
 });
+
+it('round-trips inline phone/email updates, preserves all other tenant fields and detects stale contact snapshots',async()=>{
+ const {contactsFor,contactUpdate}=await import('../src/components/operations/inline-contacts');
+ expect((await request('tenants/t1','PATCH',{revision:1,display_name:'QA One',directory_status:'inactive',internal_notes:'Retain private note',preferred_language:'Spanish',contacts:[{contact_type:'phone',value_raw:'Judith: 212-555-0100; ext 4',label:'daughter',is_primary:true},{contact_type:'email',value_raw:'contact@example.test',label:'home',is_primary:true}]})).status).toBe(200);
+ const row=(await(await request('phone-list?buildingId=b1')).json()).items[0];
+ const phones=contactsFor(row,'phone'),emails=contactsFor(row,'email');expect(phones[0].value_raw).toBe('Judith: 212-555-0100; ext 4');
+ const details=async()=>await(await request('tenants/t1')).json();
+ const phoneUpdate=contactUpdate(await details(),'phone',phones,[{...phones[0],value_raw:'212-555-0199'},{contact_type:'phone',value_raw:'212-555-0188',label:'work',is_primary:false}]);
+ expect((await request('tenants/t1/contacts','PATCH',phoneUpdate)).status).toBe(200);
+ // A second edited cell remains valid even though saving the first advances all revisions.
+ const emailUpdate=contactUpdate(await details(),'email',emails,[{...emails[0],value_raw:'updated@example.test'}]);
+ expect((await request('tenants/t1/contacts','PATCH',emailUpdate)).status).toBe(200);
+ expect((await request('tenants/t1/contacts','PATCH',emailUpdate)).status).toBe(409);
+ const saved=await details();expect(saved).toMatchObject({email:'one@example.test',active:1,directory_status:'inactive',internal_notes:'Retain private note',preferred_language:'Spanish'});
+ expect(saved.contacts.map((c:any)=>c.value_raw)).toEqual(expect.arrayContaining(['212-555-0199','212-555-0188','updated@example.test']));
+ expect(()=>contactUpdate(saved,'phone',phones,phones)).toThrow('changed');
+ const cleared=contactUpdate(saved,'email',contactsFor(saved,'email'),[]);expect((await request('tenants/t1/contacts','PATCH',cleared)).status).toBe(200);
+ expect((await details()).contacts.filter((c:any)=>c.contact_type==='email')).toEqual([]);
+ expect(sql.prepare("SELECT archived FROM tenant_contacts WHERE id=?").get(emails[0].id)?.archived).toBe(1);
+ expect(sql.prepare("SELECT COUNT(*) n FROM audit_log WHERE entity_type='operations_tenant'").get()?.n).toBe(4);
+ expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+});
+
+it('retains legacy phone text when inline email editing materializes directory contacts',async()=>{
+ const {contactUpdate}=await import('../src/components/operations/inline-contacts');
+ sql.exec("INSERT INTO operations_tenants(tenant_id,phone) VALUES('t1','Office: 212-555-0100')");
+ const current=await(await request('tenants/t1')).json();
+ const update=contactUpdate(current,'email',[],[{contact_type:'email',value_raw:'new@example.test'}]);
+ expect((await request('tenants/t1/contacts','PATCH',update)).status).toBe(200);
+ const saved=(await(await request('phone-list?buildingId=b1')).json()).items[0];
+ expect(saved).toMatchObject({phones:'Office: 212-555-0100',emails:'new@example.test'});
+});
+
+it('limits the inline endpoint to contacts, preserving names and rejecting unauthorized requests',async()=>{
+ sql.exec("INSERT INTO operations_tenants(tenant_id,first_name,last_name,internal_notes,directory_status) VALUES('t1','Different','Profile','Keep notes','inactive')");
+ const data={revision:1,contacts:[{contact_type:'email',value_raw:'directory@example.test'}],display_name:'Do not apply',email:'intruder@example.test',active:false,internal_notes:'Do not apply'};
+ expect((await request('tenants/t1/contacts','PATCH',data,{origin:'https://foreign.example'})).status).toBe(401);
+ expect((await request('tenants/t1/contacts','PATCH',data)).status).toBe(200);
+ const saved=await(await request('tenants/t1')).json();expect(saved).toMatchObject({display_name:'QA One',first_name:'Different',last_name:'Profile',email:'one@example.test',active:1,internal_notes:'Keep notes',directory_status:'inactive'});
+ state.actor=null;expect((await request('tenants/t1/contacts','PATCH',{revision:2,contacts:[]})).status).toBe(401);
+});
+
+const newOccupant=(extra={})=>({idempotencyKey:crypto.randomUUID(),display_name:'QA Added occupant',building_id:'b1',unit_id:'u1',occupant_role:'authorized_occupant',contacts:[{contact_type:'email',value_raw:'qa-added@example.test'}],...extra});
+it('creates four separate occupants in one apartment atomically without enabling portal access or replacing anyone',async()=>{
+ const original=sql.prepare("SELECT * FROM tenant_assignments WHERE id='a1'").get();
+ for(let n=0;n<3;n++){
+  const input=newOccupant({display_name:'QA Added '+n});const first=await request('tenants','POST',input);expect(first.status).toBe(201);const saved=await first.json();
+  expect((await request('tenants','POST',input)).status).toBe(200);
+  const tenant=await(await request('tenants/'+saved.id)).json();expect(tenant.active).toBe(0);expect(tenant.email).toBeNull();expect(tenant.assignments).toHaveLength(1);expect(tenant.assignments[0]).toMatchObject({building_id:'b1',unit_id:'u1',active:1,occupant_role:'authorized_occupant'});
+ }
+ const units=await(await request('units?buildingId=b1')).json();expect(units.items[0].associations).toHaveLength(4);
+ const property=await(await request('properties/b1')).json();expect(property.current_occupants).toBe(4);expect(property.occupied_units).toBe(1);
+ expect(sql.prepare("SELECT * FROM tenant_assignments WHERE id='a1'").get()).toEqual(original);
+ expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+});
+it('rejects partial, mismatched, missing and archived apartment selection without creating orphan tenants',async()=>{
+ for(const input of [newOccupant({unit_id:''}),newOccupant({building_id:''}),newOccupant({unit_id:'u2'}),newOccupant({unit_id:'missing'})])expect((await request('tenants','POST',input)).status).toBeGreaterThanOrEqual(400);
+ sql.exec("UPDATE buildings SET publication_state='archived' WHERE id='b1'");expect((await request('tenants','POST',newOccupant())).status).toBe(409);
+ expect(sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n).toBe(2);
+});
+it('rolls back tenant, contacts, receipt and assignment together on assignment failure and permits safe retry',async()=>{
+ const input=newOccupant();sql.exec("CREATE TRIGGER qa_assignment_failure BEFORE INSERT ON tenant_assignments BEGIN SELECT RAISE(ABORT,'QA failure'); END;");
+ expect((await request('tenants','POST',input)).status).toBe(409);expect(sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT count(*) n FROM tenant_contacts').get()?.n).toBe(0);expect(sql.prepare('SELECT count(*) n FROM operations_mutation_receipts').get()?.n).toBe(0);
+ sql.exec('DROP TRIGGER qa_assignment_failure');expect((await request('tenants','POST',input)).status).toBe(201);
+});
+it('retains assign-later and existing-edit behavior without silently creating assignments',async()=>{
+ const r=await request('tenants','POST',newOccupant({building_id:'',unit_id:''}));expect(r.status).toBe(201);const {id}=await r.json();expect((await(await request('tenants/'+id)).json()).assignments).toHaveLength(0);
+ expect((await request('tenants/'+id,'PATCH',{revision:1,display_name:'QA Renamed',building_id:'b1',unit_id:'u1'})).status).toBe(200);expect((await(await request('tenants/'+id)).json()).assignments).toHaveLength(0);
+});
+it('deletes only the confirmed unused tenant, retains other occupants, apartment, audit and retry safety',async()=>{
+ const {id}=await(await request('tenants','POST',newOccupant())).json();const input={revision:1,confirm:true,confirm_name:'QA Added occupant'};
+ expect((await request('tenants/'+id,'DELETE',{...input,confirm:false})).status).toBe(400);expect((await request('tenants/'+id,'DELETE',{...input,confirm_name:'wrong'})).status).toBe(400);expect((await request('tenants/'+id,'DELETE',{...input,revision:0})).status).toBe(409);
+ expect((await request('tenants/'+id,'DELETE',input)).status).toBe(200);expect((await request('tenants/'+id,'DELETE',input)).status).toBe(200);expect((await request('tenants/'+id)).status).toBe(404);
+ expect(sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT count(*) n FROM units').get()?.n).toBe(2);expect(sql.prepare("SELECT active FROM tenant_assignments WHERE id='a1'").get()?.active).toBe(1);expect(sql.prepare("SELECT count(*) n FROM audit_log WHERE action='deleted'").get()?.n).toBe(1);expect(sql.prepare('PRAGMA foreign_key_check').all()).toEqual([]);
+});
+it('denies unauthorized/foreign-origin deletion and protects tenants with portal or lease history',async()=>{
+ const {id}=await(await request('tenants','POST',newOccupant())).json();const input={revision:1,confirm:true,confirm_name:'QA Added occupant'};
+ state.actor=null;expect((await request('tenants/'+id,'DELETE',input)).status).toBe(401);state.actor={db:state.db,email:'admin@example.test'};
+ expect((await request('tenants/'+id,'DELETE',input,{origin:'https://foreign.example'})).status).toBe(401);
+ expect((await request('tenants/t1','DELETE',{revision:1,confirm:true,confirm_name:'QA One'})).status).toBe(409);
+ await createLease({holders:[holder(id)]});expect((await request('tenants/'+id,'DELETE',input)).status).toBe(409);expect((await request('tenants/'+id)).status).toBe(200);
+});
+it('rolls back deletion if audit fails, and blocks a racing new lease association',async()=>{
+ const {id}=await(await request('tenants','POST',newOccupant())).json();const input={revision:1,confirm:true,confirm_name:'QA Added occupant'};
+ sql.exec("CREATE TRIGGER qa_delete_audit_failure BEFORE INSERT ON audit_log WHEN NEW.action='deleted' BEGIN SELECT RAISE(ABORT,'QA failure'); END;");
+ expect((await request('tenants/'+id,'DELETE',input)).status).toBe(409);expect((await(await request('tenants/'+id)).json()).assignments).toHaveLength(1);
+ sql.exec('DROP TRIGGER qa_delete_audit_failure');const lease=await createLease();const batch=state.db.batch;
+ state.db.batch=async(s:any[])=>{sql.prepare("INSERT INTO operations_leaseholders(lease_id,tenant_id,holder_role) VALUES(?,?,'authorized_occupant')").run(lease.id,id);return batch(s);};
+ expect((await request('tenants/'+id,'DELETE',input)).status).toBe(409);expect((await(await request('tenants/'+id)).json()).contacts).toHaveLength(1);expect(sql.prepare("SELECT count(*) n FROM audit_log WHERE action='deleted'").get()?.n).toBe(0);
+});
+it('rechecks building availability inside the combined creation transaction',async()=>{
+ const batch=state.db.batch;state.db.batch=async(s:any[])=>{sql.exec("UPDATE buildings SET publication_state='archived' WHERE id='b1'");return batch(s);};
+ expect((await request('tenants','POST',newOccupant())).status).toBe(409);expect(sql.prepare('SELECT count(*) n FROM tenant_accounts').get()?.n).toBe(2);expect(sql.prepare('SELECT count(*) n FROM tenant_contacts').get()?.n).toBe(0);expect(sql.prepare('SELECT count(*) n FROM operations_mutation_receipts').get()?.n).toBe(0);
+});
+it('protects inactive tenants with existing login history from deletion',async()=>{
+ sql.exec("UPDATE tenant_accounts SET active=0 WHERE id='t1'");expect((await request('tenants/t1','DELETE',{revision:1,confirm:true,confirm_name:'QA One'})).status).toBe(409);expect(sql.prepare("SELECT count(*) n FROM tenant_sessions WHERE tenant_id='t1'").get()?.n).toBe(1);
+});

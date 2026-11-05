@@ -37,6 +37,7 @@ function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.
   if((index+1)%25===0)console.log(`Prepared ${index+1}/${entries.length} approved images`);
  }
  fs.writeFileSync(path.join(root,'src/lib/generated/photo-variants.json'),JSON.stringify(result));
+ require('./delivery-manifest.cjs').write();
  const summary={images:result.length,media:result.filter(e=>e.kind==='media').length,static:result.filter(e=>e.kind==='static').length,covers:result.filter(e=>e.cover).length,upscaled:result.filter(e=>e.upscaled).length,variants:generated,totalBytes:bytes,originalBytes:result.reduce((n,e)=>n+e.originalBytes,0),tools:'Sharp/libvips, local CPU only; zero API/service calls',fidelity:'Unmodified originals retained; interpolation does not recover true missing detail'};
  fs.writeFileSync(path.join(out,'summary.json'),JSON.stringify(summary,null,2));console.log(JSON.stringify(summary));
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

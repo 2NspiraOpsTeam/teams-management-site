@@ -1,4 +1,4 @@
-import { previewPortfolio } from './preview-portfolio';
+import { previewPortfolio, previewPortfolioEnabled } from './preview-portfolio';
 import { publicDataCache } from './public-data-cache';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { D1Database } from '@cloudflare/workers-types';
@@ -30,7 +30,7 @@ export async function getPublicBuilding(slug: string): Promise<BuildingPublic | 
 
 /** Preserve preview-only publication scope, while taking mailing addresses from canonical records. */
 export async function canonicalPreviewBuildings(fixtures: BuildingPublic[]): Promise<BuildingPublic[]> {
-  const rows = await publicDataCache('preview-addresses',async()=> (await database().prepare(`SELECT slug,name,address_json FROM buildings WHERE publication_state!='archived' AND slug IN (${previewPortfolio.map(()=>'?').join(',')})`).bind(...previewPortfolio.map(b=>b.slug)).all<{slug:string;name:string;address_json:string}>()).results);
-  const canonical = new Map(rows.map(row => [row.slug, {name:row.name,address:JSON.parse(row.address_json) as BuildingPublic['address']}]));
-  return fixtures.map(building => ({ ...building, ...canonical.get(building.slug) }));
+  const rows = await publicDataCache('preview-addresses',async()=> (await database().prepare(`SELECT id,slug,name,address_json,publication_state FROM buildings WHERE ${previewPortfolioEnabled ? "publication_state!='archived'" : "publication_state='published'"} AND slug IN (${previewPortfolio.map(()=>'?').join(',')})`).bind(...previewPortfolio.map(b=>b.slug)).all<{id:string;slug:string;name:string;address_json:string;publication_state:BuildingPublic['publication_state']}>()).results);
+  const canonical = new Map(rows.map(row => [row.slug, {id:row.id,name:row.name,publication_state:row.publication_state,address:JSON.parse(row.address_json) as BuildingPublic['address']}]));
+  return fixtures.filter(building => canonical.has(building.slug)).map(building => ({ ...building, ...canonical.get(building.slug) }));
 }

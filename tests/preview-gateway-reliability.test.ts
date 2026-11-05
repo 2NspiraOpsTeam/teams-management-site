@@ -25,21 +25,16 @@ it('preserves successful authentication response, cookies and private caching po
  expect(handleRequest.mock.calls[0][1]).toEqual({GOOGLE_CLIENT_SECRET:'configured'});
 });
 
-it('serves repeat anonymous news HTML without invoking the backend twice',async()=>{
- const entries=new Map();
- const cache={match:vi.fn(async key=>entries.get(key.url)?.clone()),put:vi.fn(async(key,response)=>{entries.set(key.url,response);})};
- vi.stubGlobal('caches',{open:async()=>cache});
- const handleRequest=vi.fn(async()=>new Response('<html>Public news</html>',{headers:{'content-type':'text/html','cache-control':'private, no-store','vary':'RSC, Next-Router-State-Tree, Accept-Encoding','x-teams-request-id':'old'}}));
+it('refreshes anonymous news HTML so daily cover and publication changes cannot reuse a stale header',async()=>{
+ const open=vi.fn();vi.stubGlobal('caches',{open});
+ let revision=0;
+ const handleRequest=vi.fn(async()=>new Response(`<html>Cover ${++revision}</html>`,{headers:{'content-type':'text/html','cache-control':'private, no-store'}}));
  const request=()=>new Request('https://site.test/in-the-news',{headers:{accept:'text/html'}});
  const first=await gateway.fetch(request(),{TEAMS_RUNTIME:{handleRequest}});
- expect(first.headers.get('x-teams-public-cache')).toBe('MISS');
  const second=await gateway.fetch(request(),{TEAMS_RUNTIME:{handleRequest}});
- expect(second.headers.get('x-teams-public-cache')).toBe('HIT');
+ expect(await first.text()).toContain('Cover 1');expect(await second.text()).toContain('Cover 2');
  expect(second.headers.get('cache-control')).toBe('private, no-store');
- expect(second.headers.has('x-teams-request-id')).toBe(false);
- expect(await second.text()).toBe('<html>Public news</html>');
- expect(handleRequest).toHaveBeenCalledTimes(1);
- expect(cache.put.mock.calls[0][1].headers.get('cache-control')).toBe('public, max-age=60');
+ expect(handleRequest).toHaveBeenCalledTimes(2);expect(open).not.toHaveBeenCalled();
  vi.unstubAllGlobals();
 });
 it('never shares cookie, authorization, RSC, query, mutation, refresh or private-route requests',async()=>{

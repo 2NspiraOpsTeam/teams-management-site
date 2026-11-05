@@ -4,7 +4,7 @@ export type PreparedPhoto={kind:string;id:string;originalSrc:string;storageKey?:
 const photos=records as PreparedPhoto[];
 const bySource=new Map(photos.map(photo=>[photo.originalSrc,photo]));
 const byId=new Map(photos.filter(photo=>photo.kind==='media').map(photo=>[photo.id,photo]));
-const enabled=process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO==='1';
+const enabled=process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO==='1'||process.env.NEXT_PUBLIC_PORTFOLIO_PRESENTATION==='1';
 export function variantUrl(photo:PreparedPhoto,variant:PhotoVariant){return photo.kind==='media'?`/api/media/${encodeURIComponent(photo.id)}?v=${photo.sourceSha256}&w=${variant.width}`:`/photo-variants/${variant.file}`;}
 export function preparedPhoto(src:string|undefined){return enabled&&src?bySource.get(src):undefined;}
 export function photoAttributes(src:string|undefined,sizes='(max-width: 767px) 100vw, (max-width: 1279px) 60vw, 50vw'){

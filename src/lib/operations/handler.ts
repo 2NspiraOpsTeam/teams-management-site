@@ -8,7 +8,7 @@ import { rentRoll } from './rent-roll';
 import { NextResponse } from 'next/server';
 import { authorize,body,enabled,all,one,auditStatement,type Row } from './database';
 import { detail,list,overview,recentActivity } from './queries';
-import { saveRequestAssignment,saveAssignment,saveLease,saveProperty,saveSuperintendent,saveTenant,saveUnit } from './mutations';
+import { deleteTenant,saveRequestAssignment,saveAssignment,saveLease,saveProperty,saveSuperintendent,saveTenant,saveUnit } from './mutations';
 import { documentStore,downloadDocument,uploadLeaseDocument } from './private-documents';
 import { fail,id,OperationError } from './validation';
 export const json=(value:unknown,status=200)=>NextResponse.json(value,{status,headers:{'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
@@ -26,7 +26,9 @@ export async function operationsRequest(request:Request,path:string[]){try{const
  if(entity==='storage'&&path.length===1)return json({enabled:!!documentStore(),maxBytes:5*1024*1024,acceptedType:'application/pdf'});
  if(entity==='documents'&&key&&path.length===2)return await downloadDocument(a.db,id(key));
  if(['properties','units','tenants','superintendents','leases','maintenance'].includes(entity)&&path.length<3)return json(key?await detail(a,entity,id(key)):await list(a,entity,url));
- } else if(request.method==='DELETE'&&entity==='leases'&&key&&action==='links'&&path.length===4)return json(await removeLeaseLink(a,id(key),id(path[3])));
+ } else if(request.method==='PATCH'&&entity==='tenants'&&key&&action==='contacts'&&path.length===3){const v=await body(request);return json(await saveTenant(a,id(key),{revision:v.revision,contacts:v.contacts},true));}
+ else if(request.method==='DELETE'&&entity==='tenants'&&key&&path.length===2)return json(await deleteTenant(a,id(key),await body(request)));
+ else if(request.method==='DELETE'&&entity==='leases'&&key&&action==='links'&&path.length===4)return json(await removeLeaseLink(a,id(key),id(path[3])));
  else if(request.method==='POST'&&entity==='maintenance'&&key&&action==='assignment'&&path.length===3)return json(await saveRequestAssignment(a,id(key),await body(request)));
  else if(request.method==='POST'&&entity==='leases'&&key&&action==='documents'&&path.length===3)return json(await uploadLeaseDocument(a,id(key),request),201);
  else if(request.method==='POST'&&entity==='leases'&&key&&(action==='sharing-links'||action==='google-links')&&path.length===3)return json(await saveGoogleLeaseLink(a,id(key),await body(request)),201);

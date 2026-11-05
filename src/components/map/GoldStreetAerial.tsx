@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import type * as Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { mapTileFallback } from '@/lib/map-tile-fallback';
+import {useMapVisibility} from './use-map-visibility';
 
 export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.709506004338, longitude = -74.005146181808 }: { name?: string; latitude?: number; longitude?: number; showFootprint?: boolean }) {
+  const visibility = useMapVisibility();
   const host = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Leaflet.Map | null>(null);
   const [view, setView] = useState<'aerial' | 'streets'>('aerial');
@@ -16,7 +18,7 @@ export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.7095060043
   const labelsRef = useRef<Leaflet.TileLayer | null>(null);
 
   useEffect(() => {
-    if (!host.current) return;
+    if (!host.current || !visibility.visible) return;
     setStreetsFailed(false);
     setImageryFailed(false);
     let disposed = false;
@@ -58,7 +60,7 @@ export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.7095060043
     cleanup = () => { reduced.removeEventListener('change', onReduce); map.remove(); mapRef.current = null; };
     });
     return () => { disposed = true; cleanup?.(); };
-  }, [latitude, longitude, name]);
+  }, [latitude, longitude, name, visibility.visible]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -69,7 +71,7 @@ export function GoldStreetAerial({ name = '61 Gold St', latitude = 40.7095060043
     else { map.removeLayer(aerial); map.removeLayer(labels); }
   }, [view, imageryFailed]);
 
-  return <section aria-label={`${name} aerial location`}>
+  return <section ref={visibility.ref} aria-label={`${name} aerial location`}>
     <div className="relative h-[480px] overflow-hidden rounded-lg border border-stone-300 bg-stone-100 sm:h-[650px] lg:h-[740px]">
       <div ref={host} className="h-full w-full" role="region" aria-label={`Interactive map of ${name}`} />
       <div className="absolute left-3 top-3 z-[1000] flex rounded-sm bg-white p-1 shadow-lg" role="group" aria-label="Map view">

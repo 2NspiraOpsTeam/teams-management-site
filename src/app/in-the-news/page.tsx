@@ -2,6 +2,9 @@ import rentalArticle from './rental-buildings-2003.json';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { pageMetadata } from '@/lib/site-seo';
+import { dailyHeroStyle } from '@/lib/daily-hero-style';
+
+export const runtime = 'nodejs';
 
 export const metadata = pageMetadata('/in-the-news', 'In the News | Teams Management', 'Selected reporting on Frank Pecora, Peter Pecora, Teams Management, and related New York real estate transactions, with original publisher links.');
 
@@ -51,16 +54,6 @@ const articles = [
   },
   {
     publisher: 'The Real Deal', date: '2025-09-16', displayDate: 'September 16, 2025',
-    title: 'Waterfront Queens mansion snags Malba’s priciest deal at $6M',
-    summary: 'A look at the record-setting sale of the waterfront home at 117 Malba Drive.',
-    image: '/images/news/malba-waterfront.jpg',
-    imageAlt: "The Real Deal’s lead composite of Po Wei Tair, Hui Fang Chen and 117 Malba Drive.",
-    imageCaption: "Remax, Samaki, Google Maps, Getty · via The Real Deal",
-    imageWidth: 1024, imageHeight: 683,
-    href: 'https://therealdeal.com/new-york/2025/09/16/waterfront-mansion-snags-malba-queens-priciest-deal/',
-  },
-  {
-    publisher: 'The Real Deal', date: '2025-09-16', displayDate: 'September 16, 2025',
     title: 'NYC’s top deals: Queens waterfront mansion trades for $6M',
     summary: 'A New York transaction roundup that includes 117 Malba Drive and identifies the seller as an LLC linked to Frank Pecora.',
     image: '/images/news/queens-transactions.jpg',
@@ -79,26 +72,17 @@ const articles = [
     imageWidth: 1024, imageHeight: 640,
     href: 'https://therealdeal.com/new-york/2025/06/25/mta-launches-next-eminent-domain-push-for-second-ave-subway/',
   },
-  {
-    publisher: 'Traded', date: '2024-10-29', displayDate: 'Updated October 29, 2024',
-    title: 'Rick Herman’s Prana Investments Acquires Inwood Multifamily For $8.75M',
-    summary: 'A transaction profile for the May 2019 sale of 517 West 212th Street, identifying Frank and Peter Pecora of Teams Management as the sellers.',
-    image: '/images/news/inwood-multifamily.webp',
-    imageAlt: "Traded’s transaction image for the sale of 517 West 212th Street.",
-    imageCaption: "Transaction image via Traded",
-    imageWidth: 479, imageHeight: 480,
-    href: 'https://traded.co/deals/new-york/multifamily/sale/517-west-212th-street-3/',
-  },
 ];
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const heroStyle = await dailyHeroStyle('in-the-news');
   return <><Header /><main id="main-content" className="bg-[#f7f4ee] text-teams-ink">
-    <section className="border-b border-[#B49355]/40 bg-white py-16 sm:py-24">
+    <section style={heroStyle} className="gold-street-hero gold-street-hero--news border-b border-[#B49355]/40 py-16 text-white sm:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="mb-6 h-px w-14 bg-[#B49355]" />
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[.2em] text-teams-secondary">The press collection</p>
+        <div className="mb-6 h-px w-14 bg-white/50" />
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[.2em] text-slate-200">The press collection</p>
         <h1 className="font-serif text-5xl sm:text-7xl">In the News</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-700">Selected reporting on Frank Pecora, Peter Pecora, Teams Management, and the properties and transactions connected to their New York real estate story.</p>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-100">Selected reporting on Frank Pecora, Peter Pecora, Teams Management, and the properties and transactions connected to their New York real estate story.</p>
       </div>
     </section>
     <section aria-labelledby="coverage-title" className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">

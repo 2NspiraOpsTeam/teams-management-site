@@ -7,7 +7,7 @@ export const showcasePages = ['home','about','properties','retail','rent-with-us
 export type ShowcasePage = typeof showcasePages[number];
 export type Showcase = { property_id:string; property_name:string; property_slug:string; address_json:string; media_asset_id:string; storage_key:string; checksum?:string|null; alt_text:string|null; caption:string|null; image:string };
 
-const eligibility = `FROM buildings b JOIN media_assignments m ON m.building_id=b.id AND m.unit_id IS NULL JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN media_assets a ON a.id=m.asset_id AND a.visibility='public' AND a.file_type LIKE 'image/%' WHERE ${previewPortfolioEnabled ? `b.slug IN (${previewPortfolio.map(()=>'?').join(',')}) AND b.publication_state='draft'` : `b.publication_state='published'`}`;
+const eligibility = `FROM buildings b JOIN media_assignments m ON m.building_id=b.id AND m.unit_id IS NULL JOIN media_publications p ON p.assignment_id=m.id AND p.published=1 JOIN media_assets a ON a.id=m.asset_id AND a.visibility='public' AND a.file_type LIKE 'image/%' WHERE ${previewPortfolioEnabled ? `b.slug IN (${previewPortfolio.map(()=>'?').join(',')}) AND b.publication_state IN ('draft','published')` : `b.publication_state='published'`}`;
 const columns = `b.id AS property_id,b.name AS property_name,b.slug AS property_slug,b.address_json,a.id AS media_asset_id,a.storage_key,a.checksum,COALESCE(NULLIF(m.alt_text,''),a.alt_text) AS alt_text`;
 
 export async function eligibleShowcases(db:D1Database, coversOnly=true,context:MediaContext='residential',explicitCoverOnly=false):Promise<Showcase[]> {

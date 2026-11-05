@@ -3,6 +3,8 @@ import type { BuildingPublic } from './database.types';
 
 // Explicit preview-build fixture: verified portfolio addresses only. Never enable in production builds.
 export const previewPortfolioEnabled = process.env.NEXT_PUBLIC_PREVIEW_PORTFOLIO === '1';
+// Keep the approved presentation on production without enabling draft access or preview SEO.
+export const portfolioPresentationEnabled = previewPortfolioEnabled || process.env.NEXT_PUBLIC_PORTFOLIO_PRESENTATION === '1';
 
 // Approved Gold Street preview sequence; scoped to this property's preview route.
 export const goldStreetGallery = [
@@ -24,7 +26,7 @@ const previewStaticCovers: Record<string, string> = {
 };
 
 export const previewStaticCover = (slug: string) =>
-  previewPortfolioEnabled ? previewStaticCovers[slug] ?? null : null;
+  portfolioPresentationEnabled ? previewStaticCovers[slug] ?? null : null;
 
 const confirmedAddresses = [
   ['42-70-156th-st-flushing', '42-70 156th St', 'Flushing'],

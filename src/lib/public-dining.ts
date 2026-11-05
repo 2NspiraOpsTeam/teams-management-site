@@ -2,7 +2,7 @@ import { delizia73History } from './approved-property-highlights';
 import type { D1Database } from '@cloudflare/workers-types';
 import { adminDb } from './admin-auth';
 import { isDeliverablePublicMedia, publicMediaSrc, type MediaRow } from './media-management';
-import { previewPortfolioEnabled } from './preview-portfolio';
+import { previewPortfolioEnabled, portfolioPresentationEnabled } from './preview-portfolio';
 
 type DiningRow = {
   id: string; name: string; slug: string; property_id: string; property_name: string;
@@ -52,7 +52,7 @@ export async function listPublicDining(propertySlug?: string, db: D1Database = a
     return {
       id: row.id, name: row.name, slug: row.slug, property_id: row.property_id,
       property_name: row.property_name, property_slug: row.property_slug,
-      summary: previewPortfolioEnabled && row.slug === 'delizia-73' ? delizia73History : row.summary, category: row.category, neighborhood: row.neighborhood,
+      summary: portfolioPresentationEnabled && row.slug === 'delizia-73' ? delizia73History : row.summary, category: row.category, neighborhood: row.neighborhood,
       website_url: row.website_url, menu_url: row.menu_url,
       reservation_url: row.reservation_url, ordering_url: row.ordering_url,
       phone: row.phone, hero_media_asset_id: row.hero_media_asset_id, address,
