@@ -38,7 +38,7 @@ not split combined raw values or change existing contact-validation policy.
 
 ## Verification
 
-- 555 tests / 65 suites passed, including actual handler/SQL mutation round trips,
+- 557 tests / 65 suites passed, including actual handler/SQL mutation round trips,
   preservation of unrelated fields, legacy-phone retention, archive/audit behavior,
   stale retries, foreign-origin requests and anonymous denial.
 - Typecheck and production-flags Next build passed.
@@ -61,3 +61,12 @@ Hosted preview, real authenticated browser round trips and production deployment
 are **not verified** for this change. Obtain explicit owner approval for this
 concrete production release under the repository operating instructions; then
 perform the normal immutable-candidate and production verification gates.
+
+## November 5 revalidation
+
+Reconciled with production release `a998fe9` (PR #53), preserving the news removals,
+East Tremont residences listing and optimized photo delivery. All 557 tests,
+typecheck and the canonical production Worker build passed. The artifact gate
+verified all 1,466 renditions. Re-ran the synthetic rendered editor scenarios
+and edited-state accessibility scans at 1440, 768 and 390px successfully.
+No production changes made; hosted authenticated persistence remains unverified.
