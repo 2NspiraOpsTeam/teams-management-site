@@ -54,16 +54,6 @@ const articles = [
   },
   {
     publisher: 'The Real Deal', date: '2025-09-16', displayDate: 'September 16, 2025',
-    title: 'Waterfront Queens mansion snags Malba’s priciest deal at $6M',
-    summary: 'A look at the record-setting sale of the waterfront home at 117 Malba Drive.',
-    image: '/images/news/malba-waterfront.jpg',
-    imageAlt: "The Real Deal’s lead composite of Po Wei Tair, Hui Fang Chen and 117 Malba Drive.",
-    imageCaption: "Remax, Samaki, Google Maps, Getty · via The Real Deal",
-    imageWidth: 1024, imageHeight: 683,
-    href: 'https://therealdeal.com/new-york/2025/09/16/waterfront-mansion-snags-malba-queens-priciest-deal/',
-  },
-  {
-    publisher: 'The Real Deal', date: '2025-09-16', displayDate: 'September 16, 2025',
     title: 'NYC’s top deals: Queens waterfront mansion trades for $6M',
     summary: 'A New York transaction roundup that includes 117 Malba Drive and identifies the seller as an LLC linked to Frank Pecora.',
     image: '/images/news/queens-transactions.jpg',
@@ -81,16 +71,6 @@ const articles = [
     imageCaption: "Getty · via The Real Deal",
     imageWidth: 1024, imageHeight: 640,
     href: 'https://therealdeal.com/new-york/2025/06/25/mta-launches-next-eminent-domain-push-for-second-ave-subway/',
-  },
-  {
-    publisher: 'Traded', date: '2024-10-29', displayDate: 'Updated October 29, 2024',
-    title: 'Rick Herman’s Prana Investments Acquires Inwood Multifamily For $8.75M',
-    summary: 'A transaction profile for the May 2019 sale of 517 West 212th Street, identifying Frank and Peter Pecora of Teams Management as the sellers.',
-    image: '/images/news/inwood-multifamily.webp',
-    imageAlt: "Traded’s transaction image for the sale of 517 West 212th Street.",
-    imageCaption: "Transaction image via Traded",
-    imageWidth: 479, imageHeight: 480,
-    href: 'https://traded.co/deals/new-york/multifamily/sale/517-west-212th-street-3/',
   },
 ];
 
