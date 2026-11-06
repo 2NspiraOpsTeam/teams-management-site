@@ -17,7 +17,12 @@ export const runtime = 'nodejs';
 
 async function PropertiesPage() {
   const heroStyle = await dailyHeroStyle('properties');
-  const sourceBuildings = (portfolioPresentationEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings());
+  const portfolioBuildings = (portfolioPresentationEnabled ? await canonicalPreviewBuildings(previewPortfolio) : await listPublicBuildings());
+  // Keep the remaining residence sequence intact; this property should not lead the list.
+  const sourceBuildings = [
+    ...portfolioBuildings.filter(building => building.slug !== '42-70-156th-st-flushing'),
+    ...portfolioBuildings.filter(building => building.slug === '42-70-156th-st-flushing'),
+  ];
   const previewLocations = portfolioPresentationEnabled ? await adminDb().prepare("SELECT slug, latitude, longitude FROM buildings WHERE map_verified=1 AND geocode_status='verified' AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180").all<{ slug: string; latitude: number; longitude: number }>() : null;
   const locationsBySlug = new Map(previewLocations?.results.map(row => [row.slug, row]));
   const buildings = sourceBuildings.map(building => {
