@@ -425,7 +425,7 @@ html { scroll-padding-top: 110px; }
 .resident-apartment-address { padding:0 0 18px; }
 .resident-apartment-address h2 { font-size:25px; margin-bottom:6px; }
 .resident-apartment-address p { color:#4c604e; }
-.resident-fine { font-size:12px; line-height:1.7; color:#657064; margin-top:12px; overflow-wrap:anywhere; }
+.resident-fine { font-size:12px; line-height:1.7; color:#5f695d; margin-top:12px; overflow-wrap:anywhere; }
 .resident-bottom-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-top:24px; }
 .resident-section-heading-small { margin:0 0 20px; align-items:center; }
 .resident-section-heading-small h2 { font-size:24px; margin:0; }
